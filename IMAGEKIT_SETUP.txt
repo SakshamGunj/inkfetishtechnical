@@ -1,0 +1,39 @@
+# ImageKit Setup Instructions
+# =============================
+
+## 1. Get Your ImageKit API Keys
+# Visit: https://imagekit.io/dashboard
+# Go to: Developer → API Keys
+# Copy your Public Key, Private Key, and URL Endpoint
+
+## 2. Create .env file
+# Create a new file named `.env` in the project root with this content:
+
+# ImageKit Configuration
+VITE_IMAGEKIT_PUBLIC_KEY=your_actual_public_key_here
+VITE_IMAGEKIT_PRIVATE_KEY=your_actual_private_key_here
+VITE_IMAGEKIT_URL_ENDPOINT=https://ik.imagekit.io/your_actual_imagekit_id
+
+# For Node.js scripts (same values as above)
+IMAGEKIT_PUBLIC_KEY=your_actual_public_key_here
+IMAGEKIT_PRIVATE_KEY=your_actual_private_key_here
+IMAGEKIT_URL_ENDPOINT=https://ik.imagekit.io/your_actual_imagekit_id
+
+## 3. Replace the placeholder values
+# Replace 'your_actual_public_key_here' with your real Public Key
+# Replace 'your_actual_private_key_here' with your real Private Key
+# Replace 'your_actual_imagekit_id' with your real ImageKit ID from the URL endpoint
+
+## 4. Test the setup
+npm run test-upload
+
+## 5. Run the bulk upload
+npm run upload-images
+
+## Important Notes:
+# - Never commit your .env file to version control
+# - Keep your Private Key secure
+# - Your .env file should look similar to this:
+#   VITE_IMAGEKIT_PUBLIC_KEY=public_1234567890
+#   VITE_IMAGEKIT_PRIVATE_KEY=private_1234567890
+#   VITE_IMAGEKIT_URL_ENDPOINT=https://ik.imagekit.io/ik1234567890

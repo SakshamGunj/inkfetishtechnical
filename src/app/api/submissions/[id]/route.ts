@@ -6,6 +6,9 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    if (!db) {
+      throw new Error("Firebase Database is not initialized. Please ensure credentials are set.");
+    }
     const { id } = await params;
     const docSnapshot = await db.collection("iwl_submissions").doc(id).get();
     

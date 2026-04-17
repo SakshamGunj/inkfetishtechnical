@@ -3,6 +3,9 @@ import { db } from "@/lib/firebase-admin";
 
 export async function GET() {
   try {
+    if (!db) {
+      throw new Error("Firebase Database is not initialized. Please ensure credentials are set.");
+    }
     const submissionsSnapshot = await db
       .collection("iwl_submissions")
       .where("selected", "==", true)

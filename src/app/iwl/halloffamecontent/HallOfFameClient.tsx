@@ -5,6 +5,8 @@ import { ChevronLeft, ChevronRight, Loader2, Award, User, Tag, QrCode } from "lu
 import { motion, AnimatePresence } from "framer-motion";
 import { QRCodeSVG } from "qrcode.react";
 import Navbar from "@/components/Navbar";
+import { db } from "@/lib/firebase";
+import { collection, query, where, getDocs } from "firebase/firestore";
 
 type SubmissionContent = {
   title?: string;
@@ -30,12 +32,45 @@ export default function HallOfFameClient() {
   useEffect(() => {
     const fetchSubmissions = async () => {
       try {
-        const res = await fetch("/api/submissions");
-        if (!res.ok) throw new Error("Failed to fetch submissions");
-        const data = await res.json();
-        setSubmissions(data.submissions);
+        const q = query(
+          collection(db, "iwl_submissions"), 
+          where("selected", "==", true)
+        );
+        
+        const querySnapshot = await getDocs(q);
+        const fetchedSubmissions: Submission[] = [];
+        const seenEmails = new Set();
+
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          
+          if (data.email) {
+            if (seenEmails.has(data.email)) return;
+            seenEmails.add(data.email);
+          }
+
+          let activeSubmission = null;
+          const hasSub1 = data.submission1 && data.submission1.content && data.submission1.content.trim().length > 0;
+          const hasSub2 = data.submission2 && data.submission2.content && data.submission2.content.trim().length > 0;
+
+          if (hasSub1) {
+            activeSubmission = data.submission1;
+          } else if (hasSub2) {
+            activeSubmission = data.submission2;
+          }
+
+          fetchedSubmissions.push({ 
+            id: doc.id, 
+            name: data.name,
+            category: data.category,
+            activeSubmission: activeSubmission
+          });
+        });
+
+        setSubmissions(fetchedSubmissions);
       } catch (err: any) {
-        setError(err.message || "An unexpected error occurred");
+        console.error("Firestore error:", err);
+        setError(err.message || "An unexpected error occurred while fetching from Firestore");
       } finally {
         setLoading(false);
       }

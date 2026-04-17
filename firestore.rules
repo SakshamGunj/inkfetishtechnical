@@ -81,9 +81,10 @@ service cloud.firestore {
     }
 
     // Indian Writers League (IWL) Submissions
-    // SECURE: Only accessible via Backend (Edge Function with Service Account)
+    // Enabled for client-side reading for the Hall of Fame
     match /iwl_submissions/{submissionId} {
-      allow read, write: if false; 
+      allow read: if resource.data.selected == true;
+      allow write: if false; 
     }
     
     // Allow reading from authorverseSummit collection for voting

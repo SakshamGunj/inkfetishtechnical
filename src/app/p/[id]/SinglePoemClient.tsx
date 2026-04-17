@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { Loader2, Award } from "lucide-react";
 import Navbar from "@/components/Navbar";
+import { db } from "@/lib/firebase";
+import { doc, getDoc } from "firebase/firestore";
 
 export default function SinglePoemClient({ id }: { id: string }) {
   const [submission, setSubmission] = useState<any>(null);
@@ -12,10 +14,30 @@ export default function SinglePoemClient({ id }: { id: string }) {
   useEffect(() => {
     const fetchSubmission = async () => {
       try {
-        const res = await fetch(`/api/submissions/${id}`);
-        if (!res.ok) throw new Error("Poem not found");
-        const data = await res.json();
-        setSubmission(data.submission);
+        const docRef = doc(db, "iwl_submissions", id);
+        const docSnap = await getDoc(docRef);
+        
+        if (!docSnap.exists()) {
+          throw new Error("Poem not found");
+        }
+
+        const data = docSnap.data();
+        let activeSubmission = null;
+        const hasSub1 = data.submission1 && data.submission1.content && data.submission1.content.trim().length > 0;
+        const hasSub2 = data.submission2 && data.submission2.content && data.submission2.content.trim().length > 0;
+
+        if (hasSub1) {
+          activeSubmission = data.submission1;
+        } else if (hasSub2) {
+          activeSubmission = data.submission2;
+        }
+
+        setSubmission({
+          id: docSnap.id,
+          name: data.name,
+          category: data.category,
+          activeSubmission: activeSubmission
+        });
       } catch (err: any) {
         setError(err.message || "An unexpected error occurred");
       } finally {

@@ -39,6 +39,7 @@ const DashboardClient = () => {
     const [crop, setCrop] = useState({ x: 0, y: 0 });
     const [zoom, setZoom] = useState(1);
     const [croppedAreaPixels, setCroppedAreaPixels] = useState<any>(null);
+    const [error, setError] = useState<string | null>(null);
     const [isCropping, setIsCropping] = useState(false);
 
     // Form State
@@ -62,10 +63,12 @@ const DashboardClient = () => {
         }
 
         const fetchPortfolio = async () => {
-            const publicUrlPath = authorUsername ? `/author/${authorUsername}` : `/author/${user.uid}`;
-            const defaultWebsite = typeof window !== 'undefined' ? `${window.location.origin}${publicUrlPath}` : '';
-
             try {
+                if (!user) return;
+                
+                const publicUrlPath = authorUsername ? `/author/${authorUsername}` : `/author/${user.uid}`;
+                const defaultWebsite = typeof window !== 'undefined' ? `${window.location.origin}${publicUrlPath}` : '';
+
                 const docRef = doc(db, 'author_portfolios', user.uid);
                 const docSnap = await getDoc(docRef);
 
@@ -74,6 +77,11 @@ const DashboardClient = () => {
                     setFormData({
                         ...formData,
                         ...parsed,
+                        name: parsed.name || "",
+                        pen_name: parsed.pen_name || "",
+                        bio: parsed.bio || "",
+                        writing_title: parsed.writing_title || "",
+                        writing_content: parsed.writing_content || "",
                         tags: parsed.tags || [],
                         awards: parsed.awards || [],
                         experiences: parsed.experiences || [],
@@ -83,9 +91,14 @@ const DashboardClient = () => {
                 } else {
                     setFormData((prev: any) => ({ ...prev, website: defaultWebsite }));
                 }
-            } catch (err) {
+            } catch (err: any) {
                 console.error("Error fetching portfolio:", err);
-                toast({ title: "ERROR LOADING PROFILE", description: "Failed to load from database.", variant: "destructive" });
+                setError(err.message || "Failed to load from database.");
+                toast({ 
+                    title: "ERROR LOADING PROFILE", 
+                    description: err.message || "Failed to load from database.", 
+                    variant: "destructive" 
+                });
             }
         };
 
@@ -117,6 +130,16 @@ const DashboardClient = () => {
 
     const handleImageUpload = async (file: File) => {
         if (!file || !user) return;
+        
+        if (!supabase) {
+            toast({ 
+                title: "CONFIGURATION ERROR", 
+                description: "Supabase storage is not configured. Please contact the administrator.", 
+                variant: "destructive" 
+            });
+            return;
+        }
+
         setUploadingImage(true);
         try {
             const fileName = `${Date.now()}.jpeg`;
@@ -180,6 +203,24 @@ const DashboardClient = () => {
     };
 
     if (authLoading) return <div className="min-h-screen bg-[#FFFDF7] flex items-center justify-center font-mono font-black animate-pulse">LOADING...</div>;
+
+    if (error) {
+        return (
+            <div className="min-h-screen bg-[#FFFDF7] flex flex-col items-center justify-center font-mono p-4">
+                <div className="bg-red-500 text-white p-8 border-[4px] border-black shadow-[12px_12px_0_0_#000] max-w-xl w-full">
+                    <h1 className="text-4xl font-black mb-4 uppercase">CRITICAL SYSTEM FAILURE</h1>
+                    <p className="font-bold mb-6">{error}</p>
+                    <button 
+                        onClick={() => window.location.reload()}
+                        className="bg-black text-white px-8 py-3 font-black border-[3px] border-black hover:bg-white hover:text-black transition-all shadow-[4px_4px_0_0_#fff]"
+                    >
+                        RETRY INITIALIZATION
+                    </button>
+                    <Link href="/" className="block mt-4 text-center underline font-black">SYSTEM EXIT</Link>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen bg-[#FFFDF7] p-2 lg:p-4 font-mono selection:bg-[#39FF14] selection:text-black">

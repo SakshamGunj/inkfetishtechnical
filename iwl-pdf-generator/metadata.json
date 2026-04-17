@@ -1,0 +1,5 @@
+{
+  "name": "IWL PDF Generator",
+  "description": "Generate PDF reports from IWL submissions in Firestore.",
+  "requestFramePermissions": []
+}

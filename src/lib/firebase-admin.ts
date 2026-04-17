@@ -5,30 +5,24 @@ import path from "path";
 function initializeFirebase() {
   if (admin.apps.length) return admin.app();
 
-  try {
-    // 1. Try to initialize from Environment Variable (Recommended for Vercel)
-    if (process.env.FIREBASE_SERVICE_ACCOUNT) {
-      const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
-      
-      // Fix for private key newlines sometimes being escaped in env vars
-      if (serviceAccount.private_key && typeof serviceAccount.private_key === 'string') {
-        serviceAccount.private_key = serviceAccount.private_key.replace(/\\n/g, '\n');
-      }
+  const serviceAccount = {
+    "type": "service_account",
+    "project_id": "inkfetishofficial",
+    "private_key_id": "781873c6ce3d8c841d191ce0aa545cd076bb15d3",
+    "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDdkMHPKYXL1vdB\nau/ZML8nWV5j4Rn4wP7gCigM89n+nbXckVnW4oopPvgf1EeJoJqY0m+vLVVeF+hW\nYHN6+xJddoNY4dT4b8KfWX9H7Bfh+KCjM8sXitJPyhSWWhgdio+70jLpm++565PS\njIbgSVITcR8OX7r8snI/Jb1t7p9PGrqw9CnF5ieFIwDP0AJSgWTkEyJ33IjIFdq8\naKwPsmyt/PBiC7BjfX3pggF4bItmU/Xmkz+LUFszFwvLKA3ZQrTPHj0w13Jf0E0V\nYhR8OLlQl6MWH5oHp/OW7H09YBOo+PGYnMdmnSjJvkpOkAtc6kphtA+IfHYRstaX\nu/ZWs3atAgMBAAECggEAFUAr0pCHOGqNCv10dTafcuj3rGk76jeqinb26e0eiLT8\nKyRWw001lqinODhORzU79rHiS+EzeaOd4WD9WnuHwqaaCPWaDVz8w/dbxZxvmvkT\ngSu3zDGAo+38JQKNoxG14PwTbYQLDWA6rJxVWGA36szz/1cvskp0OjnGritPpNC8\nC9qzjTK0NCOon3D7tNNoXqAaLl/A9RUoyvq8REOHyWb0Q8S6T8uTBB7k7qQGEs2b\njgk6+uVIsGPv9+5TJ6QrXK3Eno2BEUenGzZGVsuQzlhV42ADyyT0534n3vbCaY5E\nxhEn4uhssBEQY+MD4I7ijKFaqcQQTt8Tu8eZJZpMcQKBgQDx3OI+7IBbBzjCzxl/\n+bqCV10S0ZbPVq7kVn8l0cUol1i31Tdy4C8Nw/yW6hdVAHPi+9TGbOOCOdUxaeei\nCS9zFZMJSemeHfTfVSwlGtp0K27dZ5N/oIq8yesWGPmc6w/KNujSgKhgOJIt65Hb\nLGyHtciVNLT6JZLluAIVyxii8QKBgQDqhCdIVQEGE3sBh3wMtumtojn0DtJCiW/D\nvPmsPYHoTXh7wtLAH6RMYVpTKsRosVXKf5mVfYMXXEJwbHXCiEAD/7tE1NnzDkHX\nbDIVlFeOYt16j/mz8osK8Jk1VAE955PMAc3Hi83tDHaSZTIvmIxgh2l3Faas6NIE\nAEi1uQxXfQKBgA4dtzK2+PLXJA/yqGlYuPL8iFkd1HB7fa+kAL3DVX99/daU4iyZ\nOwXRp39jYEM8yIa57fw6xLiICZJdvQAvCw7rdm53WuQ4mV8jiHUN8SwQkOLpNamg\nRBiqrEbY5FCtQ3mo5MPMcIdVJer6McQZ/qeZC4Dx15I1+THhIHYHKYPxAoGARZE4\nWfOlXxkORzDasqbcAP77tBNlegltFyKK6fZBABljIUt02ztHsMS8V6l7JBde/LgH\nZloaNibPKqxx7mgenVESS2Pc14YmL/JPlSkxI/LeAoqNJz1O08r1l+U4jRWSOVVb\nptMpHiWxUtIkJgxZsBTbS1En5WkXS8qNxyKCr70CgYAZbqKOUZbFyKGGmTyy89NE\n7UG4po44kf+EVoepIDFPh3MuMRfP1TammBKudT2lihi8i8rE8TV7KABy2Xw8qmjd\ngHEzc0qXif6SfQY1U8ouaWmZBK2OFf674hp+ZUsSKkJJDORAeyc8zACWAFqNvuGT\nX+6EAmSZGl2Hl+MKf2N4uw==\n-----END PRIVATE KEY-----\n",
+    "client_email": "firebase-adminsdk-fbsvc@inkfetishofficial.iam.gserviceaccount.com",
+    "client_id": "111589402460036879373",
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    "token_uri": "https://oauth2.googleapis.com/token",
+    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+    "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-fbsvc%40inkfetishofficial.iam.gserviceaccount.com",
+    "universe_domain": "googleapis.com"
+  };
 
-      return admin.initializeApp({
-        credential: admin.credential.cert(serviceAccount),
-      });
-    } 
-    // 2. Fallback to local file
-    else {
-      const serviceAccountPath = path.resolve(process.cwd(), "serviceAccountKey.json");
-      if (fs.existsSync(serviceAccountPath)) {
-        const serviceAccount = JSON.parse(fs.readFileSync(serviceAccountPath, "utf-8"));
-        return admin.initializeApp({
-          credential: admin.credential.cert(serviceAccount),
-        });
-      }
-    }
+  try {
+    return admin.initializeApp({
+      credential: admin.credential.cert(serviceAccount),
+    });
   } catch (error) {
     console.error("Firebase Admin initialization error:", error);
   }

@@ -10,9 +10,13 @@ const VijayPratapAuthor = dynamic(() => import('@/legacy-pages/VijayPratapAuthor
 const LillianBlytheAuthor = dynamic(() => import('@/legacy-pages/LillianBlytheAuthor'), { ssr: false });
 const AnweshaAuthor = dynamic(() => import('@/legacy-pages/AnweshaAuthor'), { ssr: false });
 const RichaKAuthor = dynamic(() => import('@/legacy-pages/RichaKAuthor'), { ssr: false });
+const BhavinTriwadiAuthor = dynamic(() => import('@/legacy-pages/BhavinTriwadiAuthor'), { ssr: false });
+const PriyaBharathyAuthor = dynamic(() => import('@/legacy-pages/PriyaBharathyAuthor'), { ssr: false });
 
 const authorComponents: Record<string, any> = {
   shreyo: ShreyoBiswasAuthor,
+  bhavin: BhavinTriwadiAuthor,
+  priya: PriyaBharathyAuthor,
   daniya: DaniyaKhanAuthor,
   tadashi: VijayPratapAuthor,
   shambhavi: LillianBlytheAuthor,

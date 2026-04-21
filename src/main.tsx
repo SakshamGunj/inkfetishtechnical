@@ -10,7 +10,6 @@ import Index from './pages/Index';
 import NotFound from './pages/NotFound';
 
 // New Architecture Pages
-import AuthorsDirectory from './pages/AuthorsDirectory';
 import Catalog from './pages/Catalog';
 import Services from './pages/Services';
 import Contact from './pages/Contact';
@@ -22,7 +21,10 @@ import PublishedAuthor from './pages/PublishedAuthor';
 import LillianBlytheAuthor from './pages/LillianBlytheAuthor';
 import VijayPratapAuthor from './pages/VijayPratapAuthor';
 import DaniyaKhanAuthor from './pages/DaniyaKhanAuthor';
-import ShreyoBiswasAuthor from './pages/ShreyoBiswasAuthor';
+import ShreyoBiswasAuthor from './legacy-pages/ShreyoBiswasAuthor';
+import BhavinTriwadiAuthor from './legacy-pages/BhavinTriwadiAuthor';
+import PriyaBharathyAuthor from './legacy-pages/PriyaBharathyAuthor';
+import AuthorsDirectory from './legacy-pages/AuthorsDirectory';
 import RichaKAuthor from './pages/RichaKAuthor';
 import AnweshaAuthor from './pages/AnweshaAuthor';
 import SilfiraBook from './pages/SilfiraBook';
@@ -180,6 +182,9 @@ createRoot(document.getElementById("root")!).render(
           <Route path="/book/:bookId" element={<BookPurchase />} />
           <Route path="/publishedauthor/daniya" element={<DaniyaKhanAuthor />} />
           <Route path="/publishedauthor/shreyo" element={<ShreyoBiswasAuthor />} />
+          <Route path="/publishedauthor/bhavin" element={<BhavinTriwadiAuthor />} />
+          <Route path="/publishedauthor/priya" element={<PriyaBharathyAuthor />} />
+          <Route path="/authors" element={<AuthorsDirectory />} />
           <Route path="/publishedauthor/richa" element={<RichaKAuthor />} />
           <Route path="/publishedauthor/anwesha" element={<AnweshaAuthor />} />
           <Route path="/books/silfira" element={<SilfiraBook />} />

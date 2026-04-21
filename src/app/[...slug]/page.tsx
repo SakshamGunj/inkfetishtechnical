@@ -7,7 +7,8 @@ export const metadata: Metadata = {
   robots: "noindex, follow", // Allow indexing but mark as archive
 };
 
-export default function LegacyCatchAllPage({ params }: { params: { slug: string[] } }) {
-  const path = `/${params.slug.join('/')}`;
+export default async function LegacyCatchAllPage({ params }: { params: Promise<{ slug: string[] }> }) {
+  const { slug } = await params;
+  const path = `/${slug.join('/')}`;
   return <LegacyBridgeClient path={path} />;
 }

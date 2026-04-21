@@ -13,6 +13,7 @@ const authors = [
   { name: 'Richa K.', slug: 'richa', role: 'Contemporary Poetry', imageBg: 'bg-ink-900/10' },
   { name: 'Daniya Khan', slug: 'daniya', role: 'Narrative Non-Fiction', imageBg: 'bg-ink-900/5' },
   { name: 'Vijay Pratap', slug: 'tadashi', role: 'Historical Thriller', imageBg: 'bg-ink-900/10' },
+  { name: 'Shreyo Biswas', slug: 'shreyo', role: 'Contemporary Literature', imageBg: 'bg-ink-900/5' },
   { name: 'Lillian Blythe', slug: 'shambhavi', role: 'Romance & Drama', imageBg: 'bg-ink-900/5' },
   { name: 'Anonymous', slug: 'anonymous', role: 'The Love Anthology Co-Author', imageBg: 'bg-ink-900/10' },
 ];

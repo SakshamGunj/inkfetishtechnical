@@ -4,8 +4,8 @@ import { collection, query, where, getDocs, limit, doc, getDoc } from 'firebase/
 import AuthorSiteClient from './AuthorSiteClient';
 
 // Server-side Metadata Generation for Elite-Level SEO
-export async function generateMetadata({ params }: { params: { username: string } }): Promise<Metadata> {
-  const { username } = params;
+export async function generateMetadata({ params }: { params: Promise<{ username: string }> }): Promise<Metadata> {
+  const { username } = await params;
   let authorData = null;
 
   try {
@@ -50,7 +50,8 @@ export async function generateMetadata({ params }: { params: { username: string 
   };
 }
 
-export default async function AuthorPage({ params }: { params: { username: string } }) {
+export default async function AuthorPage({ params }: { params: Promise<{ username: string }> }) {
+  const { username } = await params;
   // We pass the username to the client component which handles state and real-time/interactive features
-  return <AuthorSiteClient username={params.username} />;
+  return <AuthorSiteClient username={username} />;
 }

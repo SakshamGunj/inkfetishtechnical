@@ -22,6 +22,7 @@ import PublishedAuthor from './pages/PublishedAuthor';
 import LillianBlytheAuthor from './pages/LillianBlytheAuthor';
 import VijayPratapAuthor from './pages/VijayPratapAuthor';
 import DaniyaKhanAuthor from './pages/DaniyaKhanAuthor';
+import ShreyoBiswasAuthor from './pages/ShreyoBiswasAuthor';
 import RichaKAuthor from './pages/RichaKAuthor';
 import AnweshaAuthor from './pages/AnweshaAuthor';
 import SilfiraBook from './pages/SilfiraBook';
@@ -178,6 +179,7 @@ createRoot(document.getElementById("root")!).render(
           />
           <Route path="/book/:bookId" element={<BookPurchase />} />
           <Route path="/publishedauthor/daniya" element={<DaniyaKhanAuthor />} />
+          <Route path="/publishedauthor/shreyo" element={<ShreyoBiswasAuthor />} />
           <Route path="/publishedauthor/richa" element={<RichaKAuthor />} />
           <Route path="/publishedauthor/anwesha" element={<AnweshaAuthor />} />
           <Route path="/books/silfira" element={<SilfiraBook />} />

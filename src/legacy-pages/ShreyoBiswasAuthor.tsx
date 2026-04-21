@@ -21,7 +21,8 @@ import {
     Briefcase,
     GraduationCap,
     Clock,
-    Scroll
+    Scroll,
+    Waves
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -29,31 +30,37 @@ import { toast } from "sonner";
 import { Helmet } from "react-helmet-async";
 
 const authorData = {
-    name: "Daniya Khan",
-    title: "Aspiring Writer & Creator",
-    subtitle: "Weaving Magic & Kindness | English Honours Student",
-    bio: "Daniya Khan is an aspiring writer and content creator who discovered her passion for words at the age of 13. Currently in the final year of her English Honours degree, she draws inspiration from nature's vastness—from the spaces between stars to the voice of the river. With a heart set on kindness and a vision to heal the world, she weaves poetry that echoes her soul.",
-    longBio: "Daniya's journey into the world of letters began at 13, sparked by the magic of 'Geronimo Stilton' by Elisabetta Dami. Captivated by the protagonist's poem for his beloved, she felt a stirring in her own heart to write for the love of her life—her mother. That first poem marked the beginning of an endless voyage. In 2020, seeking to share her voice with the world, she launched her writing page. Today, amidst her final year of English Honours, she continues to write, driven by a dream to leave a legacy of art and kindness.",
-    location: "India",
-    email: "contact@daniyakhan.com", // Placeholder
-    instagram: "daniyakhan", // Placeholder
+    name: "Shreyo Biswas",
+    bengaliName: "শ্রেয় বিশ্বাস",
+    title: "Author & Forensic Science Student",
+    subtitle: "Exploring the intersections of science and literature | Versatile and Adaptive",
+    bio: "Shreyo Biswas is a forensic science student and an emerging author with a deep-rooted passion for writing. Born and raised in Kolkata, his journey began in the classrooms of his youth and flourished under the mentorship of Shri Tapan Gupta.",
+    longBio: "Hailing from a culturally rich family, Shreyo's knack for writing surfaced as early as class 2. However, his true foundation was built around class 8, where he honed his skills in English and Bengali writing under the guidance of his teacher, Shri Tapan Gupta. Today, as a forensic science student, he balances the precision of the lab with the expressive power of literature, seeking to stay versatile and adapt to life's challenges.",
+    location: "Kolkata, India",
+    email: "contact@shreyobiswas.com", // Placeholder
+    instagram: "shreyo_biswas", // Placeholder
     stats: {
         age: 19,
-        role: "Writer & Creator",
-        education: "English Honours (Final Year)",
-        release: "Coming Soon",
-        status: "Rising Star",
-        genre: "Poetry & Blogs"
+        role: "Forensic Student / Author",
+        education: "Forensic Science",
+        release: "May 9, 2026",
+        status: "Rising Author",
+        genre: "Contemporary Literature"
     },
     journey: {
-        start: "At 13, 'Geronimo Stilton' enchanted me. Inspired by a poem in the book, I penned my first verse for my mother, igniting my writing journey.",
-        motivation: "I stumble upon motivation in the grasslands, the spaces between stars, and the blooming buds. Nature is my mentor and my greatest source of inspiration.",
-        vision: "To open an orphanage and fix the heartbreak of seen orphans. I aspire to publish books, write blogs, and let my name echo for art and kindness.",
-        message: "Please stay kind. If we stay kind, we make our planet beautiful. Eat, Pray, Love."
+        start: "The journey began in class 2, sparked by a natural knack for storytelling within a cultural family setting.",
+        motivation: "To express myself amongst others and to help myself to express to others through the medium of literature.",
+        vision: "To excel as a forensic scientist in the lab while continuing to refine my voice as an author.",
+        message: "Empty your mind, be formless. Shapeless, like water. If you put water into a cup, it becomes the cup. You put water into a bottle and it becomes the bottle. You put it in a teapot, it becomes the teapot. Now, water can flow or it can crash. Be water, my friend."
+    },
+    images: {
+        hero: "https://res.cloudinary.com/dde8ekuuu/image/upload/q_auto/f_auto/v1776802129/WhatsApp_Image_2026-04-22_at_1.37.09_AM_jk1voz.jpg",
+        secondary: "https://res.cloudinary.com/dde8ekuuu/image/upload/q_auto/f_auto/v1776802129/WhatsApp_Image_2026-04-22_at_1.37.09_AM_1_v2i3bu.jpg",
+        tertiary: "https://res.cloudinary.com/dde8ekuuu/image/upload/q_auto/f_auto/v1776802129/WhatsApp_Image_2026-04-22_at_1.37.09_AM_2_d7vvc7.jpg"
     }
 };
 
-const DaniyaKhanAuthor = () => {
+const ShreyoBiswasAuthor = () => {
     const { scrollY } = useScroll();
     const y1 = useTransform(scrollY, [0, 500], [0, -100]);
     const opacity = useTransform(scrollY, [0, 300], [1, 0]);
@@ -61,15 +68,13 @@ const DaniyaKhanAuthor = () => {
     return (
         <div className="min-h-screen bg-ink-black text-parchment font-serif selection:bg-gold selection:text-ink-black overflow-x-hidden">
             <Helmet>
-                <title>Daniya Khan | Inkfetish Author</title>
-                <meta name="description" content="Aspiring Writer, Creator, and Dreamer. Discover the world of Daniya Khan, weaving magic through words and kindness." />
-                <meta property="og:title" content="Daniya Khan | Inkfetish" />
-                <meta property="og:description" content="Please stay kind. Explore the poetry and journey of Daniya Khan." />
-                <meta property="og:image" content="" /> {/* Placeholder for image */}
+                <title>Shreyo Biswas | Inkfetish Author</title>
+                <meta name="description" content="Author and Forensic Science Student. Discover the world of Shreyo Biswas, where science meets literature." />
+                <meta property="og:title" content="Shreyo Biswas | Inkfetish" />
+                <meta property="og:description" content="Versatile and Adaptive. Explore the writing and journey of Shreyo Biswas." />
                 <meta property="og:type" content="profile" />
                 <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:title" content="Daniya Khan | Inkfetish" />
-                <meta name="twitter:image" content="" />
+                <meta name="twitter:title" content="Shreyo Biswas | Inkfetish" />
             </Helmet>
 
             {/* Navigation */}
@@ -77,11 +82,11 @@ const DaniyaKhanAuthor = () => {
                 <div className="container mx-auto px-6 py-4 flex justify-between items-center">
                     <div className="flex items-center gap-3">
                         <div className="w-10 h-10 bg-gold/10 rounded-lg flex items-center justify-center border border-gold/20">
-                            <Feather className="w-5 h-5 text-gold" />
+                            <Waves className="w-5 h-5 text-gold" />
                         </div>
                         <div>
                             <h1 className="text-sm font-bold text-parchment tracking-widest uppercase">Inkfetish</h1>
-                            <p className="text-xs text-parchment/50">x Daniya Khan</p>
+                            <p className="text-xs text-parchment/50">x Shreyo Biswas</p>
                         </div>
                     </div>
                     <div className="hidden md:flex gap-8 text-xs tracking-[0.2em] uppercase text-parchment/60">
@@ -94,10 +99,9 @@ const DaniyaKhanAuthor = () => {
 
             {/* Hero Section */}
             <section className="relative min-h-screen flex items-center pt-20 overflow-hidden">
-                {/* Animated Background Elements */}
                 <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/black-paper.png')] opacity-30 pointer-events-none" />
-                <div className="absolute top-1/4 right-0 w-[600px] h-[600px] bg-gold/5 rounded-full blur-[150px] pointer-events-none" />
-                <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-purple-900/10 rounded-full blur-[100px] pointer-events-none" />
+                <div className="absolute top-1/4 right-0 w-[600px] h-[600px] bg-blue-900/10 rounded-full blur-[150px] pointer-events-none" />
+                <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-gold/5 rounded-full blur-[100px] pointer-events-none" />
 
                 <div className="container mx-auto px-6 grid lg:grid-cols-2 gap-12 lg:gap-20 items-center relative z-10">
                     <motion.div
@@ -112,8 +116,8 @@ const DaniyaKhanAuthor = () => {
                         </div>
 
                         <h1 className="text-5xl md:text-7xl lg:text-8xl font-light leading-tight">
-                            Daniya <br />
-                            <span className="text-gold italic font-normal font-display">Khan</span>
+                            Shreyo <br />
+                            <span className="text-gold italic font-normal font-display">Biswas</span>
                         </h1>
 
                         <p className="text-xl text-parchment/70 font-light max-w-lg leading-relaxed mx-auto lg:mx-0">
@@ -138,7 +142,7 @@ const DaniyaKhanAuthor = () => {
                         </div>
                     </motion.div>
 
-                    {/* Author Image Frame - Using a placeholder or generic stylistic replacement if no image provided */}
+                    {/* Author Image Frame */}
                     <motion.div
                         style={{ y: y1 }}
                         className="relative order-1 lg:order-2"
@@ -150,12 +154,13 @@ const DaniyaKhanAuthor = () => {
                             initial={{ opacity: 0, scale: 0.9 }}
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ duration: 1.2 }}
-                            className="w-full max-w-[450px] mx-auto aspect-[3/4] bg-zinc-900 rounded-t-[100px] rounded-b-lg overflow-hidden relative grayscale hover:grayscale-0 transition-all duration-1000 group shadow-[0_0_50px_rgba(0,0,0,0.5)] flex items-center justify-center"
+                            className="w-full max-w-[450px] mx-auto aspect-[3/4] bg-zinc-900 rounded-t-[100px] rounded-b-lg overflow-hidden relative grayscale hover:grayscale-0 transition-all duration-1000 group shadow-[0_0_50px_rgba(0,0,0,0.5)]"
                         >
-                            {/* Placeholder pattern since no image is provided yet */}
-                            <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10" />
-                            <Feather className="w-24 h-24 text-gold/20" />
-
+                            <img 
+                                src={authorData.images.hero} 
+                                alt={authorData.name} 
+                                className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-1000"
+                            />
                             <div className="absolute inset-0 bg-gradient-to-t from-ink-black via-transparent to-transparent opacity-60" />
 
                             {/* Floating Element */}
@@ -165,8 +170,8 @@ const DaniyaKhanAuthor = () => {
                                 className="absolute bottom-8 right-8 bg-black/60 backdrop-blur-md p-4 rounded-xl border border-white/10 hidden sm:block"
                             >
                                 <Feather className="w-6 h-6 text-gold mb-2" />
-                                <p className="text-xs text-parchment/60 uppercase tracking-wider">Aspiring Writer</p>
-                                <p className="text-sm text-white font-serif">English Honours Student</p>
+                                <p className="text-xs text-parchment/60 uppercase tracking-wider">Forensic Student</p>
+                                <p className="text-sm text-white font-serif">Future Lab Professional</p>
                             </motion.div>
                         </motion.div>
                     </motion.div>
@@ -184,12 +189,11 @@ const DaniyaKhanAuthor = () => {
                         viewport={{ once: true }}
                         className="text-3xl md:text-5xl font-light leading-relaxed max-w-4xl mx-auto mb-10 font-display"
                     >
-                        "Please stay kind. <br />
-                        <span className="text-gold/80 italic">We will make our planet a far more beautiful one."</span>
+                        "Be formless, <span className="text-gold/80 italic">be like water.</span>"
                     </motion.h2>
                     <div className="flex items-center justify-center gap-4">
                         <div className="h-[1px] w-12 bg-white/20" />
-                        <p className="text-parchment/50 font-sans text-sm tracking-[0.2em] uppercase">Daniya Khan</p>
+                        <p className="text-parchment/50 font-sans text-sm tracking-[0.2em] uppercase">Bruce Lee</p>
                         <div className="h-[1px] w-12 bg-white/20" />
                     </div>
                 </div>
@@ -201,11 +205,11 @@ const DaniyaKhanAuthor = () => {
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
                         {[
                             { label: "Age", value: authorData.stats.age, icon: Calendar },
-                            { label: "Role", value: "Writer/Creator", icon: Briefcase },
-                            { label: "Education", value: "BA (Eng Hons)", icon: GraduationCap },
-                            { label: "Location", value: "India", icon: MapPin },
-                            { label: "Genre", value: "Poetry", icon: Scroll },
-                            { label: "Status", value: "Rising Star", icon: PenTool }
+                            { label: "Role", value: "Student/Author", icon: Briefcase },
+                            { label: "Education", value: "Forensic Science", icon: GraduationCap },
+                            { label: "Location", value: "Kolkata", icon: MapPin },
+                            { label: "Genre", value: "Contemporary", icon: Scroll },
+                            { label: "Status", value: "Rising", icon: PenTool }
                         ].map((stat, idx) => (
                             <motion.div
                                 key={idx}
@@ -228,8 +232,6 @@ const DaniyaKhanAuthor = () => {
             <section id="about" className="py-32 relative">
                 <div className="container mx-auto px-6 max-w-7xl">
                     <div className="grid lg:grid-cols-12 gap-16">
-
-                        {/* Main Content */}
                         <div className="lg:col-span-7 space-y-16">
                             <motion.div
                                 initial={{ opacity: 0, x: -20 }}
@@ -243,19 +245,17 @@ const DaniyaKhanAuthor = () => {
                                 <p className="text-xl text-parchment/80 leading-relaxed font-light mb-6">
                                     {authorData.longBio}
                                 </p>
-                                <p className="text-parchment/60 leading-relaxed">
-                                    From scribbling poems for her mother to dreaming of publishing books and writing blogs, Daniya's compassion drives her art. She believes in the power of a gentle smile to fix lives.
-                                </p>
+                                <div className="p-6 bg-gold/5 border-l-2 border-gold rounded-r-xl italic text-parchment/70 mb-6">
+                                    {`শ্রেয় বিশ্বাস, বর্তমানে একজন ফরেন্সিক সাইন্স স্টুডেন্ট। কলকাতায় জন্ম এবং বেড়ে ওঠার সময়, তার নিজের শহরের অনেক সাংস্কৃতিক দিকের সাথে চেনা পরিচিত হয়। পরে শিক্ষক শ্রী তপন গপ্তর তত্ত্বাবধানে ইংরেজি এবং বাংলা লেখার বিভিন্ন পদ্ধতি শেখে। এবং নভেম্বর ২০২৫ এ প্রকাশিত হয় তার প্রথম ইংরেজি বই: "words of mind"।`}
+                                </div>
                             </motion.div>
 
-                            {/* Journey Timeline */}
                             <div className="space-y-8">
                                 <h3 className="text-2xl font-serif text-white">The Path Traveled</h3>
-
                                 {[
-                                    { title: "The Spark", year: "Age 13", desc: "Reading 'Geronimo Stilton' led to love at first sight with books. Wrote first poem for her mother.", icon: Sparkles },
-                                    { title: "The Expansion", year: "2020", desc: "Started a writing page on Instagram to share her work with the world.", icon: Instagram },
-                                    { title: "The Scholar", year: "Present Day", desc: "Final year student of English Honours, working on a poetry collection.", icon: GraduationCap }
+                                    { title: "Early Spark", year: "Class 2", desc: "Started writing at a very young age, nurtured by a cultural family background.", icon: Sparkles },
+                                    { title: "The Foundation", year: "Class 8", desc: "Developed a strong base for writing under the guidance of Shri Tapan Gupta.", icon: BookOpen },
+                                    { title: "Current Pursuit", year: "Present", desc: "Studying Forensic Science while preparing for his next literary release.", icon: GraduationCap }
                                 ].map((item, i) => (
                                     <motion.div
                                         key={i}
@@ -281,10 +281,8 @@ const DaniyaKhanAuthor = () => {
                             </div>
                         </div>
 
-                        {/* Sidebar Cards */}
                         <div className="lg:col-span-5 space-y-6">
                             <div className="sticky top-24 space-y-6">
-                                {/* Vision Card */}
                                 <motion.div
                                     initial={{ opacity: 0, y: 20 }}
                                     whileInView={{ opacity: 1, y: 0 }}
@@ -297,7 +295,6 @@ const DaniyaKhanAuthor = () => {
                                     <p className="text-parchment/70 leading-relaxed relative z-10">{authorData.journey.vision}</p>
                                 </motion.div>
 
-                                {/* Motivation Card */}
                                 <motion.div
                                     initial={{ opacity: 0, y: 20 }}
                                     whileInView={{ opacity: 1, y: 0 }}
@@ -310,21 +307,66 @@ const DaniyaKhanAuthor = () => {
                                     <p className="text-parchment/70 leading-relaxed relative z-10">{authorData.journey.motivation}</p>
                                 </motion.div>
 
-                                {/* Upcoming Release Card */}
                                 <div className="p-8 bg-gradient-to-br from-gold/10 to-transparent rounded-2xl border border-gold/20 relative overflow-hidden">
                                     <div className="flex items-start justify-between mb-6">
                                         <BookOpen className="w-8 h-8 text-gold" />
-                                        <Badge className="bg-gold text-ink-black hover:bg-gold/90">Coming Soon</Badge>
+                                        <Badge className="bg-gold text-ink-black hover:bg-gold/90">Upcoming Release</Badge>
                                     </div>
-                                    <h3 className="text-2xl font-serif text-white mb-2">Poetry Collection</h3>
-                                    <p className="text-parchment/60 text-sm mb-6">A collection of poetry written by me, soon to be released.</p>
+                                    <h3 className="text-2xl font-serif text-white mb-2">বাস্তব কথা</h3>
+                                    <p className="text-parchment/60 text-sm mb-6">Expected release on May 9th, 2026. A journey into the depths of thought and reality.</p>
                                     <Button className="w-full bg-transparent border border-gold/30 text-gold hover:bg-gold hover:text-ink-black transition-all">
                                         Notify Me
                                     </Button>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </section>
 
+            {/* Visual Narrative Section */}
+            <section className="py-24 bg-ink-black">
+                <div className="container mx-auto px-6">
+                    <div className="grid md:grid-cols-2 gap-12 items-center">
+                        <motion.div
+                            initial={{ opacity: 0, x: -30 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                            className="relative aspect-video rounded-2xl overflow-hidden border border-white/5 group"
+                        >
+                            <img 
+                                src={authorData.images.tertiary} 
+                                alt="Shreyo Biswas Philosophy" 
+                                className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-r from-ink-black/80 to-transparent flex flex-col justify-end p-8">
+                                <p className="text-gold text-xs uppercase tracking-widest mb-2">The Philosophy</p>
+                                <h3 className="text-2xl font-serif text-white">Versatility & Adaptation</h3>
+                            </div>
+                        </motion.div>
+                        <motion.div
+                            initial={{ opacity: 0, x: 30 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                            className="space-y-6"
+                        >
+                            <h2 className="text-3xl font-light leading-tight">
+                                Applying Scientific Precision to <span className="text-gold italic font-display">Creative Expression.</span>
+                            </h2>
+                            <p className="text-parchment/60 leading-relaxed">
+                                Shreyo's background in Forensic Science provides him with a unique lens—one of observation, analysis, and meticulous detail. He brings this same level of scrutiny and depth to his literary work, creating narratives that are as precise as they are profound.
+                            </p>
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="p-4 bg-white/5 border border-white/5 rounded-xl">
+                                    <h4 className="text-gold font-bold mb-1">Observation</h4>
+                                    <p className="text-xs text-parchment/40">Seeing what others overlook.</p>
+                                </div>
+                                <div className="p-4 bg-white/5 border border-white/5 rounded-xl">
+                                    <h4 className="text-gold font-bold mb-1">Analysis</h4>
+                                    <p className="text-xs text-parchment/40">Deconstructing complex emotions.</p>
+                                </div>
+                            </div>
+                        </motion.div>
                     </div>
                 </div>
             </section>
@@ -335,9 +377,9 @@ const DaniyaKhanAuthor = () => {
                     <h2 className="text-3xl font-light mb-12 text-center">Behind The Ink</h2>
                     <div className="grid md:grid-cols-3 gap-8">
                         {[
-                            { title: "The Inspiration", desc: "The voice of the river and the magic of Geronimo Stilton.", icon: Sparkles },
-                            { title: "The Mission", desc: "To fix the lives of our planet by staying kind and helping one another.", icon: Heart },
-                            { title: "The Dream", desc: "To see my name echo for art and kindness, even when I am gone.", icon: Star }
+                            { title: "The Philosophy", desc: "Stay versatile and adapt to solve difficult situations in life.", icon: Waves, img: authorData.images.hero },
+                            { title: "The Mission", desc: "To express the self and help others find their own expression through literature.", icon: Heart, img: authorData.images.secondary },
+                            { title: "The Lab", desc: "Applying the precision of forensic science to the craft of writing.", icon: Briefcase, img: authorData.images.tertiary }
                         ].map((item, idx) => (
                             <motion.div
                                 key={idx}
@@ -345,13 +387,16 @@ const DaniyaKhanAuthor = () => {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 transition={{ delay: idx * 0.1 }}
                                 viewport={{ once: true }}
-                                className="text-center p-8 border border-white/5 rounded-2xl hover:bg-white/5 transition-colors"
+                                className="text-center p-8 border border-white/5 rounded-2xl hover:bg-white/5 transition-colors group overflow-hidden relative"
                             >
-                                <div className="w-16 h-16 mx-auto bg-ink-black rounded-full flex items-center justify-center border border-white/10 mb-6 shadow-lg">
+                                <div className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-700">
+                                    <img src={item.img} className="w-full h-full object-cover" />
+                                </div>
+                                <div className="w-16 h-16 mx-auto bg-ink-black rounded-full flex items-center justify-center border border-white/10 mb-6 shadow-lg relative z-10">
                                     <item.icon className="w-6 h-6 text-gold" />
                                 </div>
-                                <h3 className="text-xl font-serif text-white mb-3">{item.title}</h3>
-                                <p className="text-parchment/60 leading-relaxed">{item.desc}</p>
+                                <h3 className="text-xl font-serif text-white mb-3 relative z-10">{item.title}</h3>
+                                <p className="text-parchment/60 leading-relaxed relative z-10">{item.desc}</p>
                             </motion.div>
                         ))}
                     </div>
@@ -363,19 +408,19 @@ const DaniyaKhanAuthor = () => {
                 <div className="absolute inset-0 bg-gold/5 blur-[100px] pointer-events-none" />
                 <div className="max-w-4xl mx-auto relative z-10">
                     <Quote className="w-12 h-12 text-gold/20 mx-auto mb-8" />
-                    <p className="text-2xl md:text-4xl font-light italic text-parchment/90 leading-relaxed mb-12 font-display">
-                        "Eat, Pray, Love."
+                    <p className="text-xl md:text-2xl font-light italic text-parchment/90 leading-relaxed mb-12 font-display">
+                        "{authorData.journey.message}"
                     </p>
                     <div className="h-[1px] w-24 bg-gold/30 mx-auto mb-8" />
                     <div className="flex justify-center gap-8 text-xs tracking-widest uppercase text-parchment/40">
                         <span className="hover:text-gold cursor-pointer transition-colors">Instagram</span>
                         <span className="hover:text-gold cursor-pointer transition-colors">Email</span>
                     </div>
-                    <p className="text-xs text-parchment/20 mt-8 tracking-widest">© {new Date().getFullYear()} Daniya Khan. All rights reserved.</p>
+                    <p className="text-xs text-parchment/20 mt-8 tracking-widest">© {new Date().getFullYear()} Shreyo Biswas. All rights reserved.</p>
                 </div>
             </section>
         </div>
     );
 };
 
-export default DaniyaKhanAuthor;
+export default ShreyoBiswasAuthor;

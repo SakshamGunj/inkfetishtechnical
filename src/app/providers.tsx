@@ -7,6 +7,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Analytics } from "@vercel/analytics/react";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { useState } from "react";
+import { HelmetProvider } from "react-helmet-async";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const [queryClient] = useState(() => new QueryClient());
@@ -15,10 +16,12 @@ export function Providers({ children }: { children: React.ReactNode }) {
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          {children}
-          <Analytics />
+          <HelmetProvider>
+            <Toaster />
+            <Sonner />
+            {children}
+            <Analytics />
+          </HelmetProvider>
         </TooltipProvider>
       </AuthProvider>
     </QueryClientProvider>

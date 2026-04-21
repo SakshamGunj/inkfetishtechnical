@@ -42,6 +42,7 @@ const authors = [
   'richa',
   'daniya',
   'tadashi',
+  'shreyo',
   'shambhavi',
   'anonymous'
 ];

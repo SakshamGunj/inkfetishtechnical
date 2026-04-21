@@ -4,15 +4,14 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
 interface AnthologyPageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 // Generate metadata dynamically for SEO
 export async function generateMetadata({ params }: AnthologyPageProps): Promise<Metadata> {
-  const resolvedParams = await (params as any);
-  const { id } = resolvedParams;
+  const { id } = await params;
 
   const { data: item } = await supabase
     .from('iwl_anthology_poetry')
@@ -42,8 +41,7 @@ export async function generateMetadata({ params }: AnthologyPageProps): Promise<
 
 export default async function AnthologyPublicPage({ params }: AnthologyPageProps) {
   // Await params for compatibility with modern Next.js versions
-  const resolvedParams = await (params as any);
-  const { id } = resolvedParams;
+  const { id } = await params;
 
   console.log('Fetching anthology piece:', id);
 

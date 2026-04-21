@@ -1,8 +1,9 @@
 import { Metadata } from 'next';
 import AnthologyLandingClient from './AnthologyLandingClient';
 
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  const title = params.slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const title = slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
   
   return {
     title: `${title} | Join The Anthology Collective`,
@@ -10,11 +11,12 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     openGraph: {
       title: `${title} - Official Launch | Inkfetish`,
       description: `Participate in our latest collective project: ${title}. Only the elite 1% make the cut.`,
-      url: `https://www.inkfetish.in/anthology/${params.slug}`,
+      url: `https://www.inkfetish.in/anthology/${slug}`,
     },
   };
 }
 
-export default function AnthologyLandingPage({ params }: { params: { slug: string } }) {
-  return <AnthologyLandingClient slug={params.slug} />;
+export default async function AnthologyLandingPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  return <AnthologyLandingClient slug={slug} />;
 }

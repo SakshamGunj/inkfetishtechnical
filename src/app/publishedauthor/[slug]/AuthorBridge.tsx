@@ -1,0 +1,31 @@
+'use client';
+
+import dynamic from 'next/dynamic';
+import { notFound } from 'next/navigation';
+
+// Dynamically import the legacy components with SSR disabled to avoid hydration issues with legacy code
+const ShreyoBiswasAuthor = dynamic(() => import('@/legacy-pages/ShreyoBiswasAuthor'), { ssr: false });
+const DaniyaKhanAuthor = dynamic(() => import('@/legacy-pages/DaniyaKhanAuthor'), { ssr: false });
+const VijayPratapAuthor = dynamic(() => import('@/legacy-pages/VijayPratapAuthor'), { ssr: false });
+const LillianBlytheAuthor = dynamic(() => import('@/legacy-pages/LillianBlytheAuthor'), { ssr: false });
+const AnweshaAuthor = dynamic(() => import('@/legacy-pages/AnweshaAuthor'), { ssr: false });
+const RichaKAuthor = dynamic(() => import('@/legacy-pages/RichaKAuthor'), { ssr: false });
+
+const authorComponents: Record<string, any> = {
+  shreyo: ShreyoBiswasAuthor,
+  daniya: DaniyaKhanAuthor,
+  tadashi: VijayPratapAuthor,
+  shambhavi: LillianBlytheAuthor,
+  anwesha_legacy: AnweshaAuthor,
+  richa: RichaKAuthor,
+};
+
+export default function AuthorBridge({ slug }: { slug: string }) {
+  const AuthorComponent = authorComponents[slug];
+
+  if (!AuthorComponent) {
+    notFound();
+  }
+
+  return <AuthorComponent />;
+}

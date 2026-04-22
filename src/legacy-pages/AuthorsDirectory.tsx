@@ -16,6 +16,7 @@ const authors = [
   { name: 'Priya Bharathy', slug: 'priya', role: 'Inspirational Memoir', imageBg: 'bg-ink-900/5' },
   { name: 'Lillian Blythe', slug: 'shambhavi', role: 'Romance & Drama', imageBg: 'bg-ink-900/5' },
   { name: 'Shikast-e-Aziz', slug: 'shikast-e-aziz', role: 'Contemporary Verse & Law', imageBg: 'bg-ink-900/10' },
+  { name: 'Veiled Verses', slug: 'veiled-verses', role: 'Contemporary Poetry', imageBg: 'bg-ink-900/5' },
   { name: 'Anonymous', slug: 'anonymous', role: 'The Love Anthology Co-Author', imageBg: 'bg-ink-900/10' },
 ];
 

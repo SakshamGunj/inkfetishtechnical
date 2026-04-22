@@ -27,6 +27,7 @@ import PriyaBharathyAuthor from './legacy-pages/PriyaBharathyAuthor';
 import AuthorsDirectory from './legacy-pages/AuthorsDirectory';
 import RichaKAuthor from './pages/RichaKAuthor';
 import AnweshaAuthor from './pages/AnweshaAuthor';
+import ShikastEAzizAuthor from './legacy-pages/ShikastEAzizAuthor';
 import SilfiraBook from './pages/SilfiraBook';
 import AnweshaWritings from './pages/AnweshaWritings';
 import AnweshaBooks from './pages/AnweshaBooks';
@@ -190,6 +191,7 @@ createRoot(document.getElementById("root")!).render(
           <Route path="/books/silfira" element={<SilfiraBook />} />
           <Route path="/publishedauthor/anwesha/writings" element={<AnweshaWritings />} />
           <Route path="/publishedauthor/anwesha/books" element={<AnweshaBooks />} />
+          <Route path="/publishedauthor/shikast-e-aziz" element={<ShikastEAzizAuthor />} />
           <Route path="/books/shakespeare-and-what-remained" element={<ShakespeareAndWhatRemained />} />
 
           <Route path="/Shakespeare" element={<ShakespeareSubmission />} />

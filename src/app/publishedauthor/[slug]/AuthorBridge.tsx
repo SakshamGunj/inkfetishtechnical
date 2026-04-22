@@ -12,6 +12,7 @@ const AnweshaAuthor = dynamic(() => import('@/legacy-pages/AnweshaAuthor'), { ss
 const RichaKAuthor = dynamic(() => import('@/legacy-pages/RichaKAuthor'), { ssr: false });
 const BhavinTriwadiAuthor = dynamic(() => import('@/legacy-pages/BhavinTriwadiAuthor'), { ssr: false });
 const PriyaBharathyAuthor = dynamic(() => import('@/legacy-pages/PriyaBharathyAuthor'), { ssr: false });
+const ShikastEAzizAuthor = dynamic(() => import('@/legacy-pages/ShikastEAzizAuthor'), { ssr: false });
 
 const authorComponents: Record<string, any> = {
   shreyo: ShreyoBiswasAuthor,
@@ -22,6 +23,7 @@ const authorComponents: Record<string, any> = {
   shambhavi: LillianBlytheAuthor,
   anwesha_legacy: AnweshaAuthor,
   richa: RichaKAuthor,
+  'shikast-e-aziz': ShikastEAzizAuthor,
 };
 
 export default function AuthorBridge({ slug }: { slug: string }) {

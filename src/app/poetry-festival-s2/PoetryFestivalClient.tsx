@@ -1,11 +1,11 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { motion, useInView, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import {
   Trophy, Star, ShieldCheck, BookOpen,
-  CheckCircle2, Award,
+  CheckCircle2, Award, Camera, Quote, MessageSquare,
   MapPin, ArrowRight, Users, BookMarked,
   Mic, Feather, Flame,
   Globe, Heart, Sparkles, ChevronDown, Check
@@ -129,6 +129,39 @@ export default function PoetryFestivalClient() {
     { q: 'How are poems evaluated?', a: 'By a panel of real literary editors and judges — against criteria of originality, emotional resonance, craft, and thematic clarity. No algorithms.' },
   ];
 
+  const galleryImages = [
+    "https://res.cloudinary.com/dde8ekuuu/image/upload/v1776100331/WhatsApp_Image_2026-04-13_at_9.06.50_PM-compressed_f54p62.webp",
+    "https://res.cloudinary.com/dde8ekuuu/image/upload/v1776100331/WhatsApp_Image_2026-04-13_at_9.06.50_PM_1_-compressed_bla9w8.webp",
+    "https://res.cloudinary.com/dde8ekuuu/image/upload/v1776100331/WhatsApp_Image_2026-04-13_at_9.06.49_PM-compressed_krdg8g.webp",
+    "https://res.cloudinary.com/dde8ekuuu/image/upload/v1776100330/WhatsApp_Image_2026-04-13_at_9.06.49_PM_1_-compressed_ylopb7.webp",
+    "https://res.cloudinary.com/dde8ekuuu/image/upload/v1776100330/WhatsApp_Image_2026-04-13_at_9.06.50_PM_2_-compressed_nrkzf4.webp",
+    "https://res.cloudinary.com/dde8ekuuu/image/upload/v1776100330/WhatsApp_Image_2026-04-13_at_8.12.24_PM-compressed_skr10b.webp",
+    "https://res.cloudinary.com/dde8ekuuu/image/upload/v1776100330/WhatsApp_Image_2026-04-13_at_9.06.48_PM-compressed_ftx5ea.webp",
+    "https://res.cloudinary.com/dde8ekuuu/image/upload/v1776100330/WhatsApp_Image_2026-04-13_at_9.06.48_PM_1_-compressed_zolkao.webp",
+    "https://res.cloudinary.com/dde8ekuuu/image/upload/v1776100330/WhatsApp_Image_2026-04-13_at_8.27.49_PM-compressed_hhn7yj.webp",
+    "https://res.cloudinary.com/dde8ekuuu/image/upload/v1776100329/WhatsApp_Image_2026-04-13_at_8.19.16_PM-compressed_pii87q.webp",
+    "https://res.cloudinary.com/dde8ekuuu/image/upload/v1775933371/WhatsApp_Image_2026-03-29_at_12.40.13_PM-compressed_wjaeil.webp",
+    "https://res.cloudinary.com/dde8ekuuu/image/upload/v1775933370/WhatsApp_Image_2026-03-29_at_12.35.16_PM-compressed_qldola.webp",
+    "https://res.cloudinary.com/dde8ekuuu/image/upload/v1775933368/WhatsApp_Image_2026-03-29_at_12.35.16_PM_2_-compressed_d12sxy.webp",
+    "https://res.cloudinary.com/dde8ekuuu/image/upload/v1775933367/WhatsApp_Image_2026-03-29_at_12.35.16_PM_1_-compressed_ddda2d.webp",
+    "https://res.cloudinary.com/dde8ekuuu/image/upload/v1775933367/WhatsApp_Image_2026-03-28_at_8.00.34_PM-compressed_yfhhz2.webp"
+  ];
+
+  const bannerImages = [
+    "https://res.cloudinary.com/dde8ekuuu/image/upload/q_auto/f_auto/v1776850542/1_txyggo.png",
+    "https://res.cloudinary.com/dde8ekuuu/image/upload/q_auto/f_auto/v1776850540/3_gxc61n.png",
+    "https://res.cloudinary.com/dde8ekuuu/image/upload/q_auto/f_auto/v1776850539/2_zhw4ty.png"
+  ];
+
+  const [currentBanner, setCurrentBanner] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentBanner((prev) => (prev + 1) % bannerImages.length);
+    }, 3000);
+    return () => clearInterval(timer);
+  }, []);
+
   return (
     <div className="min-h-screen bg-[#050505] text-[#fdfbf7] font-sans selection:bg-gold selection:text-black overflow-x-hidden">
 
@@ -146,7 +179,7 @@ export default function PoetryFestivalClient() {
       </div>
 
       {/* ── HERO SECTION ── */}
-      <section className="relative min-h-[100vh] flex flex-col justify-center overflow-hidden pt-8 pb-20">
+      <section className="relative flex flex-col overflow-hidden pt-4 md:pt-12 pb-20">
         {/* Background: deep violet starfield */}
         <div className="absolute inset-0 bg-gradient-to-br from-[#0d0118] via-[#050505] to-[#080012] pointer-events-none" />
         {/* Radial glow blobs */}
@@ -160,6 +193,43 @@ export default function PoetryFestivalClient() {
           ))}
         </div>
 
+        {/* MASSIVE EDGE-TO-EDGE SLIDING BANNER */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.1, duration: 0.8 }}
+          className="relative w-full mb-10 overflow-hidden"
+        >
+          <div className="w-full relative aspect-[16/10] sm:aspect-video md:aspect-[21/6]">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={currentBanner}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.8, ease: "easeInOut" }}
+                className="absolute inset-0 w-full h-full"
+              >
+                <img 
+                  src={bannerImages[currentBanner]} 
+                  alt={`Poetry Festival Hero Banner ${currentBanner + 1}`}
+                  className="w-full h-full object-contain"
+                />
+              </motion.div>
+            </AnimatePresence>
+          </div>
+          
+          {/* Minimalist Progress Indicator */}
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-3 z-20">
+            {bannerImages.map((_, i) => (
+              <div 
+                key={i} 
+                className={`w-2 h-2 rounded-full transition-all duration-300 ${i === currentBanner ? 'bg-gold w-8' : 'bg-white/20'}`}
+              />
+            ))}
+          </div>
+        </motion.div>
+
         <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 text-center">
 
           {/* Eyebrow */}
@@ -171,19 +241,6 @@ export default function PoetryFestivalClient() {
               India's Premier Poetry Contest
             </div>
           </motion.div>
-
-          {/* Hero Headline */}
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1, duration: 0.8 }}
-            className="text-[2.8rem] sm:text-6xl md:text-7xl lg:text-8xl font-serif font-black leading-[1.0] mb-6 tracking-tight"
-          >
-            Poetry Festival
-            <span className="block italic text-transparent bg-clip-text bg-gradient-to-r from-gold via-[#ebd298] to-purple-300 mt-2 text-[2.2rem] sm:text-5xl md:text-6xl lg:text-7xl">
-              Season 2
-            </span>
-          </motion.h1>
 
           {/* Subhead */}
           <motion.p
@@ -388,6 +445,80 @@ export default function PoetryFestivalClient() {
           </div>
         </div>
         <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold/30 to-transparent" />
+      </section>
+
+      {/* ── VISUAL GALLERY (WALL OF EVIDENCE) ── */}
+      <section className="py-24 bg-[#030303] relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6 sm:px-8">
+          <div className="mb-16">
+            <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-purple-400 block mb-4">Real Proof of Delivery</span>
+            <h2 className="text-4xl md:text-5xl font-serif font-black text-[#fdfbf7] leading-tight">
+              The Wall of <span className="italic text-gold">Evidence.</span>
+            </h2>
+            <p className="text-[#666] text-sm mt-6 max-w-xl font-light italic">
+              "These aren't studio shots. These are real poets across India receiving their trophies, certificates, and books. This is our promise, delivered."
+            </p>
+          </div>
+
+          <div className="columns-2 lg:columns-3 xl:columns-4 gap-4 space-y-4">
+            {/* Editorial Card 1 */}
+            <div className="break-inside-avoid mb-4 bg-gradient-to-br from-[#1a0a2e] to-[#0d0118] border border-purple-900/30 p-8 text-white flex flex-col justify-between aspect-square">
+               <Trophy size={32} className="text-gold mb-8" />
+               <div className="space-y-4">
+                 <div className="text-2xl font-serif font-black uppercase tracking-tighter leading-none italic">
+                    100% <br/> Payout & Delivery.
+                 </div>
+                 <p className="text-[9px] font-sans uppercase tracking-widest text-[#39FF14] font-black">SEASON 1 SUCCESS</p>
+               </div>
+            </div>
+
+            {galleryImages.map((src, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: (i % 4) * 0.1 }}
+                viewport={{ once: true }}
+                className="break-inside-avoid group relative overflow-hidden bg-[#0a0a0a] border border-white/5"
+              >
+                <img 
+                  src={src} 
+                  alt={`Inkfetish Winner Proof ${i + 1}`}
+                  className="w-full h-auto grayscale-[0.6] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" 
+                />
+                
+                {/* Overlay Decor */}
+                <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                   <div className="flex items-center gap-2">
+                      <div className="w-1.5 h-1.5 rounded-full bg-[#39FF14]" />
+                      <span className="text-[9px] font-sans font-black uppercase tracking-widest text-white">Verified Delivery</span>
+                   </div>
+                </div>
+
+                <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                   <Camera size={14} className="text-white/30" />
+                </div>
+              </motion.div>
+            ))}
+
+            {/* Editorial Card 2 */}
+            <div className="break-inside-avoid mb-4 bg-[#0a0a0a] p-8 border border-gold/20 flex flex-col justify-center aspect-[3/4]">
+               <div className="flex flex-col items-center text-center">
+                  <Star size={24} className="text-gold mb-6" />
+                  <h5 className="text-lg font-serif font-black uppercase tracking-tighter text-[#fdfbf7] mb-4">Your Name Next?</h5>
+                  <p className="text-[9px] text-[#555] font-sans font-black uppercase tracking-[0.2em] leading-relaxed italic">
+                    The only thing stopping you is the deadline.
+                  </p>
+               </div>
+            </div>
+          </div>
+          
+          <div className="mt-16 text-center">
+            <p className="text-[10px] font-sans font-black uppercase tracking-[0.4em] text-[#333]">
+              1,155+ WRITERS TRUST INKFETISH NATIONWIDE.
+            </p>
+          </div>
+        </div>
       </section>
 
       {/* ── PRIZES ── */}
@@ -713,43 +844,107 @@ export default function PoetryFestivalClient() {
 
       {/* ── TESTIMONIALS / SOCIAL PROOF ── */}
       <section className="py-28 bg-[#030303] border-t border-white/5 relative overflow-hidden">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-16">
-            <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-purple-400 block mb-3">What Season 1 Poets Said</span>
-            <h2 className="text-4xl md:text-5xl font-serif font-black text-[#fdfbf7]">Real Words. <span className="italic text-gold">Real Voices.</span></h2>
+        <div className="absolute top-0 right-0 w-96 h-96 bg-purple-900/10 blur-[100px] pointer-events-none" />
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
+          <div className="text-center mb-20">
+            <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-purple-400 block mb-3">Community Success Stories</span>
+            <h2 className="text-4xl md:text-5xl font-serif font-black text-[#fdfbf7]">
+              Real Words. <span className="italic text-gold">Real Impact.</span>
+            </h2>
+            <p className="text-sm text-[#555] mt-6 max-w-xl mx-auto font-light leading-relaxed">
+              We've helped thousands of writers find their voice and stage. Here is what some of our Season 1 participants and contest winners have to say.
+            </p>
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
-              { name: 'Ananya Sharma', location: 'Delhi', quote: 'I never thought my first poem would be in a real book. When the anthology arrived at my door, I cried. Inkfetish is the real deal.' },
-              { name: 'Rohan Krishnan', location: 'Bangalore', quote: 'Skeptical at first — I\'ve seen too many fake online contests. But the physical certificate arrived exactly as promised. Absolutely legitimate.' },
-              { name: 'Preethi Nair', location: 'Chennai', quote: 'The live Zoom ceremony was emotional. Hearing the top 10 announced in front of everyone — I felt so proud just being a part of it.' },
-              { name: 'Zara Sheikh', location: 'Mumbai', quote: 'I submitted a ghazal in Urdu. It was published beautifully in the anthology. I cannot recommend this enough for Urdu poets.' },
-              { name: 'Vikram Dasgupta', location: 'Kolkata', quote: 'This was my second poetry competition ever, and by far the most professional and human one I\'ve encountered. The process was transparent from start to finish.' },
-              { name: 'Sneha Patel', location: 'Ahmedabad', quote: 'The appreciation letter was handwritten. I hung it next to my writing desk. Such a small detail — but it made me feel seen as a poet.' },
-            ].map(({ name, location, quote }, i) => (
+              { 
+                name: 'Ananya Sharma', 
+                location: 'Delhi', 
+                quote: 'I never thought my first poem would be in a real book. When the anthology arrived at my door, I cried. Inkfetish is the real deal.',
+                label: 'Season 1 Participant',
+                impact: 'First Time Published'
+              },
+              { 
+                name: 'Rohan Krishnan', 
+                location: 'Bangalore', 
+                quote: 'Skeptical at first — I\'ve seen too many fake online contests. But the physical certificate arrived exactly as promised. Absolutely legitimate.',
+                label: 'Season 1 Participant',
+                impact: 'Verified Delivery'
+              },
+              { 
+                name: 'Priya S.', 
+                location: 'Bihar', 
+                quote: 'I never thought my poem could go this far. Inkfetish gave me confidence and clarity. Now my debut book is in the works!',
+                label: 'Published Author',
+                impact: 'Book Deal'
+              },
+              { 
+                name: 'Sunita G.', 
+                location: 'Delhi', 
+                quote: 'The judging report helped me improve my writing massively. This is by far the most professional writing event in India!',
+                label: 'Contest Winner',
+                impact: 'Skill Transformation'
+              },
+              { 
+                name: 'Rohan M.', 
+                location: 'Pune', 
+                quote: 'I joined just for fun. But I ended up winning the 2nd prize and got my work published. Total game changer for my creative journey!',
+                label: 'IWL Silver Winner',
+                impact: '₹40,000 Prize'
+              },
+              { 
+                name: 'Vikram Dasgupta', 
+                location: 'Kolkata', 
+                quote: 'The attention to detail in their editorial process is unlike any other publisher. They actually care about the craft, not just the fees.',
+                label: 'Season 1 Poet',
+                impact: 'Editorial Support'
+              },
+            ].map((t, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.08 }}
-                className="bg-[#0a0a0a] border border-white/5 p-7 rounded-sm hover:border-purple-700/30 transition-all duration-500 group"
+                className="relative bg-[#0a0a0a] border border-white/5 p-8 rounded-sm hover:border-gold/20 hover:shadow-[0_0_30px_rgba(197,160,89,0.05)] transition-all duration-500 group flex flex-col"
               >
-                <div className="flex items-center gap-1 mb-5">
-                  {[...Array(5)].map((_, j) => (
-                    <Star key={j} className="w-3.5 h-3.5 fill-gold text-gold" />
-                  ))}
+                {/* Verified Tag */}
+                <div className="absolute top-4 right-4 flex items-center gap-1.5 px-2 py-1 bg-green-500/10 border border-green-500/20 rounded-full">
+                  <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+                  <span className="text-[8px] font-black uppercase tracking-widest text-green-500">Verified Winner</span>
                 </div>
-                <p className="text-sm text-[#999] font-light leading-relaxed mb-6 italic">"{quote}"</p>
-                <div className="flex items-center gap-3 border-t border-white/5 pt-5">
-                  <div className="w-9 h-9 rounded-full bg-gradient-to-br from-purple-900 to-[#1a0a2e] border border-purple-800/40 flex items-center justify-center text-[11px] font-black text-purple-300">{name[0]}</div>
-                  <div>
-                    <div className="text-xs font-bold text-[#fdfbf7]">{name}</div>
-                    <div className="text-[10px] text-[#444]">{location} · Season 1 Poet</div>
+
+                <Quote className="w-8 h-8 text-white/5 mb-6 group-hover:text-gold/10 transition-colors" />
+                
+                <p className="text-sm md:text-[15px] text-[#999] font-light leading-relaxed mb-10 italic flex-1">"{t.quote}"</p>
+                
+                <div className="flex items-center gap-4 border-t border-white/5 pt-6 mt-auto">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-900/50 to-black border border-white/10 flex items-center justify-center text-xs font-black text-purple-300">
+                    {t.name[0]}
                   </div>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs font-bold text-[#fdfbf7]">{t.name}</span>
+                      <CheckCircle2 className="w-3 h-3 text-gold" />
+                    </div>
+                    <div className="text-[9px] text-[#555] uppercase tracking-[0.15em] mt-0.5">{t.location} · {t.label}</div>
+                  </div>
+                </div>
+
+                <div className="mt-4 text-right">
+                  <span className="text-[8px] font-black uppercase tracking-[0.3em] text-gold/40 group-hover:text-gold transition-colors">{t.impact}</span>
                 </div>
               </motion.div>
             ))}
+          </div>
+
+          <div className="mt-20 pt-10 border-t border-white/5 text-center">
+             <div className="flex items-center justify-center gap-10 opacity-30 grayscale hover:grayscale-0 transition-all duration-700">
+                <span className="text-sm font-serif font-bold italic">Inkfetish Publications</span>
+                <span className="text-sm font-serif font-bold italic">Indian Writers League</span>
+                <span className="text-sm font-serif font-bold italic">Season 1 Anthology</span>
+             </div>
           </div>
         </div>
       </section>

@@ -81,16 +81,35 @@ service cloud.firestore {
     }
 
     // Indian Writers League (IWL) Submissions
-    // Enabled for client-side reading for the Hall of Fame
     match /iwl_submissions/{submissionId} {
-      allow read: if resource.data.selected == true;
-      allow write: if false; 
+      allow read: if true;
+      allow create: if true;
+      allow update: if request.auth != null;
+      allow delete: if false;
+    }
+
+    // Author Portfolios
+    match /author_portfolios/{portfolioId} {
+      allow read: if true;
+      allow write: if request.auth != null && (request.auth.uid == portfolioId || (resource != null && request.auth.uid == resource.data.uid));
+      allow create: if request.auth != null;
+    }
+
+    // Poetry & Special Collections
+    match /shakespeare_poems/{poemId} {
+      allow read: if true;
+      allow write: if false;
+    }
+    
+    match /loveatminusone_poems/{poemId} {
+      allow read: if true;
+      allow write: if false;
     }
     
     // Allow reading from authorverseSummit collection for voting
     match /authorverseSummit/{submissionId} {
-      allow read: if true; // Allow reading for voting system
-      allow write: if false; // No writing allowed
+      allow read: if true;
+      allow write: if false;
     }
   }
 }

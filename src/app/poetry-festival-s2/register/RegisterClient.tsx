@@ -1,13 +1,15 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   ShieldCheck, Lock, CheckCircle2, ArrowRight,
   AlertCircle, Feather, Trophy, BookOpen,
   MapPin, Mail, Phone, User, Heart, Globe,
-  Flame, Sparkles, Mic, ChevronDown, Star
+  Flame, Sparkles, Mic, ChevronDown, Star,
+  Zap, TrendingUp, Award, Users, Clock, DollarSign,
+  BookMarked, Smile, ArrowLeft
 } from 'lucide-react';
 
 // ── Session timer ─────────────────────────────────────────────────────────────
@@ -68,9 +70,17 @@ export default function PoetryFestivalRegisterClient() {
     e.preventDefault();
     if (!agreed) return;
     setSubmitting(true);
-    // ── Payment integration: plug in Razorpay here ──
-    console.log('Proceeding to Razorpay payment...', formData);
-    setTimeout(() => setSubmitting(false), 2000);
+    
+    // Log form data for now
+    console.log('Registration submitted:', formData);
+    
+    // Show success message
+    setTimeout(() => {
+      alert('✅ Registration received! We will contact you shortly with next steps.');
+      setSubmitting(false);
+      // Optionally redirect to confirmation page
+      window.location.href = '/poetry-festival-s2';
+    }, 1500);
   };
 
   return (

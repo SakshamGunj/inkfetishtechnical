@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import {
@@ -29,7 +29,7 @@ function useCountdown(targetDate: Date) {
     calc();
     const id = setInterval(calc, 1000);
     return () => clearInterval(id);
-  }, [targetDate]);
+  }, [targetDate.getTime()]);
   return timeLeft;
 }
 
@@ -81,7 +81,7 @@ function FaqItem({ q, a }: { q: string; a: string }) {
 
 // ── Main Component ────────────────────────────────────────────────────────────
 export default function PoetryFestivalClient() {
-  const deadline = new Date('2026-05-31T23:59:59');
+  const deadline = useMemo(() => new Date('2026-05-31T23:59:59'), []);
   const { days, hours, minutes, seconds } = useCountdown(deadline);
   const [seatsLeft] = useState(87);
   const totalSeats = 250;

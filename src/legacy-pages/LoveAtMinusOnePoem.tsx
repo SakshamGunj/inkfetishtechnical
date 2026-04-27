@@ -6,14 +6,25 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Loader2, Share2 } from "lucide-react";
 import { toast } from "sonner";
+import submissionsData from "@/data/anthology_submissions.json";
 
 interface Poem {
     content: string;
-    createdAt: any;
+    createdAt?: any;
+    title?: string;
+    author?: string;
 }
 
-const LoveAtMinusOnePoem = () => {
-    const { id } = useParams();
+const LoveAtMinusOnePoem = ({ id: propId }: { id?: string }) => {
+    let routeId: string | undefined;
+    try {
+        const params = useParams();
+        routeId = params.id;
+    } catch (e) {
+        // Fallback for Next.js environment where react-router-dom context is missing
+        routeId = undefined;
+    }
+    const id = propId || routeId;
     const [poem, setPoem] = useState<Poem | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
@@ -23,13 +34,24 @@ const LoveAtMinusOnePoem = () => {
             if (!id) return;
 
             try {
+                // 1. Try Firestore first (for new submissions)
                 const docRef = doc(db, "loveatminusone_poems", id);
                 const docSnap = await getDoc(docRef);
 
                 if (docSnap.exists()) {
                     setPoem(docSnap.data() as Poem);
                 } else {
-                    setError("Poem not found");
+                    // 2. Fallback to local JSON (for legacy submissions)
+                    const legacyPoem = (submissionsData as any[]).find(s => s.id === id);
+                    if (legacyPoem) {
+                        setPoem({
+                            content: legacyPoem.poem1_content,
+                            title: legacyPoem.poem1_title,
+                            author: legacyPoem.is_pen_name ? legacyPoem.book_name : legacyPoem.real_name
+                        });
+                    } else {
+                        setError("Poem not found");
+                    }
                 }
             } catch (err) {
                 console.error("Error fetching poem:", err);
@@ -72,12 +94,17 @@ const LoveAtMinusOnePoem = () => {
         <div className="min-h-screen bg-background p-4 md:p-8">
             <div className="max-w-3xl mx-auto space-y-8">
                 <header className="text-center space-y-4 border-b pb-8">
-                    <h1 className="text-2xl md:text-4xl font-serif font-bold text-primary">
-                        Love at Minus One anthology
+                    <h1 className="text-3xl md:text-5xl font-serif font-bold text-primary tracking-tight">
+                        {poem.title || "Love at Minus One anthology"}
                     </h1>
-                    <p className="text-lg md:text-xl text-muted-foreground font-medium">
-                        By inkfetish
+                    <p className="text-lg md:text-2xl text-muted-foreground font-serif italic">
+                        {poem.author ? `by ${poem.author}` : "By inkfetish"}
                     </p>
+                    {poem.title && (
+                        <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground pt-4">
+                            Love at Minus One Anthology • Inkfetish
+                        </p>
+                    )}
                 </header>
 
                 <Card className="border-none shadow-none bg-transparent">

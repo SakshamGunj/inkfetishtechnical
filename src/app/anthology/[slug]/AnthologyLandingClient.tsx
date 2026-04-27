@@ -33,6 +33,15 @@ const anthologyData: Record<string, any> = {
     reward: 'Your Book in Stores Nationwide',
     curator: 'Inkfetish Editors',
     accent: '#39FF14'
+  },
+  'love-at-minus-one': {
+    title: 'Love at Minus One',
+    tagline: 'Poetry at its coldest.',
+    theme: 'Submit your most chilling and emotional poetry for our winter collection. Explore the depths of human emotion at its most vulnerable.',
+    deadline: 'Extended',
+    reward: 'Global Distribution + Author Copy',
+    curator: 'Inkfetish Publication',
+    accent: '#00D1FF'
   }
 };
 

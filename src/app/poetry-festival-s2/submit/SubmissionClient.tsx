@@ -876,9 +876,9 @@ editor1.off('update', triggerUpdate);
               <div className="space-y-2.5 mb-8 flex-1">
                 {[
                   'Submit 1 Single Poem',
-                  'Participation Certificate',
-                  'Editorial Appreciation Letter',
-                  'Excellence Digital Award',
+                  'Participation e-Certificate',
+                  'Appreciation Letter',
+                  'Creative Excellence Certificate',
                 ].map((item, i) => (
                   <div key={i} className="flex items-center gap-3">
                     <Check className="w-3 h-3 text-white/20" />
@@ -925,8 +925,8 @@ editor1.off('update', triggerUpdate);
               <div className="space-y-2.5 mb-8 flex-1">
                 {[
                   'Submit 2 Independent Poems',
-                  'Premium Appreciation Kit',
-                  'Creative Excellence Award',
+                  'Participation e-Certificate',
+                  'Creative Excellence Certificate',
                   { label: 'Exclusive Judging Report', premium: true },
                   { label: 'Editorial Recommendation', premium: true },
                 ].map((item, i) => {
@@ -1182,13 +1182,9 @@ editor1.off('update', triggerUpdate);
                 <p className="text-white/40 text-xs mb-4">{poemSession.poem1.wordCount} words</p>
                 <div className="flex gap-2">
                   <Link href={`/poetry-festival-s2/read/${poemSession.poem1.id}`}
-                    className="flex-1 bg-white/5 border border-white/10 text-white/70 py-2 rounded-xl text-[10px] font-bold uppercase tracking-wider hover:bg-white/10 transition-all flex items-center justify-center gap-1.5">
-                    <Eye className="w-3 h-3" /> Read
+                    className="flex-1 bg-gold text-black py-2 rounded-xl text-[10px] font-bold uppercase tracking-wider hover:bg-white transition-all flex items-center justify-center gap-1.5 shadow-lg shadow-gold/20">
+                    <Eye className="w-3 h-3" /> Read Entry
                   </Link>
-                  <button onClick={() => downloadReceipt(poemSession.poem1)}
-                    className="flex-1 bg-gold/10 border border-gold/20 text-gold py-2 rounded-xl text-[10px] font-bold uppercase tracking-wider hover:bg-gold/20 transition-all flex items-center justify-center gap-1.5">
-                    <Download className="w-3 h-3" /> Receipt
-                  </button>
                 </div>
               </div>
             )}
@@ -1199,13 +1195,9 @@ editor1.off('update', triggerUpdate);
                 <p className="text-white/40 text-xs mb-4">{poemSession.poem2.wordCount} words</p>
                 <div className="flex gap-2">
                   <Link href={`/poetry-festival-s2/read/${poemSession.poem2.id}`}
-                    className="flex-1 bg-white/5 border border-white/10 text-white/70 py-2 rounded-xl text-[10px] font-bold uppercase tracking-wider hover:bg-white/10 transition-all flex items-center justify-center gap-1.5">
-                    <Eye className="w-3 h-3" /> Read
+                    className="flex-1 bg-gold text-black py-2 rounded-xl text-[10px] font-bold uppercase tracking-wider hover:bg-white transition-all flex items-center justify-center gap-1.5 shadow-lg shadow-gold/20">
+                    <Eye className="w-3 h-3" /> Read Entry
                   </Link>
-                  <button onClick={() => downloadReceipt(poemSession.poem2)}
-                    className="flex-1 bg-gold/10 border border-gold/20 text-gold py-2 rounded-xl text-[10px] font-bold uppercase tracking-wider hover:bg-gold/20 transition-all flex items-center justify-center gap-1.5">
-                    <Download className="w-3 h-3" /> Receipt
-                  </button>
                 </div>
               </div>
             )}
@@ -1225,18 +1217,12 @@ editor1.off('update', triggerUpdate);
         )}
 
         {plan !== 'double' && (
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-            <button 
-              onClick={() => downloadReceipt(submittedData)}
-              className="flex-1 bg-white text-black px-8 py-5 rounded-2xl font-black uppercase tracking-[0.2em] text-xs hover:bg-gold transition-all flex items-center justify-center gap-2 shadow-xl"
-            >
-              <Download className="w-4 h-4" /> Download Receipt
-            </button>
+          <div className="flex justify-center mb-8">
             <Link 
               href={`/poetry-festival-s2/read/${submittedData?.id || ''}`}
-              className="flex-1 bg-[#161616] border border-white/10 text-white px-8 py-5 rounded-2xl font-black uppercase tracking-[0.2em] text-xs hover:bg-white/5 transition-all flex items-center justify-center gap-2"
+              className="w-full max-w-sm bg-gold text-black px-8 py-5 rounded-2xl font-black uppercase tracking-[0.2em] text-xs hover:bg-white transition-all flex items-center justify-center gap-2 shadow-2xl shadow-gold/30"
             >
-              <Eye className="w-4 h-4" /> Read Entry
+              <Eye className="w-4 h-4" /> Read My Entry
             </Link>
           </div>
         )}

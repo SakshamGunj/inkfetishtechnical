@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Feather, ArrowLeft, Send, Sparkles, User, Mail, Phone, Loader2, Check, Download, Eye, FileText } from 'lucide-react';
+import { Feather, ArrowLeft, ArrowRight, Send, Sparkles, User, Mail, Phone, Loader2, Check, Download, Eye, FileText } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
@@ -659,21 +659,26 @@ editor1.off('update', triggerUpdate);
     }
   };
 
-
-  const downloadReceipt = async () => {
+  const downloadReceipt = async (dataOverride?: any) => {
+    const data = dataOverride || submittedData;
     const receiptElement = document.getElementById('submission-receipt');
-    if (!receiptElement) return;
+    if (!receiptElement) {
+      console.error('Receipt element not found');
+      showToast('Error: Receipt template missing.', 'error');
+      return;
+    }
 
     // Use a small delay to ensure the UI is stable before heavy canvas work
     setTimeout(async () => {
       try {
         const canvas = await html2canvas(receiptElement, {
-          scale: 2, // 2x is plenty for a clean PDF and faster/more stable than 3x
+          scale: 2,
           backgroundColor: '#050505',
           useCORS: true,
           logging: false,
+          allowTaint: true,
           scrollX: 0,
-          scrollY: -window.scrollY, // Correct for any current scroll position
+          scrollY: 0,
           windowWidth: 600,
           windowHeight: 800
         });
@@ -686,13 +691,14 @@ editor1.off('update', triggerUpdate);
         });
         
         pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
-        pdf.save(`Inkfetish_Receipt_${submittedData?.id?.slice(0, 8) || 'S2'}.pdf`);
+        const fileName = `Inkfetish_Receipt_${data?.id?.slice(0, 8) || 'S2'}.pdf`;
+        pdf.save(fileName);
         showToast('Receipt downloaded successfully!', 'success');
       } catch (err) {
-        console.error('PDF error:', err);
-        showToast('Failed to generate PDF.', 'error');
+        console.error('PDF generation failed:', err);
+        showToast('Failed to generate PDF. Please try again.', 'error');
       }
-    }, 100);
+    }, 150);
   };
 
   const handleOnboardingSubmit = async (e: React.FormEvent) => {
@@ -803,220 +809,163 @@ editor1.off('update', triggerUpdate);
   // ── SUCCESS PAGE ──
   // ── PLAN SELECTION UI ──
   const PlanSelection = () => (
-    <div className="min-h-screen bg-[#050505] text-[#fdfbf7] font-sans selection:bg-gold/30 relative overflow-x-hidden">
+    <div className="min-h-screen md:h-screen bg-[#050505] text-[#fdfbf7] font-sans selection:bg-gold/30 relative overflow-x-hidden md:overflow-hidden pt-8 md:pt-0 pb-12 md:pb-0 flex flex-col justify-center">
       {/* ── BACKGROUND ATMOSPHERE ── */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <div className="absolute inset-0 bg-gradient-to-br from-[#0d0118] via-[#050505] to-[#080012]" />
-        <div className="absolute top-[-15%] left-[-5%] w-[600px] h-[600px] bg-purple-900/15 blur-[160px] rounded-full" />
-        <div className="absolute bottom-[-10%] right-[-5%] w-[500px] h-[500px] bg-[#EAA134]/8 blur-[140px] rounded-full" />
-        <div className="absolute inset-0 opacity-30">
-          {[...Array(4)].map((_, i) => (
-            <div key={i} className="absolute top-0 bottom-0 border-l border-white/[0.025]" style={{ left: `${20 * (i + 1)}%` }} />
+        <div className="absolute top-[-15%] left-[-5%] w-[300px] md:w-[600px] h-[300px] md:h-[600px] bg-purple-900/15 blur-[120px] md:blur-[160px] rounded-full" />
+        <div className="absolute bottom-[-10%] right-[-5%] w-[250px] md:w-[500px] h-[250px] md:h-[500px] bg-gold/10 blur-[100px] md:blur-[140px] rounded-full" />
+        <div className="absolute inset-0 opacity-15">
+          {[...Array(5)].map((_, i) => (
+            <div key={i} className="absolute top-0 bottom-0 border-l border-white/[0.03]" style={{ left: `${20 * (i + 1)}%` }} />
           ))}
         </div>
       </div>
 
-      {/* ── NAVBAR ── */}
-      <div className="relative z-10 flex justify-center pt-8 pb-2">
-        <div className="flex items-center gap-3 bg-[#050505]/90 backdrop-blur-xl border border-white/10 px-6 py-2.5 rounded-full shadow-[0_0_40px_rgba(0,0,0,0.8)]">
-          <img
-            src="https://res.cloudinary.com/dde8ekuuu/image/upload/q_auto/f_auto/v1777556045/iflogo_y3ss8e.png"
-            alt="Inkfetish Logo"
-            className="w-8 h-8 object-cover rounded-full bg-black/50"
-          />
-          <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-[#fdfbf7]">Inkfetish Publication</span>
-        </div>
-      </div>
-
       {/* ── MAIN CONTENT ── */}
-      <div className="relative z-10 max-w-5xl mx-auto px-5 pb-20 pt-12">
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7 }}
-          className="text-center mb-14"
+      <div className="relative z-10 max-w-5xl mx-auto px-6 w-full flex flex-col items-center">
+        {/* ── LOGO/NAV ── */}
+        <motion.div 
+          initial={{ opacity: 0 }} 
+          animate={{ opacity: 1 }} 
+          className="mb-6 md:mb-10"
         >
-          <div className="inline-flex items-center gap-2 bg-gold/10 border border-gold/20 px-4 py-1.5 rounded-full mb-6">
-            <Sparkles className="w-3.5 h-3.5 text-gold" />
-            <span className="text-gold text-[10px] uppercase tracking-[0.35em] font-black">Poetry Festival • Season 2</span>
+          <div className="flex items-center gap-2.5 bg-white/[0.02] backdrop-blur-xl border border-white/10 px-4 py-1.5 rounded-full">
+            <img
+              src="https://res.cloudinary.com/dde8ekuuu/image/upload/q_auto/f_auto/v1777556045/iflogo_y3ss8e.png"
+              alt="Inkfetish Logo"
+              className="w-5 h-5 object-cover rounded-full"
+            />
+            <span className="text-[8px] uppercase tracking-[0.3em] font-black text-white/70">Inkfetish Publication</span>
           </div>
+        </motion.div>
 
-          <h1 className="text-5xl md:text-7xl font-serif font-black text-[#fdfbf7] tracking-tight leading-[0.9] mb-5">
-            Choose Your <span className="italic text-gold">Entry.</span>
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="text-center mb-8 md:mb-12"
+        >
+          <h1 className="text-4xl md:text-7xl font-serif font-black text-white tracking-tighter leading-[1] md:leading-[0.8] mb-6">
+            Choose Your <br className="hidden md:block" /> <span className="italic text-gold drop-shadow-[0_0_25px_rgba(234,161,52,0.25)]">Entry Option.</span>
           </h1>
 
-          {/* Returning user greeting */}
-          {name && (
-            <motion.div
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className="inline-flex items-center gap-2 mt-3 mb-3 bg-white/5 border border-white/10 px-5 py-2 rounded-full"
-            >
-              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-              <span className="text-white/60 text-xs font-medium">Welcome back, <span className="text-white font-bold">{name}</span></span>
-            </motion.div>
-          )}
-
-          <p className="text-white/40 text-base max-w-xl mx-auto leading-relaxed mt-4">
-            Select the path that best fits your poetic journey. Every word counts, every story matters.
+          <p className="text-white/40 text-[10px] md:text-sm max-w-md mx-auto leading-relaxed font-black uppercase tracking-[0.2em]">
+            Poetry Festival Season 2 is where your words become our legacy. <br className="hidden md:block" /> Start your entry today.
           </p>
         </motion.div>
 
         {/* ── PLAN CARDS ── */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8 w-full max-w-4xl mx-auto items-stretch">
 
           {/* ── ₹299 SINGLE ENTRY ── */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.15 }}
-            whileHover={{ y: -6, transition: { duration: 0.2 } }}
-            className="relative bg-[#0d0d0d] border border-white/8 rounded-2xl overflow-hidden flex flex-col"
+            initial={{ opacity: 0, x: -15 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.2 }}
+            className="group relative bg-[#0d0d0d] border border-white/10 rounded-3xl overflow-hidden flex flex-col hover:border-white/20 transition-all duration-300 shadow-2xl"
           >
-            {/* Subtle corner glow */}
-            <div className="absolute top-0 right-0 w-40 h-40 bg-white/[0.03] blur-3xl rounded-full pointer-events-none" />
+            <div className="p-6 md:p-8 flex flex-col flex-1">
+              <span className="text-[8px] uppercase tracking-[0.3em] font-black text-white/30 block mb-4">Path I — Single</span>
 
-            <div className="p-8 flex flex-col flex-1">
-              {/* Badge */}
-              <span className="text-[10px] uppercase tracking-[0.3em] font-black text-white/40 block mb-5">Single Entry</span>
-
-              {/* Price */}
-              <div className="flex items-baseline gap-2 mb-6">
-                <span className="text-6xl font-black text-white leading-none">₹299</span>
-                <span className="text-white/30 text-sm">/entry</span>
+              <div className="flex items-baseline gap-2 mb-4">
+                <span className="text-4xl md:text-6xl font-black text-white tracking-tighter">₹299</span>
+                <span className="text-white/20 text-[10px] font-bold uppercase tracking-widest">/ Entry</span>
               </div>
 
-              {/* Tagline */}
-              <p className="text-white/40 text-sm leading-relaxed mb-8 border-l-2 border-gold/30 pl-4 italic">
-                "One poem. One voice. One chance to be heard by Inkfetish editorial."
-              </p>
-
-              {/* Divider */}
-              <div className="border-t border-white/5 mb-7" />
-
-              {/* Benefits */}
-              <ul className="space-y-3.5 mb-10 flex-1">
+              <div className="space-y-2.5 mb-8 flex-1">
                 {[
-                  'Write 1 poem',
+                  'Submit 1 Single Poem',
                   'Participation Certificate',
-                  'Appreciation Letter',
-                  'Creative Excellence Certificate',
+                  'Editorial Appreciation Letter',
+                  'Excellence Digital Award',
                 ].map((item, i) => (
-                  <li key={i} className="flex items-start gap-3">
-                    <div className="w-5 h-5 rounded-full bg-gold/10 border border-gold/20 flex items-center justify-center shrink-0 mt-0.5">
-                      <Check className="w-2.5 h-2.5 text-gold" />
-                    </div>
-                    <span className="text-sm text-white/65 leading-snug">{item}</span>
-                  </li>
+                  <div key={i} className="flex items-center gap-3">
+                    <Check className="w-3 h-3 text-white/20" />
+                    <span className="text-[11px] text-white/60 font-medium">{item}</span>
+                  </div>
                 ))}
-              </ul>
+              </div>
 
-              {/* CTA */}
               <button
                 onClick={() => initiatePayment('single')}
-                className="w-full py-4 rounded-xl font-black uppercase tracking-[0.2em] text-sm border border-white/15 text-white bg-white/5 hover:bg-white hover:text-black hover:border-transparent transition-all duration-200 flex items-center justify-center gap-2.5 group"
+                className="w-full py-4 rounded-xl font-black uppercase tracking-[0.2em] text-[10px] border border-white/10 text-white bg-white/[0.03] hover:bg-white hover:text-black transition-all duration-300 flex items-center justify-center gap-2 group"
               >
-                Pay ₹299 &amp; Enter
-                <ArrowLeft className="w-4 h-4 rotate-180 group-hover:translate-x-1 transition-transform" />
+                Begin My Entry
+                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
               </button>
             </div>
           </motion.div>
 
           {/* ── ₹399 DOUBLE ENTRY ── */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.25 }}
-            whileHover={{ y: -6, transition: { duration: 0.2 } }}
-            className="relative bg-[#0d0d0d] border-2 border-gold/40 rounded-2xl overflow-hidden flex flex-col shadow-[0_0_60px_rgba(234,161,52,0.12)]"
+            initial={{ opacity: 0, x: 15 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.3 }}
+            className="group relative bg-[#0d0d0d] border-2 border-gold/30 rounded-3xl overflow-hidden flex flex-col shadow-[0_25px_60px_rgba(234,161,52,0.1)] hover:scale-[1.01] transition-all duration-300"
           >
-            {/* Gold top accent line */}
-            <div className="h-[3px] w-full bg-gradient-to-r from-transparent via-gold to-transparent" />
-
-            {/* Glow blob */}
-            <div className="absolute top-0 right-0 w-48 h-48 bg-gold/10 blur-3xl rounded-full pointer-events-none" />
-
-            {/* Badge */}
-            <div className="absolute top-5 right-5">
-              <span className="bg-gold text-black text-[9px] font-black px-3 py-1.5 rounded-full uppercase tracking-[0.2em]">
-                Most Popular
+            {/* Badges */}
+            <div className="absolute top-4 right-4 flex flex-col items-end gap-1.5">
+              <span className="bg-gold text-black text-[7px] font-black px-2.5 py-1 rounded-full uppercase tracking-widest shadow-lg">
+                Most Taken
               </span>
             </div>
 
-            <div className="p-8 flex flex-col flex-1">
-              <span className="text-[10px] uppercase tracking-[0.3em] font-black text-gold/70 block mb-5">Double Entry</span>
+            <div className="p-6 md:p-8 flex flex-col flex-1 relative z-10">
+              <span className="text-[8px] uppercase tracking-[0.3em] font-black text-gold/60 block mb-4">Path II — Double</span>
 
-              {/* Price */}
-              <div className="flex items-baseline gap-2.5 mb-6">
-                <span className="text-6xl font-black text-white leading-none">₹399</span>
+              <div className="flex items-baseline gap-2 mb-4">
+                <span className="text-4xl md:text-6xl font-black text-white tracking-tighter">₹399</span>
                 <div className="flex flex-col">
-                  <span className="text-gold/40 text-xs line-through">₹598</span>
-                  <span className="text-white/30 text-xs">/entry</span>
+                  <span className="text-gold/40 text-[10px] line-through font-bold">₹598</span>
+                  <span className="text-gold/80 text-[8px] font-black uppercase tracking-widest">Best Value</span>
                 </div>
               </div>
 
-              {/* Tagline */}
-              <p className="text-white/40 text-sm leading-relaxed mb-8 border-l-2 border-gold/50 pl-4 italic">
-                "Two poems. Double the impact. Exclusive judging insights reserved for you."
-              </p>
-
-              {/* Divider */}
-              <div className="border-t border-gold/10 mb-7" />
-
-              {/* Benefits */}
-              <ul className="space-y-3.5 mb-10 flex-1">
+              <div className="space-y-2.5 mb-8 flex-1">
                 {[
-                  'Write 2 poems',
-                  'Participation Certificate',
-                  'Appreciation Letter',
-                  'Creative Excellence Certificate',
-                  { label: 'Exclusive Judging Report', highlight: true },
-                  { label: 'Recommendation Letter', highlight: true },
+                  'Submit 2 Independent Poems',
+                  'Premium Appreciation Kit',
+                  'Creative Excellence Award',
+                  { label: 'Exclusive Judging Report', premium: true },
+                  { label: 'Editorial Recommendation', premium: true },
                 ].map((item, i) => {
-                  const isHighlight = typeof item === 'object' && item.highlight;
+                  const isPremium = typeof item === 'object' && item.premium;
                   const label = typeof item === 'string' ? item : item.label;
                   return (
-                    <li key={i} className="flex items-start gap-3">
-                      <div className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 mt-0.5 ${
-                        isHighlight ? 'bg-gold/20 border border-gold/40' : 'bg-gold/10 border border-gold/20'
+                    <div key={i} className="flex items-center gap-3">
+                      <Check className={`w-3 h-3 ${isPremium ? 'text-gold' : 'text-gold/30'}`} />
+                      <span className={`text-[11px] font-bold ${
+                        isPremium ? 'text-gold' : 'text-white/60'
                       }`}>
-                        <Check className={`w-2.5 h-2.5 ${isHighlight ? 'text-gold' : 'text-gold/70'}`} />
-                      </div>
-                      <span className={`text-sm leading-snug ${
-                        isHighlight ? 'text-gold/80 font-semibold' : 'text-white/65'
-                      }`}>{label}</span>
-                      {isHighlight && (
-                        <span className="ml-auto text-[9px] bg-gold/10 text-gold border border-gold/20 px-2 py-0.5 rounded-full font-bold uppercase tracking-wide shrink-0">Exclusive</span>
-                      )}
-                    </li>
+                        {label}
+                      </span>
+                    </div>
                   );
                 })}
-              </ul>
+              </div>
 
-              {/* CTA */}
               <button
                 onClick={() => initiatePayment('double')}
-                className="w-full py-4 rounded-xl font-black uppercase tracking-[0.2em] text-sm bg-gold text-black hover:bg-white transition-all duration-200 flex items-center justify-center gap-2.5 group shadow-lg shadow-gold/20"
+                className="w-full py-4 rounded-xl font-black uppercase tracking-[0.2em] text-[10px] bg-gold text-black hover:bg-white transition-all duration-300 flex items-center justify-center gap-2 group"
               >
-                Pay ₹399 &amp; Enter
-                <ArrowLeft className="w-4 h-4 rotate-180 group-hover:translate-x-1 transition-transform" />
+                Double My Legacy
+                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
               </button>
             </div>
           </motion.div>
         </div>
 
-        {/* ── FOOTER NOTE ── */}
+        {/* ── TRUST BAR ── */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.5 }}
-          className="text-center mt-12 space-y-4"
+          transition={{ delay: 0.6 }}
+          className="mt-8 md:mt-12 w-full flex flex-col items-center"
         >
-          <div className="flex items-center justify-center gap-6 text-white/20 text-[10px] uppercase tracking-widest">
-            <span className="flex items-center gap-1.5"><Check className="w-3 h-3 text-gold/40" /> Secure Payment</span>
-            <span className="flex items-center gap-1.5"><Check className="w-3 h-3 text-gold/40" /> Powered by Cashfree</span>
-            <span className="flex items-center gap-1.5"><Check className="w-3 h-3 text-gold/40" /> Instant Confirmation</span>
+          <div className="flex items-center justify-center gap-6 opacity-20 text-[7px] uppercase tracking-[0.4em] font-black mb-6">
+            <span className="flex items-center gap-1.5"><Check className="w-2.5 h-2.5" /> Secure Checkout</span>
+            <span className="flex items-center gap-1.5"><Check className="w-2.5 h-2.5" /> Instant Access</span>
           </div>
 
           <button
@@ -1027,9 +976,9 @@ editor1.off('update', triggerUpdate);
               setEmail('');
               setWhatsapp('');
             }}
-            className="mt-2 text-white/20 hover:text-white/50 text-[10px] uppercase tracking-widest font-bold transition-colors flex items-center gap-2 mx-auto"
+            className="text-white/20 hover:text-white/50 text-[7px] uppercase tracking-[0.4em] font-black transition-all flex items-center gap-2"
           >
-            <ArrowLeft className="w-3 h-3" /> Not you? Re-register
+            <ArrowLeft className="w-2.5 h-2.5" /> Not you? Re-register
           </button>
         </motion.div>
       </div>
@@ -1236,7 +1185,7 @@ editor1.off('update', triggerUpdate);
                     className="flex-1 bg-white/5 border border-white/10 text-white/70 py-2 rounded-xl text-[10px] font-bold uppercase tracking-wider hover:bg-white/10 transition-all flex items-center justify-center gap-1.5">
                     <Eye className="w-3 h-3" /> Read
                   </Link>
-                  <button onClick={() => { setSubmittedData(poemSession.poem1); downloadReceipt(); }}
+                  <button onClick={() => downloadReceipt(poemSession.poem1)}
                     className="flex-1 bg-gold/10 border border-gold/20 text-gold py-2 rounded-xl text-[10px] font-bold uppercase tracking-wider hover:bg-gold/20 transition-all flex items-center justify-center gap-1.5">
                     <Download className="w-3 h-3" /> Receipt
                   </button>
@@ -1253,7 +1202,7 @@ editor1.off('update', triggerUpdate);
                     className="flex-1 bg-white/5 border border-white/10 text-white/70 py-2 rounded-xl text-[10px] font-bold uppercase tracking-wider hover:bg-white/10 transition-all flex items-center justify-center gap-1.5">
                     <Eye className="w-3 h-3" /> Read
                   </Link>
-                  <button onClick={() => { setSubmittedData(poemSession.poem2); downloadReceipt(); }}
+                  <button onClick={() => downloadReceipt(poemSession.poem2)}
                     className="flex-1 bg-gold/10 border border-gold/20 text-gold py-2 rounded-xl text-[10px] font-bold uppercase tracking-wider hover:bg-gold/20 transition-all flex items-center justify-center gap-1.5">
                     <Download className="w-3 h-3" /> Receipt
                   </button>
@@ -1278,7 +1227,7 @@ editor1.off('update', triggerUpdate);
         {plan !== 'double' && (
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
             <button 
-              onClick={downloadReceipt}
+              onClick={() => downloadReceipt(submittedData)}
               className="flex-1 bg-white text-black px-8 py-5 rounded-2xl font-black uppercase tracking-[0.2em] text-xs hover:bg-gold transition-all flex items-center justify-center gap-2 shadow-xl"
             >
               <Download className="w-4 h-4" /> Download Receipt

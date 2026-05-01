@@ -3,6 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { usePathname } from 'next/navigation';
 import { 
   Instagram, Twitter, Linkedin, 
   MoveRight, Feather, Mail, 
@@ -10,7 +11,12 @@ import {
 } from 'lucide-react';
 
 const Footer = () => {
+  const pathname = usePathname();
   const currentYear = new Date().getFullYear();
+
+  // Hide global footer on festival app pages (register, submit, read)
+  // Keep it on landing page (/poetry-festival-s2)
+  if (pathname?.startsWith('/poetry-festival-s2/')) return null;
 
   const footerLinks = {
     platform: [

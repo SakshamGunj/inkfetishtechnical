@@ -3,10 +3,16 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MessageCircle, Mail, X, Phone, MoveRight, HelpCircle } from 'lucide-react';
+import { usePathname } from 'next/navigation';
 
 export function FloatingContact() {
+    const pathname = usePathname();
     const [isOpen, setIsOpen] = useState(false);
     const modalRef = useRef<HTMLDivElement>(null);
+
+    // Hide on festival app pages (register, submit, read)
+    // Keep it on landing page (/poetry-festival-s2)
+    if (pathname?.startsWith('/poetry-festival-s2/')) return null;
 
     // Close when clicking outside
     useEffect(() => {

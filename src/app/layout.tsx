@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Providers } from "./providers";
-import Footer from "@/components/Footer";
+import { ConditionalFooter } from "@/components/ConditionalFooter";
 import { FloatingContact } from "@/components/FloatingContact";
 
 export const metadata: Metadata = {
@@ -44,7 +44,7 @@ export default function RootLayout({
       <body className="antialiased">
         <Providers>
           {children}
-          <Footer />
+          <ConditionalFooter />
           <FloatingContact />
         </Providers>
       </body>

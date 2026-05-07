@@ -49,7 +49,7 @@ export function FloatingContact() {
     ];
 
     return (
-        <div className="fixed bottom-6 right-6 z-[9999]">
+        <div className="fixed bottom-24 lg:bottom-6 right-4 lg:right-6 z-[9999]">
             <AnimatePresence>
                 {isOpen && (
                     <motion.div

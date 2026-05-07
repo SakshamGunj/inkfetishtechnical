@@ -13,6 +13,8 @@ CREATE TABLE IF NOT EXISTS public.syahi_orders (
     pincode TEXT NOT NULL,
     amount DECIMAL NOT NULL,
     status TEXT DEFAULT 'pending', -- 'pending', 'PAID', 'failed'
+    bought_certificate BOOLEAN DEFAULT FALSE,
+    bought_portfolio BOOLEAN DEFAULT FALSE,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now())
 );
 

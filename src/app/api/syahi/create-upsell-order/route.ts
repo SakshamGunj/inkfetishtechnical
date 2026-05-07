@@ -8,10 +8,6 @@ function getCashfreeBaseUrl(appId: string): string {
   return 'https://api.cashfree.com';
 }
 
-function toBase64(str: string): string {
-  return btoa(unescape(encodeURIComponent(str)));
-}
-
 function getBaseUrl(): string {
   if (process.env.NEXT_PUBLIC_BASE_URL && !process.env.NEXT_PUBLIC_BASE_URL.includes('localhost')) {
     return process.env.NEXT_PUBLIC_BASE_URL;
@@ -24,7 +20,7 @@ function getBaseUrl(): string {
 
 export async function POST(request: Request) {
   try {
-    const { amount, customerName, customerEmail, customerPhone, address, city, state, pincode, boughtCertificate, boughtPortfolio } = await request.json();
+    const { parentOrderId, upgradeType, amount } = await request.json();
 
     const appId = process.env.CASHFREE_APP_ID;
     const secretKey = process.env.CASHFREE_SECRET_KEY;
@@ -37,10 +33,7 @@ export async function POST(request: Request) {
     const siteUrl = getBaseUrl();
 
     const randomPart = Math.random().toString(36).slice(2, 7);
-    const orderId = `syahi_${Date.now()}_${randomPart}`;
-
-    const customerIdRaw = `syahi_${toBase64(customerEmail).replace(/[^a-zA-Z0-9]/g, '').slice(0, 20)}`;
-    const phone = `91${customerPhone.replace(/\D/g, '').slice(-10)}`;
+    const orderId = `upg_${Date.now()}_${randomPart}`;
 
     const response = await fetch(`${baseUrl}/pg/orders`, {
       method: 'POST',
@@ -55,26 +48,17 @@ export async function POST(request: Request) {
         order_amount: amount,
         order_currency: 'INR',
         customer_details: {
-          customer_id: customerIdRaw,
-          customer_name: customerName,
-          customer_email: customerEmail,
-          customer_phone: phone,
+          customer_id: 'syahi_upsell_customer',
+          customer_name: 'Syaahi Upsell',
+          customer_email: 'upsell@inkfetish.in',
+          customer_phone: '919999999999',
         },
         order_tags: {
-          source: 'syahi_vol1',
-          email: customerEmail,
-          name: customerName,
-          whatsapp: customerPhone,
-          address,
-          city,
-          state,
-          pincode,
-          cert: boughtCertificate ? 'yes' : 'no',
-          port: boughtPortfolio ? 'yes' : 'no',
+          parent_order_id: parentOrderId,
+          upgrade_type: upgradeType, // 'cert' or 'port'
         },
         order_meta: {
-          return_url: `${siteUrl}/anthology/syaahi/thank-you?order_id={order_id}`,
-          notify_url: `${siteUrl}/api/cashfree/webhook`,
+          return_url: `${siteUrl}/anthology/syaahi/thank-you?order_id=${parentOrderId}`,
         },
       }),
     });
@@ -83,7 +67,7 @@ export async function POST(request: Request) {
 
     if (!response.ok) {
       return NextResponse.json(
-        { error: data.message || 'Failed to create order' },
+        { error: data.message || 'Failed to create upsell order' },
         { status: response.status }
       );
     }
@@ -93,7 +77,7 @@ export async function POST(request: Request) {
       order_id: data.order_id,
     });
   } catch (error) {
-    console.error('Syahi Payment API error:', error);
+    console.error('Syahi Upsell API error:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

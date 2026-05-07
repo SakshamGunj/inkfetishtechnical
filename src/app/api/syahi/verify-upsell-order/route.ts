@@ -52,45 +52,34 @@ export async function GET(request: Request) {
     }
 
     const orderStatus = data.order_status;
+    const tags = data.order_tags || {};
+    const parentOrderId = tags.parent_order_id;
+    const upgradeType = tags.upgrade_type;
 
-    if (orderStatus === 'PAID') {
-      const tags = data.order_tags || {};
+    if (orderStatus === 'PAID' && parentOrderId && upgradeType) {
+      
+      const updateData: any = {};
+      if (upgradeType === 'cert') updateData.bought_certificate = true;
+      if (upgradeType === 'port') updateData.bought_portfolio = true;
 
       const { error: dbError } = await supabase
         .from('syahi_orders')
-        .upsert(
-          {
-            order_id: orderId,
-            cf_order_id: data.cf_order_id || '',
-            email: tags.email || '',
-            name: tags.name || '',
-            whatsapp: tags.whatsapp || '',
-            address: tags.address || '',
-            city: tags.city || '',
-            state: tags.state || '',
-            pincode: tags.pincode || '',
-            amount: data.order_amount,
-            status: 'PAID',
-            bought_certificate: tags.cert === 'yes',
-            bought_portfolio: tags.port === 'yes',
-            updated_at: new Date().toISOString(),
-          },
-          { onConflict: 'order_id' }
-        );
+        .update(updateData)
+        .eq('order_id', parentOrderId);
 
       if (dbError) {
-        console.error('Supabase upsert error:', dbError.message);
+        console.error('Supabase update error:', dbError.message);
       }
     }
 
     return NextResponse.json({
       order_id: orderId,
       order_status: orderStatus,
-      order_amount: data.order_amount,
-      order_tags: data.order_tags || {},
+      parent_order_id: parentOrderId,
+      upgrade_type: upgradeType
     });
   } catch (error) {
-    console.error('Syahi Verify order error:', error);
+    console.error('Syahi Verify upsell error:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

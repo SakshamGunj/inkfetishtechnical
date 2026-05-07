@@ -12,6 +12,22 @@ export default function SyahiLandingPage() {
   
   useEffect(() => {
     setIsMounted(true);
+    
+    // Check if already paid
+    const paidOrderId = localStorage.getItem('syaahi_paid_order_id');
+    if (paidOrderId) {
+      fetch(`/api/syahi/verify-order?order_id=${paidOrderId}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.order_status === 'PAID') {
+            window.location.href = `/anthology/syaahi/thank-you?order_id=${paidOrderId}`;
+          } else {
+            localStorage.removeItem('syaahi_paid_order_id');
+          }
+        })
+        .catch(() => {});
+    }
+
     // 3 days, 14 hours, 22 mins initially
     const DURATION = 3 * 24 * 60 * 60 * 1000 + 14 * 60 * 60 * 1000 + 22 * 60 * 1000; 
     

@@ -44,6 +44,21 @@ export default function BuyClient() {
   const totalAmount = discountedPrice + (addCertificate ? certPrice : 0) + (addPortfolio ? portPrice : 0);
 
   useEffect(() => {
+    // Check for previous successful order to prevent double-buying
+    const paidOrderId = localStorage.getItem('syaahi_paid_order_id');
+    if (paidOrderId) {
+      fetch(`/api/syahi/verify-order?order_id=${paidOrderId}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.order_status === 'PAID') {
+            window.location.href = `/anthology/syaahi/thank-you?order_id=${paidOrderId}`;
+          } else {
+            localStorage.removeItem('syaahi_paid_order_id');
+          }
+        })
+        .catch(() => {});
+    }
+
     // Load Cashfree SDK
     const script = document.createElement('script');
     script.src = 'https://sdk.cashfree.com/js/v3/cashfree.js';
@@ -108,8 +123,9 @@ export default function BuyClient() {
           customerName: formData.name,
           customerEmail: formData.email,
           customerPhone: formData.whatsapp,
+          boughtCertificate: addCertificate,
+          boughtPortfolio: addPortfolio,
           ...formData,
-          // We can also pass order bumps to be saved if needed, but total is most important for payment
         }),
       });
 
@@ -131,6 +147,7 @@ export default function BuyClient() {
 
       if (verifyData.order_status === 'PAID') {
         setPaymentStatus('paid');
+        localStorage.setItem('syaahi_paid_order_id', orderData.order_id);
         window.location.href = `/anthology/syaahi/thank-you?order_id=${orderData.order_id}`;
       } else {
         setPaymentStatus('failed');

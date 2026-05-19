@@ -18,6 +18,7 @@ const authors = [
   { name: 'Priya Bharathy', slug: 'priya', role: 'Inspirational Memoir', imageBg: 'bg-ink-900/5' },
   { name: 'Lillian Blythe', slug: 'shambhavi', role: 'Romance & Drama', imageBg: 'bg-ink-900/5' },
   { name: 'Rochi Sulbhewar', slug: 'rochi', role: 'Economist & Author', imageBg: 'bg-ink-900/10' },
+  { name: 'Mahika Mukund', slug: 'mahika', role: 'Contemporary Author & Poet', imageBg: 'bg-ink-900/5' },
   { name: 'Anonymous', slug: 'anonymous', role: 'The Love Anthology Co-Author', imageBg: 'bg-ink-900/10' },
 ];
 

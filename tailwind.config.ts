@@ -85,6 +85,11 @@ export default {
 					dim: '#a38446',
 					glow: '#ebd298'
 				},
+				'gold-main': '#D88A06',
+				'gold-light': '#FFCC66',
+				'gold-dark': '#8F4D00',
+				obsidian: '#0B0B0C',
+				ivory: '#F5F2EE',
 				leather: {
 					DEFAULT: '#3e2723',
 					light: '#5d4037'

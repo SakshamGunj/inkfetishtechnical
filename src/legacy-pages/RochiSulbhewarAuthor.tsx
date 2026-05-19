@@ -56,6 +56,9 @@ const authorData = {
         vision: "To become a renowned scientist, researcher, and published author while launching her own startup.",
         message: "I want my books to be a comfort and cozy read which will give a sense of relaxation and satisfaction to the readers."
     },
+    images: {
+        hero: "https://res.cloudinary.com/dde8ekuuu/image/upload/q_auto/f_auto/v1779219146/WhatsApp_Image_2026-04-23_at_11.56.53_AM_wcnfvy.jpg"
+    },
     achievements: [
         { title: "IELTS Band 8", icon: Globe, desc: "Exceptional English proficiency and communication." },
         { title: "Published Researcher", icon: Microscope, desc: "Research published on the Community Quest App." },
@@ -156,20 +159,20 @@ const RochiSulbhewarAuthor = () => {
                             initial={{ opacity: 0, scale: 0.9 }}
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ duration: 1.2 }}
-                            className="w-full max-w-[450px] mx-auto aspect-[3/4] bg-zinc-900 rounded-t-[100px] rounded-b-lg overflow-hidden relative grayscale hover:grayscale-0 transition-all duration-1000 group shadow-[0_0_50px_rgba(0,0,0,0.5)] flex items-center justify-center text-center p-8"
+                            className="w-full max-w-[450px] mx-auto aspect-[3/4] bg-zinc-900 rounded-t-[100px] rounded-b-lg overflow-hidden relative grayscale hover:grayscale-0 transition-all duration-1000 group shadow-[0_0_50px_rgba(0,0,0,0.5)]"
                         >
+                            <img
+                                src={authorData.images.hero}
+                                alt={authorData.name}
+                                className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-1000"
+                            />
                             <div className="absolute inset-0 bg-gradient-to-t from-ink-black via-transparent to-transparent opacity-60" />
-                            <div className="relative z-10 flex flex-col items-center">
-                                <FlaskConical className="w-20 h-20 text-gold/30 mb-4" />
-                                <p className="text-gold/50 font-display italic text-2xl">Economics & Poetry</p>
-                                <p className="text-parchment/30 text-sm mt-2">A Symphony of Logic and Soul</p>
-                            </div>
 
                             {/* Floating Element */}
                             <motion.div
                                 animate={{ y: [0, -10, 0] }}
                                 transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                                className="absolute bottom-8 right-8 bg-black/60 backdrop-blur-md p-4 rounded-xl border border-white/10 hidden sm:block"
+                                className="absolute bottom-8 right-8 bg-black/60 backdrop-blur-md p-4 rounded-xl border border-white/10 hidden sm:block z-10"
                             >
                                 <Microscope className="w-6 h-6 text-gold mb-2" />
                                 <p className="text-xs text-parchment/60 uppercase tracking-wider">IISER Scholar</p>

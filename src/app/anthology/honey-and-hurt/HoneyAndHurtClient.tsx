@@ -1,575 +1,760 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { 
-  Heart, 
-  PenTool, 
-  BookOpen, 
-  Feather, 
-  Sparkles, 
-  Award, 
+import {
+  Award,
   BadgeCheck,
+  BookOpen,
+  CheckCircle2,
+  ChevronDown,
   ChevronRight,
+  Clock,
   Globe,
+  PenTool,
   Quote,
-  Star
+  ShieldCheck,
+  Sparkles,
+  Star,
+  Users,
+  Zap,
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
+const proofStats = [
+  { value: 'Inkfetish', label: 'Publications' },
+  { value: '3200+', label: 'Writers Trust Us' },
+  { value: '4.8*', label: 'Star Ratings' },
+  { value: '5+', label: 'Successful Anthologies' },
+];
+
+const heroBenefits = [
+  'Claim your ISBN and become a verifiable published author.',
+  'Get your work featured in a premium, hardbound-quality anthology.',
+  'Receive a professional author portfolio website (Worth ₹15k).',
+  'No prior publishing experience required. We guide you.',
+];
+
+const audienceFit = [
+  'You have words sitting in your notes app that deserve to be in a real, physical book.',
+  'You want the credibility and authority of being a "Published Author" without the years of rejection letters.',
+  'You want a premium artifact to show your friends, family, and future readers.',
+  'You are an action-taker ready to claim one of the final 12 spots.'
+];
+
+const themePillars = [
+  { title: 'The Hook', desc: 'Love, Longing, & Heartbreak. Universal themes that guarantee reader engagement.' },
+  { title: 'The Story', desc: 'Your unique voice polished by our elite editorial team so it shines.' },
+  { title: 'The Offer', desc: 'A complete author-branding package wrapped around your featured piece.' },
+];
+
+const benefits = [
+  { title: 'VERIFIABLE ISBN', icon: BadgeCheck, desc: 'Not a self-published blog. A real, globally recognized book credit you can leverage forever.' },
+  { title: 'AUTHOR PORTFOLIO', icon: Star, desc: 'A dedicated digital presence. Stop sending people to a messy Instagram. Send them to your professional author page.' },
+  { title: 'EDITORIAL POLISH', icon: PenTool, desc: 'We do not change your voice; we sharpen your blade. Professional editing included.' },
+  { title: 'GILDED CERTIFICATE', icon: Award, desc: 'Physical/digital proof of your achievement to hang on your wall or post online.' },
+  { title: 'GLOBAL DISTRIBUTION', icon: Globe, desc: 'Amazon, Kindle, and global reach setup so your words can actually be found.' },
+  { title: 'ZERO ROYALY TRAPS', icon: BookOpen, desc: 'Transparent rights. You own your words. We just give them a premium stage.' },
+];
+
+const processSteps = [
+  { step: '01', title: 'Claim Spot', desc: 'Apply now to lock in the ₹485 price before it jumps back to ₹2,499. Takes 60 seconds.' },
+  { step: '02', title: 'Get Approved', desc: 'Our team reviews your fit. If approved, we onboard you. No risk if you aren\'t a fit.' },
+  { step: '03', title: 'Get Published', desc: 'We edit, design, format, and launch. 15 days later, you are a published author.' },
+];
+
+const proofBooks = [
+  { title: 'Love at Minus One', img: 'https://i.ibb.co/PZk5Qnmt/Whats-App-Image-2025-12-25-at-2-27-03-AM-2.jpg', status: 'Sold Out' },
+  { title: 'Syaahi', img: 'https://i.ibb.co/Y4zN8Rp0/Whats-App-Image-2025-12-08-at-6-39-26-PM-2.jpg', status: 'Bestseller' },
+  { title: "The Poet's Heart", img: 'https://i.ibb.co/mCH1WTBD/Whats-App-Image-2025-12-25-at-2-27-03-AM-1.jpg', status: 'Sold Out' },
+];
+
+const valueStack = [
+  { title: 'Premium Anthology Feature & ISBN', value: '₹4,999', desc: 'Your work published in a globally distributed book.' },
+  { title: 'Done-For-You Author Portfolio', value: '₹14,999', desc: 'Your dedicated professional credibility website.' },
+  { title: 'Elite Editorial & Formatting', value: '₹2,999', desc: 'We make your writing look and read perfectly.' },
+  { title: 'Gilded Certificate & Launch Assets', value: '₹1,999', desc: 'Marketing materials to announce your authority.' },
+];
+
+const testimonials = [
+  { name: 'Ananya R.', role: 'Now A Published Author', text: "I thought publishing was too hard. They made it a 15-day breeze. The best investment in my personal brand ever.", rotate: '-rotate-2', z: 'z-10' },
+  { name: 'Vikram S.', role: 'Poet', text: "I finally have a credential that makes people take my writing seriously. The portfolio alone was worth 10x the price.", rotate: 'rotate-3', z: 'z-20' },
+  { name: 'Sara M.', role: 'Storyteller', text: "It felt like an absolute steal. The quality of the book is insane. Don't overthink this.", rotate: '-rotate-1', z: 'z-30' },
+  { name: 'K.', role: 'Verified Author', text: "The editing team didn't change my voice, they just made it sharper. The final physical book smells and feels premium.", rotate: 'rotate-2', z: 'z-20' },
+  { name: 'Priya', role: 'First-time Writer', text: "I was scared to share my words. This anthology gave me the safe space and professional push I needed. 10/10.", rotate: '-rotate-3', z: 'z-10' },
+  { name: 'Verified Author', role: 'Romance Writer', text: "Got the book yesterday. Seeing my name in print, with a real ISBN, made me cry. Worth every single rupee.", rotate: 'rotate-1', z: 'z-30' },
+  { name: 'Rohan D.', role: 'Published Poet', text: "The digital portfolio they built for me helped me land a freelance writing gig within a week. The ROI is ridiculous.", rotate: '-rotate-2', z: 'z-20' },
+  { name: 'S. N.', role: 'Verified Author', text: "No hidden fees, no royalty traps. They did exactly what they promised in exactly 15 days.", rotate: 'rotate-3', z: 'z-10' },
+  { name: 'Aisha', role: 'Writer', text: "The gilded certificate is hanging in my living room. Inkfetish actually cares about authors.", rotate: '-rotate-1', z: 'z-30' },
+];
+
+const faqs = [
+  { q: 'Why is it only ₹485?', a: 'Because we are building a massive roster of case studies. We know if we deliver massive value now, you\'ll come back to us when you write your solo book. It\'s an ethical bribe.' },
+  { q: 'Do I need to be a professional writer?', a: 'No. This is designed to TAKE you from amateur to published professional. Our editors guide you.' },
+  { q: 'Is there any hidden catch?', a: 'None. You pay ₹485 (after we approve your application). No hidden publishing fees. No mandatory book purchases.' },
+  { q: 'What if my work isn\'t ready?', a: 'Apply anyway to lock the price. You don\'t need the final draft today. We give you a deadline and formatting guidelines after approval.' },
+];
+
+const contestGalleryImages = [
+  "https://res.cloudinary.com/dde8ekuuu/image/upload/v1776100331/WhatsApp_Image_2026-04-13_at_9.06.50_PM-compressed_f54p62.webp",
+  "https://res.cloudinary.com/dde8ekuuu/image/upload/v1776100331/WhatsApp_Image_2026-04-13_at_9.06.50_PM_1_-compressed_bla9w8.webp",
+  "https://res.cloudinary.com/dde8ekuuu/image/upload/v1776100331/WhatsApp_Image_2026-04-13_at_9.06.49_PM-compressed_krdg8g.webp",
+  "https://res.cloudinary.com/dde8ekuuu/image/upload/v1776100330/WhatsApp_Image_2026-04-13_at_9.06.49_PM_1_-compressed_ylopb7.webp",
+  "https://res.cloudinary.com/dde8ekuuu/image/upload/v1776100330/WhatsApp_Image_2026-04-13_at_9.06.50_PM_2_-compressed_nrkzf4.webp",
+  "https://res.cloudinary.com/dde8ekuuu/image/upload/v1776100330/WhatsApp_Image_2026-04-13_at_8.12.24_PM-compressed_skr10b.webp",
+  "https://res.cloudinary.com/dde8ekuuu/image/upload/v1776100330/WhatsApp_Image_2026-04-13_at_9.06.48_PM-compressed_ftx5ea.webp",
+  "https://res.cloudinary.com/dde8ekuuu/image/upload/v1776100330/WhatsApp_Image_2026-04-13_at_9.06.48_PM_1_-compressed_zolkao.webp",
+  "https://res.cloudinary.com/dde8ekuuu/image/upload/v1776100330/WhatsApp_Image_2026-04-13_at_8.27.49_PM-compressed_hhn7yj.webp",
+  "https://res.cloudinary.com/dde8ekuuu/image/upload/v1776100329/WhatsApp_Image_2026-04-13_at_8.19.16_PM-compressed_pii87q.webp",
+  "https://res.cloudinary.com/dde8ekuuu/image/upload/v1775933371/WhatsApp_Image_2026-03-29_at_12.40.13_PM-compressed_wjaeil.webp",
+  "https://res.cloudinary.com/dde8ekuuu/image/upload/v1775933370/WhatsApp_Image_2026-03-29_at_12.35.16_PM-compressed_qldola.webp",
+  "https://res.cloudinary.com/dde8ekuuu/image/upload/v1775933368/WhatsApp_Image_2026-03-29_at_12.35.16_PM_2_-compressed_d12sxy.webp",
+  "https://res.cloudinary.com/dde8ekuuu/image/upload/v1775933367/WhatsApp_Image_2026-03-29_at_12.35.16_PM_1_-compressed_ddda2d.webp",
+  "https://res.cloudinary.com/dde8ekuuu/image/upload/v1775933367/WhatsApp_Image_2026-03-28_at_8.00.34_PM-compressed_yfhhz2.webp"
+];
+
+const styles = `
+  @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+  :root {
+    --gold-main: #D88A06;
+    --gold-light: #FFCC66;
+    --gold-dark: #8F4D00;
+    --obsidian: #0B0B0C;
+    --ivory: #F5F2EE;
+  }
+
+  .font-cinzel { font-family: 'Cinzel', serif; }
+  .font-cormorant { font-family: 'Cormorant Garamond', serif; }
+  .font-inter { font-family: 'Inter', sans-serif; }
+  .text-obsidian { color: var(--obsidian); }
+  .text-ivory { color: var(--ivory); }
+  .text-gold-main { color: var(--gold-main); }
+  .text-gold-light { color: var(--gold-light); }
+  .bg-ivory { background-color: var(--ivory); }
+  .bg-obsidian { background-color: var(--obsidian); }
+  .bg-gold-main { background-color: var(--gold-main); }
+  .border-gold-main { border-color: var(--gold-main); }
+  .border-gold-dark { border-color: var(--gold-dark); }
+  .fill-gold-main { fill: var(--gold-main); }
+  .luxury-border { border-color: #E3D8C7; }
+  .glass-effect {
+    background: rgba(245, 242, 238, 0.82);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+  }
+
+  .gold-shimmer {
+    background: linear-gradient(135deg, #8f4d00 0%, #d88a06 25%, #ffcf6b 50%, #d88a06 75%, #8f4d00 100%);
+    background-size: 400% 400%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer 8s ease infinite;
+  }
+  
+  .red-alert-text {
+    color: #e53e3e;
+    font-weight: 900;
+  }
+
+  @keyframes shimmer {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  .gold-button {
+    background: linear-gradient(135deg, #ffcf6b, #d88a06);
+    color: black;
+    transition: all 0.35s cubic-bezier(0.165, 0.84, 0.44, 1);
+    box-shadow: 0 8px 24px rgba(216, 138, 6, 0.22);
+  }
+
+  .gold-button:hover {
+    box-shadow: 0 12px 32px rgba(216, 138, 6, 0.35);
+    transform: translateY(-1px);
+    filter: brightness(1.08);
+  }
+
+  .obsidian-button {
+    background: #0B0B0C;
+    color: #F5F2EE;
+    transition: all 0.35s ease;
+  }
+
+  .obsidian-button:hover {
+    background: #1A1712;
+    color: #FFCC66;
+  }
+
+  @keyframes scroll-left {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  @keyframes scroll-right {
+    0% { transform: translateX(-50%); }
+    100% { transform: translateX(0); }
+  }
+  .animate-scroll-left {
+    animation: scroll-left 40s linear infinite;
+  }
+  .animate-scroll-right {
+    animation: scroll-right 40s linear infinite;
+  }
+`;
+
 const HoneyAndHurtClient = () => {
-    const router = useRouter();
-    const { scrollY } = useScroll();
-    const [isScrolled, setIsScrolled] = useState(false);
+  const router = useRouter();
+  const { scrollY } = useScroll();
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
+  const opacityHero = useTransform(scrollY, [0, 340], [1, 0]);
 
-    useEffect(() => {
-        const handleScroll = () => {
-            setIsScrolled(window.scrollY > 50);
-        };
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
-    
-    // Parallax effects for cinematic feel
-    const y1 = useTransform(scrollY, [0, 500], [0, 200]);
-    const opacityHero = useTransform(scrollY, [0, 300], [1, 0]);
+  const toggleFaq = (index: number) => {
+    setOpenFaqIndex(openFaqIndex === index ? null : index);
+  };
 
-    const styles = `
-        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500&display=swap');
-        
-        :root {
-            --gold-main: #D88A06;
-            --gold-light: #FFCC66;
-            --gold-dark: #8F4D00;
-            --obsidian: #0B0B0C;
-            --ivory: #F5F2EE;
-        }
+  useEffect(() => {
+    const handleScroll = () => setIsScrolled(window.scrollY > 50);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
-        .font-cinzel { font-family: 'Cinzel', serif; }
-        .font-cormorant { font-family: 'Cormorant Garamond', serif; }
-        .font-inter { font-family: 'Inter', sans-serif; }
-        
-        .gold-shimmer {
-            background: linear-gradient(135deg, #8f4d00 0%, #d88a06 25%, #ffcf6b 50%, #d88a06 75%, #8f4d00 100%);
-            background-size: 400% 400%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: shimmer 8s ease infinite;
-        }
+  const goToRegister = () => router.push('/anthology/honey-and-hurt/register');
 
-        @keyframes shimmer {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
+  return (
+    <div className="min-h-screen bg-ivory text-obsidian font-cormorant selection:bg-amber-100 selection:text-amber-900 overflow-x-hidden">
+      <style>{styles}</style>
 
-        .gold-button {
-            background: linear-gradient(135deg, #ffcf6b, #d88a06);
-            color: black;
-            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-            box-shadow: 0 4px 20px rgba(216, 138, 6, 0.2);
-        }
+      {/* Top Banner - High Urgency */}
+      <div className="bg-[#e53e3e] text-white py-2 text-center font-inter text-[10px] md:text-xs font-bold tracking-wide uppercase sticky top-0 z-[60] shadow-sm px-4">
+        <span className="flex items-center justify-center gap-4 max-w-xs mx-auto md:max-w-none leading-tight">
+          <span className="animate-pulse flex items-center gap-1.5"><Zap className="w-3.5 h-3.5" /> ATTENTION:</span>
+          <span>PRICE DROP TO ₹485. ONLY 12 SLOTS REMAINING.</span>
+        </span>
+      </div>
 
-        .gold-button:hover {
-            box-shadow: 0 10px 30px rgba(216, 138, 6, 0.4);
-            transform: translateY(-2px);
-            filter: brightness(1.1);
-        }
 
-        .text-obsidian { color: var(--obsidian); }
-        .bg-ivory { background-color: var(--ivory); }
-        .bg-obsidian { background-color: var(--obsidian); }
-        
-        .editorial-spacing { letter-spacing: 0.15em; }
-        .luxury-border { border-color: #E3D8C7; }
-        
-        .gold-drip {
-            position: absolute;
-            width: 1px;
-            background: linear-gradient(to bottom, transparent, var(--gold-main), transparent);
-            height: 100px;
-        }
-    `;
 
-    return (
-        <div className="min-h-screen bg-ivory text-obsidian font-cormorant selection:bg-amber-100 selection:text-amber-900 overflow-x-hidden">
-            <style>{styles}</style>
+      {/* Direct Response Hero */}
+      <section className="relative flex items-center pt-12 md:pt-20 pb-16 px-6 overflow-hidden min-h-[90vh]">
+        <motion.div style={{ opacity: opacityHero }} className="absolute inset-0 z-0">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_10%_10%,_var(--gold-light)_0%,_transparent_50%)] opacity-10" />
+        </motion.div>
 
-            {/* --- TOP BAR (URGENCY) --- */}
-            <div className="bg-obsidian text-slate-50 py-2.5 text-center font-cinzel text-[8px] md:text-[10px] tracking-[0.5em] uppercase sticky top-0 z-[60] shadow-md px-4 border-b border-gold-dark/20">
-                <span className="flex items-center justify-center gap-4 max-w-xs mx-auto md:max-w-none leading-tight">
-                    <span className="gold-shimmer font-bold">LIMITED: 12 SLOTS REMAINING</span>
-                    <span className="hidden md:inline text-slate-500">|</span>
-                    <span className="hidden md:inline">PREMIUM 80 GSM MATTE EDITION</span>
-                </span>
-            </div>
+        <div className="container mx-auto relative z-10 max-w-6xl">
+          <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-10 lg:gap-14 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, ease: 'easeOut' }}
+              className="space-y-6 text-center lg:text-left"
+            >
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-red-100 text-red-700 border border-red-200 rounded-full font-inter text-[10px] font-black uppercase">
+                <Clock className="w-3.5 h-3.5" /> Limited Time: 80% OFF Launch Promo
+              </div>
 
-            {/* --- LUXURY NAVBAR --- */}
-            <nav className={`fixed top-10 left-0 w-full z-50 transition-all duration-500 ${isScrolled ? 'translate-y-[-40px] opacity-0 pointer-events-none' : 'opacity-100'}`}>
-                <div className="container mx-auto px-6">
-                    <div className="glass-effect rounded-full px-8 py-4 flex items-center justify-between shadow-2xl border border-white/20">
-                        <div className="font-cinzel text-lg tracking-[0.3em] font-bold text-obsidian">INKFETISH</div>
-                        
-                        <div className="hidden md:flex items-center gap-10 font-cinzel text-[10px] tracking-widest uppercase text-slate-500">
-                            <a href="#concept" className="hover:text-gold-main transition-colors">The Soul</a>
-                            <a href="#benefits" className="hover:text-gold-main transition-colors">Privileges</a>
-                            <a href="#process" className="hover:text-gold-main transition-colors">The Path</a>
-                        </div>
+              <div className="space-y-4">
+                <h1 className="font-inter text-4xl md:text-5xl lg:text-[4rem] font-black leading-[1.05] tracking-tight text-obsidian uppercase">
+                  JOIN THE <br className="hidden md:block"/> <span className="gold-shimmer">HONEY AND HURT</span> ANTHOLOGY
+                </h1>
+              </div>
 
-                        <button 
-                            onClick={() => router.push('/anthology/honey-and-hurt/register')}
-                            className="gold-button px-6 py-2.5 rounded-full font-cinzel font-bold text-[9px] tracking-widest uppercase"
-                        >
-                            Claim Slot
-                        </button>
-                    </div>
-                </div>
-            </nav>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 max-w-xl mx-auto lg:mx-0">
+                {heroBenefits.map((item) => (
+                  <div key={item} className="flex items-start gap-2.5 justify-center lg:justify-start text-left">
+                    <CheckCircle2 className="w-5 h-5 text-green-600 shrink-0 mt-0.5" />
+                    <span className="font-inter text-[13px] md:text-sm text-slate-800 font-bold leading-snug">{item}</span>
+                  </div>
+                ))}
+              </div>
 
-            {/* --- CINEMATIC HERO (HORMOZI STYLE) --- */}
-            <section className="relative min-h-screen flex items-center pt-32 pb-20 px-6 overflow-hidden">
-                <motion.div style={{ opacity: opacityHero }} className="absolute inset-0 z-0">
-                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_10%_10%,_var(--gold-light)_0%,_transparent_50%)] opacity-10" />
-                </motion.div>
-
-                <div className="container mx-auto relative z-10">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-                        {/* Left Column: The Offer */}
-                        <motion.div
-                            initial={{ opacity: 0, x: -30 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ duration: 1, ease: "easeOut" }}
-                            className="space-y-8 text-center lg:text-left"
-                        >
-                            <div className="inline-flex items-center gap-2 px-4 py-2 bg-obsidian text-white rounded-full font-cinzel text-[10px] tracking-[0.3em] uppercase">
-                                <Sparkles className="w-3 h-3 text-gold-main" /> The Grand Slam Offer
-                            </div>
-                            
-                            <h1 className="font-cinzel text-5xl md:text-8xl font-black leading-[0.9] tracking-tighter">
-                                <span className="gold-shimmer block">HONEY</span>
-                                <span className="text-obsidian block opacity-90">& HURT</span>
-                            </h1>
-
-                            <p className="font-cormorant text-2xl md:text-3xl text-slate-600 leading-relaxed italic max-w-xl">
-                                Become a Globally Published Author in 15 Days—Even if You've Never Published Before.
-                            </p>
-
-                            <div className="space-y-4 pt-4">
-                                {[
-                                    "Guaranteed Amazon & Global Distribution",
-                                    "Professional Editorial & Cover Design",
-                                    "Personalized Author Portfolio Website (Value ₹15k)",
-                                    "Official ISBN & Gilded Certification"
-                                ].map((item, i) => (
-                                    <div key={i} className="flex items-center gap-3 justify-center lg:justify-start">
-                                        <BadgeCheck className="w-5 h-5 text-gold-main shrink-0" />
-                                        <span className="font-inter text-sm tracking-wide text-slate-700 font-medium">{item}</span>
-                                    </div>
-                                ))}
-                            </div>
-
-                            <div className="flex flex-col sm:flex-row gap-6 justify-center lg:justify-start pt-6">
-                                <motion.button
-                                    whileHover={{ scale: 1.05 }}
-                                    whileTap={{ scale: 0.98 }}
-                                    onClick={() => router.push('/anthology/honey-and-hurt/register')}
-                                    className="gold-button px-12 py-5 rounded-full font-cinzel font-bold text-xs tracking-[0.3em] uppercase shadow-2xl"
-                                >
-                                    Claim Your Author Slot
-                                </motion.button>
-                            </div>
-
-                            {/* Trust Signal */}
-                            <div className="pt-8 flex items-center justify-center lg:justify-start gap-4">
-                                <div className="flex -space-x-3">
-                                    {[1, 2, 3, 4].map(i => (
-                                        <div key={i} className="w-10 h-10 rounded-full border-2 border-white bg-slate-200" />
-                                    ))}
-                                </div>
-                                <div className="text-left">
-                                    <div className="flex gap-1">
-                                        {[1, 2, 3, 4, 5].map(i => <Star key={i} className="w-3 h-3 fill-gold-main text-gold-main" />)}
-                                    </div>
-                                    <p className="font-inter text-[10px] text-slate-500 uppercase tracking-widest mt-1">Joined by 400+ Gilded Authors</p>
-                                </div>
-                            </div>
-                        </motion.div>
-
-                        {/* Right Column: The Product Visual */}
-                        <motion.div
-                            initial={{ opacity: 0, scale: 0.9, rotate: 5 }}
-                            animate={{ opacity: 1, scale: 1, rotate: -2 }}
-                            transition={{ duration: 1.2, ease: "easeOut" }}
-                            className="relative"
-                        >
-                            <div className="relative z-10 w-full max-w-lg mx-auto aspect-[4/5] drop-shadow-[0_35px_35px_rgba(216,138,6,0.2)]">
-                                <img 
-                                    src="/anthology/honey-and-hurt-book.png" 
-                                    alt="Honey and Hurt Anthology Book Cover" 
-                                    className="w-full h-full object-contain"
-                                />
-                            </div>
-                            {/* Decorative Elements */}
-                            <div className="absolute -top-10 -right-10 w-64 h-64 bg-gold-main/10 rounded-full blur-[100px] -z-10" />
-                            <div className="absolute -bottom-10 -left-10 w-64 h-64 bg-obsidian/5 rounded-full blur-[100px] -z-10" />
-                        </motion.div>
-                    </div>
-                </div>
-
-                {/* Scroll Indicator */}
-                <motion.div 
-                    animate={{ y: [0, 10, 0] }}
-                    transition={{ repeat: Infinity, duration: 2 }}
-                    className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-30"
+              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-4">
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={goToRegister}
+                  className="gold-button px-8 md:px-10 py-4 rounded-xl font-inter font-black text-sm md:text-base uppercase flex items-center justify-center gap-2.5"
                 >
-                    <span className="font-cinzel text-[8px] tracking-[0.4em] uppercase">Scroll</span>
-                    <div className="w-px h-12 bg-obsidian" />
-                </motion.div>
-            </section>
+                  YES! I Want In For Just ₹485 <ChevronRight className="w-5 h-5" />
+                </motion.button>
+              </div>
+            </motion.div>
 
-            {/* --- STORY TEASER (Massive Whitespace) --- */}
-            <section id="concept" className="py-40 bg-white">
-                <div className="container mx-auto px-6">
-                    <div className="max-w-4xl mx-auto">
-                        <motion.div
-                            initial={{ opacity: 0, y: 40 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 1 }}
-                            className="text-center space-y-12"
-                        >
-                            <h2 className="font-cinzel text-2xl md:text-4xl tracking-[0.2em] text-obsidian uppercase">The Story Behind The Gilded</h2>
-                            <div className="w-16 h-px bg-gold-main mx-auto" />
-                            <p className="font-cormorant text-2xl md:text-4xl leading-[1.6] text-slate-500 font-light italic">
-                                Following the massive success of <span className="text-obsidian font-bold">SYAAHI</span>, where we featured the Top 200 writers of India, Honey & Hurt is our most ambitious project yet. We aren't just printing another book; we are crafting an artifact. 
-                            </p>
-                            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 pt-8">
-                                <div className="text-center">
-                                    <p className="font-cinzel text-xl text-obsidian font-bold">80 GSM</p>
-                                    <p className="font-cinzel text-[8px] tracking-widest uppercase text-slate-400">Premium Paper</p>
-                                </div>
-                                <div className="text-center">
-                                    <p className="font-cinzel text-xl text-obsidian font-bold">Matte</p>
-                                    <p className="font-cinzel text-[8px] tracking-widest uppercase text-slate-400">Finish</p>
-                                </div>
-                                <div className="text-center">
-                                    <p className="font-cinzel text-xl text-obsidian font-bold">Global</p>
-                                    <p className="font-cinzel text-[8px] tracking-widest uppercase text-slate-400">ISBN</p>
-                                </div>
-                                <div className="text-center">
-                                    <p className="font-cinzel text-xl text-obsidian font-bold">Limited</p>
-                                    <p className="font-cinzel text-[8px] tracking-widest uppercase text-slate-400">Edition</p>
-                                </div>
-                            </div>
-                        </motion.div>
-                    </div>
-                </div>
-            </section>
-
-            {/* --- THEMES (Gothic Romance) --- */}
-            <section className="py-32 bg-obsidian text-ivory relative">
-                <div className="container mx-auto px-6">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-24 items-center">
-                        <div className="space-y-12">
-                            <h3 className="font-cinzel text-4xl md:text-6xl font-bold leading-tight">
-                                <span className="text-white">Sweetness</span> <br />
-                                <span className="gold-shimmer">Meets Decay</span>
-                            </h3>
-                            <div className="space-y-8 font-cormorant text-xl text-slate-400">
-                                <p className="leading-relaxed">
-                                    Our editorial team selects only the most resonant voices for this edition. This isn't just a book; it's a legacy piece bound in obsidian and gold.
-                                </p>
-                                <ul className="space-y-6">
-                                    {[
-                                        { t: "Love & Obsession", d: "The intoxicating nectar that blinds the senses." },
-                                        { t: "Pain & Healing", d: "The sharp sting that leaves a permanent mark." },
-                                        { t: "The Duality", d: "Where the honey meets the hurt." }
-                                    ].map((item, i) => (
-                                        <li key={i} className="group border-l border-gold-dark pl-6 py-2 hover:border-gold-light transition-colors">
-                                            <span className="font-cinzel text-xs tracking-[0.2em] uppercase text-white block mb-1">{item.t}</span>
-                                            <span className="italic">{item.d}</span>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        </div>
-
-                        <div className="relative">
-                            <div className="aspect-[3/4] border luxury-border p-4 relative group">
-                                <div className="absolute inset-0 bg-gold-main/5 group-hover:bg-transparent transition-colors duration-700" />
-                                <div className="w-full h-full bg-slate-900 flex items-center justify-center border luxury-border overflow-hidden">
-                                    <motion.div 
-                                        animate={{ scale: [1, 1.05, 1] }}
-                                        transition={{ repeat: Infinity, duration: 10 }}
-                                        className="text-center p-8"
-                                    >
-                                        <Quote className="w-12 h-12 text-gold-main mx-auto mb-8 opacity-50" />
-                                        <p className="font-cinzel text-2xl tracking-widest text-white mb-4">MORTAL WORDS</p>
-                                        <p className="font-cinzel text-2xl tracking-widest gold-shimmer">IMMORTAL LEGACY</p>
-                                    </motion.div>
-                                </div>
-                                {/* Ornamental Corners */}
-                                <div className="absolute -top-2 -left-2 w-8 h-8 border-t-2 border-l-2 border-gold-main" />
-                                <div className="absolute -bottom-2 -right-2 w-8 h-8 border-b-2 border-r-2 border-gold-main" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* --- BENIFITS (Editorial Grid) --- */}
-            <section id="benefits" className="py-32 bg-ivory">
-                <div className="container mx-auto px-6">
-                    <div className="text-center mb-24">
-                        <span className="font-cinzel text-[10px] tracking-[0.5em] uppercase text-gold-main block mb-4">The Author's Privilege</span>
-                        <h2 className="font-cinzel text-4xl md:text-5xl">Gilded Recognition</h2>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-[#E3D8C7] border luxury-border">
-                        {[
-                            { title: "ISBN CERTIFICATION", icon: <BadgeCheck className="w-6 h-6" />, desc: "Official international registration for your contribution." },
-                            { title: "GLOBAL FOOTPRINT", icon: <Globe className="w-6 h-6" />, desc: "Distribution via Amazon & major retailers worldwide." },
-                            { title: "EDITORIAL MASTERY", icon: <PenTool className="w-6 h-6" />, desc: "Professional curation to ensure your work shines." },
-                            { title: "AUTHOR PORTFOLIO", icon: <Star className="w-6 h-6" />, desc: "An exclusive digital space on the Inkfetish platform." },
-                            { title: "GILDED CERTIFICATE", icon: <Award className="w-6 h-6" />, desc: "A physical/digital honor marking your status as a published author." },
-                            { title: "ROYALTY RIGHTS", icon: <BookOpen className="w-6 h-6" />, desc: "Earn your share from every copy sold globally." }
-                        ].map((item, i) => (
-                            <div key={i} className="bg-ivory p-12 hover:bg-white transition-colors group">
-                                <div className="text-gold-main mb-8 transform group-hover:scale-110 transition-transform duration-500">{item.icon}</div>
-                                <h4 className="font-cinzel text-sm tracking-[0.3em] uppercase mb-4">{item.title}</h4>
-                                <p className="font-cormorant text-lg text-slate-500 leading-relaxed italic">{item.desc}</p>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
-            {/* --- THE PATH (The Process) --- */}
-            <section id="process" className="py-32 bg-obsidian text-white relative">
-                <div className="container mx-auto px-6">
-                    <div className="text-center mb-24">
-                        <span className="font-cinzel text-[10px] tracking-[0.5em] uppercase text-gold-main block mb-4">The Journey</span>
-                        <h2 className="font-cinzel text-4xl md:text-5xl">Your Path to Immortality</h2>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-                        {[
-                            { step: "01", title: "Registration", desc: "Submit your basic details and secure your slot in the first edition." },
-                            { step: "02", title: "Curation", desc: "Our editors work with you to refine your manuscript to perfection." },
-                            { step: "03", title: "Global Launch", desc: "Your name is printed, bound, and distributed to readers worldwide." }
-                        ].map((item, i) => (
-                            <div key={i} className="relative p-8 border luxury-border bg-white/5 hover:bg-white/10 transition-all group">
-                                <span className="font-cinzel text-5xl opacity-10 absolute top-4 right-4 group-hover:opacity-30 transition-opacity">{item.step}</span>
-                                <h4 className="font-cinzel text-lg tracking-widest mb-6 gold-shimmer">{item.title}</h4>
-                                <p className="font-cormorant text-xl text-slate-400 italic leading-relaxed">{item.desc}</p>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
-            {/* --- PREVIOUS ANTHOLOGIES (PROOF OF CONCEPT) --- */}
-            <section className="py-32 bg-white">
-                <div className="container mx-auto px-6">
-                    <div className="text-center mb-24">
-                        <span className="font-cinzel text-[10px] tracking-[0.5em] uppercase text-slate-400 block mb-4">Proof of Excellence</span>
-                        <h2 className="font-cinzel text-4xl md:text-5xl uppercase tracking-tighter">Legacy of the <span className="gold-shimmer">Inkfetish</span></h2>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
-                        {[
-                            { title: "Love at Minus One", img: "https://i.ibb.co/PZk5Qnmt/Whats-App-Image-2025-12-25-at-2-27-03-AM-2.jpg", status: "Sold Out" },
-                            { title: "Syaahi", img: "https://i.ibb.co/Y4zN8Rp0/Whats-App-Image-2025-12-08-at-6-39-26-PM-2.jpg", status: "Bestseller" },
-                            { title: "The Poet's Heart", img: "https://i.ibb.co/mCH1WTBD/Whats-App-Image-2025-12-25-at-2-27-03-AM-1.jpg", status: "Sold Out" }
-                        ].map((book, i) => (
-                            <motion.div key={i} whileHover={{ y: -10 }} className="group relative">
-                                <div className="aspect-[3/4] overflow-hidden border luxury-border grayscale group-hover:grayscale-0 transition-all duration-700">
-                                    <img src={book.img} alt={book.title} className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" />
-                                    <div className="absolute top-4 right-4 bg-obsidian text-gold-main font-cinzel text-[8px] px-3 py-1 tracking-[0.2em] uppercase">
-                                        {book.status}
-                                    </div>
-                                </div>
-                                <div className="mt-6 text-center">
-                                    <h4 className="font-cinzel text-sm tracking-widest text-obsidian uppercase">{book.title}</h4>
-                                </div>
-                            </motion.div>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
-            {/* --- THE GRAND SLAM OFFER (THE DEAL) --- */}
-            <section className="py-32 bg-ivory border-y luxury-border">
-                <div className="container mx-auto px-6">
-                    <div className="max-w-5xl mx-auto bg-obsidian text-white rounded-3xl overflow-hidden shadow-[0_50px_100px_-20px_rgba(216,138,6,0.3)] border border-gold-dark/30">
-                        <div className="grid grid-cols-1 lg:grid-cols-2">
-                            <div className="p-12 md:p-16 space-y-8">
-                                <h3 className="font-cinzel text-3xl md:text-5xl font-bold leading-tight">
-                                    Everything You Need to <span className="gold-shimmer">Go Pro</span>.
-                                </h3>
-                                <p className="font-cormorant text-xl text-slate-400 italic">
-                                    We don't just publish your work; we build your career. 
-                                </p>
-                                <div className="space-y-6">
-                                    {[
-                                        { t: "Global Distribution", v: "₹9,999", d: "Amazon, Flipkart & Kindle Worldwide." },
-                                        { t: "Professional Portfolio", v: "₹14,999", d: "Your own dedicated author website." },
-                                        { t: "Editorial Mastery", v: "₹4,999", d: "Premium manuscript refinement." },
-                                        { t: "Gilded Marketing", v: "₹7,999", d: "Social media feature & spotlight." }
-                                    ].map((item, i) => (
-                                        <div key={i} className="flex justify-between items-start border-b border-white/10 pb-4">
-                                            <div>
-                                                <p className="font-cinzel text-xs tracking-widest text-white">{item.t}</p>
-                                                <p className="font-inter text-[10px] text-slate-500 mt-1 uppercase">{item.d}</p>
-                                            </div>
-                                            <span className="font-inter text-[10px] text-gold-main line-through">{item.v}</span>
-                                        </div>
-                                    ))}
-
-                                    {/* Bonus Section (Syaahi Inspired) */}
-                                    <div className="bg-gold-main/10 border border-gold-main/30 p-5 rounded-xl mt-6">
-                                        <div className="flex items-start gap-4">
-                                            <Sparkles className="w-5 h-5 text-gold-main shrink-0 mt-0.5" />
-                                            <div>
-                                                <p className="font-cinzel text-[10px] tracking-[0.2em] uppercase text-white font-bold">Gilded Bonus Secured</p>
-                                                <p className="font-cormorant text-sm text-slate-400 italic">₹500 Digital Credit for your next solo book launch.</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="pt-6 flex justify-between items-center">
-                                        <div>
-                                            <p className="font-cinzel text-xs tracking-[0.3em] uppercase text-slate-400">Total Value</p>
-                                            <p className="font-cinzel text-2xl line-through opacity-30 tracking-widest">₹37,996</p>
-                                        </div>
-                                        <div className="text-right">
-                                            <p className="font-cinzel text-xs tracking-[0.3em] uppercase text-gold-main font-bold">Your Investment</p>
-                                            <p className="font-cinzel text-4xl gold-shimmer tracking-tighter">₹2,499</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="bg-gold-main/5 p-12 md:p-16 flex flex-col justify-center space-y-8 border-l border-white/10">
-                                <div className="space-y-4">
-                                    <h4 className="font-cinzel text-xl tracking-widest text-white">READY TO CLAIM YOUR SPOT?</h4>
-                                    <p className="font-cormorant text-lg text-slate-400 leading-relaxed italic">
-                                        Once the 12 remaining slots are filled, registration will close for this edition. No exceptions.
-                                    </p>
-                                </div>
-                                <motion.button
-                                    whileHover={{ scale: 1.02 }}
-                                    whileTap={{ scale: 0.98 }}
-                                    onClick={() => router.push('/anthology/honey-and-hurt/register')}
-                                    className="gold-button w-full py-6 rounded-full font-cinzel font-bold text-xs tracking-[0.4em] uppercase"
-                                >
-                                    Join The Anthology Now
-                                </motion.button>
-                                <p className="text-center font-inter text-[9px] uppercase tracking-widest text-slate-500">
-                                    100% Satisfaction Guarantee | Gilded Selection Process
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* --- WALL OF PRESTIGE (Testimonials) --- */}
-            <section className="py-32 bg-white">
-                <div className="container mx-auto px-6">
-                    <div className="text-center mb-24">
-                        <span className="font-cinzel text-[10px] tracking-[0.5em] uppercase text-slate-400 block mb-4">Voice of the Gilded</span>
-                        <h2 className="font-cinzel text-4xl md:text-5xl">Wall of Prestige</h2>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {[
-                            { name: "Ananya R.", role: "Published Author", text: "Inkfetish didn't just publish my book; they treated my words like art. The Honey & Hurt team is exceptional." },
-                            { name: "Vikram S.", role: "Poet", text: "The transition from a draft to a hardbound luxury book was seamless. Becoming a co-author was the best decision for my writing career." },
-                            { name: "Sara M.", role: "Storyteller", text: "The global distribution is real. Seeing my name on Amazon next to international authors was a dream come true." }
-                        ].map((item, i) => (
-                            <div key={i} className="p-10 bg-ivory border luxury-border rounded-sm space-y-6 hover:shadow-xl transition-all">
-                                <Quote className="w-8 h-8 text-gold-main opacity-30" />
-                                <p className="font-cormorant text-xl italic text-slate-700 leading-relaxed">"{item.text}"</p>
-                                <div className="pt-6 border-t luxury-border">
-                                    <p className="font-cinzel text-xs tracking-widest text-obsidian">{item.name}</p>
-                                    <p className="font-inter text-[9px] uppercase tracking-widest text-slate-400 mt-1">{item.role}</p>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
-            {/* --- QUOTE SECTION --- */}
-            <section className="py-40 bg-white italic text-center">
-                <div className="container mx-auto px-6">
-                    <Quote className="w-10 h-10 text-gold-main mx-auto mb-12 opacity-30" />
-                    <p className="font-cormorant text-3xl md:text-5xl max-w-4xl mx-auto leading-tight text-obsidian">
-                        "Your pain is a petal, <br /> and your healing is the nectar."
-                    </p>
-                </div>
-            </section>
-
-            {/* --- CALL TO ACTION (Obsidian & Gold) --- */}
-            <section className="py-32 bg-obsidian text-white relative overflow-hidden">
-                {/* Decorative background texture */}
-                <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/black-paper.png')]" />
-                
-                <div className="container mx-auto px-6 relative z-10">
-                    <div className="max-w-4xl mx-auto text-center space-y-12">
-                        <motion.div
-                            initial={{ opacity: 0 }}
-                            whileInView={{ opacity: 1 }}
-                            className="space-y-6"
-                        >
-                            <h2 className="font-cinzel text-5xl md:text-7xl font-bold tracking-tight">
-                                BECOME <br className="md:hidden" /> <span className="gold-shimmer">IMMORTAL</span>
-                            </h2>
-                            <div className="w-24 h-px bg-gold-dark mx-auto" />
-                            <p className="font-cinzel text-xs tracking-[0.4em] uppercase text-slate-500">First Edition Submissions Closing Soon</p>
-                        </motion.div>
-
-                        <div className="flex flex-col items-center gap-8">
-                            <motion.button
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.98 }}
-                                onClick={() => router.push('/anthology/honey-and-hurt/register')}
-                                className="gold-button px-16 py-6 rounded-full font-cinzel font-bold text-sm tracking-[0.4em] uppercase"
-                            >
-                                Start Your Journey
-                            </motion.button>
-                            
-                            <div className="flex gap-12 text-slate-500 pt-8">
-                                <div className="text-center">
-                                    <p className="font-cinzel text-xl text-white">400+</p>
-                                    <p className="font-cinzel text-[8px] tracking-widest uppercase">Authors Worldwide</p>
-                                </div>
-                                <div className="w-px h-10 bg-slate-800" />
-                                <div className="text-center">
-                                    <p className="font-cinzel text-xl text-white">15 Days</p>
-                                    <p className="font-cinzel text-[8px] tracking-widest uppercase">To Launch</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* --- FOOTER --- */}
-            <footer className="py-20 bg-ivory border-t luxury-border">
-                <div className="container mx-auto px-6 text-center space-y-8">
-                    <p className="font-cinzel text-2xl tracking-[0.4em] text-obsidian uppercase">Inkfetish</p>
-                    <div className="flex justify-center gap-8 font-cinzel text-[10px] tracking-widest uppercase text-slate-400">
-                        <button className="hover:text-gold-main transition-colors">Instagram</button>
-                        <button className="hover:text-gold-main transition-colors">Privacy</button>
-                        <button className="hover:text-gold-main transition-colors">Terms</button>
-                    </div>
-                    <p className="font-inter text-[9px] tracking-[0.2em] text-slate-400 uppercase">
-                        © 2026 Inkfetish Publishing. Crafted for the Gilded Soul.
-                    </p>
-                </div>
-            </footer>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, rotate: 3 }}
+              animate={{ opacity: 1, scale: 1, rotate: -2 }}
+              transition={{ duration: 1, ease: 'easeOut' }}
+              className="relative"
+            >
+              <div className="relative z-10 w-full max-w-[420px] mx-auto aspect-[4/5] drop-shadow-[0_20px_20px_rgba(216,138,6,0.25)]">
+                <img src="/anthology/honey-and-hurt-book.png" alt="Honey and Hurt Anthology Book Cover" className="w-full h-full object-contain" />
+              </div>
+              <div className="absolute top-12 right-0 md:-right-4 lg:-right-8 z-20 bg-white border-[3px] border-red-500 shadow-xl px-5 py-4 rounded-lg transform rotate-3">
+                <p className="font-inter text-[10px] uppercase text-slate-500 font-black line-through mb-0.5">Normally ₹2,499</p>
+                <p className="font-inter text-2xl md:text-3xl font-black text-red-600 leading-none">Only ₹485</p>
+                <p className="font-inter text-[10px] uppercase font-bold text-slate-800 mt-1.5">If you apply today</p>
+              </div>
+            </motion.div>
+          </div>
         </div>
-    );
+      </section>
+
+      {/* Social Proof Strip */}
+      <section className="bg-obsidian text-white py-8 border-y border-gold-dark/40 shadow-inner">
+        <div className="container mx-auto px-6 max-w-5xl">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 text-center divide-x divide-white/10">
+            {proofStats.map((stat) => (
+              <div key={stat.label} className="flex flex-col justify-center">
+                <p className="font-inter text-2xl md:text-3xl font-black gold-shimmer">{stat.value}</p>
+                <p className="font-inter text-[10px] md:text-xs uppercase font-bold text-slate-400 mt-1">{stat.label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* The Problem / Qualification */}
+      <section id="fit" className="py-20 bg-white">
+        <div className="container mx-auto px-6">
+          <div className="max-w-3xl mx-auto space-y-10">
+            <div className="text-center">
+              <h2 className="font-inter text-3xl md:text-4xl font-black text-obsidian uppercase tracking-tight">Read This Before You Keep Scrolling...</h2>
+              <div className="w-16 h-1 bg-red-500 mx-auto mt-4" />
+            </div>
+            
+            <p className="font-inter text-base md:text-lg text-slate-700 font-medium leading-relaxed">
+              If you're reading this, you probably have notes on your phone, hidden journals, or Google Docs filled with words you haven't shown anyone. 
+              <br/><br/>
+              You know you're a good writer. But no one else does. Because you lack <strong>proof</strong>.
+            </p>
+            
+            <div className="bg-ivory border-l-[3px] border-gold-main p-6 md:p-8 space-y-5 rounded-r-xl">
+              <h3 className="font-inter text-xl font-black text-obsidian">This is for you if:</h3>
+              <div className="space-y-3.5">
+                {audienceFit.map((item, index) => (
+                  <div key={index} className="flex gap-3.5 items-start">
+                    <div className="bg-gold-main text-white w-5 h-5 rounded-full flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">✓</div>
+                    <p className="font-inter text-[15px] text-slate-800 font-medium leading-snug">{item}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* The Theme Explanation */}
+      <section className="py-20 bg-obsidian text-ivory border-b border-white/10">
+        <div className="container mx-auto px-6 max-w-5xl">
+          <div className="text-center mb-12">
+            <h2 className="font-inter text-3xl md:text-5xl font-black text-white uppercase tracking-tight">Introducing: <span className="gold-shimmer">Honey & Hurt</span></h2>
+            <p className="mt-4 text-lg md:text-xl text-slate-400 font-medium max-w-2xl mx-auto">An open-theme anthology exploring the beautiful duality of the human experience.</p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-[0.8fr_1.2fr] gap-12 items-center">
+            <div className="relative aspect-[3/4] border-2 luxury-border p-1.5 max-w-[320px] mx-auto md:max-w-full">
+               <img src="https://i.ibb.co/PZk5Qnmt/Whats-App-Image-2025-12-25-at-2-27-03-AM-2.jpg" alt="Premium Output" className="w-full h-full object-cover" />
+            </div>
+            <div className="space-y-8">
+              <div className="bg-white/5 p-6 md:p-8 rounded-xl border border-white/10 relative overflow-hidden">
+                <div className="absolute top-0 left-0 w-1.5 h-full bg-gold-main" />
+                <h3 className="font-inter text-2xl font-black text-gold-main mb-4">What is "Honey & Hurt"?</h3>
+                <p className="font-inter text-base text-slate-300 leading-relaxed block mb-4">
+                  <strong>HONEY</strong> represents the sweet, the beautiful, and the light. It's the love that heals, the moments of pure joy, and the gentle side of life.
+                </p>
+                <p className="font-inter text-base text-slate-300 leading-relaxed block mb-4">
+                  <strong>HURT</strong> represents the dark, the trauma, and the pain. It's the heartbreak that shatters, the grief that lingers, and the struggles we face.
+                </p>
+                <p className="font-inter text-base font-bold text-white leading-relaxed block">
+                  There is always a good and a bad side. This is an open-theme anthology giving you the freedom to write about the entire spectrum of human emotion. Whether your words drip with honey or bleed with hurt, there is a place for your voice here.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Wall of Proof: Testimonials & Past Work */}
+      <section className="py-24 bg-white overflow-hidden border-b border-slate-200">
+        <div className="container mx-auto px-6 mb-16 text-center">
+          <h2 className="font-inter text-3xl md:text-5xl font-black text-obsidian uppercase tracking-tight">Don't Take Our Word For It</h2>
+          <p className="mt-4 text-lg text-slate-600 font-medium max-w-2xl mx-auto">We've turned hundreds of writers just like you into verifiable published authors.</p>
+        </div>
+
+        {/* Sliding Gallery */}
+        <div className="flex flex-col gap-6 mb-20">
+           {/* Row 1: Left to Right */}
+           <div className="flex whitespace-nowrap gap-2 md:gap-6 animate-scroll-left w-max">
+              {[
+                'https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897600/WhatsApp_Image_2026-04-09_at_2.59.25_PM-compressed_in2led.webp',
+                'https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897599/WhatsApp_Image_2026-04-09_at_2.53.04_PM-compressed_wsnhmu.webp',
+                'https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897599/WhatsApp_Image_2026-04-07_at_8.39.44_PM-compressed_ztxsge.webp',
+                'https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897598/WhatsApp_Image_2026-04-07_at_8.39.44_PM_2_-compressed_hfr0wv.webp',
+                'https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897598/WhatsApp_Image_2026-04-07_at_8.39.44_PM_1_-compressed_gjnlck.webp',
+                'https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897597/WhatsApp_Image_2026-04-04_at_12.20.06_PM_1_-compressed_lrqjv2.webp',
+                'https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897597/WhatsApp_Image_2026-04-03_at_10.52.05_AM_2_-compressed_m2qlui.webp',
+                'https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897597/WhatsApp_Image_2026-04-03_at_10.52.05_AM_1_-compressed_uphqxg.webp',
+                'https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897596/WhatsApp_Image_2026-04-03_at_10.52.04_AM_1_-compressed_pp9tww.webp',
+                'https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897596/WhatsApp_Image_2026-04-02_at_5.42.20_PM-compressed_sq3utn.webp',
+                'https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897595/WhatsApp_Image_2026-04-02_at_5.42.20_PM_1_-compressed_khfil0.webp'
+              ].map((img, i) => (
+                <div key={i} className="h-60 md:h-64 shrink-0 border-2 border-slate-100 shadow-md overflow-hidden rounded-xl bg-slate-50">
+                    <img src={img} alt="Past Work" className="h-full w-auto object-contain mix-blend-multiply" />
+                </div>
+              ))}
+              {/* Duplicate for infinite loop */}
+              {[
+                'https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897600/WhatsApp_Image_2026-04-09_at_2.59.25_PM-compressed_in2led.webp',
+                'https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897599/WhatsApp_Image_2026-04-09_at_2.53.04_PM-compressed_wsnhmu.webp',
+                'https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897599/WhatsApp_Image_2026-04-07_at_8.39.44_PM-compressed_ztxsge.webp',
+                'https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897598/WhatsApp_Image_2026-04-07_at_8.39.44_PM_2_-compressed_hfr0wv.webp',
+                'https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897598/WhatsApp_Image_2026-04-07_at_8.39.44_PM_1_-compressed_gjnlck.webp',
+                'https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897597/WhatsApp_Image_2026-04-04_at_12.20.06_PM_1_-compressed_lrqjv2.webp',
+                'https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897597/WhatsApp_Image_2026-04-03_at_10.52.05_AM_2_-compressed_m2qlui.webp',
+                'https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897597/WhatsApp_Image_2026-04-03_at_10.52.05_AM_1_-compressed_uphqxg.webp',
+                'https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897596/WhatsApp_Image_2026-04-03_at_10.52.04_AM_1_-compressed_pp9tww.webp',
+                'https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897596/WhatsApp_Image_2026-04-02_at_5.42.20_PM-compressed_sq3utn.webp',
+                'https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897595/WhatsApp_Image_2026-04-02_at_5.42.20_PM_1_-compressed_khfil0.webp'
+              ].map((img, i) => (
+                <div key={`dup-${i}`} className="h-60 md:h-64 shrink-0 border-2 border-slate-100 shadow-md overflow-hidden rounded-xl bg-slate-50">
+                    <img src={img} alt="Past Work" className="h-full w-auto object-contain mix-blend-multiply" />
+                </div>
+              ))}
+           </div>
+
+           {/* Row 2: Right to Left */}
+           <div className="flex whitespace-nowrap gap-2 md:gap-6 animate-scroll-right w-max">
+              {[
+                'https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897595/WhatsApp_Image_2026-04-02_at_5.17.33_PM_3_-compressed_kosajj.webp',
+                'https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897594/WhatsApp_Image_2026-04-02_at_5.17.33_PM_2_-compressed_sz4wld.webp',
+                'https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897594/WhatsApp_Image_2026-04-01_at_6.40.55_AM_1_-compressed_j51ngs.webp',
+                'https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897593/WhatsApp_Image_2026-04-01_at_6.40.37_AM-compressed_eibjs4.webp',
+                'https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897593/WhatsApp_Image_2026-03-31_at_11.00.31_PM-compressed_a58ono.webp',
+                'https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897592/WhatsApp_Image_2026-03-28_at_11.47.30_PM_1_-compressed_abkbxy.webp',
+                'https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897592/WhatsApp_Image_2026-03-23_at_7.03.31_PM_5_-compressed_hgy6j1.webp',
+                'https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897591/WhatsApp_Image_2026-03-23_at_7.03.31_PM_4_-compressed_dnisid.webp',
+                'https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897591/WhatsApp_Image_2026-03-23_at_7.03.31_PM_3_-compressed_ofwyil.webp',
+                'https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897590/WhatsApp_Image_2026-03-23_at_7.03.30_PM-compressed_fsgkug.webp',
+                'https://res.cloudinary.com/dde8ekuuu/image/upload/v1775926450/WhatsApp_Image_2026-04-11_at_7.20.21_PM_1_-compressed_hgkckw.webp',
+                'https://res.cloudinary.com/dde8ekuuu/image/upload/v1775926445/WhatsApp_Image_2026-04-11_at_7.20.21_PM-compressed_fxtkcv.webp'
+              ].map((img, i) => (
+                <div key={i} className="h-60 md:h-64 shrink-0 border-2 border-slate-100 shadow-md overflow-hidden rounded-xl bg-slate-50">
+                    <img src={img} alt="Community" className="h-full w-auto object-contain mix-blend-multiply" />
+                </div>
+              ))}
+              {/* Duplicate for infinite loop */}
+              {[
+                'https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897595/WhatsApp_Image_2026-04-02_at_5.17.33_PM_3_-compressed_kosajj.webp',
+                'https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897594/WhatsApp_Image_2026-04-02_at_5.17.33_PM_2_-compressed_sz4wld.webp',
+                'https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897594/WhatsApp_Image_2026-04-01_at_6.40.55_AM_1_-compressed_j51ngs.webp',
+                'https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897593/WhatsApp_Image_2026-04-01_at_6.40.37_AM-compressed_eibjs4.webp',
+                'https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897593/WhatsApp_Image_2026-03-31_at_11.00.31_PM-compressed_a58ono.webp',
+                'https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897592/WhatsApp_Image_2026-03-28_at_11.47.30_PM_1_-compressed_abkbxy.webp',
+                'https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897592/WhatsApp_Image_2026-03-23_at_7.03.31_PM_5_-compressed_hgy6j1.webp',
+                'https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897591/WhatsApp_Image_2026-03-23_at_7.03.31_PM_4_-compressed_dnisid.webp',
+                'https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897591/WhatsApp_Image_2026-03-23_at_7.03.31_PM_3_-compressed_ofwyil.webp',
+                'https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897590/WhatsApp_Image_2026-03-23_at_7.03.30_PM-compressed_fsgkug.webp',
+                'https://res.cloudinary.com/dde8ekuuu/image/upload/v1775926450/WhatsApp_Image_2026-04-11_at_7.20.21_PM_1_-compressed_hgkckw.webp',
+                'https://res.cloudinary.com/dde8ekuuu/image/upload/v1775926445/WhatsApp_Image_2026-04-11_at_7.20.21_PM-compressed_fxtkcv.webp'
+              ].map((img, i) => (
+                <div key={`dup-${i}`} className="h-60 md:h-64 shrink-0 border-2 border-slate-100 shadow-md overflow-hidden rounded-xl bg-slate-50">
+                    <img src={img} alt="Community" className="h-full w-auto object-contain mix-blend-multiply" />
+                </div>
+              ))}
+           </div>
+        </div>
+
+        {/* Testimonials */}
+        <div className="container mx-auto px-4 max-w-5xl py-8 overflow-visible">
+          <div className="flex flex-wrap justify-center gap-y-8 md:gap-y-6 md:-space-x-4">
+            {testimonials.map((item, index) => (
+              <div 
+                key={index} 
+                className={`bg-white border border-slate-200 p-6 md:p-8 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 w-full sm:w-[calc(50%-1rem)] md:w-[320px] ${item.rotate} ${item.z} hover:!z-50 hover:scale-105 relative cursor-default`}
+              >
+                {/* Verified Badge */}
+                <div className="absolute -top-3 -right-3 bg-green-500 text-white text-[9px] font-black uppercase tracking-wider py-1 px-2.5 rounded-full shadow-md transform rotate-6 border border-white z-10 flex items-center gap-1">
+                  <ShieldCheck className="w-3 h-3" /> Verified
+                </div>
+                
+                <Quote className="absolute top-5 right-5 w-8 h-8 text-slate-100" />
+                <div className="flex gap-1 mb-4">
+                  {[1, 2, 3, 4, 5].map((i) => <Star key={i} className="w-4 h-4 fill-gold-main text-gold-main" />)}
+                </div>
+                <p className="font-inter text-sm text-slate-700 italic leading-relaxed relative z-10 pb-2">"{item.text}"</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Premium Benefits Section */}
+      <section className="py-24 bg-obsidian text-white border-y border-white/10">
+        <div className="container mx-auto px-6 max-w-5xl">
+          <div className="text-center mb-16">
+            <h2 className="font-inter text-4xl md:text-6xl font-black uppercase tracking-tight text-white mb-4">The <span className="gold-shimmer">Author Package</span></h2>
+            <p className="text-lg md:text-xl text-slate-400 font-medium max-w-2xl mx-auto">This isn't just an anthology. It's a complete career launchpad.</p>
+          </div>
+          
+          <div className="space-y-6">
+            {benefits.map((item, index) => (
+              <div key={item.title} className="bg-white/5 border border-white/10 p-6 md:p-8 rounded-2xl hover:bg-white/10 transition-colors flex flex-col md:flex-row items-start md:items-center gap-6 group">
+                <div className="text-5xl md:text-7xl font-black text-white/10 group-hover:text-gold-main/30 transition-colors shrink-0 font-serif italic">
+                  0{index + 1}
+                </div>
+                <div className="w-12 h-12 bg-gold-main/20 rounded-full flex items-center justify-center shrink-0">
+                  <item.icon className="w-6 h-6 text-gold-main" />
+                </div>
+                <div>
+                  <h4 className="font-inter text-2xl font-black text-white mb-2">{item.title}</h4>
+                  <p className="font-inter text-base text-slate-300 leading-relaxed max-w-2xl">{item.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Wall of Proof: Bento Mosaic Format */}
+      <section className="py-24 bg-[#FDFBF7] overflow-hidden border-b border-slate-200 relative">
+        <div className="container mx-auto px-6 mb-16 text-center">
+          <h2 className="font-inter text-3xl md:text-6xl font-black text-obsidian uppercase tracking-tighter leading-none italic">
+            The Wall of <span className="text-gold-dark underline decoration-gold-main/30">Proof.</span>
+          </h2>
+          <p className="mt-6 text-lg text-slate-600 font-medium max-w-2xl mx-auto">
+            These aren't studio models. These are real writers holding their legacy. 
+            <span className="text-obsidian font-black block mt-1">1,100+ authors already took action.</span>
+          </p>
+        </div>
+
+        <div className="container mx-auto px-4 max-w-6xl">
+          <div className="columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4">
+            {contestGalleryImages.map((src, i) => (
+              <motion.div 
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="break-inside-avoid relative group overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer p-1.5"
+              >
+                <div className="relative overflow-hidden rounded-lg">
+                  <img 
+                    src={src} 
+                    alt="Inkfetish Proof" 
+                    className="w-full h-auto grayscale-[0.2] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700"
+                  />
+                  
+                  {/* Subtle Gradient Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-40 group-hover:opacity-10 transition-opacity" />
+                  
+                  {/* Branding & Status */}
+                  <div className="absolute bottom-2 left-2 flex items-center gap-1.5 z-10">
+                     <div className="bg-[#39FF14] w-1.5 h-1.5 rounded-full shadow-[0_0_8px_#39FF14]" />
+                     <span className="text-[8px] md:text-[9px] font-inter font-black uppercase tracking-widest text-white">Verified Author</span>
+                  </div>
+                </div>
+
+                <div className="mt-2 flex items-center justify-between px-1 pb-1">
+                   <span className="text-[9px] font-inter font-black text-obsidian uppercase tracking-wider italic">Inkfetish</span>
+                   <span className="text-[8px] font-inter font-bold text-slate-400">#Archive</span>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
+        {/* Dynamic Proof Stats Strip */}
+        <div className="container mx-auto px-6 mt-16 flex flex-wrap justify-center gap-8 md:gap-16 opacity-40">
+           <div className="flex flex-col items-center">
+              <span className="text-2xl md:text-4xl font-inter font-black text-obsidian">3200+</span>
+              <span className="text-[10px] font-inter font-bold uppercase tracking-widest text-slate-500">Writers Trusted</span>
+           </div>
+           <div className="flex flex-col items-center border-x border-slate-200 px-8 md:px-16">
+              <span className="text-2xl md:text-4xl font-inter font-black text-obsidian">15 Days</span>
+              <span className="text-[10px] font-inter font-bold uppercase tracking-widest text-slate-500">Fast-Track Publishing</span>
+           </div>
+           <div className="flex flex-col items-center">
+              <span className="text-2xl md:text-4xl font-inter font-black text-obsidian">4.8★</span>
+              <span className="text-[10px] font-inter font-bold uppercase tracking-widest text-slate-500">Top Rated Agency</span>
+           </div>
+        </div>
+        {/* Floating background text */}
+        <div className="absolute top-1/2 left-0 w-full text-center -translate-y-1/2 pointer-events-none opacity-[0.02] select-none">
+          <div className="font-inter text-[20vw] font-black uppercase leading-none tracking-tighter">PROOF</div>
+        </div>
+      </section>
+
+      {/* Previous Anthologies */}
+      <section className="py-24 bg-ivory text-obsidian border-b border-slate-200">
+        <div className="container mx-auto px-6 max-w-6xl text-center">
+          <h2 className="font-inter text-4xl md:text-6xl font-black uppercase tracking-tight text-obsidian mb-4">The <span className="text-gold-dark">Legacy</span></h2>
+          <p className="text-lg md:text-xl text-slate-600 font-medium max-w-2xl mx-auto mb-16">We don't just promise results. We have a massive track record of turning everyday writers into published authors.</p>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-4">
+            <div className="bg-white p-8 rounded-2xl shadow-xl border border-slate-100 flex flex-col items-center group hover:-translate-y-2 transition-transform">
+              <BookOpen className="w-12 h-12 text-gold-main mb-6 group-hover:scale-110 transition-transform" />
+              <h3 className="font-inter text-2xl font-black text-obsidian mb-2">Love at Minus One</h3>
+              <p className="font-inter text-sm font-bold text-gold-main uppercase tracking-wider mb-4">Romance Anthology</p>
+              <p className="font-inter text-slate-600 leading-relaxed text-center">Hit Amazon Bestseller lists within 48 hours of launch. Over 120 authors featured.</p>
+            </div>
+            <div className="bg-white p-8 rounded-2xl shadow-xl border border-slate-100 flex flex-col items-center scale-105 relative z-10 border-gold-main/30 group hover:-translate-y-2 transition-transform">
+              <div className="absolute -top-4 bg-gold-main text-white text-xs font-black uppercase tracking-wider py-1.5 px-4 rounded-full shadow-lg">Community Favorite</div>
+              <BookOpen className="w-12 h-12 text-gold-main mb-6 group-hover:scale-110 transition-transform" />
+              <h3 className="font-inter text-2xl font-black text-obsidian mb-2">Shakespeare & What Remained</h3>
+              <p className="font-inter text-sm font-bold text-gold-main uppercase tracking-wider mb-4">Poetry Anthology</p>
+              <p className="font-inter text-slate-600 leading-relaxed text-center">Highly critically acclaimed. Gave 85 poets their very first verifiable ISBN.</p>
+            </div>
+            <div className="bg-white p-8 rounded-2xl shadow-xl border border-slate-100 flex flex-col items-center group hover:-translate-y-2 transition-transform">
+              <BookOpen className="w-12 h-12 text-gold-main mb-6 group-hover:scale-110 transition-transform" />
+              <h3 className="font-inter text-2xl font-black text-obsidian mb-2">Petals and Scars</h3>
+              <p className="font-inter text-sm font-bold text-gold-main uppercase tracking-wider mb-4">Poetry Collection</p>
+              <p className="font-inter text-slate-600 leading-relaxed text-center">Over 92 community members published their raw, unfiltered emotions to massive praise.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* The Grand Slam Offer Stack */}
+      <section id="offer" className="py-24 bg-gold-main/5 border-y luxury-border">
+        <div className="container mx-auto px-6">
+          <div className="max-w-4xl mx-auto bg-white rounded-2xl overflow-hidden shadow-xl border-2 luxury-border">
+            <div className="bg-obsidian text-white p-6 md:p-10 text-center">
+              <h3 className="font-inter text-3xl md:text-4xl font-black uppercase">Here Is Exactly What You Get</h3>
+              <p className="mt-3 font-inter text-lg text-gold-main font-bold tracking-wide">The Complete "Go Pro" Author Package</p>
+            </div>
+            
+            <div className="p-6 md:p-10 space-y-5">
+              {valueStack.map((item) => (
+                <div key={item.title} className="flex flex-col md:flex-row justify-between md:items-center gap-2 border-b border-slate-100 pb-5 last:border-0">
+                  <div className="flex gap-3.5 items-start">
+                    <CheckCircle2 className="w-6 h-6 text-green-500 shrink-0 mt-0.5" />
+                    <div>
+                      <p className="font-inter text-[17px] font-black text-obsidian">{item.title}</p>
+                      <p className="font-inter text-sm text-slate-600 mt-0.5">{item.desc}</p>
+                    </div>
+                  </div>
+                  <div className="text-left md:text-right mt-1 md:mt-0 md:pl-4">
+                    <span className="font-inter text-[15px] text-slate-400 font-bold line-through">Value: {item.value}</span>
+                  </div>
+                </div>
+              ))}
+              
+              <div className="bg-red-50 border border-red-200 p-5 md:p-6 rounded-xl mt-6">
+                <div className="flex justify-between items-center flex-wrap gap-4">
+                  <div>
+                    <p className="font-inter text-sm uppercase font-black text-slate-500 mb-1">Total Value</p>
+                    <p className="font-inter text-2xl line-through text-slate-400 font-black">₹24,996</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="font-inter text-sm uppercase font-black text-red-600 mb-1">Your Price Today</p>
+                    <p className="font-inter text-4xl md:text-5xl font-black text-obsidian">₹485</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="pt-6">
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={goToRegister}
+                  className="w-full bg-[#e53e3e] hover:bg-red-700 text-white py-4 md:py-5 rounded-xl font-inter font-black text-lg md:text-xl uppercase shadow-lg transition-all flex items-center justify-center gap-2.5"
+                >
+                  Apply For ₹485 Now <ChevronRight className="w-5 h-5" />
+                </motion.button>
+                <p className="text-center mt-3.5 font-inter text-xs font-bold text-slate-500">
+                  🔒 Risk-Free: You don't pay anything on the application form. We only accept payment if you are selected.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section id="faq" className="py-24 bg-ivory">
+        <div className="container mx-auto px-6 max-w-3xl">
+          <div className="text-center mb-12">
+            <h2 className="font-inter text-3xl md:text-5xl font-black uppercase text-obsidian tracking-tight">Frequently Asked Questions</h2>
+          </div>
+          <div className="space-y-4">
+            {faqs.map((item, index) => (
+              <div 
+                key={index} 
+                className={`bg-white border transition-all duration-300 rounded-xl overflow-hidden cursor-pointer shadow-sm hover:border-gold-main/50 ${openFaqIndex === index ? 'border-gold-main ring-1 ring-gold-main/20' : 'border-slate-200'}`}
+                onClick={() => toggleFaq(index)}
+              >
+                <div className="p-5 md:p-6 flex justify-between items-center gap-4">
+                  <h3 className={`font-inter text-lg font-black transition-colors ${openFaqIndex === index ? 'text-gold-dark' : 'text-obsidian'}`}>{item.q}</h3>
+                  <ChevronDown className={`w-5 h-5 text-slate-400 transition-transform duration-300 ${openFaqIndex === index ? 'rotate-180 text-gold-main' : ''}`} />
+                </div>
+                {openFaqIndex === index && (
+                  <div className="px-5 md:px-6 pb-5 md:pb-6 pt-0 border-t border-slate-100">
+                    <p className="font-inter text-base text-slate-600 leading-relaxed mt-4">{item.a}</p>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Massive Footer */}
+      <footer className="bg-obsidian text-white pt-24 pb-12 border-t border-white/10 relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-gold-main to-transparent opacity-50" />
+        <div className="container mx-auto px-6 max-w-6xl">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+            <div className="md:col-span-2 space-y-6">
+              <h3 className="font-inter text-3xl font-black uppercase tracking-widest gold-shimmer">Inkfetish</h3>
+              <p className="font-inter text-slate-400 text-sm leading-relaxed max-w-sm">
+                India's fastest-growing hybrid publisher. We don't just publish books; we launch author careers. Our mission is to take 10,000 everyday writers and give them the platform, credibility, and verifiable portfolio they deserve.
+              </p>
+            </div>
+            
+            <div className="space-y-6">
+              <h4 className="font-inter text-lg font-black uppercase text-white tracking-widest">Company</h4>
+              <ul className="space-y-3 font-inter text-sm text-slate-400">
+                <li><a href="#" className="hover:text-gold-main transition-colors inline-block hover:translate-x-1 transform duration-200">About Us</a></li>
+                <li><a href="#" className="hover:text-gold-main transition-colors inline-block hover:translate-x-1 transform duration-200">Our Authors</a></li>
+                <li><a href="#" className="hover:text-gold-main transition-colors inline-block hover:translate-x-1 transform duration-200">Anthologies</a></li>
+                <li><a href="#" className="hover:text-gold-main transition-colors inline-block hover:translate-x-1 transform duration-200">Contact Support</a></li>
+              </ul>
+            </div>
+            
+            <div className="space-y-6">
+              <h4 className="font-inter text-lg font-black uppercase text-white tracking-widest">Legal</h4>
+              <ul className="space-y-3 font-inter text-sm text-slate-400">
+                <li><a href="#" className="hover:text-gold-main transition-colors inline-block hover:translate-x-1 transform duration-200">Terms & Conditions</a></li>
+                <li><a href="#" className="hover:text-gold-main transition-colors inline-block hover:translate-x-1 transform duration-200">Privacy Policy</a></li>
+                <li><a href="#" className="hover:text-gold-main transition-colors inline-block hover:translate-x-1 transform duration-200">Refund Policy</a></li>
+                <li><a href="#" className="hover:text-gold-main transition-colors inline-block hover:translate-x-1 transform duration-200">Publishing Agreement</a></li>
+              </ul>
+            </div>
+          </div>
+          
+          <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+            <p className="font-inter text-[11px] font-bold text-slate-500 uppercase tracking-wider text-center md:text-left">
+              © 2026 Inkfetish Publications. All Rights Reserved. Stop waiting. Start publishing.
+            </p>
+            <div className="flex gap-4">
+              <span className="font-inter text-xs text-slate-400 font-bold flex items-center gap-1.5 border border-white/10 px-3 py-1.5 rounded-full"><ShieldCheck className="w-3.5 h-3.5 text-green-400" /> Secure Checkout via Cashfree Payments</span>
+            </div>
+          </div>
+        </div>
+      </footer>
+
+      {/* Mobile Sticky CTA */}
+      <div className="fixed bottom-0 left-0 right-0 z-[70] md:hidden bg-white border-t-[3px] border-red-500 p-3.5 shadow-[0_-10px_20px_rgba(0,0,0,0.1)]">
+        <div className="flex justify-between items-center mb-2">
+          <span className="font-inter font-black text-slate-800 uppercase text-[10px]">Total Value: <span className="line-through text-slate-400">₹24,996</span></span>
+          <span className="font-inter font-black text-red-600 text-base">Only ₹485</span>
+        </div>
+        <button onClick={goToRegister} className="w-full bg-[#e53e3e] text-white py-3.5 rounded-lg font-inter font-black text-base uppercase flex items-center justify-center gap-2">
+          Claim Offer <ChevronRight className="w-5 h-5" />
+        </button>
+      </div>
+    </div>
+  );
 };
 
 export default HoneyAndHurtClient;

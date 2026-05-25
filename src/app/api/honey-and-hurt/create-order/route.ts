@@ -36,7 +36,8 @@ export async function POST(request: Request) {
     const cleanPhone = String(customerPhone || '').replace(/\D/g, '').slice(-10);
     const orderAmount = Number(amount);
 
-    if (!customerName || !customerEmail || cleanPhone.length !== 10 || orderAmount !== 2499) {
+    const allowedAmounts = [1, 2, 3, 485, 635, 785];
+    if (!customerName || !customerEmail || cleanPhone.length !== 10 || !allowedAmounts.includes(orderAmount)) {
       return NextResponse.json({ error: 'Invalid order details' }, { status: 400 });
     }
 

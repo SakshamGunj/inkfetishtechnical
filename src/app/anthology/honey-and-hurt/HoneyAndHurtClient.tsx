@@ -49,12 +49,14 @@ const themePillars = [
 ];
 
 const benefits = [
-  { title: 'VERIFIABLE ISBN', icon: BadgeCheck, desc: 'Not a self-published blog. A real, globally recognized book credit you can leverage forever.' },
-  { title: 'AUTHOR PORTFOLIO', icon: Star, desc: 'A dedicated digital presence. Stop sending people to a messy Instagram. Send them to your professional author page.' },
-  { title: 'EDITORIAL POLISH', icon: PenTool, desc: 'We do not change your voice; we sharpen your blade. Professional editing included.' },
-  { title: 'GILDED CERTIFICATE', icon: Award, desc: 'Physical/digital proof of your achievement to hang on your wall or post online.' },
-  { title: 'GLOBAL DISTRIBUTION', icon: Globe, desc: 'Amazon, Kindle, and global reach setup so your words can actually be found.' },
-  { title: 'ZERO ROYALY TRAPS', icon: BookOpen, desc: 'Transparent rights. You own your words. We just give them a premium stage.' },
+  { title: 'OFFICIAL ISBN LISTING', icon: BadgeCheck, desc: 'A real, globally recognized, verifiable ISBN book credit. Stop writing in phone notes; get your work officially cataloged in national databases.' },
+  { title: 'VERIFIED "PUBLISHED AUTHOR" BADGE', icon: ShieldCheck, desc: 'Secure your official status and receive the exclusive Inkfetish Community Author Badge to showcase your official literary credentials.' },
+  { title: 'PUBLISHED IN THE PREMIUM ANTHOLOGY', icon: BookOpen, desc: 'Your chosen poetry, prose, or story printed inside a premium, collector-grade, beautifully formatted physical anthology book.' },
+  { title: 'FREE AUTHOR PORTFOLIO WEBSITE', icon: Star, desc: 'Establish your professional digital presence with a dedicated, high-end author portfolio website free of charge (Worth ₹15,000).' },
+  { title: 'GILDED CERTIFICATE & MEDAL', icon: Award, desc: 'Receive a beautifully printed co-authorship certificate, a custom engraved medal, and an official appreciation letter from our editorial board.' },
+  { title: 'SOCIAL MEDIA & INTERNET SPOTLIGHT', icon: Globe, desc: 'Get your talent promoted across our massive social media networks and digital literary platforms to build your initial fanbase.' },
+  { title: 'PR & ARTIST PROMOTION CAMPAIGNS', icon: Sparkles, desc: 'Enjoy premium media releases, professional PR promotion, and custom artist spotlight features to make your voice stand out.' },
+  { title: 'LIFETIME ELITE COMMUNITY ACCESS', icon: Users, desc: 'Gain lifetime entry into India\'s fastest-growing elite community of passionate authors, editors, and industry mentors.' },
 ];
 
 const processSteps = [
@@ -220,24 +222,71 @@ const HoneyAndHurtClient = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const goToRegister = () => router.push('/anthology/honey-and-hurt/register');
+  const [hasPaid, setHasPaid] = useState(false);
+
+  useEffect(() => {
+    const paidOrderId = localStorage.getItem('honey_and_hurt_paid_order_id');
+    if (paidOrderId) {
+      setHasPaid(true);
+    }
+  }, []);
+
+  const handleActionClick = () => {
+    if (hasPaid) {
+      router.push('/anthology/honey-and-hurt/submit');
+    } else {
+      router.push('/anthology/honey-and-hurt/register');
+    }
+  };
 
   return (
     <div className="min-h-screen bg-ivory text-obsidian font-cormorant selection:bg-amber-100 selection:text-amber-900 overflow-x-hidden">
       <style>{styles}</style>
 
-      {/* Top Banner - High Urgency */}
-      <div className="bg-[#e53e3e] text-white py-2 text-center font-inter text-[10px] md:text-xs font-bold tracking-wide uppercase sticky top-0 z-[60] shadow-sm px-4">
+      {/* Top Header / Navigation Bar (Positioned at the absolute top with centered branding) */}
+      <header className={`sticky top-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-ivory/95 backdrop-blur-md shadow-md border-b border-slate-200/50 py-2' : 'bg-transparent py-3'}`}>
+        <div className="container mx-auto px-6 max-w-6xl flex items-center justify-between relative min-h-[40px]">
+          {/* Left Side Links (Desktop Only) */}
+          <div className="flex items-center gap-6 md:gap-8 relative z-10">
+            <a href="#fit" className="hidden md:inline-block font-inter text-xs font-bold uppercase tracking-wider text-slate-600 hover:text-obsidian transition-colors">Is This For You?</a>
+            <a href="#offer" className="hidden md:inline-block font-inter text-xs font-bold uppercase tracking-wider text-slate-600 hover:text-obsidian transition-colors">The Package</a>
+            <a href="#faq" className="hidden md:inline-block font-inter text-xs font-bold uppercase tracking-wider text-slate-600 hover:text-obsidian transition-colors">FAQ</a>
+          </div>
+
+          {/* Centered Brand Title & Logo (Perfect Center on Desktop & Mobile) */}
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <div 
+              className="flex items-center gap-2 pointer-events-auto cursor-pointer group"
+              onClick={() => router.push('/')}
+            >
+              <img 
+                src="https://res.cloudinary.com/dde8ekuuu/image/upload/q_auto/f_auto/v1777556045/iflogo_y3ss8e.png" 
+                alt="Inkfetish Logo" 
+                className="w-7 h-7 sm:w-8 sm:h-8 object-contain rounded-full border border-gold-main/30 shadow-sm group-hover:scale-105 transition-transform duration-300"
+              />
+              <span className="font-cinzel text-xs sm:text-sm md:text-lg font-black uppercase tracking-widest gold-shimmer">
+                Inkfetish Publications
+              </span>
+            </div>
+          </div>
+
+          {/* Right Side Spacer (Desktop Only to balance flex layout) */}
+          <div className="hidden md:block w-32 relative z-10" />
+        </div>
+      </header>
+
+      {/* Top Banner - High Urgency & Enlarged (Positioned below the navbar) */}
+      <div className="bg-[#e53e3e] text-white py-3.5 md:py-5 text-center font-inter text-[11px] sm:text-xs md:text-sm font-black tracking-widest uppercase shadow-sm px-4 relative z-40">
         <span className="flex items-center justify-center gap-4 max-w-xs mx-auto md:max-w-none leading-tight">
-          <span className="animate-pulse flex items-center gap-1.5"><Zap className="w-3.5 h-3.5" /> ATTENTION:</span>
+          <span className="animate-pulse flex items-center gap-2 text-white">
+            <Zap className="w-4 h-4 fill-white animate-pulse" /> ATTENTION:
+          </span>
           <span>PRICE DROP TO ₹485. ONLY 12 SLOTS REMAINING.</span>
         </span>
       </div>
 
-
-
       {/* Direct Response Hero */}
-      <section className="relative flex items-center pt-12 md:pt-20 pb-16 px-6 overflow-hidden min-h-[90vh]">
+      <section className="relative flex items-center pt-8 md:pt-16 pb-16 px-6 overflow-hidden min-h-[85vh]">
         <motion.div style={{ opacity: opacityHero }} className="absolute inset-0 z-0">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_10%_10%,_var(--gold-light)_0%,_transparent_50%)] opacity-10" />
         </motion.div>
@@ -273,10 +322,10 @@ const HoneyAndHurtClient = () => {
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  onClick={goToRegister}
+                  onClick={handleActionClick}
                   className="gold-button px-8 md:px-10 py-4 rounded-xl font-inter font-black text-sm md:text-base uppercase flex items-center justify-center gap-2.5"
                 >
-                  YES! I Want In For Just ₹485 <ChevronRight className="w-5 h-5" />
+                  {hasPaid ? 'SUBMIT YOUR WRITING NOW' : 'YES! I Want In For Just ₹485'} <ChevronRight className="w-5 h-5" />
                 </motion.button>
               </div>
             </motion.div>
@@ -287,27 +336,95 @@ const HoneyAndHurtClient = () => {
               transition={{ duration: 1, ease: 'easeOut' }}
               className="relative"
             >
-              <div className="relative z-10 w-full max-w-[420px] mx-auto aspect-[4/5] drop-shadow-[0_20px_20px_rgba(216,138,6,0.25)]">
-                <img src="/anthology/honey-and-hurt-book.png" alt="Honey and Hurt Anthology Book Cover" className="w-full h-full object-contain" />
-              </div>
-              <div className="absolute top-12 right-0 md:-right-4 lg:-right-8 z-20 bg-white border-[3px] border-red-500 shadow-xl px-5 py-4 rounded-lg transform rotate-3">
-                <p className="font-inter text-[10px] uppercase text-slate-500 font-black line-through mb-0.5">Normally ₹2,499</p>
-                <p className="font-inter text-2xl md:text-3xl font-black text-red-600 leading-none">Only ₹485</p>
-                <p className="font-inter text-[10px] uppercase font-bold text-slate-800 mt-1.5">If you apply today</p>
+              <div className="relative w-full max-w-[420px] mx-auto drop-shadow-[0_20px_20px_rgba(216,138,6,0.18)]">
+                <img 
+                  src="https://res.cloudinary.com/dde8ekuuu/image/upload/q_auto/f_auto/v1779675277/ChatGPTImageMay25202607_43_49A_chgtxw.jpg" 
+                  alt="Honey and Hurt Anthology Book Cover" 
+                  className="w-full h-auto rounded-2xl" 
+                />
+                
+                {/* Secure Price Card Tag Anchored Exactly to Top Right Corner of the Book Cover */}
+                <div className="absolute -top-4 -right-4 md:-right-6 z-20 bg-white border-[3px] border-red-500 shadow-xl px-5 py-4 rounded-xl transform rotate-3 select-none">
+                  <p className="font-inter text-[9px] uppercase text-slate-500 font-black line-through mb-0.5">Normally ₹2,499</p>
+                  <p className="font-inter text-xl md:text-2xl font-black text-red-600 leading-none">Only ₹485</p>
+                  <p className="font-inter text-[9px] uppercase font-bold text-slate-800 mt-1.5">If you apply today</p>
+                </div>
               </div>
             </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Social Proof Strip */}
-      <section className="bg-obsidian text-white py-8 border-y border-gold-dark/40 shadow-inner">
-        <div className="container mx-auto px-6 max-w-5xl">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 text-center divide-x divide-white/10">
-            {proofStats.map((stat) => (
-              <div key={stat.label} className="flex flex-col justify-center">
-                <p className="font-inter text-2xl md:text-3xl font-black gold-shimmer">{stat.value}</p>
-                <p className="font-inter text-[10px] md:text-xs uppercase font-bold text-slate-400 mt-1">{stat.label}</p>
+      {/* Redesigned Premium Trust & Social Proof Strip */}
+      <section className="bg-obsidian text-white py-10 border-y border-gold-dark/30 relative overflow-hidden">
+        {/* Subtle background glow */}
+        <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-80 h-80 bg-gold-main/5 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-80 h-80 bg-amber-500/5 rounded-full blur-3xl pointer-events-none" />
+        
+        <div className="container mx-auto px-6 max-w-6xl relative z-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              { 
+                value: 'Inkfetish', 
+                label: 'Publications', 
+                sub: 'Registered National Brand',
+                icon: ShieldCheck, 
+                color: 'text-emerald-400' 
+              },
+              { 
+                value: '3,200+', 
+                label: 'Writers Trust Us', 
+                sub: 'Verified Co-Authors Joined',
+                icon: Users, 
+                color: 'text-sky-400' 
+              },
+              { 
+                value: '4.8★ Rating', 
+                label: 'Google & Social Reviews', 
+                sub: 'Top-Tier Creative Support',
+                icon: Star, 
+                color: 'text-amber-400',
+                stars: true
+              },
+              { 
+                value: '5+ Anthologies', 
+                label: 'Successful Publications', 
+                sub: '100% Sold Out & Delivered',
+                icon: BookOpen, 
+                color: 'text-purple-400' 
+              },
+            ].map((stat, idx) => (
+              <div 
+                key={idx} 
+                className="bg-white/[0.03] border border-white/10 hover:border-gold-main/30 p-5 rounded-2xl transition-all duration-300 hover:bg-white/[0.05] flex items-start gap-4 shadow-sm hover:shadow-md group relative overflow-hidden"
+              >
+                {/* Accent line */}
+                <div className="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-gold-main/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                
+                <div className={`w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center shrink-0 ${stat.color} group-hover:bg-gold-main/10 transition-colors`}>
+                  <stat.icon className="w-5.5 h-5.5" />
+                </div>
+                
+                <div className="space-y-1">
+                  <div className="flex flex-col">
+                    <span className="font-inter text-lg md:text-xl font-black uppercase tracking-tight gold-shimmer">
+                      {stat.value}
+                    </span>
+                    {stat.stars && (
+                      <div className="flex gap-0.5 mt-0.5">
+                        {[1, 2, 3, 4, 5].map((s) => (
+                          <Star key={s} className="w-3 h-3 fill-gold-main text-gold-main shrink-0" />
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                  <h4 className="font-inter text-[11px] font-black uppercase text-slate-200 tracking-wider">
+                    {stat.label}
+                  </h4>
+                  <p className="font-inter text-[9px] font-bold text-slate-500 uppercase tracking-widest leading-none">
+                    {stat.sub}
+                  </p>
+                </div>
               </div>
             ))}
           </div>
@@ -354,7 +471,7 @@ const HoneyAndHurtClient = () => {
           
           <div className="grid grid-cols-1 md:grid-cols-[0.8fr_1.2fr] gap-12 items-center">
             <div className="relative aspect-[3/4] border-2 luxury-border p-1.5 max-w-[320px] mx-auto md:max-w-full">
-               <img src="https://i.ibb.co/PZk5Qnmt/Whats-App-Image-2025-12-25-at-2-27-03-AM-2.jpg" alt="Premium Output" className="w-full h-full object-cover" />
+               <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/q_auto/f_auto/v1779546327/ChatGPT_Image_May_23_2026_07_53_16_PM_11zon_frceeu.png" alt="Premium Output" className="w-full h-full object-cover" />
             </div>
             <div className="space-y-8">
               <div className="bg-white/5 p-6 md:p-8 rounded-xl border border-white/10 relative overflow-hidden">
@@ -471,7 +588,7 @@ const HoneyAndHurtClient = () => {
             {testimonials.map((item, index) => (
               <div 
                 key={index} 
-                className={`bg-white border border-slate-200 p-6 md:p-8 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 w-full sm:w-[calc(50%-1rem)] md:w-[320px] ${item.rotate} ${item.z} hover:!z-50 hover:scale-105 relative cursor-default`}
+                className={`bg-white border border-slate-200 p-6 md:p-8 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 w-full sm:w-[calc(50%-1rem)] md:w-[320px] sm:${item.rotate} ${item.z} hover:!z-50 hover:scale-105 relative cursor-default`}
               >
                 {/* Verified Badge */}
                 <div className="absolute -top-3 -right-3 bg-green-500 text-white text-[9px] font-black uppercase tracking-wider py-1 px-2.5 rounded-full shadow-md transform rotate-6 border border-white z-10 flex items-center gap-1">
@@ -497,18 +614,18 @@ const HoneyAndHurtClient = () => {
             <p className="text-lg md:text-xl text-slate-400 font-medium max-w-2xl mx-auto">This isn't just an anthology. It's a complete career launchpad.</p>
           </div>
           
-          <div className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {benefits.map((item, index) => (
-              <div key={item.title} className="bg-white/5 border border-white/10 p-6 md:p-8 rounded-2xl hover:bg-white/10 transition-colors flex flex-col md:flex-row items-start md:items-center gap-6 group">
-                <div className="text-5xl md:text-7xl font-black text-white/10 group-hover:text-gold-main/30 transition-colors shrink-0 font-serif italic">
-                  0{index + 1}
+              <div 
+                key={item.title} 
+                className="bg-white/5 border border-white/10 p-6 rounded-2xl hover:border-gold-main/40 transition-all duration-300 flex items-start gap-5 group hover:bg-white/10"
+              >
+                <div className="w-12 h-12 bg-gold-main/10 border border-gold-main/20 rounded-xl flex items-center justify-center shrink-0 group-hover:bg-gold-main group-hover:text-black transition-colors duration-300 text-gold-main">
+                  <item.icon className="w-6 h-6" />
                 </div>
-                <div className="w-12 h-12 bg-gold-main/20 rounded-full flex items-center justify-center shrink-0">
-                  <item.icon className="w-6 h-6 text-gold-main" />
-                </div>
-                <div>
-                  <h4 className="font-inter text-2xl font-black text-white mb-2">{item.title}</h4>
-                  <p className="font-inter text-base text-slate-300 leading-relaxed max-w-2xl">{item.desc}</p>
+                <div className="space-y-1.5">
+                  <h4 className="font-inter text-base md:text-lg font-black text-white group-hover:text-gold-main transition-colors duration-300 uppercase tracking-wider">{item.title}</h4>
+                  <p className="font-inter text-xs text-slate-400 leading-relaxed font-medium">{item.desc}</p>
                 </div>
               </div>
             ))}
@@ -591,26 +708,77 @@ const HoneyAndHurtClient = () => {
           <h2 className="font-inter text-4xl md:text-6xl font-black uppercase tracking-tight text-obsidian mb-4">The <span className="text-gold-dark">Legacy</span></h2>
           <p className="text-lg md:text-xl text-slate-600 font-medium max-w-2xl mx-auto mb-16">We don't just promise results. We have a massive track record of turning everyday writers into published authors.</p>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-4">
-            <div className="bg-white p-8 rounded-2xl shadow-xl border border-slate-100 flex flex-col items-center group hover:-translate-y-2 transition-transform">
-              <BookOpen className="w-12 h-12 text-gold-main mb-6 group-hover:scale-110 transition-transform" />
-              <h3 className="font-inter text-2xl font-black text-obsidian mb-2">Love at Minus One</h3>
-              <p className="font-inter text-sm font-bold text-gold-main uppercase tracking-wider mb-4">Romance Anthology</p>
-              <p className="font-inter text-slate-600 leading-relaxed text-center">Hit Amazon Bestseller lists within 48 hours of launch. Over 120 authors featured.</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 pt-4">
+            
+            {/* Syaahi */}
+            <div className="bg-white p-6 rounded-2xl shadow-xl border border-slate-100 flex flex-col items-center group hover:-translate-y-2 transition-transform duration-300 relative">
+              <div className="absolute -top-3 bg-red-600 text-white text-[9px] font-black uppercase tracking-wider py-1 px-3 rounded-full shadow-md z-10 animate-pulse">Bestseller</div>
+              <div className="w-full aspect-[3/4] rounded-xl overflow-hidden mb-5 shadow-md border border-slate-100 relative group-hover:scale-[1.03] transition-transform duration-500 bg-slate-50">
+                <img 
+                  src="https://res.cloudinary.com/dde8ekuuu/image/upload/q_auto/f_auto/v1778137587/pezfosvx2fszfwxaffhs_mtcvbi.webp" 
+                  alt="Syaahi Book Cover" 
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <h3 className="font-inter text-xl font-black text-obsidian mb-1 text-center">Syaahi</h3>
+              <p className="font-inter text-[11px] font-bold text-gold-main uppercase tracking-wider mb-3.5 text-center">Collection of top 200 writers</p>
+              <div className="font-inter text-xs md:text-sm font-black uppercase tracking-wider px-4 py-1.5 rounded-full mb-4 shadow-md flex items-center justify-center gap-2 bg-emerald-50 text-emerald-700 border border-emerald-200/50">
+                <Award className="w-3.5 h-3.5 fill-emerald-700 shrink-0" /> 185 Sales in 24 Hours
+              </div>
+              <p className="font-inter text-xs text-slate-500 leading-relaxed text-center font-medium">Our all-time best-selling book. Compiles masterpiece works of the top 200 elite writers from the prestigious Indian Writers League (IWL).</p>
             </div>
-            <div className="bg-white p-8 rounded-2xl shadow-xl border border-slate-100 flex flex-col items-center scale-105 relative z-10 border-gold-main/30 group hover:-translate-y-2 transition-transform">
-              <div className="absolute -top-4 bg-gold-main text-white text-xs font-black uppercase tracking-wider py-1.5 px-4 rounded-full shadow-lg">Community Favorite</div>
-              <BookOpen className="w-12 h-12 text-gold-main mb-6 group-hover:scale-110 transition-transform" />
-              <h3 className="font-inter text-2xl font-black text-obsidian mb-2">Shakespeare & What Remained</h3>
-              <p className="font-inter text-sm font-bold text-gold-main uppercase tracking-wider mb-4">Poetry Anthology</p>
-              <p className="font-inter text-slate-600 leading-relaxed text-center">Highly critically acclaimed. Gave 85 poets their very first verifiable ISBN.</p>
+
+            {/* Shakespeare & What Remained */}
+            <div className="bg-white p-6 rounded-2xl shadow-xl border border-slate-100 flex flex-col items-center group hover:-translate-y-2 transition-transform duration-300 relative">
+              <div className="w-full aspect-[3/4] rounded-xl overflow-hidden mb-5 shadow-md border border-slate-100 relative group-hover:scale-[1.03] transition-transform duration-500 bg-slate-50">
+                <img 
+                  src="https://res.cloudinary.com/dde8ekuuu/image/upload/q_auto/f_auto/v1779673450/ChatGPT_Image_May_25_2026_07_12_11_AM_yaaaie.webp" 
+                  alt="Shakespeare & What Remained Book Cover" 
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <h3 className="font-inter text-xl font-black text-obsidian mb-1 text-center">Shakespeare & What Remained</h3>
+              <p className="font-inter text-[11px] font-bold text-gold-main uppercase tracking-wider mb-3.5 text-center">Poetry Anthology</p>
+              <div className="font-inter text-xs md:text-sm font-black uppercase tracking-wider px-4 py-1.5 rounded-full mb-4 shadow-md flex items-center justify-center gap-2 bg-amber-50 text-amber-700 border border-amber-200/50">
+                <Sparkles className="w-3.5 h-3.5 fill-amber-700 shrink-0" /> 65 Sales in 48 Hours
+              </div>
+              <p className="font-inter text-xs text-slate-500 leading-relaxed text-center font-medium">A compilation celebrating classic verses, featuring all fine poetries from the Shakespeare Poetry Award hosted in 2025.</p>
             </div>
-            <div className="bg-white p-8 rounded-2xl shadow-xl border border-slate-100 flex flex-col items-center group hover:-translate-y-2 transition-transform">
-              <BookOpen className="w-12 h-12 text-gold-main mb-6 group-hover:scale-110 transition-transform" />
-              <h3 className="font-inter text-2xl font-black text-obsidian mb-2">Petals and Scars</h3>
-              <p className="font-inter text-sm font-bold text-gold-main uppercase tracking-wider mb-4">Poetry Collection</p>
-              <p className="font-inter text-slate-600 leading-relaxed text-center">Over 92 community members published their raw, unfiltered emotions to massive praise.</p>
+
+            {/* Love at Minus One */}
+            <div className="bg-white p-6 rounded-2xl shadow-xl border border-slate-100 flex flex-col items-center group hover:-translate-y-2 transition-transform duration-300">
+              <div className="w-full aspect-[3/4] rounded-xl overflow-hidden mb-5 shadow-md border border-slate-100 relative group-hover:scale-[1.03] transition-transform duration-500 bg-slate-50">
+                <img 
+                  src="https://res.cloudinary.com/dde8ekuuu/image/upload/q_auto/f_auto/v1779674268/ChatGPTImageMay25202607_27_27A_h2iwrz.jpg" 
+                  alt="Love at Minus One Book Cover" 
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <h3 className="font-inter text-xl font-black text-obsidian mb-1 text-center">Love at Minus One</h3>
+              <p className="font-inter text-[11px] font-bold text-gold-main uppercase tracking-wider mb-3.5 text-center">Romance Anthology</p>
+              <div className="font-inter text-xs md:text-sm font-black uppercase tracking-wider px-4 py-1.5 rounded-full mb-4 shadow-md flex items-center justify-center gap-2 bg-red-50 text-red-600 border border-red-200/50">
+                <Zap className="w-3.5 h-3.5 fill-red-600 shrink-0" /> 155 Sales in 2 Days
+              </div>
+              <p className="font-inter text-xs text-slate-500 leading-relaxed text-center font-medium">Launched in the chilling winter of December 2025. A compiling poetry anthology exploring romance and heartbreak where the heart freezes.</p>
             </div>
+
+            {/* Petals and Scars */}
+            <div className="bg-white p-6 rounded-2xl shadow-xl border border-slate-100 flex flex-col items-center group hover:-translate-y-2 transition-transform duration-300">
+              <div className="w-full aspect-[3/4] rounded-xl overflow-hidden mb-5 shadow-md border border-slate-100 relative group-hover:scale-[1.03] transition-transform duration-500 bg-slate-50">
+                <img 
+                  src="https://res.cloudinary.com/dde8ekuuu/image/upload/q_auto/f_auto/v1779673963/ChatGPTImageMay25202607_20_11A_vcxbxc.jpg" 
+                  alt="Petals and Scars Book Cover" 
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <h3 className="font-inter text-xl font-black text-obsidian mb-1 text-center">Petals and Scars</h3>
+              <p className="font-inter text-[11px] font-bold text-gold-main uppercase tracking-wider mb-3.5 text-center">Poetry Collection</p>
+              <div className="font-inter text-xs md:text-sm font-black uppercase tracking-wider px-4 py-1.5 rounded-full mb-4 shadow-md flex items-center justify-center gap-2 bg-blue-50 text-blue-600 border border-blue-200/50">
+                <Star className="w-3.5 h-3.5 fill-blue-600 shrink-0" /> 48 Sales in 24 Hours
+              </div>
+              <p className="font-inter text-xs text-slate-500 leading-relaxed text-center font-medium">A masterpiece collection featuring all top writings from our Authorverse Summit and the September Writing Competition.</p>
+            </div>
+
           </div>
         </div>
       </section>
@@ -657,16 +825,196 @@ const HoneyAndHurtClient = () => {
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  onClick={goToRegister}
+                  onClick={handleActionClick}
                   className="w-full bg-[#e53e3e] hover:bg-red-700 text-white py-4 md:py-5 rounded-xl font-inter font-black text-lg md:text-xl uppercase shadow-lg transition-all flex items-center justify-center gap-2.5"
                 >
-                  Apply For ₹485 Now <ChevronRight className="w-5 h-5" />
+                  {hasPaid ? 'SUBMIT YOUR WRITING NOW' : 'Apply For ₹485 Now'} <ChevronRight className="w-5 h-5" />
                 </motion.button>
                 <p className="text-center mt-3.5 font-inter text-xs font-bold text-slate-500">
                   🔒 Risk-Free: You don't pay anything on the application form. We only accept payment if you are selected.
                 </p>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+      {/* Our Proven Track Record Section */}
+      <section className="py-24 bg-white text-obsidian border-t border-slate-200">
+        <div className="container mx-auto px-6 max-w-6xl">
+          <div className="text-center mb-16">
+            <div className="flex justify-center mb-5">
+              <img 
+                src="https://res.cloudinary.com/dde8ekuuu/image/upload/q_auto/f_auto/v1777556045/iflogo_y3ss8e.png" 
+                alt="Inkfetish Logo" 
+                className="w-16 h-16 object-contain rounded-full border-2 border-gold-main/40 shadow-lg"
+              />
+            </div>
+            <span className="font-inter text-xs font-black uppercase tracking-widest text-gold-main bg-amber-50 border border-gold-main/20 px-4 py-1.5 rounded-full inline-block mb-4">
+              ✨ PROVEN TRUST & AUTHORITY
+            </span>
+            <h2 className="font-inter text-3xl md:text-5xl font-black text-obsidian uppercase tracking-tight leading-tight">
+              Inkfetish Publications <br />
+              <span className="gold-shimmer">~ Our Proven Track Record</span>
+            </h2>
+            <p className="mt-4 text-base md:text-lg text-slate-600 font-medium max-w-2xl mx-auto">
+              Before you trust any platform, it’s important to know what they’ve already achieved. We don't guess; we deliver.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
+            {/* Left: Journey So Far (Bento Stats) */}
+            <div className="bg-ivory border border-slate-200/60 p-8 rounded-2xl flex flex-col justify-between shadow-sm relative overflow-hidden group hover:border-gold-main/40 transition-colors duration-300">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-gold-main/5 rounded-full blur-3xl pointer-events-none" />
+              
+              <div className="space-y-6">
+                <div>
+                  <h3 className="font-inter text-lg font-black text-obsidian uppercase tracking-wider border-b border-slate-200 pb-3 flex items-center gap-2">
+                    <Sparkles className="w-5 h-5 text-gold-main" /> Our Journey So Far
+                  </h3>
+                </div>
+
+                <div className="grid grid-cols-1 gap-4">
+                  {[
+                    { label: "Successful Competitions Hosted", val: "6 Competitions", icon: "✔️" },
+                    { label: "Active Writers in Our Ecosystem", val: "3,200+ Writers Joined", icon: "✔️" },
+                    { label: "Prize Money Distributed", val: "₹4,45,000+ Awarded", icon: "✔️" },
+                    { label: "Winners Rewarded with Cash Prizes", val: "20+ Winners", icon: "✔️" },
+                    { label: "Appreciation Credentials Provided", val: "Certificates for All", icon: "✔️" },
+                  ].map((stat, idx) => (
+                    <div key={idx} className="bg-white border border-slate-100/80 p-3.5 rounded-xl shadow-sm hover:shadow-md transition-shadow flex items-start gap-3">
+                      <span className="text-emerald-600 font-black shrink-0 mt-0.5">{stat.icon}</span>
+                      <div>
+                        <div className="font-inter text-sm font-black text-obsidian">{stat.val}</div>
+                        <div className="font-inter text-[10px] font-bold text-slate-400 uppercase mt-0.5">{stat.label}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="mt-8 pt-4 border-t border-slate-200/50 flex items-center gap-2 text-slate-500">
+                <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
+                <span className="font-inter text-[10px] font-bold uppercase tracking-widest">100% Verified Legacy & Operations</span>
+              </div>
+            </div>
+
+            {/* Center: Notable Competitions */}
+            <div className="bg-obsidian text-white p-8 rounded-2xl flex flex-col justify-between border border-white/5 relative overflow-hidden group hover:border-gold-main/30 transition-colors duration-300">
+              <div className="absolute -bottom-8 -right-8 w-40 h-40 bg-gold-main/10 rounded-full blur-3xl pointer-events-none" />
+              
+              <div className="space-y-6">
+                <div>
+                  <h3 className="font-inter text-lg font-black text-white uppercase tracking-wider border-b border-white/10 pb-3 flex items-center gap-2">
+                    <PenTool className="w-5 h-5 text-gold-main" /> Notable Competitions
+                  </h3>
+                </div>
+
+                <div className="space-y-4">
+                  {[
+                    { name: "Authorverse Submit", desc: "Our annual flagship event promoting peer networking and submission reviews." },
+                    { name: "Poetry Festival — Season 1", desc: "A celebrated national stage for authentic poetic expressions." },
+                    { name: "September Writing Competition", desc: "A prestigious monthly competition pushing creative boundaries." },
+                    { name: "Indian Writers League", desc: "The ultimate national tournament for budding and elite Indian writers." },
+                  ].map((comp, idx) => (
+                    <div key={idx} className="flex gap-3 items-start group/item">
+                      <div className="bg-white/10 text-gold-main w-6 h-6 rounded-full flex items-center justify-center font-bold text-xs shrink-0 mt-0.5 group-hover/item:bg-gold-main group-hover/item:text-black transition-colors duration-300">✍️</div>
+                      <div>
+                        <h4 className="font-inter text-sm font-black text-white group-hover/item:text-gold-main transition-colors duration-300">{comp.name}</h4>
+                        <p className="font-inter text-[11px] text-slate-400 font-medium leading-snug">{comp.desc}</p>
+                      </div>
+                    </div>
+                  ))}
+                  <div className="flex gap-3 items-center pt-2">
+                    <div className="w-1.5 h-1.5 rounded-full bg-gold-main animate-pulse" />
+                    <span className="font-inter text-xs text-gold-light font-bold uppercase tracking-wider">And many more upcoming...</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-8 pt-4 border-t border-white/10 flex items-center gap-2 text-slate-400">
+                <Award className="w-4 h-4 text-gold-main shrink-0" />
+                <span className="font-inter text-[10px] font-bold uppercase tracking-widest">Rewarding Creative Excellence</span>
+              </div>
+            </div>
+
+            {/* Right: Bestselling Anthologies */}
+            <div className="bg-white border border-slate-200/60 p-8 rounded-2xl flex flex-col justify-between shadow-sm relative overflow-hidden group hover:border-gold-main/40 transition-colors duration-300">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/5 rounded-full blur-3xl pointer-events-none" />
+              
+              <div className="space-y-6">
+                <div>
+                  <h3 className="font-inter text-lg font-black text-obsidian uppercase tracking-wider border-b border-slate-200 pb-3 flex items-center gap-2">
+                    <BookOpen className="w-5 h-5 text-gold-main" /> Bestselling Anthologies
+                  </h3>
+                </div>
+
+                <div className="space-y-4">
+                  {[
+                    { name: "Syaahi", record: "185 Sales in 24 Hours", detail: "Compiles masterpiece works of the top 200 elite writers from the Indian Writers League." },
+                    { name: "Love at Minus One", record: "155 Sales in 2 Days", detail: "A winter romance poetry collection exploring romantic heartbreak where the heart freezes." },
+                    { name: "Shakespeare & What Remained", record: "65 Sales in 48 Hours", detail: "Celebrates classical verses, compiling fine poetries from the 2025 Poetry Award." },
+                    { name: "Petals and Scars", record: "48 Sales in 24 Hours", detail: "Masterpiece anthology from the September Competition and Authorverse Summit." }
+                  ].map((book, idx) => (
+                    <div key={idx} className="border-b border-slate-100 pb-3.5 last:border-0 last:pb-0">
+                      <div className="flex justify-between items-center flex-wrap gap-1">
+                        <span className="font-inter text-sm font-black text-obsidian">{book.name}</span>
+                        <span className="bg-red-50 text-red-600 text-[9px] font-black uppercase px-2 py-0.5 rounded border border-red-100">{book.record}</span>
+                      </div>
+                      <p className="font-inter text-[11px] text-slate-500 font-medium leading-snug mt-1">{book.detail}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="mt-8 pt-4 border-t border-slate-200/50 flex items-center gap-2 text-slate-400">
+                <Users className="w-4 h-4 text-slate-400 shrink-0" />
+                <span className="font-inter text-[10px] font-bold uppercase tracking-widest text-slate-400">Trusted By Hundreds of Co-Authors</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Bottom Statement Card */}
+          <div className="bg-ivory border border-slate-200/60 p-6 md:p-8 rounded-2xl mt-8 text-center relative overflow-hidden">
+            <div className="max-w-2xl mx-auto space-y-4">
+              <p className="font-inter text-sm md:text-base text-slate-700 font-medium leading-relaxed">
+                This isn’t something new we’re experimenting with. This is a robust literary ecosystem we’ve already built, tested, and proven.
+              </p>
+              <p className="font-inter text-base md:text-lg font-black text-obsidian uppercase tracking-wide">
+                So when you step in, you’re stepping into something real, trusted, and growing fast. ✍️
+              </p>
+            </div>
+          </div>
+
+          {/* Official Contact & Support Channels */}
+          <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-5 text-center">
+            <a 
+              href="https://www.instagram.com/ink.fetish/" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="bg-white border border-slate-200/60 p-5 rounded-2xl flex flex-col items-center justify-center gap-2 hover:border-pink-500/40 hover:shadow-md transition-all duration-300 group"
+            >
+              <span className="text-pink-600 font-inter text-lg font-black uppercase tracking-wider">📸 Instagram</span>
+              <span className="font-inter text-sm font-black text-slate-700 group-hover:text-pink-600 transition-colors">@ink.fetish</span>
+              <span className="font-inter text-[10px] text-slate-400 font-bold uppercase">Follow Our Journey</span>
+            </a>
+            <a 
+              href="mailto:inkfetishh@gmail.com" 
+              className="bg-white border border-slate-200/60 p-5 rounded-2xl flex flex-col items-center justify-center gap-2 hover:border-gold-main/40 hover:shadow-md transition-all duration-300 group"
+            >
+              <span className="text-gold-main font-inter text-lg font-black uppercase tracking-wider">✉️ Email Support</span>
+              <span className="font-inter text-sm font-black text-slate-700 group-hover:text-gold-main transition-colors">inkfetishh@gmail.com</span>
+              <span className="font-inter text-[10px] text-slate-400 font-bold uppercase">Get in Touch Directly</span>
+            </a>
+            <a 
+              href="https://wa.me/919216681908" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="bg-white border border-slate-200/60 p-5 rounded-2xl flex flex-col items-center justify-center gap-2 hover:border-green-600/40 hover:shadow-md transition-all duration-300 group"
+            >
+              <span className="text-green-600 font-inter text-lg font-black uppercase tracking-wider">💬 WhatsApp</span>
+              <span className="font-inter text-sm font-black text-slate-700 group-hover:text-green-600 transition-colors">+91 92166 81908</span>
+              <span className="font-inter text-[10px] text-slate-400 font-bold uppercase">Chat With Support</span>
+            </a>
           </div>
         </div>
       </section>
@@ -705,7 +1053,14 @@ const HoneyAndHurtClient = () => {
         <div className="container mx-auto px-6 max-w-6xl">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
             <div className="md:col-span-2 space-y-6">
-              <h3 className="font-inter text-3xl font-black uppercase tracking-widest gold-shimmer">Inkfetish</h3>
+              <div className="flex items-center gap-3">
+                <img 
+                  src="https://res.cloudinary.com/dde8ekuuu/image/upload/q_auto/f_auto/v1777556045/iflogo_y3ss8e.png" 
+                  alt="Inkfetish Logo" 
+                  className="w-10 h-10 object-contain rounded-full border border-gold-main/40 shadow-md"
+                />
+                <h3 className="font-inter text-3xl font-black uppercase tracking-widest gold-shimmer">Inkfetish</h3>
+              </div>
               <p className="font-inter text-slate-400 text-sm leading-relaxed max-w-sm">
                 India's fastest-growing hybrid publisher. We don't just publish books; we launch author careers. Our mission is to take 10,000 everyday writers and give them the platform, credibility, and verifiable portfolio they deserve.
               </p>
@@ -717,7 +1072,7 @@ const HoneyAndHurtClient = () => {
                 <li><a href="#" className="hover:text-gold-main transition-colors inline-block hover:translate-x-1 transform duration-200">About Us</a></li>
                 <li><a href="#" className="hover:text-gold-main transition-colors inline-block hover:translate-x-1 transform duration-200">Our Authors</a></li>
                 <li><a href="#" className="hover:text-gold-main transition-colors inline-block hover:translate-x-1 transform duration-200">Anthologies</a></li>
-                <li><a href="#" className="hover:text-gold-main transition-colors inline-block hover:translate-x-1 transform duration-200">Contact Support</a></li>
+                <li><a href="mailto:inkfetishh@gmail.com" className="hover:text-gold-main transition-colors inline-block hover:translate-x-1 transform duration-200">Contact Support</a></li>
               </ul>
             </div>
             
@@ -749,8 +1104,8 @@ const HoneyAndHurtClient = () => {
           <span className="font-inter font-black text-slate-800 uppercase text-[10px]">Total Value: <span className="line-through text-slate-400">₹24,996</span></span>
           <span className="font-inter font-black text-red-600 text-base">Only ₹485</span>
         </div>
-        <button onClick={goToRegister} className="w-full bg-[#e53e3e] text-white py-3.5 rounded-lg font-inter font-black text-base uppercase flex items-center justify-center gap-2">
-          Claim Offer <ChevronRight className="w-5 h-5" />
+        <button onClick={handleActionClick} className="w-full bg-[#e53e3e] text-white py-3.5 rounded-lg font-inter font-black text-base uppercase flex items-center justify-center gap-2">
+          {hasPaid ? 'SUBMIT YOUR WRITING' : 'Claim Offer'} <ChevronRight className="w-5 h-5" />
         </button>
       </div>
     </div>

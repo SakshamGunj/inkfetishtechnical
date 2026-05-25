@@ -40,8 +40,8 @@ const authorData = {
     bio: "Rochi Roshni Sulbhewar is a multifaceted scholar, researcher, and writer who bridges the analytical world of economics with the evocative power of poetry. Currently pursuing her BS in Economics and Statistical Sciences at IISER Tirupati, she is a published researcher and an IELTS Band 8 achiever with a vision to redefine contemporary literature.",
     longBio: "Rochi's journey into the world of letters began in 4th grade, initially as a way to express herself and find wonder in quiet moments. Her passion deepened in 5th grade when the verses of A.E. Housman's 'Loveliest of Trees' sparked her own poetic voice. By 6th grade, she was inspired to write her first book. Today, she balances her academic rigor as a researcher and merit student with her creative pursuits, aiming to create 'cozy reads' that transform the mundane into the memorable.",
     location: "Tirupati / India",
-    email: "contact@rochisulbhewar.com", // Placeholder
-    instagram: "rochi_roshni", // Placeholder
+    email: "rochichandrakantsulbhewar@gmail.com",
+    instagram: "https://www.instagram.com/gliding_.strokes?igsh=N3YwMjhtNWF4dWZt",
     stats: {
         age: 19,
         role: "Researcher / Economist",
@@ -139,8 +139,12 @@ const RochiSulbhewarAuthor = () => {
                                 </Button>
 
                                 <div className="flex gap-4 text-parchment/40">
-                                    <Instagram className="w-6 h-6 hover:text-gold cursor-pointer transition-colors hover:scale-110 duration-300" />
-                                    <Mail className="w-6 h-6 hover:text-gold cursor-pointer transition-colors hover:scale-110 duration-300" />
+                                    <a href={authorData.instagram} target="_blank" rel="noopener noreferrer" className="hover:text-gold hover:scale-110 duration-300 transition-all">
+                                        <Instagram className="w-6 h-6" />
+                                    </a>
+                                    <a href={`mailto:${authorData.email}`} className="hover:text-gold hover:scale-110 duration-300 transition-all">
+                                        <Mail className="w-6 h-6" />
+                                    </a>
                                     <Globe className="w-6 h-6 hover:text-gold cursor-pointer transition-colors hover:scale-110 duration-300" />
                                 </div>
                             </div>
@@ -407,8 +411,8 @@ const RochiSulbhewarAuthor = () => {
                     </p>
                     <div className="h-[1px] w-24 bg-gold/30 mx-auto mb-8" />
                     <div className="flex justify-center gap-8 text-xs tracking-widest uppercase text-parchment/40">
-                        <span className="hover:text-gold cursor-pointer transition-colors">Instagram</span>
-                        <span className="hover:text-gold cursor-pointer transition-colors">Email</span>
+                        <a href={authorData.instagram} target="_blank" rel="noopener noreferrer" className="hover:text-gold transition-colors">Instagram</a>
+                        <a href={`mailto:${authorData.email}`} className="hover:text-gold transition-colors">Email</a>
                         <span className="hover:text-gold cursor-pointer transition-colors">LinkedIn</span>
                     </div>
                     <p className="text-xs text-parchment/20 mt-8 tracking-widest">© {new Date().getFullYear()} {authorData.fullName}. All rights reserved.</p>

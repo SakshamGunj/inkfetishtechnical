@@ -118,5 +118,14 @@ service cloud.firestore {
       allow read: if true;
       allow write: if false;
     }
+
+    // Honey & Hurt Anthology Collections
+    match /honey_and_hurt_registrations/{document} {
+      allow read, create, update: if true;
+    }
+    match /honey_and_hurt_submissions/{document} {
+      allow read, create: if true;
+      allow update, delete: if false;
+    }
   }
 }

@@ -10,10 +10,6 @@ export function FloatingContact() {
     const [isOpen, setIsOpen] = useState(false);
     const modalRef = useRef<HTMLDivElement>(null);
 
-    // Hide on festival app pages (register, submit, read)
-    // Keep it on landing page (/poetry-festival-s2)
-    if (pathname?.startsWith('/poetry-festival-s2/')) return null;
-
     // Close when clicking outside
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
@@ -30,6 +26,11 @@ export function FloatingContact() {
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, [isOpen]);
+
+    // Hide on festival app pages (register, submit, read)
+    // Keep it on landing page (/poetry-festival-s2)
+    if (pathname?.startsWith('/poetry-festival-s2/')) return null;
+    if (pathname?.startsWith('/anthology/honey-and-hurt')) return null;
 
     const contactDetails = [
         {

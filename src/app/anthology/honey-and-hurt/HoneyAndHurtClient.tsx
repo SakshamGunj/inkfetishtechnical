@@ -244,8 +244,8 @@ const HoneyAndHurtClient = () => {
       <style>{styles}</style>
 
       {/* Top Header / Navigation Bar (Positioned at the absolute top with centered branding) */}
-      <header className={`sticky top-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-ivory/95 backdrop-blur-md shadow-md border-b border-slate-200/50 py-2' : 'bg-transparent py-3'}`}>
-        <div className="container mx-auto px-6 max-w-6xl flex items-center justify-between relative min-h-[40px]">
+      <header className={`sticky top-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-ivory/95 backdrop-blur-md shadow-md border-b border-slate-200/50 py-1.5' : 'bg-transparent py-2.5'}`}>
+        <div className="container mx-auto px-6 max-w-6xl flex items-center justify-between relative min-h-[36px]">
           {/* Left Side Links (Desktop Only) */}
           <div className="flex items-center gap-6 md:gap-8 relative z-10">
             <a href="#fit" className="hidden md:inline-block font-inter text-xs font-bold uppercase tracking-wider text-slate-600 hover:text-obsidian transition-colors">Is This For You?</a>
@@ -256,15 +256,15 @@ const HoneyAndHurtClient = () => {
           {/* Centered Brand Title & Logo (Perfect Center on Desktop & Mobile) */}
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
             <div 
-              className="flex items-center gap-2 pointer-events-auto cursor-pointer group"
+              className="flex items-center gap-1.5 pointer-events-auto cursor-pointer group"
               onClick={() => router.push('/')}
             >
               <img 
                 src="https://res.cloudinary.com/dde8ekuuu/image/upload/q_auto/f_auto/v1777556045/iflogo_y3ss8e.png" 
                 alt="Inkfetish Logo" 
-                className="w-7 h-7 sm:w-8 sm:h-8 object-contain rounded-full border border-gold-main/30 shadow-sm group-hover:scale-105 transition-transform duration-300"
+                className="w-5 h-5 sm:w-6 sm:h-6 object-contain rounded-full border border-gold-main/30 shadow-sm group-hover:scale-105 transition-transform duration-300"
               />
-              <span className="font-cinzel text-xs sm:text-sm md:text-lg font-black uppercase tracking-widest gold-shimmer">
+              <span className="font-cinzel text-[10px] sm:text-xs md:text-base font-black uppercase tracking-widest gold-shimmer">
                 Inkfetish Publications
               </span>
             </div>
@@ -276,17 +276,17 @@ const HoneyAndHurtClient = () => {
       </header>
 
       {/* Top Banner - High Urgency & Enlarged (Positioned below the navbar) */}
-      <div className="bg-[#e53e3e] text-white py-3.5 md:py-5 text-center font-inter text-[11px] sm:text-xs md:text-sm font-black tracking-widest uppercase shadow-sm px-4 relative z-40">
-        <span className="flex items-center justify-center gap-4 max-w-xs mx-auto md:max-w-none leading-tight">
-          <span className="animate-pulse flex items-center gap-2 text-white">
-            <Zap className="w-4 h-4 fill-white animate-pulse" /> ATTENTION:
+      <div className="bg-[#e53e3e] text-white py-2 sm:py-3 text-center font-inter text-[10px] sm:text-xs md:text-sm font-black tracking-widest uppercase shadow-sm px-4 relative z-40">
+        <div className="container mx-auto max-w-4xl flex flex-col sm:flex-row items-center justify-center gap-1.5 sm:gap-3 leading-tight">
+          <span className="animate-pulse flex items-center gap-1 bg-white/20 px-2 py-0.5 rounded text-white text-[9px] sm:text-[10px]">
+            <Zap className="w-3 h-3 fill-white animate-pulse" /> ATTENTION
           </span>
-          <span>PRICE DROP TO ₹485. ONLY 12 SLOTS REMAINING.</span>
-        </span>
+          <span className="font-bold text-center">PRICE DROP TO ₹485. ONLY 12 SLOTS REMAINING.</span>
+        </div>
       </div>
 
       {/* Direct Response Hero */}
-      <section className="relative flex items-center pt-8 md:pt-16 pb-16 px-6 overflow-hidden min-h-[85vh]">
+      <section className="relative flex items-center pt-6 sm:pt-8 md:pt-16 pb-10 md:pb-16 px-4 sm:px-6 overflow-hidden min-h-[85vh]">
         <motion.div style={{ opacity: opacityHero }} className="absolute inset-0 z-0">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_10%_10%,_var(--gold-light)_0%,_transparent_50%)] opacity-10" />
         </motion.div>
@@ -297,14 +297,14 @@ const HoneyAndHurtClient = () => {
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, ease: 'easeOut' }}
-              className="space-y-6 text-center lg:text-left"
+              className="space-y-5 md:space-y-6 text-center lg:text-left"
             >
               <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-red-100 text-red-700 border border-red-200 rounded-full font-inter text-[10px] font-black uppercase">
                 <Clock className="w-3.5 h-3.5" /> Limited Time: 80% OFF Launch Promo
               </div>
 
-              <div className="space-y-4">
-                <h1 className="font-inter text-4xl md:text-5xl lg:text-[4rem] font-black leading-[1.05] tracking-tight text-obsidian uppercase">
+              <div className="space-y-3 sm:space-y-4">
+                <h1 className="font-inter text-3xl sm:text-4xl md:text-5xl lg:text-[4rem] font-black leading-[1.1] md:leading-[1.05] tracking-tight text-obsidian uppercase">
                   JOIN THE <br className="hidden md:block"/> <span className="gold-shimmer">HONEY AND HURT</span> ANTHOLOGY
                 </h1>
               </div>
@@ -356,74 +356,64 @@ const HoneyAndHurtClient = () => {
       </section>
 
       {/* Redesigned Premium Trust & Social Proof Strip */}
-      <section className="bg-obsidian text-white py-10 border-y border-gold-dark/30 relative overflow-hidden">
+      <section className="bg-obsidian text-white py-8 sm:py-10 border-y border-gold-dark/30 relative overflow-hidden">
         {/* Subtle background glow */}
         <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-80 h-80 bg-gold-main/5 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-80 h-80 bg-amber-500/5 rounded-full blur-3xl pointer-events-none" />
         
-        <div className="container mx-auto px-6 max-w-6xl relative z-10">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="container mx-auto px-4 sm:px-6 max-w-6xl relative z-10">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-6">
             {[
               { 
                 value: 'Inkfetish', 
-                label: 'Publications', 
                 sub: 'Registered National Brand',
-                icon: ShieldCheck, 
-                color: 'text-emerald-400' 
+                icon: ShieldCheck
               },
               { 
                 value: '3,200+', 
-                label: 'Writers Trust Us', 
                 sub: 'Verified Co-Authors Joined',
-                icon: Users, 
-                color: 'text-sky-400' 
+                icon: Users
               },
               { 
                 value: '4.8★ Rating', 
-                label: 'Google & Social Reviews', 
-                sub: 'Top-Tier Creative Support',
+                sub: 'Google & Social Reviews',
                 icon: Star, 
-                color: 'text-amber-400',
                 stars: true
               },
               { 
                 value: '5+ Anthologies', 
-                label: 'Successful Publications', 
-                sub: '100% Sold Out & Delivered',
-                icon: BookOpen, 
-                color: 'text-purple-400' 
+                sub: 'Successful Publications',
+                icon: BookOpen
               },
             ].map((stat, idx) => (
               <div 
                 key={idx} 
-                className="bg-white/[0.03] border border-white/10 hover:border-gold-main/30 p-5 rounded-2xl transition-all duration-300 hover:bg-white/[0.05] flex items-start gap-4 shadow-sm hover:shadow-md group relative overflow-hidden"
+                className="bg-white/[0.02] border border-white/5 p-3 sm:p-4 rounded-xl flex flex-col items-center text-center gap-2.5 sm:gap-3 relative overflow-hidden transition-all duration-300 hover:border-gold-main/20 hover:bg-white/[0.04]"
               >
-                {/* Accent line */}
-                <div className="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-gold-main/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                
-                <div className={`w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center shrink-0 ${stat.color} group-hover:bg-gold-main/10 transition-colors`}>
-                  <stat.icon className="w-5.5 h-5.5" />
+                {/* Clean Gold Icon floating naturally */}
+                <div className="text-gold-main shrink-0">
+                  <stat.icon className="w-4 h-4 sm:w-5 sm:h-5 stroke-[1.5]" />
                 </div>
                 
-                <div className="space-y-1">
-                  <div className="flex flex-col">
-                    <span className="font-inter text-lg md:text-xl font-black uppercase tracking-tight gold-shimmer">
+                <div className="space-y-1 w-full">
+                  <div className="flex flex-col items-center">
+                    <span className="font-inter text-xs xs:text-sm sm:text-lg md:text-xl font-black uppercase tracking-wide gold-shimmer">
                       {stat.value}
                     </span>
                     {stat.stars && (
-                      <div className="flex gap-0.5 mt-0.5">
+                      <div className="flex justify-center gap-0.5 mt-0.5">
                         {[1, 2, 3, 4, 5].map((s) => (
-                          <Star key={s} className="w-3 h-3 fill-gold-main text-gold-main shrink-0" />
+                          <Star key={s} className="w-2 h-2 sm:w-2.5 sm:h-2.5 fill-gold-main text-gold-main shrink-0" />
                         ))}
                       </div>
                     )}
                   </div>
-                  <h4 className="font-inter text-[11px] font-black uppercase text-slate-200 tracking-wider">
-                    {stat.label}
-                  </h4>
-                  <p className="font-inter text-[9px] font-bold text-slate-500 uppercase tracking-widest leading-none">
-                    {stat.sub}
-                  </p>
+                  
+                  {stat.sub && (
+                    <p className="font-inter text-[7.5px] xs:text-[8px] sm:text-[9px] font-semibold text-slate-500 uppercase tracking-widest leading-tight">
+                      {stat.sub}
+                    </p>
+                  )}
                 </div>
               </div>
             ))}
@@ -432,12 +422,12 @@ const HoneyAndHurtClient = () => {
       </section>
 
       {/* The Problem / Qualification */}
-      <section id="fit" className="py-20 bg-white">
-        <div className="container mx-auto px-6">
-          <div className="max-w-3xl mx-auto space-y-10">
+      <section id="fit" className="py-12 md:py-20 bg-white">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="max-w-3xl mx-auto space-y-8 md:space-y-10">
             <div className="text-center">
-              <h2 className="font-inter text-3xl md:text-4xl font-black text-obsidian uppercase tracking-tight">Read This Before You Keep Scrolling...</h2>
-              <div className="w-16 h-1 bg-red-500 mx-auto mt-4" />
+              <h2 className="font-inter text-2xl sm:text-3xl md:text-4xl font-black text-obsidian uppercase tracking-tight">Read This Before You Keep Scrolling...</h2>
+              <div className="w-16 h-1 bg-red-500 mx-auto mt-3 md:mt-4" />
             </div>
             
             <p className="font-inter text-base md:text-lg text-slate-700 font-medium leading-relaxed">
@@ -462,29 +452,29 @@ const HoneyAndHurtClient = () => {
       </section>
 
       {/* The Theme Explanation */}
-      <section className="py-20 bg-obsidian text-ivory border-b border-white/10">
-        <div className="container mx-auto px-6 max-w-5xl">
-          <div className="text-center mb-12">
-            <h2 className="font-inter text-3xl md:text-5xl font-black text-white uppercase tracking-tight">Introducing: <span className="gold-shimmer">Honey & Hurt</span></h2>
-            <p className="mt-4 text-lg md:text-xl text-slate-400 font-medium max-w-2xl mx-auto">An open-theme anthology exploring the beautiful duality of the human experience.</p>
+      <section className="py-12 md:py-20 bg-obsidian text-ivory border-b border-white/10">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="text-center mb-8 md:mb-12">
+            <h2 className="font-inter text-2xl sm:text-3xl md:text-5xl font-black text-white uppercase tracking-tight">Introducing: <span className="gold-shimmer">Honey & Hurt</span></h2>
+            <p className="mt-3 md:mt-4 text-base sm:text-lg md:text-xl text-slate-400 font-medium max-w-2xl mx-auto">An open-theme anthology exploring the beautiful duality of the human experience.</p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-[0.8fr_1.2fr] gap-12 items-center">
-            <div className="relative aspect-[3/4] border-2 luxury-border p-1.5 max-w-[320px] mx-auto md:max-w-full">
+          <div className="grid grid-cols-1 md:grid-cols-[0.8fr_1.2fr] gap-8 md:gap-12 items-center max-w-5xl mx-auto">
+            <div className="relative aspect-[3/4] border-2 luxury-border p-1.5 max-w-[280px] md:max-w-full mx-auto">
                <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/q_auto/f_auto/v1779546327/ChatGPT_Image_May_23_2026_07_53_16_PM_11zon_frceeu.png" alt="Premium Output" className="w-full h-full object-cover" />
             </div>
-            <div className="space-y-8">
+            <div className="space-y-6">
               <div className="bg-white/5 p-6 md:p-8 rounded-xl border border-white/10 relative overflow-hidden">
                 <div className="absolute top-0 left-0 w-1.5 h-full bg-gold-main" />
-                <h3 className="font-inter text-2xl font-black text-gold-main mb-4">What is "Honey & Hurt"?</h3>
-                <p className="font-inter text-base text-slate-300 leading-relaxed block mb-4">
+                <h3 className="font-inter text-xl md:text-2xl font-black text-gold-main mb-3">What is "Honey & Hurt"?</h3>
+                <p className="font-inter text-sm md:text-base text-slate-300 leading-relaxed block mb-3">
                   <strong>HONEY</strong> represents the sweet, the beautiful, and the light. It's the love that heals, the moments of pure joy, and the gentle side of life.
                 </p>
-                <p className="font-inter text-base text-slate-300 leading-relaxed block mb-4">
+                <p className="font-inter text-sm md:text-base text-slate-300 leading-relaxed block mb-3">
                   <strong>HURT</strong> represents the dark, the trauma, and the pain. It's the heartbreak that shatters, the grief that lingers, and the struggles we face.
                 </p>
-                <p className="font-inter text-base font-bold text-white leading-relaxed block">
-                  There is always a good and a bad side. This is an open-theme anthology giving you the freedom to write about the entire spectrum of human emotion. Whether your words drip with honey or bleed with hurt, there is a place for your voice here.
+                <p className="font-inter text-sm md:text-base font-bold text-white leading-relaxed block">
+                  There is always a good and a bad side. This is an open-theme anthology giving you the freedom to write about the entire spectrum of human emotion.
                 </p>
               </div>
             </div>
@@ -493,15 +483,14 @@ const HoneyAndHurtClient = () => {
       </section>
 
       {/* Wall of Proof: Testimonials & Past Work */}
-      <section className="py-24 bg-white overflow-hidden border-b border-slate-200">
-        <div className="container mx-auto px-6 mb-16 text-center">
-          <h2 className="font-inter text-3xl md:text-5xl font-black text-obsidian uppercase tracking-tight">Don't Take Our Word For It</h2>
-          <p className="mt-4 text-lg text-slate-600 font-medium max-w-2xl mx-auto">We've turned hundreds of writers just like you into verifiable published authors.</p>
+      <section className="py-16 md:py-24 bg-white overflow-hidden border-b border-slate-200">
+        <div className="container mx-auto px-4 sm:px-6 mb-10 md:mb-16 text-center">
+          <h2 className="font-inter text-2xl sm:text-3xl md:text-5xl font-black text-obsidian uppercase tracking-tight">Don't Take Our Word For It</h2>
+          <p className="mt-3 md:mt-4 text-sm sm:text-lg text-slate-600 font-medium max-w-2xl mx-auto">We've turned hundreds of writers just like you into verifiable published authors.</p>
         </div>
 
         {/* Sliding Gallery */}
-        <div className="flex flex-col gap-6 mb-20">
-           {/* Row 1: Left to Right */}
+        <div className="flex flex-col gap-6 mb-16">
            <div className="flex whitespace-nowrap gap-2 md:gap-6 animate-scroll-left w-max">
               {[
                 'https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897600/WhatsApp_Image_2026-04-09_at_2.59.25_PM-compressed_in2led.webp',
@@ -607,11 +596,11 @@ const HoneyAndHurtClient = () => {
       </section>
 
       {/* Premium Benefits Section */}
-      <section className="py-24 bg-obsidian text-white border-y border-white/10">
-        <div className="container mx-auto px-6 max-w-5xl">
-          <div className="text-center mb-16">
-            <h2 className="font-inter text-4xl md:text-6xl font-black uppercase tracking-tight text-white mb-4">The <span className="gold-shimmer">Author Package</span></h2>
-            <p className="text-lg md:text-xl text-slate-400 font-medium max-w-2xl mx-auto">This isn't just an anthology. It's a complete career launchpad.</p>
+      <section className="py-12 md:py-24 bg-obsidian text-white border-y border-white/10">
+        <div className="container mx-auto px-4 sm:px-6 max-w-5xl">
+          <div className="text-center mb-10 md:mb-16">
+            <h2 className="font-inter text-2xl sm:text-3xl md:text-6xl font-black uppercase tracking-tight text-white mb-3 md:mb-4">The <span className="gold-shimmer">Author Package</span></h2>
+            <p className="text-base sm:text-lg md:text-xl text-slate-400 font-medium max-w-2xl mx-auto">This isn't just an anthology. It's a complete career launchpad.</p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -634,14 +623,14 @@ const HoneyAndHurtClient = () => {
       </section>
 
       {/* Wall of Proof: Bento Mosaic Format */}
-      <section className="py-24 bg-[#FDFBF7] overflow-hidden border-b border-slate-200 relative">
-        <div className="container mx-auto px-6 mb-16 text-center">
-          <h2 className="font-inter text-3xl md:text-6xl font-black text-obsidian uppercase tracking-tighter leading-none italic">
+      <section className="py-12 md:py-24 bg-[#FDFBF7] overflow-hidden border-b border-slate-200 relative">
+        <div className="container mx-auto px-4 sm:px-6 mb-10 md:mb-16 text-center">
+          <h2 className="font-inter text-2xl sm:text-3xl md:text-6xl font-black text-obsidian uppercase tracking-tighter leading-tight md:leading-none italic">
             The Wall of <span className="text-gold-dark underline decoration-gold-main/30">Proof.</span>
           </h2>
-          <p className="mt-6 text-lg text-slate-600 font-medium max-w-2xl mx-auto">
+          <p className="mt-4 md:mt-6 text-base sm:text-lg text-slate-600 font-medium max-w-2xl mx-auto">
             These aren't studio models. These are real writers holding their legacy. 
-            <span className="text-obsidian font-black block mt-1">1,100+ authors already took action.</span>
+            <span className="text-obsidian font-black block mt-1.5">1,100+ authors already took action.</span>
           </p>
         </div>
 
@@ -703,10 +692,10 @@ const HoneyAndHurtClient = () => {
       </section>
 
       {/* Previous Anthologies */}
-      <section className="py-24 bg-ivory text-obsidian border-b border-slate-200">
-        <div className="container mx-auto px-6 max-w-6xl text-center">
-          <h2 className="font-inter text-4xl md:text-6xl font-black uppercase tracking-tight text-obsidian mb-4">The <span className="text-gold-dark">Legacy</span></h2>
-          <p className="text-lg md:text-xl text-slate-600 font-medium max-w-2xl mx-auto mb-16">We don't just promise results. We have a massive track record of turning everyday writers into published authors.</p>
+      <section className="py-12 md:py-24 bg-ivory text-obsidian border-b border-slate-200">
+        <div className="container mx-auto px-4 sm:px-6 max-w-6xl text-center">
+          <h2 className="font-inter text-3xl sm:text-4xl md:text-6xl font-black uppercase tracking-tight text-obsidian mb-3 md:mb-4">The <span className="text-gold-dark">Legacy</span></h2>
+          <p className="text-base sm:text-lg md:text-xl text-slate-600 font-medium max-w-2xl mx-auto mb-10 md:mb-16">We don't just promise results. We have a massive track record of turning everyday writers into published authors.</p>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 pt-4">
             
@@ -784,12 +773,12 @@ const HoneyAndHurtClient = () => {
       </section>
 
       {/* The Grand Slam Offer Stack */}
-      <section id="offer" className="py-24 bg-gold-main/5 border-y luxury-border">
-        <div className="container mx-auto px-6">
+      <section id="offer" className="py-12 md:py-24 bg-gold-main/5 border-y luxury-border">
+        <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-4xl mx-auto bg-white rounded-2xl overflow-hidden shadow-xl border-2 luxury-border">
-            <div className="bg-obsidian text-white p-6 md:p-10 text-center">
-              <h3 className="font-inter text-3xl md:text-4xl font-black uppercase">Here Is Exactly What You Get</h3>
-              <p className="mt-3 font-inter text-lg text-gold-main font-bold tracking-wide">The Complete "Go Pro" Author Package</p>
+            <div className="bg-obsidian text-white p-5 sm:p-6 md:p-10 text-center">
+              <h3 className="font-inter text-xl sm:text-2xl md:text-4xl font-black uppercase">Here Is Exactly What You Get</h3>
+              <p className="mt-2.5 sm:mt-3 font-inter text-sm sm:text-base md:text-lg text-gold-main font-bold tracking-wide">The Complete "Go Pro" Author Package</p>
             </div>
             
             <div className="p-6 md:p-10 space-y-5">
@@ -839,24 +828,24 @@ const HoneyAndHurtClient = () => {
         </div>
       </section>
       {/* Our Proven Track Record Section */}
-      <section className="py-24 bg-white text-obsidian border-t border-slate-200">
-        <div className="container mx-auto px-6 max-w-6xl">
-          <div className="text-center mb-16">
-            <div className="flex justify-center mb-5">
+      <section className="py-12 md:py-24 bg-white text-obsidian border-t border-slate-200">
+        <div className="container mx-auto px-4 sm:px-6 max-w-6xl">
+          <div className="text-center mb-10 md:mb-16">
+            <div className="flex justify-center mb-4 md:mb-5">
               <img 
                 src="https://res.cloudinary.com/dde8ekuuu/image/upload/q_auto/f_auto/v1777556045/iflogo_y3ss8e.png" 
                 alt="Inkfetish Logo" 
-                className="w-16 h-16 object-contain rounded-full border-2 border-gold-main/40 shadow-lg"
+                className="w-12 h-12 md:w-16 md:h-16 object-contain rounded-full border-2 border-gold-main/40 shadow-lg"
               />
             </div>
-            <span className="font-inter text-xs font-black uppercase tracking-widest text-gold-main bg-amber-50 border border-gold-main/20 px-4 py-1.5 rounded-full inline-block mb-4">
+            <span className="font-inter text-[10px] sm:text-xs font-black uppercase tracking-widest text-gold-main bg-amber-50 border border-gold-main/20 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full inline-block mb-3 sm:mb-4">
               ✨ PROVEN TRUST & AUTHORITY
             </span>
-            <h2 className="font-inter text-3xl md:text-5xl font-black text-obsidian uppercase tracking-tight leading-tight">
-              Inkfetish Publications <br />
+            <h2 className="font-inter text-xl sm:text-2xl md:text-5xl font-black text-obsidian uppercase tracking-tight leading-tight">
+              Inkfetish Publications <br className="hidden sm:block"/>
               <span className="gold-shimmer">~ Our Proven Track Record</span>
             </h2>
-            <p className="mt-4 text-base md:text-lg text-slate-600 font-medium max-w-2xl mx-auto">
+            <p className="mt-3 md:mt-4 text-sm sm:text-base md:text-lg text-slate-600 font-medium max-w-2xl mx-auto">
               Before you trust any platform, it’s important to know what they’ve already achieved. We don't guess; we deliver.
             </p>
           </div>
@@ -1020,10 +1009,10 @@ const HoneyAndHurtClient = () => {
       </section>
 
       {/* FAQ */}
-      <section id="faq" className="py-24 bg-ivory">
-        <div className="container mx-auto px-6 max-w-3xl">
-          <div className="text-center mb-12">
-            <h2 className="font-inter text-3xl md:text-5xl font-black uppercase text-obsidian tracking-tight">Frequently Asked Questions</h2>
+      <section id="faq" className="py-12 md:py-24 bg-ivory">
+        <div className="container mx-auto px-4 sm:px-6 max-w-3xl">
+          <div className="text-center mb-8 md:mb-12">
+            <h2 className="font-inter text-2xl sm:text-3xl md:text-5xl font-black uppercase text-obsidian tracking-tight">Frequently Asked Questions</h2>
           </div>
           <div className="space-y-4">
             {faqs.map((item, index) => (
@@ -1032,13 +1021,13 @@ const HoneyAndHurtClient = () => {
                 className={`bg-white border transition-all duration-300 rounded-xl overflow-hidden cursor-pointer shadow-sm hover:border-gold-main/50 ${openFaqIndex === index ? 'border-gold-main ring-1 ring-gold-main/20' : 'border-slate-200'}`}
                 onClick={() => toggleFaq(index)}
               >
-                <div className="p-5 md:p-6 flex justify-between items-center gap-4">
-                  <h3 className={`font-inter text-lg font-black transition-colors ${openFaqIndex === index ? 'text-gold-dark' : 'text-obsidian'}`}>{item.q}</h3>
-                  <ChevronDown className={`w-5 h-5 text-slate-400 transition-transform duration-300 ${openFaqIndex === index ? 'rotate-180 text-gold-main' : ''}`} />
+                <div className="p-4 sm:p-5 md:p-6 flex justify-between items-center gap-3 sm:gap-4">
+                  <h3 className={`font-inter text-sm sm:text-base md:text-lg font-black transition-colors ${openFaqIndex === index ? 'text-gold-dark' : 'text-obsidian'}`}>{item.q}</h3>
+                  <ChevronDown className={`w-4 h-4 sm:w-5 sm:h-5 text-slate-400 transition-transform duration-300 ${openFaqIndex === index ? 'rotate-180 text-gold-main' : ''}`} />
                 </div>
                 {openFaqIndex === index && (
-                  <div className="px-5 md:px-6 pb-5 md:pb-6 pt-0 border-t border-slate-100">
-                    <p className="font-inter text-base text-slate-600 leading-relaxed mt-4">{item.a}</p>
+                  <div className="px-4 sm:px-5 md:px-6 pb-4 sm:pb-5 md:pb-6 pt-0 border-t border-slate-100">
+                    <p className="font-inter text-xs sm:text-sm md:text-base text-slate-600 leading-relaxed mt-3 sm:mt-4">{item.a}</p>
                   </div>
                 )}
               </div>
@@ -1048,18 +1037,18 @@ const HoneyAndHurtClient = () => {
       </section>
 
       {/* Massive Footer */}
-      <footer className="bg-obsidian text-white pt-24 pb-12 border-t border-white/10 relative overflow-hidden">
+      <footer className="bg-obsidian text-white pt-12 md:pt-24 pb-8 md:pb-12 border-t border-white/10 relative overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-gold-main to-transparent opacity-50" />
-        <div className="container mx-auto px-6 max-w-6xl">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
-            <div className="md:col-span-2 space-y-6">
-              <div className="flex items-center gap-3">
+        <div className="container mx-auto px-4 sm:px-6 max-w-6xl">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-12 mb-10 md:mb-16">
+            <div className="md:col-span-2 space-y-4 md:space-y-6">
+              <div className="flex items-center gap-2.5 sm:gap-3">
                 <img 
                   src="https://res.cloudinary.com/dde8ekuuu/image/upload/q_auto/f_auto/v1777556045/iflogo_y3ss8e.png" 
                   alt="Inkfetish Logo" 
-                  className="w-10 h-10 object-contain rounded-full border border-gold-main/40 shadow-md"
+                  className="w-8 h-8 sm:w-10 sm:h-10 object-contain rounded-full border border-gold-main/40 shadow-md"
                 />
-                <h3 className="font-inter text-3xl font-black uppercase tracking-widest gold-shimmer">Inkfetish</h3>
+                <h3 className="font-inter text-xl sm:text-2xl md:text-3xl font-black uppercase tracking-widest gold-shimmer">Inkfetish</h3>
               </div>
               <p className="font-inter text-slate-400 text-sm leading-relaxed max-w-sm">
                 India's fastest-growing hybrid publisher. We don't just publish books; we launch author careers. Our mission is to take 10,000 everyday writers and give them the platform, credibility, and verifiable portfolio they deserve.

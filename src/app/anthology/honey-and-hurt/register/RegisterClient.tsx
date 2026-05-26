@@ -8,6 +8,7 @@ import {
   ChevronRight,
   Clock,
   Lock,
+  Unlock,
   Mail,
   Phone,
   ShieldCheck,
@@ -396,23 +397,31 @@ const HoneyAndHurtRegister = () => {
               </div>
             </div>
 
-            {/* Box 2: Locked Submission Portal */}
-            <div className="bg-[#1A1815] border border-gold-main/20 rounded-2xl p-6 md:p-8 space-y-6 flex flex-col justify-between">
+            {/* Box 2: Unlocked Submission Portal */}
+            <div className="bg-[#1A1815] border border-emerald-500/30 rounded-2xl p-6 md:p-8 space-y-6 flex flex-col justify-between">
               <div className="space-y-4">
-                <div className="inline-flex items-center gap-2 px-3 py-1 bg-red-950 text-red-400 border border-red-900 rounded-full text-[10px] font-black uppercase tracking-wider">
-                  <Lock className="w-3 h-3 animate-pulse" /> Submission Vault: Locked
+                <div className="inline-flex items-center gap-2 px-3 py-1 bg-emerald-950 text-emerald-400 border border-emerald-900 rounded-full text-[10px] font-black uppercase tracking-wider">
+                  <Unlock className="w-3 h-3 animate-pulse" /> Submission Vault: Unlocked
                 </div>
                 <h3 className="font-cinzel font-bold text-xl text-white">Manuscript Upload Portal</h3>
                 <p className="text-xs md:text-sm text-slate-400 leading-relaxed font-medium">
-                  Our professional editorial team is currently wrapping up the design format and guidelines for the Honey & Hurt volume.
+                  Your co-author slot is fully verified! You can now upload your manuscript directly into the Honey & Hurt editorial volume.
                   <br/><br/>
-                  The upload link will be unlocked **right here on this page**. We will also notify you directly via **WhatsApp** and **Email** with the exact manuscript length and theme parameters.
+                  Submit your poetry, prose, or microfiction now to secure formatting and typesetting review.
                 </p>
               </div>
 
-              <div className="bg-white/5 p-4 rounded-xl border border-white/5 text-center">
-                <span className="text-slate-500 text-[10px] uppercase font-bold tracking-widest block mb-1">Expected Vault Opening</span>
-                <span className="text-gold-main font-cinzel font-bold text-sm tracking-wide">Pending Theme Layout Release</span>
+              <div className="space-y-3">
+                <button
+                  onClick={() => router.push('/anthology/honey-and-hurt/submit')}
+                  className="w-full bg-[#e53e3e] hover:bg-red-700 text-white py-3.5 rounded-xl font-inter font-black text-xs uppercase tracking-widest transition-all flex items-center justify-center gap-2 shadow-lg"
+                >
+                  Submit Your Writing Now <ChevronRight className="w-4 h-4" />
+                </button>
+                <div className="bg-white/5 p-3.5 rounded-xl border border-white/5 text-center">
+                  <span className="text-slate-500 text-[9px] uppercase font-bold tracking-widest block mb-0.5">Official Submission Portal</span>
+                  <span className="text-gold-main font-cinzel font-bold text-xs tracking-wide">Now Open & Accepting Manuscripts</span>
+                </div>
               </div>
             </div>
 

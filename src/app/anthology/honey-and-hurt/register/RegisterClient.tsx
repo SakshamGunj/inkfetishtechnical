@@ -101,9 +101,9 @@ const HoneyAndHurtRegister = () => {
   const [loadingDb, setLoadingDb] = useState(true);
 
   // Pricing Model
-  const basePrice = 1;
-  const bookPrice = 1;
-  const medalPrice = 1;
+  const basePrice = 485;
+  const bookPrice = 150;
+  const medalPrice = 150;
   const totalAmount = basePrice + (addBook ? bookPrice : 0) + (addMedal ? medalPrice : 0);
 
   const {

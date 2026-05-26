@@ -39,7 +39,7 @@ const audienceFit = [
   'You have words sitting in your notes app that deserve to be in a real, physical book.',
   'You want the credibility and authority of being a "Published Author" without the years of rejection letters.',
   'You want a premium artifact to show your friends, family, and future readers.',
-  'You are an action-taker ready to claim one of the final 12 spots.'
+  'You are an action-taker ready to claim one of the final 196 spots.'
 ];
 
 const themePillars = [
@@ -281,7 +281,7 @@ const HoneyAndHurtClient = () => {
           <span className="animate-pulse flex items-center gap-1 bg-white/20 px-2 py-0.5 rounded text-white text-[9px] sm:text-[10px]">
             <Zap className="w-3 h-3 fill-white animate-pulse" /> ATTENTION
           </span>
-          <span className="font-bold text-center">PRICE DROP TO ₹485. ONLY 12 SLOTS REMAINING.</span>
+          <span className="font-bold text-center">PRICE DROP TO ₹485. ONLY 196 SLOTS REMAINING.</span>
         </div>
       </div>
 

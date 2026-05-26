@@ -632,24 +632,6 @@ const HoneyAndHurtRegister = () => {
                         {errors.phone && <p className="text-red-600 text-[10px] font-bold mt-1 uppercase ml-1">{errors.phone.message}</p>}
                       </div>
                     </div>
-
-                    <div className="space-y-1.5">
-                      <label htmlFor="writingType" className="font-inter text-[10px] font-black uppercase text-slate-500 ml-1 tracking-widest">What style do you write? <span className="text-slate-400 font-medium normal-case">(Optional)</span></label>
-                      <div className="relative">
-                        <select
-                          id="writingType"
-                          {...register('writingType')}
-                          className="w-full bg-slate-50 border-2 border-slate-200 rounded-xl py-3 pl-4 pr-10 font-inter text-sm focus:border-gold-main focus:bg-white outline-none transition-all text-obsidian font-bold appearance-none cursor-pointer"
-                        >
-                          <option value="">Select your style</option>
-                          <option value="Poetry">Poetry</option>
-                          <option value="Prose">Prose & Stories</option>
-                          <option value="Microfiction">Microfiction / Quotes</option>
-                          <option value="Not sure yet">Not sure yet</option>
-                        </select>
-                        <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
-                      </div>
-                    </div>
                   </div>
 
                   {/* ---------------------------------------------------- */}

@@ -1,0 +1,15 @@
+{
+  "name": "baileys-whatsapp-saas",
+  "version": "1.0.0",
+  "description": "MASTER production-grade skill for building WhatsApp automation SaaS using Baileys",
+  "author": "Antigravity",
+  "tags": ["whatsapp", "baileys", "saas", "automation", "typescript"],
+  "main": "skill.md",
+  "activated_at": "2026-05-03T17:19:50+05:30",
+  "rules": [
+    "Always use `${phone}@s.whatsapp.net` for JIDs",
+    "Prefer Redis for auth state in production",
+    "Enforce 2-5s random delay for bulk messaging",
+    "Never use multiFileAuthState in production"
+  ]
+}

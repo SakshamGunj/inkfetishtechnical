@@ -30,18 +30,17 @@ import { Helmet } from "react-helmet-async";
 
 const authorData = {
     name: "Vijay Pratap 'Tadashi'",
-    title: "Poet & Civil Servant",
-    subtitle: "Weaving Silence into Words | Maharashtra Cadre",
-    bio: "Vijay Pratap, known by his pen name 'Tadashi', bridges the pragmatic world of civil service with the profound depths of Hindi poetry. Serving as a Central Government employee in the Maharashtra cadre, his journey is a testament to the enduring power of literature. Inspired by giants like Harivansh Rai Bachchan and Dinkar, he writes not to create noise, but to evoke a quiet transformation in the reader's soul.",
-    longBio: "Vijay's literary journey began in the quiet corners of his school library, where he first encountered the transformative verses of Hindi literary legends. What started as simple reading soon blossomed into a passionate pursuit during his 11th standard. Through his engineering days in Electronics & Communication and later during his MA in Philosophy and MBA, poetry remained his constant companion. Despite the demanding nature of his role as a Central Government officer, he continues to refine his craft, believing that writing is a sacred act of self-discovery.",
+    title: "Poet & Author",
+    subtitle: "Weaving Silence into Words",
+    bio: "Vijay Pratap, known by his pen name 'Tadashi', bridges the pragmatic world with the profound depths of Hindi poetry. His journey is a testament to the enduring power of literature. Inspired by giants like Harivansh Rai Bachchan and Dinkar, he writes not to create noise, but to evoke a quiet transformation in the reader's soul.",
+    longBio: "Vijay's literary journey began in the quiet corners of his school library, where he first encountered the transformative verses of Hindi literary legends. What started as simple reading soon blossomed into a passionate pursuit during his 11th standard. Through his engineering days in Electronics & Communication and later during his MA in Philosophy and MBA, poetry remained his constant companion. He continues to refine his craft, believing that writing is a sacred act of self-discovery.",
     location: "Maharashtra, India",
     email: "contact@vijayprataptadashi.com", // Placeholder
     instagram: "vijaypratap_tadashi", // Placeholder
     stats: {
         age: 32,
-        role: "Central Govt. Employee",
+        role: "Author & Poet",
         education: "B.Tech, MA (Phil), MBA",
-        release: "Jan 23, 2026",
         status: "Active Writer",
         genre: "Hindi Poetry & Fiction"
     },
@@ -62,7 +61,7 @@ const VijayPratapAuthor = () => {
         <div className="min-h-screen bg-ink-black text-parchment font-serif selection:bg-gold selection:text-ink-black overflow-x-hidden">
             <Helmet>
                 <title>Vijay Pratap 'Tadashi' | Inkfetish Author</title>
-                <meta name="description" content="Poet, Civil Servant, and Seeker. Discover the works of Vijay Pratap 'Tadashi', bridging silence and words in the Maharashtra cadre." />
+                <meta name="description" content="Poet, Author, and Seeker. Discover the works of Vijay Pratap 'Tadashi', bridging silence and words." />
                 <meta property="og:title" content="Vijay Pratap 'Tadashi' | Inkfetish" />
                 <meta property="og:description" content="Weaving silence into words. Explore the poetry and journey of Vijay Pratap 'Tadashi'." />
                 <meta property="og:image" content="https://i.ibb.co/v6H7ptbM/Whats-App-Image-2025-12-09-at-4-43-04-PM.jpg" />
@@ -106,10 +105,6 @@ const VijayPratapAuthor = () => {
                         transition={{ duration: 1, ease: "easeOut" }}
                         className="space-y-8 text-center lg:text-left order-2 lg:order-1"
                     >
-                        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-gold/30 bg-gold/5 text-gold text-xs tracking-widest uppercase">
-                            <Star className="w-3 h-3 animate-pulse" />
-                            <span>Release: {authorData.stats.release}</span>
-                        </div>
 
                         <h1 className="text-5xl md:text-7xl lg:text-8xl font-light leading-tight">
                             Vijay Pratap <br />
@@ -167,7 +162,7 @@ const VijayPratapAuthor = () => {
                             >
                                 <Feather className="w-6 h-6 text-gold mb-2" />
                                 <p className="text-xs text-parchment/60 uppercase tracking-wider">Poet at Heart</p>
-                                <p className="text-sm text-white font-serif">Civil Servant by Profession</p>
+                                <p className="text-sm text-white font-serif">Author by Passion</p>
                             </motion.div>
                         </motion.div>
                     </motion.div>
@@ -202,9 +197,9 @@ const VijayPratapAuthor = () => {
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
                         {[
                             { label: "Age", value: authorData.stats.age, icon: Calendar },
-                            { label: "Role", value: "Civil Servant", icon: Briefcase },
-                            { label: "Education", value: "MA, MBA", icon: GraduationCap },
-                            { label: "Cadre", value: "Maharashtra", icon: MapPin },
+                            { label: "Role", value: "Author & Poet", icon: Briefcase },
+                            { label: "Education", value: "B.Tech, MA, MBA", icon: GraduationCap },
+                            { label: "Location", value: "Maharashtra", icon: MapPin },
                             { label: "Genre", value: "Hindi Poetry", icon: Scroll },
                             { label: "Status", value: "Active", icon: PenTool }
                         ].map((stat, idx) => (
@@ -245,7 +240,7 @@ const VijayPratapAuthor = () => {
                                     {authorData.longBio}
                                 </p>
                                 <p className="text-parchment/60 leading-relaxed">
-                                    His work reflects a unique synthesis of administrative discipline and artistic chaos, creating poetry that is both structured in form and boundless in emotion.
+                                    His work reflects a unique synthesis of discipline and artistic chaos, creating poetry that is both structured in form and boundless in emotion.
                                 </p>
                             </motion.div>
 
@@ -256,7 +251,7 @@ const VijayPratapAuthor = () => {
                                 {[
                                     { title: "The Awakening", year: "School Days", desc: "First encounter with the greats: Bachchan, Pant, Gupt.", icon: Sparkles },
                                     { title: "The Foundation", year: "Engineering Era", desc: "B.Tech in Electronics. The pen became a permanent companion.", icon: BookOpen },
-                                    { title: "The Silence of Service", year: "Present Day", desc: "Serving in the Maharashtra Cadre while exploring new narrative horizons.", icon: Briefcase }
+                                    { title: "A New Chapter", year: "Present Day", desc: "Exploring new narrative horizons and continuing to write profound poetry.", icon: Briefcase }
                                 ].map((item, i) => (
                                     <motion.div
                                         key={i}
@@ -311,17 +306,14 @@ const VijayPratapAuthor = () => {
                                     <p className="text-parchment/70 leading-relaxed relative z-10">{authorData.journey.motivation}</p>
                                 </motion.div>
 
-                                {/* Upcoming Release Card */}
+                                {/* Previous Books Card */}
                                 <div className="p-8 bg-gradient-to-br from-gold/10 to-transparent rounded-2xl border border-gold/20 relative overflow-hidden">
                                     <div className="flex items-start justify-between mb-6">
                                         <BookOpen className="w-8 h-8 text-gold" />
-                                        <Badge className="bg-gold text-ink-black hover:bg-gold/90">Coming Soon</Badge>
+                                        <Badge className="bg-gold text-ink-black hover:bg-gold/90">Published Works</Badge>
                                     </div>
-                                    <h3 className="text-2xl font-serif text-white mb-2">Jan 23, 2026</h3>
-                                    <p className="text-parchment/60 text-sm mb-6">Mark your calendars for the release.</p>
-                                    <Button className="w-full bg-transparent border border-gold/30 text-gold hover:bg-gold hover:text-ink-black transition-all">
-                                        Notify Me
-                                    </Button>
+                                    <h3 className="text-2xl font-serif text-white mb-2">Previous Books</h3>
+                                    <p className="text-parchment/60 text-sm mb-6">Author of two profound books that explore the depths of human emotion and societal realities, weaving silence into impactful words.</p>
                                 </div>
                             </div>
                         </div>

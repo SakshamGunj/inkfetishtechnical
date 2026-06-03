@@ -39,3 +39,7 @@ coverage/
 # package-lock.json
 # bun.lockb
 # pnpm-lock.yaml
+
+# Baileys WhatsApp session credentials (NEVER commit these)
+baileys-server/baileys-sessions/
+baileys-server/node_modules/

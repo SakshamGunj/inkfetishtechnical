@@ -33,12 +33,12 @@ const authorData = {
     fullName: "Mahika Mukund",
     title: "Contemporary Author & Poet",
     subtitle: "Weaving Shadows of Time, Secrets of the Heart, and Intertwined Destinies",
-    bio: "Mahika Mukund is a 22-year-old graduated writer and poet who transforms deep romantic mysteries and emotional echoes into compelling contemporary literature. Inspired by the legends of poetry, she crafts narratives that explore the timeless dance of love, secrets, and shadows.",
+    bio: "Mahika Mukund is a 24-year-old graduated writer and poet who transforms deep romantic mysteries and emotional echoes into compelling contemporary literature. Inspired by the legends of poetry, she crafts narratives that explore the timeless dance of love, secrets, and shadows.",
     longBio: "Mahika's creative journey began in the halls of her 12th-grade year. Captivated by the timeless verses of legendary poets like William Shakespeare, Sarojini Naidu, and Kamala Das online, she felt a powerful calling to put her own feelings into words. Today, as a graduate, she channels her analytical clarity and deep emotional intelligence into full-length prose. Her writing bridges the classical grandeur of her inspirations with the raw, relatable tensions of modern romance, seeking to craft stories that resonate with respect, recognition, and eternal love.",
     location: "India",
     email: "mahikamukund09@gmail.com",
     stats: {
-        age: 22,
+        age: 24,
         role: "Author / Poet",
         education: "Graduate",
         release: "Coming Soon",
@@ -58,7 +58,7 @@ const authorData = {
         expected: "Coming Soon"
     },
     images: {
-        hero: "https://res.cloudinary.com/dde8ekuuu/image/upload/q_auto/f_auto/v1779219915/WhatsApp_Image_2026-05-04_at_7.09.29_PM_o6pio8.jpg"
+        hero: "/images/mahika.jpeg"
     }
 };
 

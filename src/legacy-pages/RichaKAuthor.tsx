@@ -48,6 +48,9 @@ const authorData = {
         motivation: "Writing has always been my passion. From childhood journals to envisioning a book, the desire to be 'read' propels me forward.",
         vision: "To get published and market my book the right way. I want to share my non-fiction work with a wider audience.",
         message: "It’s always good to have a dream. Sometimes, it’s ok to show your vulnerability. The fear can never overshadow the sense of achievement if your work touches even one soul."
+    },
+    images: {
+        hero: "/images/richa-k.jpeg"
     }
 };
 
@@ -63,11 +66,11 @@ const RichaKAuthor = () => {
                 <meta name="description" content="Freelance Content Writer and Aspiring Author. Discover the journey of Richa K." />
                 <meta property="og:title" content="Richa K | Inkfetish" />
                 <meta property="og:description" content="It’s always good to have a dream. Explore the writing world of Richa K." />
-                <meta property="og:image" content="" /> {/* Placeholder for image */}
+                <meta property="og:image" content="/images/richa-k.jpeg" />
                 <meta property="og:type" content="profile" />
                 <meta name="twitter:card" content="summary_large_image" />
                 <meta name="twitter:title" content="Richa K | Inkfetish" />
-                <meta name="twitter:image" content="" />
+                <meta name="twitter:image" content="/images/richa-k.jpeg" />
             </Helmet>
 
             {/* Navigation */}
@@ -136,7 +139,7 @@ const RichaKAuthor = () => {
                         </div>
                     </motion.div>
 
-                    {/* Author Image Frame - Placeholder */}
+                    {/* Author Image Frame */}
                     <motion.div
                         style={{ y: y1 }}
                         className="relative order-1 lg:order-2"
@@ -150,10 +153,11 @@ const RichaKAuthor = () => {
                             transition={{ duration: 1.2 }}
                             className="w-full max-w-[450px] mx-auto aspect-[3/4] bg-zinc-900 rounded-t-[100px] rounded-b-lg overflow-hidden relative grayscale hover:grayscale-0 transition-all duration-1000 group shadow-[0_0_50px_rgba(0,0,0,0.5)] flex items-center justify-center"
                         >
-                            {/* Placeholder pattern since no image is provided yet */}
-                            <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10" />
-                            <Feather className="w-24 h-24 text-gold/20" />
-
+                            <img
+                                src={authorData.images.hero}
+                                alt={authorData.name}
+                                className="w-full h-full object-cover object-top transform group-hover:scale-105 transition-transform duration-1000"
+                            />
                             <div className="absolute inset-0 bg-gradient-to-t from-ink-black via-transparent to-transparent opacity-60" />
 
                             {/* Floating Element */}

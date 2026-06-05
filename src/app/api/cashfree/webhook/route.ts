@@ -22,7 +22,6 @@ export async function POST(request: Request) {
     }
 
     // 1. VERIFY SIGNATURE (Security First)
-    // Cashfree Webhook Verification: HMAC-SHA256(timestamp + rawBody, secretKey)
     const dataToSign = timestamp + rawBody;
     const expectedSignature = crypto
       .createHmac('sha256', secretKey)
@@ -44,30 +43,51 @@ export async function POST(request: Request) {
 
     const orderId = order.order_id;
     const paymentStatus = payment.payment_status; // SUCCESS | FAILED | PENDING
+    const tags = order.order_tags || {};
 
     console.log(`Webhook received for ${orderId}: ${paymentStatus}`);
 
-    // 2. UPDATE DATABASE
     if (paymentStatus === 'SUCCESS') {
-      const tags = order.order_tags || {};
-      
-      const { error } = await supabase
-        .from('poetry_festival_s2_payments')
-        .upsert({
-          order_id: orderId,
-          cf_order_id: order.cf_order_id,
-          email: tags.email || '',
-          name: tags.name || '',
-          whatsapp: tags.whatsapp || '',
-          plan: tags.plan || 'single',
-          amount: order.order_amount,
-          status: 'PAID',
-          updated_at: new Date().toISOString(),
-        }, { onConflict: 'order_id' });
 
-      if (error) {
-        console.error('Webhook DB Error:', error.message);
-        return NextResponse.json({ error: 'Database update failed' }, { status: 500 });
+      // 2a. HOME DELIVERY ORDERS → Update Firestore
+      if (orderId.startsWith('pfdlv_')) {
+        try {
+          const { db } = await import('@/lib/firebase-admin');
+          if (db) {
+            const orderRef = db.collection('poetry_festival_s2_delivery_orders').doc(orderId);
+            await orderRef.update({
+              status: 'PAID',
+              cfOrderId: order.cf_order_id || '',
+              payment_method: payment.payment_group || '',
+              updated_at: new Date().toISOString(),
+            });
+            console.log(`Firestore updated for delivery order: ${orderId}`);
+          }
+        } catch (dbErr) {
+          console.error('Firestore webhook update error:', dbErr);
+          // Don't return 500 — let Cashfree know we received it
+        }
+
+      // 2b. ORIGINAL POETRY FESTIVAL ORDERS → Update Supabase
+      } else {
+        const { error } = await supabase
+          .from('poetry_festival_s2_payments')
+          .upsert({
+            order_id: orderId,
+            cf_order_id: order.cf_order_id,
+            email: tags.email || '',
+            name: tags.name || '',
+            whatsapp: tags.whatsapp || '',
+            plan: tags.plan || 'single',
+            amount: order.order_amount,
+            status: 'PAID',
+            updated_at: new Date().toISOString(),
+          }, { onConflict: 'order_id' });
+
+        if (error) {
+          console.error('Webhook Supabase DB Error:', error.message);
+          return NextResponse.json({ error: 'Database update failed' }, { status: 500 });
+        }
       }
     }
 

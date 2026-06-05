@@ -214,6 +214,9 @@ export default {
 				'marquee-reverse': {
 					'0%': { transform: 'translateX(0%)' },
 					'100%': { transform: 'translateX(100%)' },
+				},
+				'shimmer': {
+					'100%': { transform: 'translateX(100%)' }
 				}
 			},
 			animation: {
@@ -235,7 +238,8 @@ export default {
 				'sparkle-3': 'sparkle-3 6s infinite',
 				'marquee': 'marquee 25s linear infinite',
 				'marquee-reverse': 'marquee-reverse 25s linear infinite',
-				'spin-slow': 'spin 15s linear infinite'
+				'spin-slow': 'spin 15s linear infinite',
+				'shimmer': 'shimmer 1.5s infinite'
 			},
 			backgroundImage: {
 				'hero-gradient': 'var(--hero-gradient)',

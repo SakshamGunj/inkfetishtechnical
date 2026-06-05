@@ -59,15 +59,11 @@ export async function GET(request: Request) {
     // If payment was completed, update document status to PAID
     if (orderStatus === 'PAID') {
       const orderRef = db.collection('poetry_festival_s2_delivery_orders').doc(orderId);
-      const docSnapshot = await orderRef.get();
-
-      if (docSnapshot.exists) {
-        await orderRef.update({
-          status: 'PAID',
-          cfOrderId: data.cf_order_id || '',
-          updated_at: new Date().toISOString(),
-        });
-      }
+      await orderRef.set({
+        status: 'PAID',
+        cfOrderId: data.cf_order_id || '',
+        updated_at: new Date().toISOString(),
+      }, { merge: true });
     }
 
     return NextResponse.json({

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Script from 'next/script';
 import { CertificateData } from '@/lib/certificate';
 import { MapPin, User, Phone, ShieldCheck, AlertCircle, ArrowLeft, CheckCircle2, Lock, Feather, Mail } from 'lucide-react';
 import Image from 'next/image';
@@ -37,14 +38,41 @@ export default function ShippingClient({ id, initialData }: ShippingClientProps)
 
   // Load Cashfree script
   useEffect(() => {
-    if (typeof window !== 'undefined' && (window as any).Cashfree) {
-      setCashfree((window as any).Cashfree({ mode: process.env.NEXT_PUBLIC_CASHFREE_MODE || 'sandbox' }));
-    }
+    const initCashfree = () => {
+      if (typeof window !== 'undefined' && (window as any).Cashfree) {
+        try {
+          const mode = process.env.NEXT_PUBLIC_CASHFREE_MODE || 'sandbox';
+          setCashfree((window as any).Cashfree({ mode }));
+          return true;
+        } catch (err) {
+          console.error('Error initializing Cashfree:', err);
+        }
+      }
+      return false;
+    };
+
+    if (initCashfree()) return;
+
+    const interval = setInterval(() => {
+      if (initCashfree()) {
+        clearInterval(interval);
+      }
+    }, 100);
+
+    const timeout = setTimeout(() => {
+      clearInterval(interval);
+    }, 10000);
+
+    return () => {
+      clearInterval(interval);
+      clearTimeout(timeout);
+    };
   }, []);
 
   const handleScriptLoad = () => {
     if (typeof window !== 'undefined' && (window as any).Cashfree) {
-      setCashfree((window as any).Cashfree({ mode: process.env.NEXT_PUBLIC_CASHFREE_MODE || 'sandbox' }));
+      const mode = process.env.NEXT_PUBLIC_CASHFREE_MODE || 'sandbox';
+      setCashfree((window as any).Cashfree({ mode }));
     }
   };
 
@@ -187,7 +215,11 @@ export default function ShippingClient({ id, initialData }: ShippingClientProps)
   return (
     <div className="min-h-screen bg-[#030303] text-[#fdfbf7] flex flex-col relative overflow-hidden font-sans selection:bg-[#ebd298] selection:text-black">
       {/* Script injection */}
-      <script src="https://sdk.cashfree.com/js/v3/cashfree.js" onLoad={handleScriptLoad} async></script>
+      <Script
+        src="https://sdk.cashfree.com/js/v3/cashfree.js"
+        onLoad={handleScriptLoad}
+        strategy="afterInteractive"
+      />
 
       {/* Decorative ambient backgrounds */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#0c0117] via-[#030303] to-[#060010] pointer-events-none" />

@@ -55,13 +55,13 @@ export async function POST(request: Request) {
           const { db } = await import('@/lib/firebase-admin');
           if (db) {
             const orderRef = db.collection('poetry_festival_s2_delivery_orders').doc(orderId);
-            await orderRef.update({
+            await orderRef.set({
               status: 'PAID',
               cfOrderId: order.cf_order_id || '',
               payment_method: payment.payment_group || '',
               updated_at: new Date().toISOString(),
-            });
-            console.log(`Firestore updated for delivery order: ${orderId}`);
+            }, { merge: true });
+            console.log(`Firestore updated/created for delivery order: ${orderId}`);
           }
         } catch (dbErr) {
           console.error('Firestore webhook update error:', dbErr);

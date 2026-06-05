@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { supabase } from '@/lib/supabase';
 
 export const runtime = 'nodejs';
 
@@ -11,25 +12,28 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: 'Missing certificate ID' }, { status: 400 });
     }
 
-    // Try Firestore check — if it fails (local dev / no credentials), gracefully return not ordered
-    try {
-      const { db } = await import('@/lib/firebase-admin');
+    if (supabase) {
+      const { data, error } = await supabase
+        .from('poetry_festival_s2_delivery_orders')
+        .select('*')
+        .eq('certificate_id', id)
+        .eq('status', 'PAID')
+        .limit(1)
+        .maybeSingle();
 
-      if (db) {
-        const snapshot = await db
-          .collection('poetry_festival_s2_delivery_orders')
-          .where('certificateId', '==', id)
-          .where('status', '==', 'PAID')
-          .get();
-
-        if (!snapshot.empty) {
-          const doc = snapshot.docs[0];
-          return NextResponse.json({ ordered: true, order: doc.data() });
-        }
+      if (error) {
+        console.warn('check-order: Supabase query error:', error.message);
+      } else if (data) {
+        return NextResponse.json({
+          ordered: true,
+          order: {
+            ...data,
+            orderId: data.order_id,
+            cfOrderId: data.cf_order_id,
+            certificateId: data.certificate_id,
+          }
+        });
       }
-    } catch (dbError) {
-      // In local dev without credentials, silently treat as not ordered
-      console.warn('check-order: Firestore unavailable, defaulting to not ordered:', (dbError as Error).message);
     }
 
     return NextResponse.json({ ordered: false });

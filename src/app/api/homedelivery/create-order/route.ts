@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { db } from '@/lib/firebase-admin';
+import { supabase } from '@/lib/supabase';
 
 // Force Node.js runtime
 export const runtime = 'nodejs';
@@ -40,8 +40,8 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Server configuration error' }, { status: 500 });
     }
 
-    if (!db) {
-      console.error('Firebase Admin not initialized');
+    if (!supabase) {
+      console.error('Supabase client not initialized');
       return NextResponse.json({ error: 'Database configuration error' }, { status: 500 });
     }
 
@@ -101,23 +101,30 @@ export async function POST(request: Request) {
       );
     }
 
-    // Save pending record to Firestore database
-    await db.collection('poetry_festival_s2_delivery_orders').doc(orderId).set({
-      orderId: orderId,
-      cfOrderId: data.cf_order_id || '',
-      certificateId: certificateId,
-      name: name,
-      email: email,
-      phone: phone,
-      address: address,
-      city: city,
-      state: state,
-      pincode: pincode,
-      amount: 1.00,
-      status: 'PENDING',
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-    });
+    // Save pending record to Supabase database
+    const { error: dbError } = await supabase
+      .from('poetry_festival_s2_delivery_orders')
+      .insert({
+        order_id: orderId,
+        cf_order_id: data.cf_order_id || '',
+        certificate_id: certificateId,
+        name: name,
+        email: email,
+        phone: phone,
+        address: address,
+        city: city,
+        state: state,
+        pincode: pincode,
+        amount: 1.00,
+        status: 'PENDING',
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      });
+
+    if (dbError) {
+      console.error('Failed to create pending order record in Supabase:', dbError.message);
+      return NextResponse.json({ error: 'Database transaction failed' }, { status: 500 });
+    }
 
     return NextResponse.json({
       payment_session_id: data.payment_session_id,
@@ -125,10 +132,6 @@ export async function POST(request: Request) {
     });
   } catch (error) {
     console.error('Create delivery order error:', error);
-    return NextResponse.json({
-      error: 'Internal server error',
-      message: (error as Error).message,
-      stack: (error as Error).stack
-    }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

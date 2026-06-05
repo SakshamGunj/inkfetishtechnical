@@ -49,23 +49,25 @@ export async function POST(request: Request) {
 
     if (paymentStatus === 'SUCCESS') {
 
-      // 2a. HOME DELIVERY ORDERS → Update Firestore
+      // 2a. HOME DELIVERY ORDERS → Update Supabase
       if (orderId.startsWith('pfdlv_')) {
         try {
-          const { db } = await import('@/lib/firebase-admin');
-          if (db) {
-            const orderRef = db.collection('poetry_festival_s2_delivery_orders').doc(orderId);
-            await orderRef.set({
+          const { error: dbError } = await supabase
+            .from('poetry_festival_s2_delivery_orders')
+            .update({
               status: 'PAID',
-              cfOrderId: order.cf_order_id || '',
-              payment_method: payment.payment_group || '',
+              cf_order_id: order.cf_order_id || '',
               updated_at: new Date().toISOString(),
-            }, { merge: true });
-            console.log(`Firestore updated/created for delivery order: ${orderId}`);
+            })
+            .eq('order_id', orderId);
+
+          if (dbError) {
+            console.error('Webhook Supabase Delivery DB Error:', dbError.message);
+          } else {
+            console.log(`Supabase updated for delivery order: ${orderId}`);
           }
         } catch (dbErr) {
-          console.error('Firestore webhook update error:', dbErr);
-          // Don't return 500 — let Cashfree know we received it
+          console.error('Supabase webhook update error:', dbErr);
         }
 
       // 2b. ORIGINAL POETRY FESTIVAL ORDERS → Update Supabase

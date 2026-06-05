@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { db } from '@/lib/firebase-admin';
+import { supabase } from '@/lib/supabase';
 
 // Force Node.js runtime
 export const runtime = 'nodejs';
@@ -26,8 +26,8 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: 'Server configuration error' }, { status: 500 });
     }
 
-    if (!db) {
-      console.error('Firebase Admin not initialized');
+    if (!supabase) {
+      console.error('Supabase client not initialized');
       return NextResponse.json({ error: 'Database configuration error' }, { status: 500 });
     }
 
@@ -56,14 +56,20 @@ export async function GET(request: Request) {
 
     const orderStatus = data.order_status; // PAID | ACTIVE | EXPIRED | TERMINATED
 
-    // If payment was completed, update document status to PAID
+    // If payment was completed, update status to PAID in Supabase
     if (orderStatus === 'PAID') {
-      const orderRef = db.collection('poetry_festival_s2_delivery_orders').doc(orderId);
-      await orderRef.set({
-        status: 'PAID',
-        cfOrderId: data.cf_order_id || '',
-        updated_at: new Date().toISOString(),
-      }, { merge: true });
+      const { error: dbError } = await supabase
+        .from('poetry_festival_s2_delivery_orders')
+        .update({
+          status: 'PAID',
+          cf_order_id: data.cf_order_id || '',
+          updated_at: new Date().toISOString(),
+        })
+        .eq('order_id', orderId);
+
+      if (dbError) {
+        console.warn('Failed to update status to PAID in Supabase:', dbError.message);
+      }
     }
 
     return NextResponse.json({

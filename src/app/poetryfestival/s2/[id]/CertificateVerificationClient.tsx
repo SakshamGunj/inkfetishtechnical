@@ -357,11 +357,11 @@ export default function CertificateVerificationClient({
                   {/* Signature */}
                   <div className="flex flex-col items-start">
                     <span className="font-signature text-3.5xl sm:text-4xl text-[#ebd298] leading-none select-none py-1">
-                      Priya Varshney
+                      Sherin A.
                     </span>
                     <div className="h-px w-20 bg-white/10 my-1.5 print:bg-black/10" />
                     <span className="text-[9px] uppercase tracking-widest text-[#555] font-bold">
-                      Chief Editor, Inkfetish
+                      Owner, Inkfetish
                     </span>
                   </div>
 

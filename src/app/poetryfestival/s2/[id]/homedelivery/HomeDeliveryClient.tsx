@@ -461,7 +461,7 @@ export default function HomeDeliveryClient({
                       <div className="text-xs uppercase tracking-widest text-gold font-bold mb-1">Total Real World Value: <span className="line-through decoration-red-500 decoration-2 text-white/50">₹1,700</span></div>
                       <div className="text-[10px] text-white/70 uppercase tracking-widest font-bold">Your Exclusive Offer</div>
                       <div className="text-4xl sm:text-5xl font-black text-green-400 drop-shadow-[0_0_15px_rgba(74,222,128,0.4)] mt-2">
-                        ₹1
+                        ₹285
                       </div>
                       <div className="text-[9px] text-white/40 mt-1 uppercase tracking-widest">(Only printing & shipping)</div>
                       
@@ -557,7 +557,7 @@ export default function HomeDeliveryClient({
               </div>
               <div className="text-right flex flex-col">
                 <span className="text-[10px] text-white/50 line-through">₹1,700</span>
-                <span className="text-xl font-black text-gold leading-none">₹1</span>
+                <span className="text-xl font-black text-gold leading-none">₹285</span>
               </div>
             </div>
             <button

@@ -69,7 +69,7 @@ export async function POST(request: Request) {
       },
       body: JSON.stringify({
         order_id: orderId,
-        order_amount: 1.00,
+        order_amount: 285.00,
         order_currency: 'INR',
         customer_details: {
           customer_id: customerIdRaw,
@@ -115,7 +115,7 @@ export async function POST(request: Request) {
         city: city,
         state: state,
         pincode: pincode,
-        amount: 1.00,
+        amount: 285.00,
         status: 'PENDING',
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),

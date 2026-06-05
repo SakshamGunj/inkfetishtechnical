@@ -138,7 +138,7 @@ export default function ShippingClient({ id, initialData }: ShippingClientProps)
           city: formData.city,
           state: formData.state,
           pincode: formData.pincode,
-          amount: 1,
+          amount: 285,
         })
       });
 
@@ -488,7 +488,7 @@ export default function ShippingClient({ id, initialData }: ShippingClientProps)
                   {status === 'creating_order' ? (
                     <><div className="w-5 h-5 border-2 border-black/30 border-t-black rounded-full animate-spin"/> PROCESSING...</>
                   ) : (
-                    <><ShieldCheck className="w-5 h-5" /> {isFormValid ? 'PROCEED TO PAY ₹1' : 'ENTER DETAILS TO CONTINUE'}</>
+                    <><ShieldCheck className="w-5 h-5" /> {isFormValid ? 'PROCEED TO PAY ₹285' : 'ENTER DETAILS TO CONTINUE'}</>
                   )}
                 </button>
                 <div className="text-center text-[10px] text-[#555] mt-4 uppercase tracking-wider font-bold">

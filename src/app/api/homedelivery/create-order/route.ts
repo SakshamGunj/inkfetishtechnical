@@ -125,6 +125,10 @@ export async function POST(request: Request) {
     });
   } catch (error) {
     console.error('Create delivery order error:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json({
+      error: 'Internal server error',
+      message: (error as Error).message,
+      stack: (error as Error).stack
+    }, { status: 500 });
   }
 }

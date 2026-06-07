@@ -52,60 +52,127 @@ export default function EmailAutomation() {
     "email,name,certificate_id,event_name\ngunj06saksham@gmail.com,Saksham Gunj,548707489160,Poetry Festival Season 2\nsakshamgunj@gmail.com,Saksham Gunj Personal,552819935760,Poetry Festival Season 2"
   );
   const [emailSubject, setEmailSubject] = useState(
-    "Congratulations {{name}}! Your Poetry Festival Certificate is Verified"
+    "Poetry Festival Season 2 Certificate - {{name}}"
   );
   const [emailBody, setEmailBody] = useState(
     `<!DOCTYPE html>
 <html>
 <head>
-  <style>
-    body { font-family: 'Georgia', serif; background-color: #fdfbf7; color: #1a1a1a; margin: 0; padding: 40px; }
-    .container { max-width: 600px; margin: 0 auto; background: #ffffff; padding: 40px; border: 1px solid #e0d9cc; box-shadow: 0 4px 12px rgba(0,0,0,0.03); }
-    .header { text-align: center; border-bottom: 2px solid #c5a059; padding-bottom: 20px; margin-bottom: 30px; }
-    .title { font-size: 24px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; color: #000000; }
-    .name { font-size: 20px; font-style: italic; color: #c5a059; font-weight: bold; margin: 20px 0; }
-    .body-text { font-size: 15px; line-height: 1.6; color: #444444; }
-    .certificate-id { font-family: monospace; background: #f5f0e6; padding: 10px 15px; display: inline-block; font-size: 16px; font-weight: bold; letter-spacing: 1px; margin: 20px 0; border: 1px dashed #c5a059; }
-    .button-container { text-align: center; margin: 30px 0; }
-    .btn { background-color: #000000; color: #ffffff; padding: 12px 25px; text-decoration: none; font-size: 13px; font-weight: bold; letter-spacing: 2px; text-transform: uppercase; border-radius: 2px; display: inline-block; }
-    .footer { text-align: center; font-size: 11px; color: #888888; border-top: 1px solid #eeeeee; padding-top: 20px; margin-top: 40px; }
-  </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Poetry Festival Season 2 Certificate</title>
 </head>
-<body>
-  <div class="container">
-    <div class="header">
-      <div class="title">Inkfetish Publications</div>
-    </div>
-    <div class="body-text">
-      Dear {{name}},
-      <br><br>
-      We are absolutely thrilled to inform you that your registration and participation for <strong>{{event_name}}</strong> has been officially processed and verified!
-      <br><br>
-      Your certificate is active and available in our secure online ledger system.
-      <br><br>
-      <div style="text-align: center;">
-        <div class="certificate-id">ID: {{certificate_id}}</div>
-      </div>
-      <br>
-      You can view and print your live verification statement at any time by visiting your unique link:
-    </div>
-    <div class="button-container">
-      <a href="https://www.inkfetish.in/poetryfestival/s2/{{certificate_id}}" class="btn" target="_blank">View Verification Page</a>
-    </div>
-    <div class="body-text">
-      Thank you for sharing your outstanding and beautiful poetry with our community. It was a true masterclass in literary writing.
-      <br><br>
-      Warm regards,<br>
-      <strong>Inkfetish Editorial Team</strong>
-    </div>
-    <div class="footer">
-      This is an automated delivery on behalf of Inkfetish Publications.<br>
-      © 2026 Inkfetish. All rights reserved.
-    </div>
-  </div>
+<body style="font-family: 'Georgia', serif; background-color: #030303; color: #fdfbf7; margin: 0; padding: 30px 20px; -webkit-font-smoothing: antialiased; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;">
+  
+  <!-- Outer Wrapper Table for centering and responsiveness -->
+  <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #030303; width: 100%; table-layout: fixed;">
+    <tr>
+      <td align="center" style="padding: 20px 0;">
+        
+        <!-- Inner Container -->
+        <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px; background-color: #0c0a14; border: 1px solid rgba(197, 160, 89, 0.25); border-radius: 6px; box-shadow: 0 10px 40px rgba(0,0,0,0.8); width: 100%;">
+          <tr>
+            <td style="padding: 50px 40px;">
+              
+              <!-- Header -->
+              <table border="0" cellpadding="0" cellspacing="0" width="100%" style="border-bottom: 1px solid rgba(197, 160, 89, 0.2); padding-bottom: 25px; margin-bottom: 35px; width: 100%;">
+                <tr>
+                  <td align="center">
+                    <div style="font-family: Arial, sans-serif; font-size: 12px; font-weight: 900; text-transform: uppercase; letter-spacing: 3px; color: #ebd298; margin-bottom: 4px;">Inkfetish Publications</div>
+                    <div style="font-size: 24px; font-weight: bold; font-style: italic; color: #ffffff; letter-spacing: 1px;">Poetry Festival Season 2</div>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Greeting (18px) -->
+              <div style="font-size: 18px; font-weight: bold; color: #ffffff; margin-bottom: 25px;">
+                Dear {{name}},
+              </div>
+              
+              <!-- Body Text (16px, Line-height 1.8) -->
+              <div style="font-size: 16px; line-height: 1.8; color: #e2e8f0; margin-bottom: 30px;">
+                Thanks for participating in <span style="color: #ebd298; font-weight: bold;">Poetry Festival Season 2</span>. We are deeply grateful for your beautiful submission and literary voice.
+                <br><br>
+                Please find your verified digital <span style="color: #ebd298; font-weight: bold;">Certificate of Excellence PDF</span> attached below to this email.
+              </div>
+
+              <!-- Certificate Credential Box -->
+              <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: rgba(197, 160, 89, 0.03); border: 1px dashed rgba(197, 160, 89, 0.20); padding: 20px; border-radius: 4px; text-align: center; margin-bottom: 35px; width: 100%;">
+                <tr>
+                  <td>
+                    <div style="font-family: Arial, sans-serif; font-size: 10px; text-transform: uppercase; letter-spacing: 2px; color: #888888; font-weight: bold; margin-bottom: 6px;">SECURE REGISTRY CREDENTIAL ID</div>
+                    <div style="font-family: monospace; font-size: 18px; font-weight: bold; letter-spacing: 2px; color: #ebd298;">{{certificate_id}}</div>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- QR Code Verification Card -->
+              <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #070707; border: 1px solid #ebd298; border-radius: 8px; width: 100%; box-shadow: 0 0 30px rgba(197, 160, 89, 0.15); margin-bottom: 40px;">
+                <tr>
+                  <td style="padding: 25px 20px;">
+                    
+                    <div style="font-size: 16px; font-weight: bold; color: #ebd298; margin-bottom: 15px; font-family: Arial, sans-serif; text-transform: uppercase; letter-spacing: 1px;">🔒 Secure QR Verification</div>
+                    
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="width: 100%;">
+                      <!-- Point 1 -->
+                      <tr>
+                        <td valign="top" style="padding: 8px 0; width: 30px; font-size: 18px;">📱</td>
+                        <td valign="top" style="padding: 8px 0; font-size: 14px; line-height: 1.6; color: #cccccc;">
+                          <strong style="color: #fdfbf7;">Scan & Verify:</strong> Scan the custom QR code printed on your certificate using any smartphone camera.
+                        </td>
+                      </tr>
+                      <!-- Point 2 -->
+                      <tr>
+                        <td valign="top" style="padding: 8px 0; width: 30px; font-size: 18px;">🛡️</td>
+                        <td valign="top" style="padding: 8px 0; font-size: 14px; line-height: 1.6; color: #cccccc;">
+                          <strong style="color: #fdfbf7;">Registry Authenticity:</strong> Instantly check your participant status, name registration, and submission records in our secure database.
+                        </td>
+                      </tr>
+                      <!-- Point 3 -->
+                      <tr>
+                        <td valign="top" style="padding: 8px 0; width: 30px; font-size: 18px;">🌐</td>
+                        <td valign="top" style="padding: 8px 0; font-size: 14px; line-height: 1.6; color: #cccccc;">
+                          <strong style="color: #fdfbf7;">Lifetime Shareable Ledger:</strong> Access your permanent cryptographic record, which can be linked to your writing portfolio, CV, or academic profile.
+                        </td>
+                      </tr>
+                    </table>
+
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Signoff -->
+              <table border="0" cellpadding="0" cellspacing="0" width="100%" style="border-top: 1px solid rgba(255,255,255,0.05); padding-top: 25px; width: 100%;">
+                <tr>
+                  <td style="font-size: 15px; line-height: 1.6; color: #aaa;">
+                    Regards,<br>
+                    <strong style="color: #ffffff; font-size: 16px;">Inkfetish Publications Team</strong>
+                  </td>
+                </tr>
+              </table>
+              
+              <!-- Footer -->
+              <table border="0" cellpadding="0" cellspacing="0" width="100%" style="text-align: center; font-size: 11px; color: #555555; margin-top: 45px; border-top: 1px solid rgba(255,255,255,0.03); padding-top: 20px; width: 100%;">
+                <tr>
+                  <td>
+                    This is a secure automated delivery on behalf of Inkfetish Publications.<br>
+                    © 2026 Inkfetish. All rights reserved.
+                  </td>
+                </tr>
+              </table>
+
+            </td>
+          </tr>
+        </table>
+        
+      </td>
+    </tr>
+  </table>
+
 </body>
 </html>`
   );
+
 
   // Anti-Spam Safeguards State
   const [staggerDelay, setStaggerDelay] = useState(8);
@@ -113,7 +180,7 @@ export default function EmailAutomation() {
   const [stopOnFailure, setStopOnFailure] = useState(true);
 
   // PDF Attachment State
-  const [attachmentType, setAttachmentType] = useState<'none' | 'static' | 'dynamic'>('none');
+  const [attachmentType, setAttachmentType] = useState<'none' | 'static' | 'dynamic' | 'local'>('local');
   const [staticAttachmentUrl, setStaticAttachmentUrl] = useState('');
   const [staticAttachmentName, setStaticAttachmentName] = useState('Certificate.pdf');
   const [dynamicAttachmentColumn, setDynamicAttachmentColumn] = useState('');
@@ -125,6 +192,9 @@ export default function EmailAutomation() {
   // Dynamic CSV headers state
   const [detectedHeaders, setDetectedHeaders] = useState<string[]>(['email', 'name', 'certificate_id', 'event_name']);
   const [emailColumn, setEmailColumn] = useState<string>('');
+
+  // Broadcast row limits (how many recipients to broadcast to from CSV)
+  const [broadcastLimit, setBroadcastLimit] = useState<string>('');
 
   // Active broadcast tracking
   const [broadcastState, setBroadcastState] = useState<'idle' | 'running' | 'paused' | 'stopped' | 'completed'>('idle');
@@ -317,6 +387,13 @@ export default function EmailAutomation() {
       const value = recipient.variables[key];
       const regex = new RegExp(`\\{\\{${key}\\}\\}`, 'gi');
       output = output.replace(regex, value);
+
+      // Map dynamic variations (e.g. CertificateID, certificateId, certificate_id)
+      const normKey = key.toLowerCase().replace(/[^a-z0-9]/g, '');
+      if (normKey === 'certificateid') {
+        output = output.replace(/\{\{certificate_id\}\}/gi, value);
+        output = output.replace(/\{\{CertificateID\}\}/gi, value);
+      }
     });
 
     return output;
@@ -325,6 +402,12 @@ export default function EmailAutomation() {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+
+    // Show warning/alert for large attachments (Vercel payload limit is 4.5MB, standard email attachments should be small)
+    if (file.size > 4.5 * 1024 * 1024) {
+      alert(`Warning: The file "${file.name}" is ${Math.round(file.size / (1024 * 1024) * 10) / 10}MB. Files larger than 4.5MB take a very long time to upload/process and may fail due to server request size limits. Please use a compressed or smaller PDF file.`);
+      addLog('warning', `Selected file "${file.name}" is large (${Math.round(file.size / (1024 * 1024) * 10) / 10}MB). Uploading may be slow.`);
+    }
 
     setTestFileName(file.name);
     const reader = new FileReader();
@@ -339,6 +422,7 @@ export default function EmailAutomation() {
     };
     reader.readAsDataURL(file);
   };
+
 
   const handleClearTestFile = () => {
     setTestFileBase64(null);
@@ -362,11 +446,24 @@ export default function EmailAutomation() {
     setTestError('');
 
     try {
+      // Resolve certificate ID from the first row of CSV if available
+      let testCertId = '548707489160';
+      const parsedCsv = parseCsv();
+      if (parsedCsv.recipients.length > 0) {
+        const firstRec = parsedCsv.recipients[0];
+        Object.keys(firstRec.variables).forEach((k) => {
+          const normK = k.toLowerCase().replace(/[^a-z0-9]/g, '');
+          if (normK === 'certificateid') {
+            testCertId = firstRec.variables[k];
+          }
+        });
+      }
+
       const dummyRecipient: Recipient = {
         email: testRecipient,
         name: 'Test Laureate',
         variables: {
-          certificate_id: '548707489160',
+          certificate_id: testCertId,
           event_name: 'Poetry Festival Season 2'
         }
       };
@@ -402,6 +499,7 @@ export default function EmailAutomation() {
           attachmentUrl: attachmentUrl || undefined,
           attachmentName: attachmentName || undefined,
           attachmentBase64: testFileBase64 || undefined,
+          certificate_id: attachmentType === 'local' ? testCertId : undefined,
         }),
       });
 
@@ -446,6 +544,17 @@ export default function EmailAutomation() {
         attachmentName = `${recipient.name.replace(/\s+/g, '_')}_Certificate.pdf`;
       }
 
+      // Resolve certificate ID from recipient variables
+      let certId = '';
+      if (attachmentType === 'local') {
+        Object.keys(recipient.variables).forEach((k) => {
+          const normK = k.toLowerCase().replace(/[^a-z0-9]/g, '');
+          if (normK === 'certificateid') {
+            certId = recipient.variables[k];
+          }
+        });
+      }
+
       try {
         const res = await fetch('/api/email/send', {
           method: 'POST',
@@ -458,6 +567,7 @@ export default function EmailAutomation() {
             html,
             attachmentUrl: attachmentUrl || undefined,
             attachmentName: attachmentUrl ? attachmentName : undefined,
+            certificate_id: certId || undefined,
           }),
         });
 
@@ -526,14 +636,21 @@ export default function EmailAutomation() {
       return;
     }
 
-    setRecipients(parsed.recipients);
-    setStats({ total: parsed.recipients.length, completed: 0, failed: 0 });
+    let list = parsed.recipients;
+    const limit = parseInt(broadcastLimit, 10);
+    if (!isNaN(limit) && limit > 0) {
+      list = list.slice(0, limit);
+      addLog('info', `Broadcast limit enabled: Sending to first ${limit} rows of CSV.`);
+    }
+
+    setRecipients(list);
+    setStats({ total: list.length, completed: 0, failed: 0 });
     setCurrentIndex(0);
     setLogs([]);
     setBroadcastState('running');
 
     setTimeout(() => {
-      runBroadcastLoop(0, parsed.recipients);
+      runBroadcastLoop(0, list);
     }, 100);
   };
 
@@ -807,11 +924,19 @@ export default function EmailAutomation() {
                         onChange={e => setAttachmentType(e.target.value as any)}
                         className="bg-[#121212] border border-white/10 rounded-sm py-1.5 px-3 text-xs text-white focus:outline-none focus:border-gold uppercase tracking-wider"
                       >
+                        <option value="local">Local certificates-compressed Folder (CertificateID.pdf)</option>
                         <option value="none">No Attachment</option>
                         <option value="static">Static URL (Same PDF file for all)</option>
                         <option value="dynamic">Dynamic Column (Get URL from CSV column)</option>
                       </select>
                     </div>
+
+                    {attachmentType === 'local' && (
+                      <div className="bg-[#1a1510] border border-gold/10 p-3 rounded-sm text-xs text-[#d4af37]/80 space-y-1">
+                        <p className="font-semibold text-gold font-serif">📁 Local Folder Mode Active</p>
+                        <p>The system will look up the <code className="bg-black/40 px-1 py-0.5 rounded text-white font-mono">CertificateID</code> column from your CSV file, search for a matching <code className="bg-black/40 px-1 py-0.5 rounded text-white font-mono">CertificateID.pdf</code> in the server's <code className="bg-black/40 px-1 py-0.5 rounded text-white font-mono">public/certificates-compressed</code> folder, and attach it directly to each recipient's email.</p>
+                      </div>
+                    )}
 
                     {attachmentType === 'static' && (
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -875,22 +1000,37 @@ export default function EmailAutomation() {
                 Set a delay between emails to avoid triggering Google spam controls.
               </p>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6 border-b border-white/5 pb-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6 border-b border-white/5 pb-4">
                 <div>
                   <label className="text-[10px] uppercase tracking-widest text-[#555] font-bold block mb-1">
-                    Stagger Delay (seconds between sends)
+                    Stagger Delay (seconds)
                   </label>
                   <input
                     type="number"
                     value={staggerDelay}
                     onChange={e => setStaggerDelay(Number(e.target.value))}
                     min={3}
-                    className="w-24 bg-[#121212] border border-white/10 rounded-sm py-2 px-3 text-xs text-white focus:outline-none focus:border-gold font-mono"
+                    className="w-full bg-[#121212] border border-white/10 rounded-sm py-2 px-3 text-xs text-white focus:outline-none focus:border-gold font-mono"
                   />
-                  <span className="text-[9px] text-[#555] block mt-1">Recommended: 8 - 15 seconds.</span>
+                  <span className="text-[9px] text-[#555] block mt-1">Recommended: 8 - 15s.</span>
                 </div>
 
-                <div className="flex items-center gap-4">
+                <div>
+                  <label className="text-[10px] uppercase tracking-widest text-[#555] font-bold block mb-1">
+                    Limit Broadcast Rows
+                  </label>
+                  <input
+                    type="number"
+                    value={broadcastLimit}
+                    onChange={e => setBroadcastLimit(e.target.value)}
+                    placeholder="e.g. 5 (leave blank for all)"
+                    min={1}
+                    className="w-full bg-[#121212] border border-white/10 rounded-sm py-2 px-3 text-xs text-white focus:outline-none focus:border-gold font-mono"
+                  />
+                  <span className="text-[9px] text-[#555] block mt-1">E.g. send only to first 2 or 5.</span>
+                </div>
+
+                <div className="flex flex-col justify-center gap-2 pt-2 sm:pt-0">
                   <div className="flex items-center gap-1.5">
                     <input
                       type="checkbox"

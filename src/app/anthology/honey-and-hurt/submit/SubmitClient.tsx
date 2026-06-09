@@ -257,7 +257,7 @@ export default function HoneyAndHurtSubmitClient() {
             <p className="font-cinzel text-5xl font-black text-red-600 mt-2">{countdown}...</p>
           </div>
           <p className="font-inter text-[10px] text-slate-400 italic">
-            Secure your co-author slot before all 196 positions are occupied.
+            Secure your co-author slot before all 156 positions are occupied.
           </p>
         </motion.div>
       </div>

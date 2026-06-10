@@ -20,6 +20,7 @@ const authors = [
   { name: 'Rochi Sulbhewar', slug: 'rochi', role: 'Economist & Author', imageBg: 'bg-ink-900/10' },
   { name: 'Mahika Mukund', slug: 'mahika', role: 'Contemporary Author & Poet', imageBg: 'bg-ink-900/5' },
   { name: 'Anonymous', slug: 'anonymous', role: 'The Love Anthology Co-Author', imageBg: 'bg-ink-900/10' },
+  { name: 'Umme Kulsum', slug: 'etherea', role: 'Poet & Student', imageBg: 'bg-ink-900/5' },
 ];
 
 export default function AuthorsPage() {

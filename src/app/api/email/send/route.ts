@@ -55,17 +55,30 @@ export async function POST(request: Request) {
       const path = require('path');
       const fs = require('fs');
       const cleanCertId = String(certId).trim();
-      const localPdfPath = path.join(process.cwd(), 'public', 'certificates-compressed', `${cleanCertId}.pdf`);
+      
+      const certDirs = [
+        'certificates-compressed',
+        'certificates (6)_compressed'
+      ];
+      
+      let foundLocalPath = null;
+      for (const dir of certDirs) {
+        const testPath = path.join(process.cwd(), 'public', dir, `${cleanCertId}.pdf`);
+        if (fs.existsSync(testPath)) {
+          foundLocalPath = testPath;
+          break;
+        }
+      }
 
-      console.log(`[SMTP Send] Checking for local certificate at: ${localPdfPath}`);
-      if (fs.existsSync(localPdfPath)) {
-        console.log(`[SMTP Send] Found local certificate file. Attaching directly from local disk.`);
+      console.log(`[SMTP Send] Checking for local certificate for ID: ${cleanCertId}`);
+      if (foundLocalPath) {
+        console.log(`[SMTP Send] Found local certificate file at ${foundLocalPath}. Attaching directly from local disk.`);
         attachments.push({
           filename: attachmentName || `${cleanCertId}.pdf`,
-          path: localPdfPath,
+          path: foundLocalPath,
         });
       } else {
-        console.log(`[SMTP Send] Warning: Local certificate file not found at ${localPdfPath}`);
+        console.log(`[SMTP Send] Warning: Local certificate file not found in any of the search directories.`);
       }
     }
 

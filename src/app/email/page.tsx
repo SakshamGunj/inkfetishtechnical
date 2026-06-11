@@ -924,7 +924,7 @@ export default function EmailAutomation() {
                         onChange={e => setAttachmentType(e.target.value as any)}
                         className="bg-[#121212] border border-white/10 rounded-sm py-1.5 px-3 text-xs text-white focus:outline-none focus:border-gold uppercase tracking-wider"
                       >
-                        <option value="local">Local certificates-compressed Folder (CertificateID.pdf)</option>
+                        <option value="local">Local certificates-compressed & certificates (6)_compressed</option>
                         <option value="none">No Attachment</option>
                         <option value="static">Static URL (Same PDF file for all)</option>
                         <option value="dynamic">Dynamic Column (Get URL from CSV column)</option>
@@ -934,7 +934,7 @@ export default function EmailAutomation() {
                     {attachmentType === 'local' && (
                       <div className="bg-[#1a1510] border border-gold/10 p-3 rounded-sm text-xs text-[#d4af37]/80 space-y-1">
                         <p className="font-semibold text-gold font-serif">📁 Local Folder Mode Active</p>
-                        <p>The system will look up the <code className="bg-black/40 px-1 py-0.5 rounded text-white font-mono">CertificateID</code> column from your CSV file, search for a matching <code className="bg-black/40 px-1 py-0.5 rounded text-white font-mono">CertificateID.pdf</code> in the server's <code className="bg-black/40 px-1 py-0.5 rounded text-white font-mono">public/certificates-compressed</code> folder, and attach it directly to each recipient's email.</p>
+                        <p>The system will look up the <code className="bg-black/40 px-1 py-0.5 rounded text-white font-mono">CertificateID</code> column from your CSV file, search for a matching <code className="bg-black/40 px-1 py-0.5 rounded text-white font-mono">CertificateID.pdf</code> in both the <code className="bg-black/40 px-1 py-0.5 rounded text-white font-mono">public/certificates-compressed</code> and <code className="bg-black/40 px-1 py-0.5 rounded text-white font-mono">certificates (6)_compressed</code> folders, and attach it directly to each recipient's email.</p>
                       </div>
                     )}
 

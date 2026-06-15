@@ -82,9 +82,19 @@ export async function POST(req: Request) {
     });
 
   } catch (error: any) {
-    console.error('Error creating Cashfree order:', error.response?.data || error.message);
+    const errorDetails = error.response?.data || error.message || "Unknown error";
+    console.error('Error creating Cashfree order:', errorDetails);
+    
+    let errorMsg = 'Failed to create payment order';
+    if (typeof errorDetails === 'object' && errorDetails !== null) {
+        if (errorDetails.message) errorMsg = errorDetails.message;
+        else errorMsg = JSON.stringify(errorDetails);
+    } else if (typeof errorDetails === 'string') {
+        errorMsg = errorDetails;
+    }
+
     return NextResponse.json(
-      { error: 'Failed to create payment order' },
+      { error: `Cashfree Error: ${errorMsg}` },
       { status: 500 }
     );
   }

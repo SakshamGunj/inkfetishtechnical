@@ -113,7 +113,7 @@ export default function OpenMicRegistrationPremium() {
   if (!mounted) return null;
 
   return (
-    <div className="min-h-screen bg-[#020202] text-neutral-200 relative flex flex-col lg:flex-row overflow-x-hidden selection:bg-emerald-500/30 font-sans">
+    <div className="min-h-screen bg-[#020202] text-neutral-200 relative flex flex-col lg:flex-row overflow-x-clip selection:bg-emerald-500/30 font-sans">
       <NoiseOverlay />
       
       {/* Decorative ambient lighting */}
@@ -334,14 +334,22 @@ export default function OpenMicRegistrationPremium() {
 
                   <div className="space-y-1 relative group/input">
                     <label className="text-[9px] lg:text-[10px] font-bold text-gray-500 uppercase tracking-[0.1em] ml-1">WhatsApp Number</label>
-                    <div className="relative flex items-center">
-                      <Phone className="absolute left-3 w-4 h-4 lg:w-5 lg:h-5 text-gray-400 group-focus-within/input:text-emerald-500 transition-colors" />
+                    <div className="relative flex items-center bg-gray-50/50 border border-gray-200 rounded-lg lg:rounded-xl focus-within:ring-2 focus-within:ring-emerald-500/20 focus-within:border-emerald-500 transition-all overflow-hidden">
+                      <div className="flex items-center gap-1.5 pl-3 pr-2 py-2.5 lg:py-3 bg-gray-100 border-r border-gray-200 shrink-0">
+                        <span className="text-sm lg:text-base leading-none">🇮🇳</span>
+                        <span className="text-xs lg:text-sm font-semibold text-gray-700">+91</span>
+                      </div>
                       <input 
                         type="tel" 
                         name="phone"
                         required
-                        placeholder="+91 98765 43210"
-                        className="w-full bg-gray-50/50 border border-gray-200 py-2.5 lg:py-3 pl-9 lg:pl-10 pr-3 text-xs lg:text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all rounded-lg lg:rounded-xl"
+                        maxLength={10}
+                        pattern="[0-9]{10}"
+                        onInput={(e) => {
+                          e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/g, '').slice(0, 10);
+                        }}
+                        placeholder="9876543210"
+                        className="w-full bg-transparent py-2.5 lg:py-3 px-3 text-xs lg:text-sm text-gray-900 placeholder-gray-400 focus:outline-none"
                       />
                     </div>
                   </div>

@@ -29,6 +29,7 @@ export async function POST(req: Request) {
 
     const environment = mode === 'production' ? CFEnvironment.PRODUCTION : CFEnvironment.SANDBOX;
     const cashfree = new Cashfree(environment, appId, secretKey);
+    cashfree.XApiVersion = "2025-01-01";
 
     // Fetch order from Cashfree
     const response = await cashfree.PGFetchOrder(order_id);

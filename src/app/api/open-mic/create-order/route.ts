@@ -30,6 +30,7 @@ export async function POST(req: Request) {
 
     const environment = mode === 'production' ? CFEnvironment.PRODUCTION : CFEnvironment.SANDBOX;
     const cashfree = new Cashfree(environment, appId, secretKey);
+    cashfree.XApiVersion = "2025-01-01";
 
     // Generate unique order ID
     const orderId = `om_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
@@ -54,7 +55,7 @@ export async function POST(req: Request) {
         customer_name: cleanName.substring(0, 50),
       },
       order_meta: {
-        return_url: `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/open-mic?order_id={order_id}`,
+        return_url: `https://www.inkfetish.in/open-mic?order_id={order_id}`,
       },
       order_note: `Open Mic Registration for ${cleanName}`
     };

@@ -10,7 +10,8 @@ export function ConditionalFooter() {
   if (
     pathname.startsWith('/anthology/syaahi') || 
     pathname.startsWith('/anthology/honey-and-hurt') ||
-    pathname.startsWith('/poetryfestival/s2')
+    pathname.startsWith('/poetryfestival/s2') ||
+    pathname.startsWith('/open-mic')
   ) {
     return null;
   }

@@ -27,12 +27,11 @@ export async function POST(req: Request) {
       );
     }
 
-    Cashfree.XClientId = appId;
-    Cashfree.XClientSecret = secretKey;
-    Cashfree.XEnvironment = mode === 'production' ? CFEnvironment.PRODUCTION : CFEnvironment.SANDBOX;
+    const environment = mode === 'production' ? CFEnvironment.PRODUCTION : CFEnvironment.SANDBOX;
+    const cashfree = new Cashfree(environment, appId, secretKey);
 
     // Fetch order from Cashfree
-    const response = await Cashfree.PGFetchOrder("2025-01-01", order_id);
+    const response = await cashfree.PGFetchOrder(order_id);
     const orderStatus = response.data.order_status;
 
     if (orderStatus === 'PAID') {
@@ -60,9 +59,19 @@ export async function POST(req: Request) {
     }
 
   } catch (error: any) {
-    console.error('Error verifying Cashfree order:', error.response?.data || error.message);
+    const errorDetails = error.response?.data || error.message || "Unknown error";
+    console.error('Error verifying Cashfree order:', errorDetails);
+    
+    let errorMsg = 'Failed to verify payment order';
+    if (typeof errorDetails === 'object' && errorDetails !== null) {
+        if (errorDetails.message) errorMsg = errorDetails.message;
+        else errorMsg = JSON.stringify(errorDetails);
+    } else if (typeof errorDetails === 'string') {
+        errorMsg = errorDetails;
+    }
+
     return NextResponse.json(
-      { error: 'Failed to verify payment order' },
+      { error: `Cashfree Error: ${errorMsg}` },
       { status: 500 }
     );
   }

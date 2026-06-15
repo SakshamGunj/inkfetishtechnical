@@ -28,9 +28,8 @@ export async function POST(req: Request) {
       );
     }
 
-    Cashfree.XClientId = appId;
-    Cashfree.XClientSecret = secretKey;
-    Cashfree.XEnvironment = mode === 'production' ? CFEnvironment.PRODUCTION : CFEnvironment.SANDBOX;
+    const environment = mode === 'production' ? CFEnvironment.PRODUCTION : CFEnvironment.SANDBOX;
+    const cashfree = new Cashfree(environment, appId, secretKey);
 
     // Generate unique order ID
     const orderId = `om_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
@@ -60,7 +59,7 @@ export async function POST(req: Request) {
       order_note: `Open Mic Registration for ${cleanName}`
     };
 
-    const response = await Cashfree.PGCreateOrder("2025-01-01", request);
+    const response = await cashfree.PGCreateOrder(request);
     
     // Create a pending record in local CSV file instead of Supabase
     try {

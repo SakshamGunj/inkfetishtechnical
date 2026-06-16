@@ -34,7 +34,7 @@ export async function POST(req: Request) {
 
     // Generate unique order ID
     const orderId = `om_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
-    const orderAmount = 1.00; // Fixed registration price set to 1 INR for real-time testing
+    const orderAmount = 150.00; // Fixed registration price set to 150 INR
 
     // Sanitize data for Cashfree strict validations
     let cleanPhone = phone.replace(/[^0-9]/g, '');

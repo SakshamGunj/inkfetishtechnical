@@ -265,7 +265,7 @@ export default function OpenMicRegistrationPremium() {
               
               <h2 className="text-xl lg:text-2xl font-serif text-gray-900 mb-2">Registration Complete!</h2>
               <p className="text-xs lg:text-sm text-gray-600 mb-6 lg:mb-8 leading-relaxed">
-                Your spot is confirmed. We've received your ₹1 payment. An exclusive Zoom link and instructions will be sent to your email. We can't wait to see you perform!
+                Your spot is confirmed. We've received your ₹150 payment. An exclusive Zoom link and instructions will be sent to your email. We can't wait to see you perform!
               </p>
               
               <button 
@@ -290,7 +290,7 @@ export default function OpenMicRegistrationPremium() {
                 <div className="flex flex-wrap items-center gap-2 lg:gap-3 mt-2 lg:mt-3">
                   <div className="inline-block bg-amber-50 border border-amber-100 px-2.5 py-1 lg:px-3 lg:py-1.5 rounded-md lg:rounded-lg">
                     <p className="text-amber-800 text-xs lg:text-sm font-semibold flex items-center gap-2">
-                      Registration Fee: ₹1
+                      Registration Fee: ₹150
                     </p>
                   </div>
                   <div className="inline-block bg-blue-50 border border-blue-100 px-2.5 py-1 lg:px-3 lg:py-1.5 rounded-md lg:rounded-lg">
@@ -368,7 +368,7 @@ export default function OpenMicRegistrationPremium() {
                       </div>
                     ) : (
                       <span className="flex items-center gap-2 font-bold tracking-widest uppercase text-xs lg:text-base drop-shadow-md">
-                        Pay ₹1 & Register
+                        Pay ₹150 & Register
                         <Send className="w-4 h-4 lg:w-5 lg:h-5 group-hover:translate-x-1 transition-transform" />
                       </span>
                     )}

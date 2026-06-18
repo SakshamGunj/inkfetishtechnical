@@ -11,6 +11,7 @@ const nameMap: Record<string, string> = {
   'shikast-e-aziz': "Shikast-e-Aziz",
   'veiled-verses': "Veiled Verses",
   etherea: "Umme Kulsum 'Etherea'",
+  disha: "Shetty Disha",
 };
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {

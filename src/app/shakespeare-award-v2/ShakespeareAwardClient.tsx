@@ -738,7 +738,7 @@ export default function ShakespeareAwardClient() {
               </div>
               <div className="flex items-start gap-4">
                 <div className="w-6 h-6 rounded-full bg-gold/10 flex items-center justify-center shrink-0 mt-0.5"><CheckCircle2 className="w-4 h-4 text-gold" /></div>
-                <p className="text-white/90 text-[13px] sm:text-[13px] leading-relaxed"><strong className="text-gold font-bold">Registration fee: ₹1 only.</strong> No hidden charges.</p>
+                <p className="text-white/90 text-[13px] sm:text-[13px] leading-relaxed"><strong className="text-gold font-bold">Registration fee: ₹699 only.</strong> No hidden charges.</p>
               </div>
             </div>
           </div>
@@ -958,7 +958,7 @@ export default function ShakespeareAwardClient() {
       </footer>
 
       {/* Sticky Bottom CTA */}
-      <div className="fixed bottom-0 left-0 right-0 z-50 p-3 sm:p-4 bg-[#0a0a0a]/80 backdrop-blur-xl border-t border-gold/20 shadow-[0_-20px_40px_rgba(0,0,0,0.8)] md:hidden">
+      <div className="fixed bottom-0 left-0 right-0 z-50 p-5 sm:p-4 bg-[#0a0a0a]/80 backdrop-blur-xl border-t border-gold/20 shadow-[0_-20px_40px_rgba(0,0,0,0.8)] md:hidden">
         <div className="max-w-4xl mx-auto flex items-center justify-between gap-4">
           <div className="hidden sm:block">
             <h4 className="text-white font-serif font-bold text-sm">Shakespeare Poetry Award Vol. 2</h4>
@@ -967,11 +967,11 @@ export default function ShakespeareAwardClient() {
           <div className="flex items-center gap-4 w-full sm:w-auto flex-grow sm:flex-grow-0">
             <div className="text-right hidden md:block">
               <span className="text-[10px] text-ink-500 uppercase tracking-widest block font-bold">Entry Fee</span>
-              <span className="text-gold font-bold font-serif text-base leading-none">₹1</span>
+              <span className="text-gold font-bold font-serif text-base leading-none">₹699</span>
             </div>
             <Link href="/shakespeare-award-v2/register" className="w-full sm:w-auto">
-              <button className="w-full sm:w-auto py-3.5 sm:py-3 px-4 sm:px-8 bg-gradient-to-b from-green-500 to-green-700 hover:from-green-400 hover:to-green-600 text-white font-black text-[11px] sm:text-xs uppercase tracking-widest transition-all shadow-[0_0_15px_rgba(34,197,94,0.3)] whitespace-nowrap">
-                Secure Your Seat <span className="md:hidden">— ₹1</span>
+              <button className="w-full sm:w-auto py-5 sm:py-3 px-4 sm:px-8 bg-gradient-to-b from-green-500 to-green-700 hover:from-green-400 hover:to-green-600 text-white font-black text-[11px] sm:text-xs uppercase tracking-widest transition-all shadow-[0_0_15px_rgba(34,197,94,0.3)] whitespace-nowrap">
+                Secure Your Seat
               </button>
             </Link>
           </div>

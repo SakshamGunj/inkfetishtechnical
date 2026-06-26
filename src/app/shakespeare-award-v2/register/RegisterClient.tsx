@@ -381,17 +381,17 @@ export default function RegisterClient() {
                   <label className="flex items-center gap-3 p-4 border border-gold/50 bg-gold/5 cursor-pointer">
                     <input type="radio" name="payment" defaultChecked className="text-gold focus:ring-gold accent-gold w-4 h-4" />
                     <span className="text-sm font-bold flex-grow">Credit Card / UPI / NetBanking</span>
-                    <span className="text-xs font-bold text-gold shrink-0">Razorpay Secure</span>
+                    <span className="text-xs font-bold text-gold shrink-0">Cashfree Secure</span>
                   </label>
                 </div>
 
                 <button 
                   type="submit"
                   disabled={isProcessing}
-                  className={`w-full relative group overflow-hidden bg-gradient-to-b from-[#ebd298] to-[#c5a059] hover:from-[#fdfbf7] hover:to-[#ebd298] text-[#14100C] transition-all py-4 font-black text-sm uppercase tracking-[0.2em] flex items-center justify-center gap-3 ${isProcessing ? 'opacity-70 cursor-not-allowed' : ''}`}
+                  className={`w-full relative group overflow-hidden bg-gradient-to-b from-green-500 to-green-700 hover:from-green-400 hover:to-green-600 text-white transition-all py-4 font-black text-sm uppercase tracking-[0.2em] flex items-center justify-center gap-3 ${isProcessing ? 'opacity-70 cursor-not-allowed' : ''}`}
                 >
                   <Lock className="w-4 h-4" />
-                  {isProcessing ? "Securing Connection..." : "Secure My Spot Now — ₹1"}
+                  {isProcessing ? "Securing Connection..." : "Secure My Spot Now"}
                   
                   {/* Sweep animation on button */}
                   <div className="absolute top-0 -left-[100%] w-1/2 h-full bg-gradient-to-r from-transparent via-white/40 to-transparent skew-x-12 group-hover:animate-[sweep_1.5s_ease-in-out]"></div>
@@ -407,7 +407,7 @@ export default function RegisterClient() {
               <div className="text-[10px] font-bold tracking-widest">VISA</div>
               <div className="text-[10px] font-bold tracking-widest">MASTERCARD</div>
               <div className="text-[10px] font-bold tracking-widest">UPI</div>
-              <div className="text-[10px] font-bold tracking-widest">RAZORPAY</div>
+              <div className="text-[10px] font-bold tracking-widest">CASHFREE</div>
             </div>
             
           </div>
@@ -469,7 +469,7 @@ export default function RegisterClient() {
                   </div>
                   <div className="flex justify-between items-end">
                     <span className="text-xs text-white uppercase tracking-widest font-bold">Today's Price</span>
-                    <span className="text-2xl font-serif font-black text-gold">₹1</span>
+                    <span className="text-2xl font-serif font-black text-gold">₹699</span>
                   </div>
                 </div>
               </div>
@@ -498,10 +498,10 @@ export default function RegisterClient() {
         <button 
           onClick={handleMobileCtaClick}
           disabled={isProcessing}
-          className={`w-full relative group overflow-hidden bg-gradient-to-b from-[#ebd298] to-[#c5a059] hover:from-[#fdfbf7] hover:to-[#ebd298] text-[#14100C] transition-all py-4 font-black text-sm uppercase tracking-[0.2em] flex items-center justify-center gap-2 ${isProcessing ? 'opacity-70 cursor-not-allowed' : ''}`}
+          className={`w-full relative group overflow-hidden bg-gradient-to-b from-green-500 to-green-700 hover:from-green-400 hover:to-green-600 text-white transition-all py-4 font-black text-sm uppercase tracking-[0.2em] flex items-center justify-center gap-2 ${isProcessing ? 'opacity-70 cursor-not-allowed' : ''}`}
         >
           <Lock className="w-4 h-4" />
-          {isProcessing ? "Securing..." : (isFormFilled ? "Secure My Spot Now — ₹1" : "Complete Details to Pay")}
+          {isProcessing ? "Securing..." : (isFormFilled ? "Secure My Spot Now" : "Complete Details to Pay")}
         </button>
       </div>
     </div>

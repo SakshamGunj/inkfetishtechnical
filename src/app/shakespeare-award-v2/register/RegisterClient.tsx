@@ -80,9 +80,9 @@ export default function RegisterClient() {
     }
     
     setIsProcessing(true);
-    
     try {
-      const cashfree = await load({ mode: "sandbox" });
+      const mode = process.env.NEXT_PUBLIC_CASHFREE_MODE === 'production' ? 'production' : 'sandbox';
+      const cashfree = await load({ mode });
       
       // Reconstruct for backend compatibility
       const submissionData = {

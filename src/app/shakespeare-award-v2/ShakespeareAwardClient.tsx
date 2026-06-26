@@ -106,7 +106,7 @@ export default function ShakespeareAwardClient() {
             </div>
 
             {/* ======= BLOCK 2: IMAGE (order-2 mobile, row-1/2 col-2 desktop) ======= */}
-            <div className="relative flex justify-center lg:justify-end items-start order-2 lg:order-2 lg:row-start-1 lg:col-start-2 lg:row-span-2 mt-5 mb-6 lg:my-0">
+            <div className="relative flex justify-center lg:justify-center items-start order-2 lg:order-2 lg:row-start-1 lg:col-start-2 lg:row-span-2 mt-5 mb-6 lg:my-0">
               <motion.div
                 initial={{ opacity: 0, scale: 0.94, y: 10 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -117,7 +117,7 @@ export default function ShakespeareAwardClient() {
                 <div className="absolute -inset-4 bg-gradient-to-br from-gold/20 via-transparent to-gold/10 rounded-sm blur-xl pointer-events-none"></div>
                 
                 {/* Image frame */}
-                <div className="relative rounded-sm overflow-hidden border border-gold/30 bg-[#1A1613] shadow-[0_30px_80px_rgba(0,0,0,0.6),_0_0_60px_rgba(197,160,89,0.15)] w-[310px] sm:w-[360px] md:w-[400px] lg:w-full lg:max-w-[520px]">
+                <div className="relative rounded-sm overflow-hidden border border-gold/30 bg-[#1A1613] shadow-[0_30px_80px_rgba(0,0,0,0.6),_0_0_60px_rgba(197,160,89,0.15)] w-[310px] sm:w-[360px] md:w-[400px] lg:w-full lg:max-w-[580px] xl:max-w-[640px]">
                   
                   {/* Overlay gradient at bottom */}
                   <div className="absolute inset-0 bg-gradient-to-t from-[#14100C]/70 via-transparent to-transparent pointer-events-none z-10"></div>

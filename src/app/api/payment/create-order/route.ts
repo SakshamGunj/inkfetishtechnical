@@ -61,7 +61,7 @@ export async function POST(request: Request) {
       },
       body: JSON.stringify({
         order_id: orderId,
-        order_amount: 699, // Strictly fixed
+        order_amount: 1, // Strictly fixed for testing
         order_currency: 'INR',
         customer_details: {
           customer_id: customerIdRaw,

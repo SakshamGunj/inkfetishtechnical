@@ -167,9 +167,9 @@ export default function RegisterClient() {
       <div className="absolute top-[-20%] left-1/2 -translate-x-1/2 w-full max-w-[600px] h-[600px] bg-[#c5a059]/10 blur-[120px] rounded-full pointer-events-none"></div>
       {/* ⚠️ Minimalist Header - STRICTLY NO NAV LINKS TO DISTRACT FROM CHECKOUT */}
       <header className="border-b border-white/5 bg-[#1A1613]/90 backdrop-blur-md sticky top-0 z-50">
-        <div className="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+        <div className="max-w-6xl mx-auto px-4 py-2 sm:py-4 flex justify-between items-center">
           <Link href="/shakespeare-award-v2" className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-gold flex items-center justify-center text-black font-serif font-black text-xl">S</div>
+            <div className="w-6 h-6 sm:w-8 sm:h-8 bg-gold flex items-center justify-center text-black font-serif font-black text-base sm:text-xl">S</div>
             <span className="font-serif font-bold text-lg hidden sm:block tracking-wide">Shakespeare Poetry Award</span>
           </Link>
           <div className="flex items-center gap-2 text-ink-400 text-xs font-bold uppercase tracking-widest">
@@ -181,7 +181,7 @@ export default function RegisterClient() {
 
       {/* Main Checkout Layout */}
       <main className="max-w-6xl mx-auto px-2 sm:px-4 py-6 sm:py-16">
-        <div className="flex flex-col-reverse lg:grid lg:grid-cols-12 gap-8 lg:gap-16 items-start">
+        <div className="flex flex-col-reverse lg:grid lg:grid-cols-12 gap-6 lg:gap-16 items-start">
 
           {/* LEFT COLUMN: THE FORM */}
           <div className="lg:col-span-7 space-y-8">
@@ -208,7 +208,7 @@ export default function RegisterClient() {
                   Author Details
                 </h3>
                 
-                <div className="space-y-4">
+                <div className="space-y-3 sm:space-y-4">
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div className="space-y-1.5">
                       <label className="text-[11px] uppercase tracking-wider text-ink-500 font-bold block">Legal Name (For Certificate)</label>
@@ -391,7 +391,7 @@ export default function RegisterClient() {
                   className={`w-full relative group overflow-hidden bg-gradient-to-b from-[#ebd298] to-[#c5a059] hover:from-[#fdfbf7] hover:to-[#ebd298] text-[#14100C] transition-all py-4 font-black text-sm uppercase tracking-[0.2em] flex items-center justify-center gap-3 ${isProcessing ? 'opacity-70 cursor-not-allowed' : ''}`}
                 >
                   <Lock className="w-4 h-4" />
-                  {isProcessing ? "Securing Connection..." : "Secure My Spot Now — ₹699"}
+                  {isProcessing ? "Securing Connection..." : "Secure My Spot Now — ₹1"}
                   
                   {/* Sweep animation on button */}
                   <div className="absolute top-0 -left-[100%] w-1/2 h-full bg-gradient-to-r from-transparent via-white/40 to-transparent skew-x-12 group-hover:animate-[sweep_1.5s_ease-in-out]"></div>
@@ -413,19 +413,19 @@ export default function RegisterClient() {
           </div>
 
           {/* RIGHT COLUMN: THE OFFER STACK (Hormozi/Brunson Style) */}
-          <div className="lg:col-span-5 relative mt-8 lg:mt-0">
+          <div className="lg:col-span-5 relative w-full">
             {/* Desktop sticky behavior */}
             <div className="sticky top-24 space-y-6">
 
               {/* Order Summary Box */}
-              <div className="bg-[#1A1613]/95 backdrop-blur-md border border-gold/20 rounded-sm shadow-2xl p-6 sm:p-8 relative">
+              <div className="bg-[#1A1613]/95 backdrop-blur-md border border-gold/20 rounded-sm shadow-2xl p-4 sm:p-8 relative">
                 {/* Corner tape illusion */}
                 <div className="absolute -top-3 -right-3 w-16 h-6 bg-gold/20 rotate-45 backdrop-blur-md hidden sm:block shadow-sm"></div>
                 
-                <h2 className="text-xs uppercase tracking-[0.2em] font-bold text-ink-400 mb-6 border-b border-white/5 pb-4">Order Summary</h2>
+                <h2 className="text-xs uppercase tracking-[0.2em] font-bold text-ink-400 mb-4 sm:mb-6 border-b border-white/5 pb-3 sm:pb-4">Order Summary</h2>
                 
-                <div className="flex gap-4 mb-6 pb-6 border-b border-white/5">
-                  <div className="w-20 h-24 bg-[#14100C] border border-white/10 shrink-0 relative overflow-hidden flex items-center justify-center">
+                <div className="flex gap-3 sm:gap-4 mb-4 pb-4 sm:mb-6 sm:pb-6 border-b border-white/5">
+                  <div className="w-14 h-20 sm:w-20 sm:h-24 bg-[#14100C] border border-white/10 shrink-0 relative overflow-hidden flex items-center justify-center">
                      <Image
                         src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1782388720/Shakespeare_Poetry_Award_Content_2_1080_x_1080_px_2_bko409.png"
                         alt="Award Book"
@@ -434,7 +434,7 @@ export default function RegisterClient() {
                       />
                   </div>
                   <div>
-                    <h3 className="font-serif font-bold text-base leading-tight mb-1">Shakespeare Poetry Award — Volume 2</h3>
+                    <h3 className="font-serif font-bold text-sm sm:text-base leading-tight mb-1">Shakespeare Poetry Award — Volume 2</h3>
                     <p className="text-[11px] text-ink-400 font-light mt-2 uppercase tracking-wide">Standard Entry Package</p>
                   </div>
                 </div>
@@ -442,34 +442,34 @@ export default function RegisterClient() {
                 <div className="space-y-4">
                   <h4 className="text-[10px] uppercase tracking-widest font-bold text-gold">What You Specially Get Today:</h4>
                   
-                  <ul className="space-y-3">
-                    <li className="flex items-start gap-3">
+                  <ul className="space-y-2 sm:space-y-3">
+                    <li className="flex items-start gap-2 sm:gap-3">
                       <CheckCircle2 className="w-4 h-4 text-green-500 shrink-0 mt-0.5" />
                       <div className="text-[13px]">
                         <span className="text-white font-medium">Guaranteed Publication</span>
-                        <p className="text-ink-400 text-[11px] mt-1 leading-snug">Your poem published permanently in the print anthology.</p>
+                        <p className="text-ink-400 text-[11px] leading-tight mt-0.5 sm:mt-1">Your poem published permanently in the print anthology.</p>
                       </div>
                       <span className="ml-auto text-[11px] text-ink-500 line-through">₹1,500</span>
                     </li>
-                    <li className="flex items-start gap-3">
+                    <li className="flex items-start gap-2 sm:gap-3">
                       <CheckCircle2 className="w-4 h-4 text-green-500 shrink-0 mt-0.5" />
                       <div className="text-[13px]">
                         <span className="text-white font-medium">Physical Home Delivery Included</span>
-                        <p className="text-ink-400 text-[11px] mt-1 leading-snug">The Next Shakespeare Certificate & Appreciation Letter physically shipped to your door.</p>
+                        <p className="text-ink-400 text-[11px] leading-tight mt-0.5 sm:mt-1">The Next Shakespeare Certificate & Appreciation Letter physically shipped to your door.</p>
                       </div>
                       <span className="ml-auto text-[11px] text-ink-500 line-through">₹500</span>
                     </li>
                   </ul>
                 </div>
 
-                <div className="mt-6 pt-6 border-t border-white/5 space-y-2">
+                <div className="mt-4 sm:mt-6 pt-4 sm:pt-6 border-t border-white/5 space-y-1 sm:space-y-2">
                   <div className="flex justify-between text-xs text-ink-400 font-bold uppercase tracking-widest">
                     <span>Total Real World Value</span>
                     <span className="line-through">₹2,000+</span>
                   </div>
                   <div className="flex justify-between items-end">
                     <span className="text-xs text-white uppercase tracking-widest font-bold">Today's Price</span>
-                    <span className="text-2xl font-serif font-black text-gold">₹699</span>
+                    <span className="text-2xl font-serif font-black text-gold">₹1</span>
                   </div>
                 </div>
               </div>
@@ -501,7 +501,7 @@ export default function RegisterClient() {
           className={`w-full relative group overflow-hidden bg-gradient-to-b from-[#ebd298] to-[#c5a059] hover:from-[#fdfbf7] hover:to-[#ebd298] text-[#14100C] transition-all py-4 font-black text-sm uppercase tracking-[0.2em] flex items-center justify-center gap-2 ${isProcessing ? 'opacity-70 cursor-not-allowed' : ''}`}
         >
           <Lock className="w-4 h-4" />
-          {isProcessing ? "Securing..." : (isFormFilled ? "Secure My Spot Now — ₹699" : "Complete Details to Pay")}
+          {isProcessing ? "Securing..." : (isFormFilled ? "Secure My Spot Now — ₹1" : "Complete Details to Pay")}
         </button>
       </div>
     </div>

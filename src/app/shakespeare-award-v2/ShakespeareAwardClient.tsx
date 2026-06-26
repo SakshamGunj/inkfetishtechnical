@@ -41,143 +41,181 @@ export default function ShakespeareAwardClient() {
         <span className="hidden sm:inline"> When filled, registration closes immediately.</span>
       </div>
 
-      {/* --- SECTION 1: HERO OUTCOME & PROOF --- */}
-      <section className="relative pt-12 pb-20 overflow-hidden text-center">
-        {/* Background dimension */}
-        <div className="absolute top-0 right-0 w-3/4 h-full bg-[#1A1613] opacity-50 transform -skew-x-12 translate-x-32 pointer-events-none border-l border-gold/5"></div>
-        <div className="absolute top-[-20%] left-1/2 -translate-x-1/2 w-full max-w-[600px] h-[600px] bg-[#c5a059]/10 blur-[120px] rounded-full pointer-events-none"></div>
+      {/* --- SECTION 1: HERO --- */}
+      <section className="relative min-h-[92vh] flex items-center overflow-hidden text-center lg:text-left">
+        
+        {/* === BACKGROUND LAYERS === */}
+        {/* Deep radial glow behind image */}
+        <div className="absolute top-1/2 right-0 -translate-y-1/2 w-[600px] h-[600px] bg-[radial-gradient(ellipse_at_center,rgba(197,160,89,0.12)_0%,transparent_70%)] pointer-events-none"></div>
+        {/* Left ambient light */}
+        <div className="absolute top-1/2 left-0 -translate-y-1/2 w-[400px] h-[400px] bg-[radial-gradient(ellipse_at_center,rgba(197,160,89,0.05)_0%,transparent_70%)] pointer-events-none"></div>
+        {/* Horizontal decorative line */}
+        <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-gold/20 to-transparent pointer-events-none"></div>
+        <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-gold/10 to-transparent pointer-events-none"></div>
 
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10 flex flex-col lg:flex-row items-center lg:items-start lg:justify-between gap-12 lg:gap-8">
-          
-          {/* LEFT COLUMN: Text and CTA */}
-          <div className="w-full lg:w-1/2 flex flex-col items-center lg:items-start text-center lg:text-left flex-shrink-0">
-            <motion.div 
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="flex flex-col items-center lg:items-start gap-3 mb-6"
-            >
-              <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-[#c5a059]">By Inkfetish Publications</span>
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 border border-gold/30 bg-[#1A1613] text-gold text-[10px] sm:text-[11px] font-bold tracking-[0.2em] uppercase shadow-sm shadow-gold/5">
-                <Award className="w-3.5 h-3.5" />
-                The Highest Literary Honor
-              </div>
-            </motion.div>
-
-            <motion.h1 
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="text-[2rem] sm:text-2xl md:text-3xl lg:text-5xl font-serif font-black leading-[1.05] mb-8 text-[#fdfbf7] tracking-tight w-full drop-shadow-md"
-            >
-              <span className="text-lg sm:text-xl md:text-2xl block mb-3 opacity-90 font-light tracking-wide">Take Part in</span>
-              Shakespeare Poetry Award <br className="hidden sm:block" /> 
-              <span className="italic text-gold opacity-100 block mt-2 text-2xl sm:text-2xl md:text-3xl drop-shadow-[0_2px_10px_rgba(197,160,89,0.2)]">2026 Volume 2</span>
-            </motion.h1>
-
-            <motion.div 
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className="flex flex-col items-center lg:items-start gap-6 w-full lg:max-w-md"
-            >
-              <Link href="/shakespeare-award-v2/register" className="w-full relative group mt-4">
-                <div className="absolute -inset-1 bg-gradient-to-r from-[#c5a059] to-[#ebd298] rounded-sm blur opacity-40 group-hover:opacity-70 transition duration-500"></div>
-                <button className="relative w-full px-8 py-5 bg-gradient-to-b from-[#ebd298] to-[#c5a059] hover:from-[#fdfbf7] hover:to-[#ebd298] text-[#14100C] font-black text-[10px] sm:text-xs uppercase tracking-widest transition-all flex items-center justify-center gap-3 border border-[#ebd298] shadow-[0_0_25px_rgba(197,160,89,0.4)] rounded-sm">
-                  Register For Volume 2 Now <ArrowRight className="w-4 h-4" />
-                </button>
-              </Link>
-              
-              <div className="flex items-center gap-2 text-ink-400 text-[10px] font-bold uppercase tracking-widest text-center lg:text-left">
-                <ShieldCheck className="w-3.5 h-3.5 text-gold shrink-0" />
-                100% Guaranteed Publication for All 200 Poets
-              </div>
-            </motion.div>
-          </div>
-
-          {/* RIGHT COLUMN: Featured Image */}
-          <div className="w-full lg:w-1/2 flex justify-center lg:justify-end lg:-mt-4">
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-              className="relative rounded-sm overflow-hidden border-2 border-gold/40 bg-[#1A1613] shadow-[0_20px_50px_rgba(197,160,89,0.15)] p-2 w-full max-w-xl mx-auto lg:mx-0"
-            >
-              <div className="absolute inset-0 bg-gradient-to-t from-[#14100C]/60 via-transparent to-transparent pointer-events-none z-10"></div>
-              <Image
-                src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1782388720/Shakespeare_Poetry_Award_Content_2_1080_x_1080_px_2_bko409.png"
-                alt="Take part in Shakespeare Poetry Award 2026 Volume 2 By Inkfetish"
-                width={1080}
-                height={1080}
-                className="w-full h-auto object-cover transition-transform duration-1000 hover:scale-[1.02]"
-                priority
-              />
-              <div className="absolute top-4 right-4 z-20 bg-gold text-[#14100C] px-3 py-1 font-black text-[10px] uppercase tracking-widest shadow-lg rounded-sm">
-                100% Genuine
-              </div>
-              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 bg-[#1A1613]/90 backdrop-blur-md px-6 py-2 border border-gold/20 flex items-center gap-2 shadow-lg w-max">
-                <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse shadow-[0_0_8px_#22c55e]"></div>
-                <span className="text-[10px] uppercase tracking-widest text-gold font-bold">Accepting 200 Entries</span>
-              </div>
-            </motion.div>
-          </div>
-
-        </div>
-
-        {/* THE INKFETISH GUARANTEE FULL-WIDTH ROW */}
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10 mt-16 lg:mt-24">
-          <div className="bg-[#1A1613]/95 backdrop-blur-md border border-gold/20 rounded-sm shadow-2xl p-8 sm:p-12">
-            <h4 className="text-sm uppercase tracking-widest text-gold font-black mb-10 border-b border-gold/10 pb-6 text-center flex items-center justify-center gap-3">
-              <ShieldCheck className="w-5 h-5" /> The Inkfetish Guarantee
-            </h4>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full pt-6 pb-10 lg:py-0">
+          <div className="grid grid-cols-1 lg:grid-cols-2 lg:grid-rows-[auto_auto] gap-0 items-start">
             
-            <div className="grid md:grid-cols-3 gap-10 md:gap-12 text-left">
-              <div className="flex flex-col items-center text-center gap-4">
-                <BookOpen className="w-8 h-8 text-gold" />
-                <div>
-                  <strong className="text-gold text-[14px] block font-bold mb-2">Guaranteed Anthology Publication</strong>
-                  <span className="text-white/80 text-[13px] leading-relaxed">Every single one of the 200 participants is permanently published as a co-author in the Volume 2 physical book.</span>
-                </div>
-              </div>
-              <div className="flex flex-col items-center text-center gap-4">
-                <Mail className="w-8 h-8 text-gold" />
-                <div>
-                  <strong className="text-gold text-[14px] block font-bold mb-2">Physical Delivery to Your Door</strong>
-                  <span className="text-white/80 text-[13px] leading-relaxed">A physical Certificate of Excellence and an Appreciation Letter delivered securely to your home address.</span>
-                </div>
-              </div>
-              <div className="flex flex-col items-center text-center gap-4">
-                <Trophy className="w-8 h-8 text-gold" />
-                <div>
-                  <strong className="text-gold text-[14px] block font-bold mb-2">Top 10 Live Recognition</strong>
-                  <span className="text-white/80 text-[13px] leading-relaxed">Top 10 winners are announced live on Zoom and receive the prestigious Shakespeare Poetry Trophy & Medal.</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+            {/* ======= BLOCK 1: TITLE (order-1 mobile, row-1 col-1 desktop) ======= */}
+            <div className="flex flex-col items-center lg:items-start order-1 lg:order-1 lg:row-start-1 lg:col-start-1 lg:pb-6">
+              
+              {/* Eyebrow Label */}
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mb-3 flex items-center gap-3"
+              >
+                <div className="w-8 sm:w-14 h-[1px] bg-gradient-to-r from-transparent to-gold/60"></div>
+                <span className="text-[9px] sm:text-[10px] uppercase tracking-[0.35em] font-bold text-gold/70">
+                  By Inkfetish Publications
+                </span>
+                <div className="w-8 sm:w-14 h-[1px] bg-gradient-to-l from-transparent to-gold/60"></div>
+              </motion.div>
 
-        {/* --- CREDIBILITY STRIP --- */}
-        <div className="max-w-7xl mx-auto px-4 mt-16 md:mt-24 relative z-10">
-          <div className="border-y border-white/5 py-6 grid grid-cols-2 md:grid-cols-4 gap-6 text-center divide-x divide-white/5">
-            <div className="flex flex-col items-center justify-center px-2">
-              <span className="text-2xl font-black text-[#fdfbf7] font-serif">200</span>
-              <span className="text-[9px] sm:text-[10px] uppercase tracking-widest text-ink-500 mt-2">Participant Limit</span>
+              {/* Honor Badge */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.05 }}
+                className="mb-4 inline-flex items-center gap-2.5 bg-[#1A1613] border border-gold/30 text-[#ebd298] text-[10px] sm:text-[11px] font-black tracking-[0.25em] uppercase px-5 py-2.5 shadow-[0_0_25px_rgba(197,160,89,0.1)] rounded-sm"
+              >
+                <Award className="w-4 h-4 text-gold" />
+                The Highest Literary Honor
+              </motion.div>
+
+              {/* MAIN TITLE */}
+              <motion.h1
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 }}
+                className="font-serif font-black leading-[1.05] tracking-tight mb-0 w-full"
+              >
+                <span className="block text-sm sm:text-base font-sans font-light tracking-[0.3em] uppercase text-white/50 mb-3">
+                  Take Part in the
+                </span>
+                <span className="block text-[2.8rem] sm:text-[2.8rem] md:text-5xl lg:text-[3.8rem] text-transparent bg-clip-text bg-gradient-to-b from-[#fdfbf7] via-[#ebd298] to-[#b8922a] pb-1">
+                  Shakespeare
+                </span>
+                <span className="block text-[2.8rem] sm:text-[2.8rem] md:text-5xl lg:text-[3.8rem] text-transparent bg-clip-text bg-gradient-to-b from-[#fdfbf7] via-[#ebd298] to-[#b8922a]">
+                  Poetry Award
+                </span>
+                <span className="block text-2xl sm:text-2xl md:text-3xl font-light italic text-white/70 mt-3 tracking-wide">
+                  2026 — Volume 2
+                </span>
+              </motion.h1>
             </div>
-            <div className="flex flex-col items-center justify-center px-2">
-              <span className="text-2xl font-black text-[#fdfbf7] font-serif">100<span className="text-gold">%</span></span>
-              <span className="text-[9px] sm:text-[10px] uppercase tracking-widest text-ink-500 mt-2">Certificate Delivery</span>
+
+            {/* ======= BLOCK 2: IMAGE (order-2 mobile, row-1/2 col-2 desktop) ======= */}
+            <div className="relative flex justify-center lg:justify-end items-start order-2 lg:order-2 lg:row-start-1 lg:col-start-2 lg:row-span-2 mt-5 mb-6 lg:my-0">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.94, y: 10 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                transition={{ duration: 0.9, ease: "easeOut", delay: 0.15 }}
+                className="relative"
+              >
+                {/* Outer glow ring */}
+                <div className="absolute -inset-4 bg-gradient-to-br from-gold/20 via-transparent to-gold/10 rounded-sm blur-xl pointer-events-none"></div>
+                
+                {/* Image frame */}
+                <div className="relative rounded-sm overflow-hidden border border-gold/30 bg-[#1A1613] shadow-[0_30px_80px_rgba(0,0,0,0.6),_0_0_60px_rgba(197,160,89,0.15)] w-[310px] sm:w-[360px] md:w-[400px] lg:w-full lg:max-w-[520px]">
+                  
+                  {/* Overlay gradient at bottom */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#14100C]/70 via-transparent to-transparent pointer-events-none z-10"></div>
+                  {/* Overlay gradient at top */}
+                  <div className="absolute inset-0 bg-gradient-to-b from-[#14100C]/20 via-transparent to-transparent pointer-events-none z-10"></div>
+                  
+                  <Image
+                    src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1782388720/Shakespeare_Poetry_Award_Content_2_1080_x_1080_px_2_bko409.png"
+                    alt="Take part in Shakespeare Poetry Award 2026 Volume 2 By Inkfetish"
+                    width={1080}
+                    height={1080}
+                    className="w-full h-auto object-cover transition-transform duration-[2s] hover:scale-[1.03]"
+                    priority
+                  />
+
+                  {/* TOP-RIGHT Tag */}
+                  <div className="absolute top-3 right-3 z-20 bg-gold text-[#14100C] px-3 py-1.5 font-black text-[9px] sm:text-[10px] uppercase tracking-widest shadow-lg rounded-sm">
+                    100% Genuine
+                  </div>
+
+                  {/* BOTTOM Live Chip */}
+                  <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-20 bg-[#0E0B08]/90 backdrop-blur-md px-4 sm:px-6 py-2 border border-gold/25 flex items-center gap-2 shadow-xl w-max rounded-sm">
+                    <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse shadow-[0_0_8px_#4ade80]"></div>
+                    <span className="text-[9px] sm:text-[10px] uppercase tracking-widest text-[#ebd298] font-bold">Accepting 200 Entries</span>
+                  </div>
+                </div>
+
+                {/* Floating stat pill - desktop only */}
+                <div className="absolute -left-6 top-1/3 hidden lg:flex items-center gap-2 bg-[#1A1613]/95 backdrop-blur-md border border-gold/20 px-4 py-2.5 rounded-sm shadow-2xl">
+                  <BookOpen className="w-4 h-4 text-gold" />
+                  <div>
+                    <div className="text-[9px] uppercase tracking-widest text-ink-400 font-bold">Anthology</div>
+                    <div className="text-white text-xs font-black">Print + Digital</div>
+                  </div>
+                </div>
+
+                {/* Floating stat pill bottom - desktop only */}
+                <div className="absolute -right-6 bottom-1/4 hidden lg:flex items-center gap-2 bg-[#1A1613]/95 backdrop-blur-md border border-gold/20 px-4 py-2.5 rounded-sm shadow-2xl">
+                  <Trophy className="w-4 h-4 text-gold" />
+                  <div>
+                    <div className="text-[9px] uppercase tracking-widest text-ink-400 font-bold">Top 10 Winners</div>
+                    <div className="text-white text-xs font-black">Trophy + Medal</div>
+                  </div>
+                </div>
+              </motion.div>
             </div>
-            <div className="flex flex-col items-center justify-center px-2">
-              <span className="text-2xl font-black text-[#fdfbf7] font-serif">10</span>
-              <span className="text-[9px] sm:text-[10px] uppercase tracking-widest text-ink-500 mt-2 leading-tight">Winners published in anthology</span>
+
+            {/* ======= BLOCK 3: LIVE DATE + CTA (order-3 mobile, row-2 col-1 desktop) ======= */}
+            <div className="flex flex-col items-center lg:items-start order-3 lg:order-3 lg:row-start-2 lg:col-start-1 w-full">
+              {/* Live Date Badge */}
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                className="flex items-center gap-3 mb-5 w-max mx-auto lg:mx-0 border border-gold/40 bg-[#1A1613] backdrop-blur-md px-5 py-3 rounded-sm shadow-[0_0_25px_rgba(197,160,89,0.12)] relative overflow-hidden"
+              >
+                <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-gold/60 to-transparent"></div>
+                <div className="w-2 h-2 rounded-full bg-gold animate-pulse shadow-[0_0_8px_rgba(197,160,89,0.8)] shrink-0"></div>
+                <span className="text-[#ebd298] text-[11px] sm:text-xs font-black uppercase tracking-[0.25em]">
+                  Live Results Event · 19th July 2026
+                </span>
+              </motion.div>
+
+              {/* Divider desktop only */}
+              <div className="w-full h-[1px] bg-gradient-to-r from-gold/20 via-gold/5 to-transparent mb-6 hidden lg:block"></div>
+
+              {/* CTA BUTTON */}
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+                className="w-full max-w-sm mx-auto lg:mx-0"
+              >
+                <Link href="/shakespeare-award-v2/register" className="relative group block w-full">
+                  <div className="absolute -inset-[2px] bg-gradient-to-r from-[#c5a059] via-[#ebd298] to-[#c5a059] rounded-sm blur-sm opacity-60 group-hover:opacity-100 transition-all duration-500"></div>
+                  <button className="relative w-full px-8 py-[18px] bg-gradient-to-b from-[#ebd298] to-[#c5a059] hover:from-[#fdfbf7] hover:to-[#ebd298] text-[#14100C] font-black text-[11px] sm:text-xs uppercase tracking-[0.25em] transition-all flex items-center justify-center gap-3 rounded-sm overflow-hidden">
+                    <span className="relative z-10 flex items-center gap-3">
+                      Register For Volume 2 Now
+                      <ArrowRight className="w-4 h-4" />
+                    </span>
+                    <div className="absolute top-0 -left-full w-1/2 h-full bg-gradient-to-r from-transparent via-white/40 to-transparent skew-x-12 group-hover:animate-[sweep_1.5s_ease-in-out] pointer-events-none"></div>
+                  </button>
+                </Link>
+
+                {/* Social Proof */}
+                <div className="flex items-center justify-center lg:justify-start gap-2 mt-4">
+                  <ShieldCheck className="w-3.5 h-3.5 text-gold shrink-0" />
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-ink-400">
+                    100% Guaranteed Publication · All 200 Poets
+                  </span>
+                </div>
+              </motion.div>
             </div>
-            <div className="flex flex-col items-center justify-center px-2">
-              <MapPin className="w-8 h-8 text-[#fdfbf7] mb-1 opacity-90" />
-              <span className="text-[9px] sm:text-[10px] uppercase tracking-widest text-ink-500 mt-1 leading-tight">Physical Home Delivery to all</span>
-            </div>
+
           </div>
         </div>
       </section>
+
 
       {/* --- SECTION 1.5: TOP 10 SHOWCASE --- */}
       <section className="py-24 px-4 bg-[#14100C] border-t border-gold/20 relative overflow-hidden">
@@ -243,46 +281,58 @@ export default function ShakespeareAwardClient() {
               <span className="text-gold italic drop-shadow-[0_0_15px_rgba(197,160,89,0.2)]">Here is the Proof.</span>
             </h3>
           </div>
-
-          <div className="grid lg:grid-cols-3 gap-8">
+          <div className="grid lg:grid-cols-3 gap-4 lg:gap-8">
             
             {/* Card 1: 10 Winners */}
-            <div className="bg-gradient-to-br from-[#14100C] to-[#1A1613] border-t-2 border-l border-r border-b border-gold/30 p-6 sm:p-8 md:p-14 shadow-[0_30px_60px_rgba(0,0,0,0.5)] group hover:-translate-y-2 transition-transform duration-500 relative overflow-hidden flex flex-col justify-between min-h-[450px] rounded-sm">
+            <div className="bg-gradient-to-br from-[#14100C] to-[#1A1613] border-t-2 border-l border-r border-b border-gold/30 p-5 sm:p-8 md:p-10 shadow-[0_10px_40px_rgba(0,0,0,0.5)] group hover:-translate-y-1 lg:hover:-translate-y-2 transition-transform duration-500 relative overflow-hidden rounded-sm">
               <div className="absolute top-0 right-0 w-48 h-48 bg-gold/5 blur-[50px] pointer-events-none group-hover:bg-gold/15 transition-colors duration-700"></div>
-              <div>
-                <div className="text-3xl sm:text-4xl md:text-6xl font-black font-serif leading-none text-transparent bg-clip-text bg-gradient-to-b from-gold to-gold/20 mb-2 drop-shadow-[0_0_20px_rgba(197,160,89,0.3)]">10</div>
-                <div className="text-[10px] uppercase tracking-[0.3em] font-bold text-ink-500 mb-8 border-b border-white/5 pb-4">Top Winners</div>
-                <h4 className="text-lg sm:text-xl font-serif font-black text-white mb-4 leading-tight">The Official Award & Heavy-Weight Medal</h4>
+              {/* Mobile: row layout. Desktop: column layout */}
+              <div className="flex items-start gap-4 lg:flex-col lg:gap-0">
+                <div className="shrink-0">
+                  <div className="text-4xl sm:text-5xl lg:text-6xl font-black font-serif leading-none text-transparent bg-clip-text bg-gradient-to-b from-gold to-gold/20 drop-shadow-[0_0_20px_rgba(197,160,89,0.3)]">10</div>
+                  <div className="text-[9px] uppercase tracking-[0.25em] font-bold text-ink-500 mt-1 lg:mb-6 lg:border-b lg:border-white/5 lg:pb-3 whitespace-nowrap">Top Winners</div>
+                </div>
+                <div className="flex-1 lg:mt-0">
+                  <h4 className="text-sm sm:text-base lg:text-xl font-serif font-black text-white mb-2 leading-tight">The Official Award &amp; Heavy-Weight Medal</h4>
+                  <p className="text-xs sm:text-sm text-ink-400 font-light leading-relaxed">
+                    Top 10 evaluated poets received the official trophy and a real, heavy-weight physical medal — delivered directly to their home.
+                  </p>
+                </div>
               </div>
-              <p className="text-sm text-ink-400 font-light leading-relaxed mt-4">
-                In Shakespeare Poetry Award Season 1, the Top 10 evaluated poets received the official Shakespeare Poetry Award trophy and a real, heavy-weight physical medal — delivered directly to their home. Not a digital badge. Not a certificate only. The full honour.
-              </p>
             </div>
 
             {/* Card 2: 100% Certificates */}
-            <div className="bg-gradient-to-br from-[#14100C] to-[#1A1613] border-t-2 border-l border-r border-b border-white/10 p-6 sm:p-8 md:p-14 shadow-[0_30px_60px_rgba(0,0,0,0.5)] group hover:-translate-y-2 transition-transform duration-500 relative overflow-hidden flex flex-col justify-between min-h-[450px] rounded-sm">
+            <div className="bg-gradient-to-br from-[#14100C] to-[#1A1613] border-t-2 border-l border-r border-b border-white/10 p-5 sm:p-8 md:p-10 shadow-[0_10px_40px_rgba(0,0,0,0.5)] group hover:-translate-y-1 lg:hover:-translate-y-2 transition-transform duration-500 relative overflow-hidden rounded-sm">
               <div className="absolute top-0 right-0 w-48 h-48 bg-white/5 blur-[50px] pointer-events-none group-hover:bg-white/10 transition-colors duration-700"></div>
-              <div>
-                <div className="text-3xl sm:text-4xl md:text-6xl font-black font-serif leading-none text-transparent bg-clip-text bg-gradient-to-b from-white to-white/20 mb-2 drop-shadow-[0_0_20px_rgba(255,255,255,0.1)]">100<span className="text-3xl md:text-4xl">%</span></div>
-                <div className="text-[10px] uppercase tracking-[0.3em] font-bold text-ink-500 mb-8 border-b border-white/5 pb-4">Certificate Delivery</div>
-                <h4 className="text-lg sm:text-xl font-serif font-black text-white mb-4 leading-tight">Physical Certificates. Every Single Participant.</h4>
+              <div className="flex items-start gap-4 lg:flex-col lg:gap-0">
+                <div className="shrink-0">
+                  <div className="text-4xl sm:text-5xl lg:text-6xl font-black font-serif leading-none text-transparent bg-clip-text bg-gradient-to-b from-white to-white/20">100<span className="text-2xl lg:text-4xl">%</span></div>
+                  <div className="text-[9px] uppercase tracking-[0.25em] font-bold text-ink-500 mt-1 lg:mb-6 lg:border-b lg:border-white/5 lg:pb-3 whitespace-nowrap">Certificate Delivery</div>
+                </div>
+                <div className="flex-1">
+                  <h4 className="text-sm sm:text-base lg:text-xl font-serif font-black text-white mb-2 leading-tight">Physical Certificates. Every Single Participant.</h4>
+                  <p className="text-xs sm:text-sm text-ink-400 font-light leading-relaxed">
+                    Every one of the 150 Season 1 participants received a real printed Certificate of Excellence — physically shipped. No PDFs. Every promise kept.
+                  </p>
+                </div>
               </div>
-              <p className="text-sm text-ink-400 font-light leading-relaxed mt-4">
-                Every one of the 150 Season 1 participants received a real printed Shakespeare Poetry Certificate of Excellence — physically shipped to their address. No PDF attachment. No email substitute. Every promise kept.
-              </p>
             </div>
 
             {/* Card 3: 150 Published */}
-            <div className="bg-gradient-to-br from-[#14100C] to-[#1A1613] border-t-2 border-l border-r border-b border-white/10 p-6 sm:p-8 md:p-14 shadow-[0_30px_60px_rgba(0,0,0,0.5)] group hover:-translate-y-2 transition-transform duration-500 relative overflow-hidden flex flex-col justify-between min-h-[450px] rounded-sm">
+            <div className="bg-gradient-to-br from-[#14100C] to-[#1A1613] border-t-2 border-l border-r border-b border-white/10 p-5 sm:p-8 md:p-10 shadow-[0_10px_40px_rgba(0,0,0,0.5)] group hover:-translate-y-1 lg:hover:-translate-y-2 transition-transform duration-500 relative overflow-hidden rounded-sm">
               <div className="absolute top-0 right-0 w-48 h-48 bg-white/5 blur-[50px] pointer-events-none group-hover:bg-white/10 transition-colors duration-700"></div>
-              <div>
-                <div className="text-3xl sm:text-4xl md:text-6xl font-black font-serif leading-none text-transparent bg-clip-text bg-gradient-to-b from-[#fdfbf7] to-white/20 mb-2 drop-shadow-[0_0_20px_rgba(255,255,255,0.1)]">150</div>
-                <div className="text-[10px] uppercase tracking-[0.3em] font-bold text-ink-500 mb-8 border-b border-white/5 pb-4">Poets Published</div>
-                <h4 className="text-lg sm:text-xl font-serif font-black text-white mb-4 leading-tight">All 150 Published in <span className="italic text-gold block mt-1">"Shakespeare and What Remained"</span></h4>
+              <div className="flex items-start gap-4 lg:flex-col lg:gap-0">
+                <div className="shrink-0">
+                  <div className="text-4xl sm:text-5xl lg:text-6xl font-black font-serif leading-none text-transparent bg-clip-text bg-gradient-to-b from-[#fdfbf7] to-white/20">150</div>
+                  <div className="text-[9px] uppercase tracking-[0.25em] font-bold text-ink-500 mt-1 lg:mb-6 lg:border-b lg:border-white/5 lg:pb-3 whitespace-nowrap">Poets Published</div>
+                </div>
+                <div className="flex-1">
+                  <h4 className="text-sm sm:text-base lg:text-xl font-serif font-black text-white mb-2 leading-tight">All 150 Published in <span className="italic text-gold">"Shakespeare and What Remained"</span></h4>
+                  <p className="text-xs sm:text-sm text-ink-400 font-light leading-relaxed">
+                    Every poet's work was included in the official printed anthology. Not shortlisted. Not conditionally. All 150 became published authors.
+                  </p>
+                </div>
               </div>
-              <p className="text-sm text-ink-400 font-light leading-relaxed mt-4">
-                Every participating poet's work was included in the official printed anthology. Not shortlisted. Not conditionally. All 150 poets became published authors in a real, permanent, ISBN-registered book.
-              </p>
             </div>
 
           </div>
@@ -318,18 +368,52 @@ export default function ShakespeareAwardClient() {
           </div>
 
           {/* Row 2 Staggered Static Collage - Stacked below */}
+          
+          {/* MOBILE VIEW: Staggered overlapping cards layout for phone screens */}
+          <div className="max-w-md mx-auto px-4 mt-8 pb-12 flex flex-col items-center md:hidden">
+            {/* Card 1: Winner holding anthology */}
+            <div className="w-[280px] h-[210px] border-[8px] border-[#e8e4db] bg-white shadow-xl -rotate-2 transition-transform hover:scale-105 hover:rotate-0 duration-500 cursor-pointer relative shrink-0 z-10">
+              <div className="relative w-full h-full">
+                <Image src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897712/WhatsApp_Image_2026-04-01_at_1.54.06_PM_2_-compressed_l5bsna.webp" alt="Winner holding anthology" fill className="object-cover" />
+              </div>
+            </div>
+            
+            {/* Card 2: Winner holding certificate */}
+            <div className="w-[290px] h-[220px] border-[8px] border-[#f5f0e1] bg-white shadow-[0_15px_35px_rgba(0,0,0,0.4)] rotate-3 transition-transform hover:scale-105 hover:rotate-0 duration-500 cursor-pointer relative shrink-0 z-30 mt-[-40px]">
+              <div className="relative w-full h-full">
+                <Image src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897711/WhatsApp_Image_2026-04-01_at_1.54.05_PM_1_-compressed_eoiarj.webp" alt="Winner holding certificate" fill className="object-cover" />
+              </div>
+              <div className="absolute -bottom-3 -right-3 bg-gold text-[#050505] text-[9px] font-black tracking-widest px-3 py-1.5 uppercase shadow-xl">Real Physical Deliveries</div>
+            </div>
+
+            {/* Card 3: Anthology in hands */}
+            <div className="w-[280px] h-[210px] border-[8px] border-[#e8e4db] bg-white shadow-xl -rotate-3 transition-transform hover:scale-105 hover:rotate-0 duration-500 cursor-pointer relative shrink-0 z-20 mt-[-40px]">
+              <div className="relative w-full h-full">
+                <Image src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897716/WhatsApp_Image_2026-04-07_at_12.09.27_AM-compressed_bzgl8t.webp" alt="Anthology in hands" fill className="object-cover" />
+              </div>
+            </div>
+
+            {/* Card 4: Anthology display */}
+            <div className="w-[280px] h-[210px] border-[8px] border-[#e8e4db] bg-white shadow-xl rotate-2 transition-transform hover:scale-105 hover:rotate-0 duration-500 cursor-pointer relative shrink-0 z-10 mt-[-40px]">
+              <div className="relative w-full h-full">
+                <Image src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897715/WhatsApp_Image_2026-04-07_at_12.09.27_AM_1_-compressed_ugjy5e.webp" alt="Anthology display" fill className="object-cover" />
+              </div>
+            </div>
+          </div>
+
+          {/* DESKTOP VIEW: Staggered overlapping absolute layout */}
           <div className="max-w-7xl mx-auto px-4 mt-8 pb-12 hidden md:block">
             <div className="flex justify-center items-center h-[400px] w-full relative">
-              <div className="absolute -rotate-6 left-[10%] w-[350px] h-[300px] border-[8px] sm:border-[12px] border-[#e8e4db] bg-white shadow-2xl z-10 transition-transform hover:scale-105 hover:z-50 duration-500 cursor-pointer">
+              <div className="absolute -rotate-6 left-[10%] w-[350px] h-[300px] border-[12px] border-[#e8e4db] bg-white shadow-2xl z-10 transition-transform hover:scale-105 hover:z-50 duration-500 cursor-pointer">
                 <div className="relative w-full h-full"><Image src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897712/WhatsApp_Image_2026-04-01_at_1.54.06_PM_2_-compressed_l5bsna.webp" alt="Winner holding anthology" fill className="object-cover" /></div>
               </div>
               
-              <div className="absolute rotate-3 z-30 w-[400px] h-[350px] border-[8px] sm:border-[12px] border-[#f5f0e1] bg-white shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-transform hover:scale-105 hover:z-50 duration-500 cursor-pointer">
+              <div className="absolute rotate-3 z-30 w-[400px] h-[350px] border-[12px] border-[#f5f0e1] bg-white shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-transform hover:scale-105 hover:z-50 duration-500 cursor-pointer left-1/2 -translate-x-1/2">
                 <div className="relative w-full h-full"><Image src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897711/WhatsApp_Image_2026-04-01_at_1.54.05_PM_1_-compressed_eoiarj.webp" alt="Winner holding certificate" fill className="object-cover" /></div>
                 <div className="absolute -bottom-4 -right-4 bg-gold text-[#050505] text-[10px] font-black tracking-widest px-4 py-2 uppercase shadow-xl">Real Physical Deliveries</div>
               </div>
 
-              <div className="absolute -rotate-3 right-[10%] w-[350px] h-[300px] border-[8px] sm:border-[12px] border-[#e8e4db] bg-white shadow-2xl z-20 transition-transform hover:scale-105 hover:z-50 duration-500 cursor-pointer">
+              <div className="absolute -rotate-3 right-[10%] w-[350px] h-[300px] border-[12px] border-[#e8e4db] bg-white shadow-2xl z-20 transition-transform hover:scale-105 hover:z-50 duration-500 cursor-pointer">
                 <div className="relative w-full h-full"><Image src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897716/WhatsApp_Image_2026-04-07_at_12.09.27_AM-compressed_bzgl8t.webp" alt="Anthology in hands" fill className="object-cover" /></div>
               </div>
               
@@ -636,7 +720,7 @@ export default function ShakespeareAwardClient() {
               </div>
               <div className="flex items-start gap-4">
                 <div className="w-6 h-6 rounded-full bg-gold/10 flex items-center justify-center shrink-0 mt-0.5"><CheckCircle2 className="w-4 h-4 text-gold" /></div>
-                <p className="text-white/90 text-[13px] sm:text-[13px] leading-relaxed"><strong className="text-gold font-bold">Registration fee: ₹699 only.</strong> No hidden charges.</p>
+                <p className="text-white/90 text-[13px] sm:text-[13px] leading-relaxed"><strong className="text-gold font-bold">Registration fee: ₹1 only.</strong> No hidden charges.</p>
               </div>
             </div>
           </div>
@@ -688,49 +772,49 @@ export default function ShakespeareAwardClient() {
           </div>
 
           {/* Stepper Flow */}
-          <div className="relative pl-6 sm:pl-0">
+          <div className="relative pl-0 sm:pl-0">
             {/* Desktop Vertical Line */}
             <div className="hidden sm:block absolute left-1/2 top-4 bottom-4 w-px bg-white/10 -translate-x-1/2"></div>
             {/* Mobile Vertical Line */}
-            <div className="sm:hidden absolute left-8 top-4 bottom-4 w-px bg-white/10"></div>
+            <div className="sm:hidden absolute left-6 top-4 bottom-4 w-px bg-white/10 -translate-x-1/2"></div>
 
             <div className="space-y-12 sm:space-y-20 relative z-10">
               
               {/* Step 1 */}
-              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-center gap-6 sm:gap-16">
-                <div className="sm:w-1/2 sm:text-right order-2 sm:order-1 ml-10 sm:ml-0">
+              <div className="flex flex-row sm:flex-row items-start sm:items-center justify-start sm:justify-center gap-4 sm:gap-16">
+                <div className="w-12 h-12 bg-[#14100C] border-2 border-gold rounded-full flex items-center justify-center text-gold font-bold text-lg order-1 sm:order-2 sm:relative shrink-0 shadow-[0_0_20px_rgba(197,160,89,0.3)] z-10">1</div>
+                <div className="flex-1 sm:w-1/2 sm:text-right order-2 sm:order-1 sm:mr-8">
                   <h4 className="text-xl font-serif font-bold text-white mb-2">1. Secure Your Seat</h4>
                   <p className="text-sm text-ink-400 font-light">Click register and pay the entry fee. Your seat is secured, and your name is immediately assigned to Volume 2.</p>
                 </div>
-                <div className="w-12 h-12 bg-[#14100C] border-2 border-gold rounded-full flex items-center justify-center text-gold font-bold text-lg order-1 sm:order-2 absolute sm:relative left-2 sm:left-auto shrink-0 shadow-[0_0_20px_rgba(197,160,89,0.3)]">1</div>
-                <div className="sm:w-1/2 order-3 hidden sm:block"></div>
+                <div className="hidden sm:block sm:w-1/2 order-3"></div>
               </div>
 
               {/* Step 2 */}
-              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-center gap-6 sm:gap-16">
-                <div className="sm:w-1/2 order-1 hidden sm:block"></div>
-                <div className="w-12 h-12 bg-[#14100C] border border-white/20 rounded-full flex items-center justify-center text-white font-bold text-lg order-1 sm:order-2 absolute sm:relative left-2 sm:left-auto shrink-0">2</div>
-                <div className="sm:w-1/2 order-2 sm:order-3 ml-10 sm:ml-0">
+              <div className="flex flex-row sm:flex-row items-start sm:items-center justify-start sm:justify-center gap-4 sm:gap-16">
+                <div className="hidden sm:block sm:w-1/2 order-1"></div>
+                <div className="w-12 h-12 bg-[#14100C] border border-white/20 rounded-full flex items-center justify-center text-white font-bold text-lg order-1 sm:order-2 sm:relative shrink-0 z-10">2</div>
+                <div className="flex-1 sm:w-1/2 order-2 sm:order-3 sm:ml-8">
                   <h4 className="text-xl font-serif font-bold text-white mb-2">2. Submit Your Poem</h4>
                   <p className="text-sm text-ink-400 font-light">Receive detailed submission guidelines. Write with intention. Submit before the deadline through our portal.</p>
                 </div>
               </div>
 
               {/* Step 3 */}
-              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-center gap-6 sm:gap-16">
-                <div className="sm:w-1/2 sm:text-right order-2 sm:order-1 ml-10 sm:ml-0">
+              <div className="flex flex-row sm:flex-row items-start sm:items-center justify-start sm:justify-center gap-4 sm:gap-16">
+                <div className="w-12 h-12 bg-[#14100C] border border-white/20 rounded-full flex items-center justify-center text-white font-bold text-lg order-1 sm:order-2 sm:relative shrink-0 z-10">3</div>
+                <div className="flex-1 sm:w-1/2 sm:text-right order-2 sm:order-1 sm:mr-8">
                   <h4 className="text-xl font-serif font-bold text-white mb-2">3. Fair Evaluation</h4>
                   <p className="text-sm text-ink-400 font-light">Every poem is evaluated against published criteria by humans, not algorithms. Serious reading for serious work.</p>
                 </div>
-                <div className="w-12 h-12 bg-[#14100C] border border-white/20 rounded-full flex items-center justify-center text-white font-bold text-lg order-1 sm:order-2 absolute sm:relative left-2 sm:left-auto shrink-0">3</div>
-                <div className="sm:w-1/2 order-3 hidden sm:block"></div>
+                <div className="hidden sm:block sm:w-1/2 order-3"></div>
               </div>
 
               {/* Step 4 */}
-              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-center gap-6 sm:gap-16">
-                <div className="sm:w-1/2 order-1 hidden sm:block"></div>
-                <div className="w-12 h-12 bg-[#14100C] border border-white/20 rounded-full flex items-center justify-center text-white font-bold text-lg order-1 sm:order-2 absolute sm:relative left-2 sm:left-auto shrink-0">4</div>
-                <div className="sm:w-1/2 order-2 sm:order-3 ml-10 sm:ml-0">
+              <div className="flex flex-row sm:flex-row items-start sm:items-center justify-start sm:justify-center gap-4 sm:gap-16">
+                <div className="hidden sm:block sm:w-1/2 order-1"></div>
+                <div className="w-12 h-12 bg-[#14100C] border border-white/20 rounded-full flex items-center justify-center text-white font-bold text-lg order-1 sm:order-2 sm:relative shrink-0 z-10">4</div>
+                <div className="flex-1 sm:w-1/2 order-2 sm:order-3 sm:ml-8">
                   <h4 className="text-xl font-serif font-bold text-white mb-2">4. The Recognition</h4>
                   <p className="text-sm text-ink-400 font-light">Results announced LIVE. Certificates and medals shipped. Anthology published. Your name, immortalized.</p>
                 </div>
@@ -860,11 +944,11 @@ export default function ShakespeareAwardClient() {
           <div className="flex items-center gap-4 w-full sm:w-auto flex-grow sm:flex-grow-0">
             <div className="text-right hidden md:block">
               <span className="text-[10px] text-ink-500 uppercase tracking-widest block font-bold">Entry Fee</span>
-              <span className="text-gold font-bold font-serif text-base leading-none">₹699</span>
+              <span className="text-gold font-bold font-serif text-base leading-none">₹1</span>
             </div>
             <Link href="/shakespeare-award-v2/register" className="w-full sm:w-auto">
               <button className="w-full sm:w-auto py-3.5 sm:py-3 px-4 sm:px-8 bg-gradient-to-b from-[#ebd298] to-[#c5a059] hover:from-[#fdfbf7] hover:to-[#ebd298] text-[#14100C] font-black text-[11px] sm:text-xs uppercase tracking-widest transition-all shadow-[0_0_15px_rgba(197,160,89,0.3)] whitespace-nowrap">
-                Secure Your Seat <span className="md:hidden">— ₹699</span>
+                Secure Your Seat <span className="md:hidden">— ₹1</span>
               </button>
             </Link>
           </div>

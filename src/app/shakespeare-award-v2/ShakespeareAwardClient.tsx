@@ -42,7 +42,7 @@ export default function ShakespeareAwardClient() {
       </div>
 
       {/* --- SECTION 1: HERO --- */}
-      <section className="relative min-h-[92vh] flex items-center overflow-hidden text-center lg:text-left">
+      <section className="relative min-h-[80vh] lg:min-h-[85vh] flex items-center overflow-hidden text-center lg:text-left">
         
         {/* === BACKGROUND LAYERS === */}
         {/* Deep radial glow behind image */}
@@ -53,11 +53,11 @@ export default function ShakespeareAwardClient() {
         <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-gold/20 to-transparent pointer-events-none"></div>
         <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-gold/10 to-transparent pointer-events-none"></div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full pt-6 pb-10 lg:py-0">
-          <div className="grid grid-cols-1 lg:grid-cols-2 lg:grid-rows-[auto_auto] gap-0 items-start">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full pt-4 pb-8 lg:py-0">
+          <div className="grid grid-cols-1 lg:grid-cols-12 lg:grid-rows-[auto_auto] gap-0 lg:gap-8 items-center">
             
             {/* ======= BLOCK 1: TITLE (order-1 mobile, row-1 col-1 desktop) ======= */}
-            <div className="flex flex-col items-center lg:items-start order-1 lg:order-1 lg:row-start-1 lg:col-start-1 lg:pb-6">
+            <div className="flex flex-col items-center lg:items-start order-1 lg:order-1 lg:row-start-1 lg:col-span-5 lg:pb-6">
               
               {/* Eyebrow Label */}
               <motion.div
@@ -106,18 +106,18 @@ export default function ShakespeareAwardClient() {
             </div>
 
             {/* ======= BLOCK 2: IMAGE (order-2 mobile, row-1/2 col-2 desktop) ======= */}
-            <div className="relative flex justify-center lg:justify-center items-start order-2 lg:order-2 lg:row-start-1 lg:col-start-2 lg:row-span-2 mt-5 mb-6 lg:my-0">
+            <div className="relative flex justify-center lg:justify-end items-center order-2 lg:order-2 lg:row-start-1 lg:col-span-7 lg:row-span-2 mt-5 mb-6 lg:my-0 w-full">
               <motion.div
                 initial={{ opacity: 0, scale: 0.94, y: 10 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 transition={{ duration: 0.9, ease: "easeOut", delay: 0.15 }}
-                className="relative"
+                className="relative w-[310px] sm:w-[360px] md:w-[400px] lg:w-[500px] xl:w-[600px] 2xl:w-[700px] flex-shrink-0"
               >
                 {/* Outer glow ring */}
                 <div className="absolute -inset-4 bg-gradient-to-br from-gold/20 via-transparent to-gold/10 rounded-sm blur-xl pointer-events-none"></div>
                 
                 {/* Image frame */}
-                <div className="relative rounded-sm overflow-hidden border border-gold/30 bg-[#1A1613] shadow-[0_30px_80px_rgba(0,0,0,0.6),_0_0_60px_rgba(197,160,89,0.15)] w-[310px] sm:w-[360px] md:w-[400px] lg:w-full lg:max-w-[580px] xl:max-w-[640px]">
+                <div className="relative rounded-sm overflow-hidden border border-gold/30 bg-[#1A1613] shadow-[0_30px_80px_rgba(0,0,0,0.6),_0_0_60px_rgba(197,160,89,0.15)] w-full">
                   
                   {/* Overlay gradient at bottom */}
                   <div className="absolute inset-0 bg-gradient-to-t from-[#14100C]/70 via-transparent to-transparent pointer-events-none z-10"></div>
@@ -166,7 +166,7 @@ export default function ShakespeareAwardClient() {
             </div>
 
             {/* ======= BLOCK 3: LIVE DATE + CTA (order-3 mobile, row-2 col-1 desktop) ======= */}
-            <div className="flex flex-col items-center lg:items-start order-3 lg:order-3 lg:row-start-2 lg:col-start-1 w-full">
+            <div className="flex flex-col items-center lg:items-start order-3 lg:order-3 lg:row-start-2 lg:col-span-5 w-full">
               {/* Live Date Badge */}
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
@@ -193,7 +193,7 @@ export default function ShakespeareAwardClient() {
               >
                 <Link href="/shakespeare-award-v2/register" className="relative group block w-full">
                   <div className="absolute -inset-[2px] bg-gradient-to-r from-[#c5a059] via-[#ebd298] to-[#c5a059] rounded-sm blur-sm opacity-60 group-hover:opacity-100 transition-all duration-500"></div>
-                  <button className="relative w-full px-8 py-[18px] bg-gradient-to-b from-[#ebd298] to-[#c5a059] hover:from-[#fdfbf7] hover:to-[#ebd298] text-[#14100C] font-black text-[11px] sm:text-xs uppercase tracking-[0.25em] transition-all flex items-center justify-center gap-3 rounded-sm overflow-hidden">
+                  <button className="relative w-full px-8 py-[18px] bg-gradient-to-b from-green-500 to-green-700 hover:from-green-400 hover:to-green-600 text-white font-black text-[11px] sm:text-xs uppercase tracking-[0.25em] transition-all flex items-center justify-center gap-3 rounded-sm overflow-hidden">
                     <span className="relative z-10 flex items-center gap-3">
                       Register For Volume 2 Now
                       <ArrowRight className="w-4 h-4" />
@@ -372,14 +372,14 @@ export default function ShakespeareAwardClient() {
           {/* MOBILE VIEW: Staggered overlapping cards layout for phone screens */}
           <div className="max-w-md mx-auto px-4 mt-8 pb-12 flex flex-col items-center md:hidden">
             {/* Card 1: Winner holding anthology */}
-            <div className="w-[280px] h-[210px] border-[8px] border-[#e8e4db] bg-white shadow-xl -rotate-2 transition-transform hover:scale-105 hover:rotate-0 duration-500 cursor-pointer relative shrink-0 z-10">
+            <div className="w-[85vw] max-w-[320px] aspect-[4/3] border-[6px] border-[#e8e4db] bg-white shadow-xl -rotate-2 transition-transform hover:scale-105 hover:rotate-0 duration-500 cursor-pointer relative shrink-0 z-10">
               <div className="relative w-full h-full">
                 <Image src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897712/WhatsApp_Image_2026-04-01_at_1.54.06_PM_2_-compressed_l5bsna.webp" alt="Winner holding anthology" fill className="object-cover" />
               </div>
             </div>
             
             {/* Card 2: Winner holding certificate */}
-            <div className="w-[290px] h-[220px] border-[8px] border-[#f5f0e1] bg-white shadow-[0_15px_35px_rgba(0,0,0,0.4)] rotate-3 transition-transform hover:scale-105 hover:rotate-0 duration-500 cursor-pointer relative shrink-0 z-30 mt-[-40px]">
+            <div className="w-[85vw] max-w-[320px] aspect-[4/3] border-[6px] border-[#f5f0e1] bg-white shadow-[0_15px_35px_rgba(0,0,0,0.4)] rotate-3 transition-transform hover:scale-105 hover:rotate-0 duration-500 cursor-pointer relative shrink-0 z-30 -mt-[15%]">
               <div className="relative w-full h-full">
                 <Image src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897711/WhatsApp_Image_2026-04-01_at_1.54.05_PM_1_-compressed_eoiarj.webp" alt="Winner holding certificate" fill className="object-cover" />
               </div>
@@ -387,14 +387,14 @@ export default function ShakespeareAwardClient() {
             </div>
 
             {/* Card 3: Anthology in hands */}
-            <div className="w-[280px] h-[210px] border-[8px] border-[#e8e4db] bg-white shadow-xl -rotate-3 transition-transform hover:scale-105 hover:rotate-0 duration-500 cursor-pointer relative shrink-0 z-20 mt-[-40px]">
+            <div className="w-[85vw] max-w-[320px] aspect-[4/3] border-[6px] border-[#e8e4db] bg-white shadow-xl -rotate-3 transition-transform hover:scale-105 hover:rotate-0 duration-500 cursor-pointer relative shrink-0 z-20 -mt-[15%]">
               <div className="relative w-full h-full">
                 <Image src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897716/WhatsApp_Image_2026-04-07_at_12.09.27_AM-compressed_bzgl8t.webp" alt="Anthology in hands" fill className="object-cover" />
               </div>
             </div>
 
             {/* Card 4: Anthology display */}
-            <div className="w-[280px] h-[210px] border-[8px] border-[#e8e4db] bg-white shadow-xl rotate-2 transition-transform hover:scale-105 hover:rotate-0 duration-500 cursor-pointer relative shrink-0 z-10 mt-[-40px]">
+            <div className="w-[85vw] max-w-[320px] aspect-[4/3] border-[6px] border-[#e8e4db] bg-white shadow-xl rotate-2 transition-transform hover:scale-105 hover:rotate-0 duration-500 cursor-pointer relative shrink-0 z-10 -mt-[15%]">
               <div className="relative w-full h-full">
                 <Image src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897715/WhatsApp_Image_2026-04-07_at_12.09.27_AM_1_-compressed_ugjy5e.webp" alt="Anthology display" fill className="object-cover" />
               </div>
@@ -421,6 +421,15 @@ export default function ShakespeareAwardClient() {
                 <div className="relative w-full h-full"><Image src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897715/WhatsApp_Image_2026-04-07_at_12.09.27_AM_1_-compressed_ugjy5e.webp" alt="Anthology display" fill className="object-cover" /></div>
               </div>
             </div>
+          </div>
+
+          {/* CTA under Season 1 Proof */}
+          <div className="mt-16 text-center pb-12">
+            <Link href="/shakespeare-award-v2/register" className="inline-block relative group">
+              <button className="relative px-10 py-4 bg-gradient-to-r from-green-500 to-green-700 hover:from-green-400 hover:to-green-600 text-white font-black text-[10px] sm:text-xs uppercase tracking-[0.2em] transition-colors rounded-sm shadow-[0_0_25px_rgba(34,197,94,0.4)]">
+                Secure Your Guaranteed Publication
+              </button>
+            </Link>
           </div>
 
         </div>
@@ -535,6 +544,15 @@ export default function ShakespeareAwardClient() {
             </div>
           </div>
 
+          {/* CTA under Recognition Package */}
+          <div className="mt-20 text-center">
+            <Link href="/shakespeare-award-v2/register" className="inline-block relative group">
+              <button className="relative px-10 py-4 bg-gradient-to-r from-green-500 to-green-700 hover:from-green-400 hover:to-green-600 text-white font-black text-[10px] sm:text-xs uppercase tracking-[0.2em] transition-colors rounded-sm shadow-[0_0_25px_rgba(34,197,94,0.4)]">
+                Claim This Recognition Package
+              </button>
+            </Link>
+          </div>
+
         </div>
       </section>
 
@@ -587,7 +605,7 @@ export default function ShakespeareAwardClient() {
 
           <div className="mt-10">
             <Link href="/shakespeare-award-v2/register" className="inline-block relative group">
-              <button className="relative px-10 py-4 bg-gradient-to-r from-[#4A1C16] to-[#2A2118] border border-[#7A2B20] hover:border-gold/50 text-gold font-bold text-[10px] sm:text-xs uppercase tracking-[0.2em] transition-colors rounded-sm shadow-md">
+              <button className="relative px-10 py-4 bg-gradient-to-r from-[#064e3b] to-[#022c22] border border-green-800 hover:border-green-500 text-green-400 font-bold text-[10px] sm:text-xs uppercase tracking-[0.2em] transition-colors rounded-sm shadow-md">
                 Claim One Of The Remaining Seats
               </button>
             </Link>
@@ -759,6 +777,16 @@ export default function ShakespeareAwardClient() {
               <p className="text-xs text-ink-400 leading-relaxed font-light">We distribute our titles across Amazon, Flipkart, and 15+ global markets to ensure maximum visibility.</p>
             </div>
           </div>
+          
+          {/* CTA under Publisher */}
+          <div className="mt-16 text-center">
+            <Link href="/shakespeare-award-v2/register" className="inline-block relative group">
+              <button className="relative px-10 py-4 bg-gradient-to-r from-green-500 to-green-700 hover:from-green-400 hover:to-green-600 text-white font-black text-[10px] sm:text-xs uppercase tracking-[0.2em] transition-colors rounded-sm shadow-[0_0_25px_rgba(34,197,94,0.4)]">
+                Publish Your Poem With Inkfetish
+              </button>
+            </Link>
+          </div>
+          
         </div>
       </section>
 
@@ -825,7 +853,7 @@ export default function ShakespeareAwardClient() {
 
           <div className="mt-20 text-center">
             <Link href="/shakespeare-award-v2/register" className="inline-block relative">
-              <button className="px-8 py-3 border border-white/20 hover:bg-white/5 text-white text-[10px] uppercase tracking-widest font-bold transition-colors">
+              <button className="px-8 py-3 border border-green-500 hover:bg-green-500/10 text-green-400 text-[10px] uppercase tracking-widest font-bold transition-colors">
                 Start Step 1 — Register
               </button>
             </Link>
@@ -897,7 +925,7 @@ export default function ShakespeareAwardClient() {
             <h3 className="text-xs uppercase tracking-[0.2em] font-bold text-white mb-6">Secure Registration Portal</h3>
             
             <Link href="/shakespeare-award-v2/register" className="block w-full">
-              <button className="w-full py-5 bg-gradient-to-b from-[#ebd298] to-[#c5a059] hover:from-[#fdfbf7] hover:to-[#ebd298] text-[#14100C] font-black text-[10px] sm:text-xs uppercase tracking-[0.2em] transition-all flex items-center justify-center gap-3 border border-[#ebd298] shadow-[0_0_25px_rgba(197,160,89,0.4)] rounded-sm">
+              <button className="w-full py-5 bg-gradient-to-b from-green-500 to-green-700 hover:from-green-400 hover:to-green-600 text-white font-black text-[10px] sm:text-xs uppercase tracking-[0.2em] transition-all flex items-center justify-center gap-3 border border-green-400 shadow-[0_0_25px_rgba(34,197,94,0.4)] rounded-sm">
                 <CheckCircle2 className="w-4 h-4 hidden sm:block" /> Claim My Seat Before It Closes
               </button>
             </Link>
@@ -913,13 +941,8 @@ export default function ShakespeareAwardClient() {
       {/* Custom Minimal Footer to avoid exit points */}
       <footer className="pt-16 pb-32 px-4 bg-[#050505] border-t border-gold/10 text-center relative z-20">
         <div className="max-w-4xl mx-auto flex flex-col items-center">
-          <div className="w-24 h-24 relative mb-8 opacity-60 hover:opacity-100 transition-opacity duration-700 filter drop-shadow-[0_0_15px_rgba(197,160,89,0.3)]">
-            <Image 
-              src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1738740130/Inkfetish_Logo_Black_-_Watermark_p2vty9.png" 
-              alt="Inkfetish Logo" 
-              fill 
-              className="object-contain invert brightness-0 sepia-[.8] hue-rotate-[15deg] saturate-[3] contrast-[1.2]" 
-            />
+          <div className="w-16 h-16 md:w-20 md:h-20 bg-white rounded-full border border-ink-900/10 flex items-center justify-center overflow-hidden transition-transform duration-500 hover:scale-105 shadow-[0_4px_20px_rgba(0,0,0,0.03)] mb-8 relative z-10">
+            <img src="/images/inkfetish_logo.png" alt="Inkfetish Publication" className="w-[85%] h-[85%] object-contain" />
           </div>
           
           <div className="flex flex-col sm:flex-row gap-6 sm:gap-12 mb-10 text-[11px] font-bold uppercase tracking-[0.3em] text-ink-500">
@@ -947,7 +970,7 @@ export default function ShakespeareAwardClient() {
               <span className="text-gold font-bold font-serif text-base leading-none">₹1</span>
             </div>
             <Link href="/shakespeare-award-v2/register" className="w-full sm:w-auto">
-              <button className="w-full sm:w-auto py-3.5 sm:py-3 px-4 sm:px-8 bg-gradient-to-b from-[#ebd298] to-[#c5a059] hover:from-[#fdfbf7] hover:to-[#ebd298] text-[#14100C] font-black text-[11px] sm:text-xs uppercase tracking-widest transition-all shadow-[0_0_15px_rgba(197,160,89,0.3)] whitespace-nowrap">
+              <button className="w-full sm:w-auto py-3.5 sm:py-3 px-4 sm:px-8 bg-gradient-to-b from-green-500 to-green-700 hover:from-green-400 hover:to-green-600 text-white font-black text-[11px] sm:text-xs uppercase tracking-widest transition-all shadow-[0_0_15px_rgba(34,197,94,0.3)] whitespace-nowrap">
                 Secure Your Seat <span className="md:hidden">— ₹1</span>
               </button>
             </Link>

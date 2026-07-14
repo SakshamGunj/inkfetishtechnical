@@ -331,7 +331,7 @@ export default function DaniyaKhanPage() {
             >
               <div>
                 <p className="font-display italic text-base font-bold">Deserted Hearts</p>
-                <p className="font-ui text-xs text-[#777]">First edition poetry collection — ₹399</p>
+                <p className="font-ui text-xs text-[#777]">First edition poetry collection — Starts at ₹229</p>
               </div>
               <button className="pill-btn-pink text-sm px-5 py-3" onClick={() => router.push('/daniya-khan/checkout')}>Pre-Order ↗</button>
             </motion.div>
@@ -395,7 +395,7 @@ export default function DaniyaKhanPage() {
                 Secure my first edition ↗
               </button>
               <button className="pill-btn-outline text-[14px] px-6 py-[12px]">
-                Read first chapter free →
+                Read first poem free →
               </button>
             </motion.div>
 
@@ -475,9 +475,12 @@ export default function DaniyaKhanPage() {
           >
             <motion.div variants={fadeUp} className="text-5xl mb-6 select-none">🌵</motion.div>
             <motion.h2 variants={fadeUp} className="font-display italic text-[clamp(28px,5vw,52px)] text-[#1A1A1A] leading-tight">
-              "For everyone who has loved someone who was already halfway out the door — and stayed silent about it."
+              "A piece of my heart for those who find it difficult to cross the threshold of childhood, who cannot disentangle themselves from nostalgia and memories, for every soul that lost its own Freny."
             </motion.h2>
-            <motion.div variants={fadeUp} className="mt-8">
+            <motion.div variants={fadeUp} className="mt-8 text-lg font-ui text-[#555] italic">
+              “to those who adorn their cemetery of grief with flowers of poetry.”
+            </motion.div>
+            <motion.div variants={fadeUp} className="mt-4">
               <span className="badge-tag-mint">— from the dedication</span>
             </motion.div>
           </motion.div>
@@ -498,21 +501,24 @@ export default function DaniyaKhanPage() {
             <motion.div variants={fadeUp} className="card-neo p-8 md:p-10">
               <div className="badge-tag-yellow mb-6 inline-block">the collection ✦</div>
               <h2 className="font-display italic text-[clamp(28px,4vw,42px)] leading-tight text-[#1A1A1A] mb-6">
-                Forty-seven poems.<br />One impossible love.
+                57 Poems<br />& the Child who refused to grow up
               </h2>
               <div className="space-y-4 text-[#555] text-base leading-relaxed">
                 <p>
-                  <i>Deserted Hearts</i> is a debut poetry collection written across three years of loving too much, too quietly, and too late. It moves through the geography of longing — the waiting, the almost, the after.
+                  <i>Deserted Hearts</i> is a debut poetry book written across years of despair, nostalgia, the stubbornness of not growing up. It moves through the geography of longing of becoming a child again.
                 </p>
                 <p>
-                  Part elegy, part love letter to everyone who never got a proper goodbye. Daniya writes about heartbreak not as an event, but as a landscape you keep returning to.
+                  The heartbreak of love may be worse, but the heartbreak of realising that you will never be in the arms of your grandparents being their little princess and counting the stars along with them, this realisation will leave you with a heartache, but will touch your heart as well.
                 </p>
-                <p className="font-semibold text-[#1A1A1A]">
-                  These are not sad poems. They are honest ones.
+                <p>
+                  This poetry book will summon your ripples of laughter of your childhood again in front of your eyes.
+                </p>
+                <p className="font-semibold text-[#1A1A1A] italic">
+                  _These are not sad poems, but honest one._
                 </p>
               </div>
               <button className="pill-btn mt-8">
-                Read 5 poems free →
+                Read first poem free →
               </button>
             </motion.div>
 
@@ -533,7 +539,9 @@ export default function DaniyaKhanPage() {
               {/* Mini-stats row */}
               <div className="grid grid-cols-3 gap-4">
                 {[
-                  { val: "47", label: "poems" },
+
+
+                  { val: "57", label: "poems" },
                   { val: "3 yrs", label: "in the making" },
                   { val: "2026", label: "debut" },
                 ].map((s, i) => (
@@ -548,44 +556,6 @@ export default function DaniyaKhanPage() {
         </section>
 
         {/* ────────────────────────────────────────────────
-            SECTION 4 — SOCIAL PROOF
-        ──────────────────────────────────────────────── */}
-        <section className="py-16 px-5 bg-[#1A1A1A] text-[#F5F0E8]">
-          <div className="max-w-6xl mx-auto">
-            <motion.div
-              initial="hidden"
-              whileInView="show"
-              viewport={{ once: true }}
-              variants={stagger}
-            >
-              <motion.div variants={fadeUp} className="text-center mb-12">
-                <span className="inline-block bg-[#F2A7B0] text-[#1A1A1A] font-ui font-bold text-xs tracking-widest px-4 py-2 rounded-full border-2 border-[#F5F0E8] mb-4">early readers say</span>
-                <h2 className="font-display italic text-[clamp(30px,5vw,56px)] text-[#F5F0E8] mt-2">
-                  "She put words to what I couldn't."
-                </h2>
-              </motion.div>
-
-              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-                {reviews.map((r, i) => (
-                  <motion.div
-                    key={i}
-                    variants={fadeUp}
-                    className="bg-[#252525] border border-[#333] rounded-2xl p-6 hover:border-[#F2A7B0] transition-colors"
-                  >
-                    <div className="star-rating mb-3">{"★".repeat(r.stars)}</div>
-                    <p className="text-[#D8D0C4] text-sm leading-relaxed italic mb-5">"{r.text}"</p>
-                    <div>
-                      <p className="font-ui font-semibold text-sm text-[#F5F0E8]">{r.name}</p>
-                      <p className="font-ui text-xs text-[#666]">{r.city}</p>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* ────────────────────────────────────────────────
             SECTION 5 — MEET DANIYA
         ──────────────────────────────────────────────── */}
         <section className="py-24 px-5 max-w-6xl mx-auto">
@@ -594,12 +564,12 @@ export default function DaniyaKhanPage() {
             whileInView="show"
             viewport={{ once: true }}
             variants={stagger}
-            className="grid md:grid-cols-2 gap-12 items-center"
+            className="grid md:grid-cols-2 gap-12 items-start"
           >
-            {/* Author portrait */}
-            <motion.div variants={fadeUp} className="relative">
+            {/* Author Info */}
+            <motion.div variants={fadeUp} className="relative flex flex-col items-center">
               <div
-                className="aspect-[3/4] rounded-3xl overflow-hidden border-2 border-[#1A1A1A]"
+                className="w-4/5 aspect-[3/4] rounded-3xl overflow-hidden border-2 border-[#1A1A1A] mb-8"
                 style={{ boxShadow: "6px 6px 0px #1A1A1A" }}
               >
                 <img
@@ -608,24 +578,35 @@ export default function DaniyaKhanPage() {
                   className="w-full h-full object-cover"
                 />
               </div>
-              {/* floating label */}
-              <div
-                className="absolute -bottom-5 -right-4 bg-[#F7E56B] border-2 border-[#1A1A1A] rounded-2xl px-5 py-3 font-ui font-bold text-sm shadow-[3px_3px_0px_#1A1A1A]"
-                style={{ transform: "rotate(3deg)" }}
-              >
-                🖊️ daniya khan
+              
+              {/* About the Author */}
+              <div className="text-center w-full max-w-sm">
+                <h3 className="font-display italic text-3xl mb-4 text-[#1A1A1A]">About The Author</h3>
+                <p className="font-body text-[#555] leading-relaxed mb-6">
+                  "What’s the purpose of saying anything about myself when my dear readers will judge me by how deeply I touched their hearts?"
+                </p>
+                
+                {/* Instagram Highlight */}
+                <a 
+                  href="https://instagram.com/daniyakhan" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-flex flex-col items-center justify-center bg-[#F7E56B] border-2 border-[#1A1A1A] rounded-2xl p-4 shadow-[4px_4px_0px_#1A1A1A] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_#1A1A1A] transition-all w-full"
+                >
+                  <span className="font-ui text-xs uppercase tracking-widest text-[#888] mb-1">Follow her journey</span>
+                  <span className="font-display italic text-2xl text-[#1A1A1A]">@daniyakhan</span>
+                </a>
               </div>
             </motion.div>
 
             {/* Letter */}
-            <motion.div variants={fadeUp} className="card-neo p-8 md:p-10">
+            <motion.div variants={fadeUp} className="card-neo p-8 md:p-10 sticky top-24">
               <div className="badge-tag mb-6 inline-block">a letter from daniya</div>
-              <h2 className="font-display italic text-3xl mb-6">Dear Reader,</h2>
+              <h2 className="font-display italic text-3xl mb-6">Dear Readers,</h2>
               <div className="space-y-4 text-[#555] leading-relaxed">
-                <p>I wrote the first poem in this collection on a night when I had no one left to call. It wasn't meant to be poetry. It was meant to be a message I'd never send.</p>
-                <p>Three years later, <i>Deserted Hearts</i> is forty-seven of those moments — the 2 AM thoughts, the rehearsed conversations, the things I said only to the ceiling. I wrote it for me. But reading it back, I realised I had written it for anyone who has ever loved in silence and ached in private.</p>
-                <p>I am terrified to share it. Which probably means it's time.</p>
-                <p className="text-[#1A1A1A] font-semibold">Thank you for being here at the very beginning. I've kept something special for you below... ↓</p>
+                <p>The thought of this book was once a seed, not knowing who would water it, which flower would thrive, or who would pluck it. But as God sent me promises and help from the unimaginable, this poetry collection paved its way.</p>
+                <p>This book is for those who find it difficult to cross the threshold of childhood, who cannot disentangle themselves from nostalgia and memories, for every soul that lost its own Freny.</p>
+                <p className="text-[#1A1A1A] font-semibold mt-6">I am terrified to share it which probably means it's time to show.</p>
               </div>
               <div className="mt-8 pt-6 border-t-2 border-dashed border-[#D8CFC0]">
                 <p className="font-display italic text-2xl">Daniya Khan</p>
@@ -663,17 +644,18 @@ export default function DaniyaKhanPage() {
                 {/* Ticket body */}
                 <div className="p-8 space-y-5">
                   {[
-                    { icon: "📕", title: "Deserted Hearts — First Edition", desc: "The debut poetry collection, beautifully printed and delivered to your door.", tag: "the book" },
-                    { icon: "✍️", title: "Hand-Signed Bookplate", desc: "Personally signed by Daniya. A keepsake worth keeping forever.", tag: "free" },
-                    { icon: "🌵", title: "5 Unpublished Poems (Digital)", desc: "Poems that didn't make the final cut — raw, unedited, and exclusive to pre-order readers.", tag: "free" },
-                    { icon: "🎙️", title: "Private VIP Q&A with Daniya", desc: "A closed-door virtual session. Ask her about the poems, the process, the heartbreaks.", tag: "free" },
+                    { icon: "📕", title: "First Edition Paperback", desc: "The debut poetry collection, beautifully printed.", tag: "the book" },
+                    { icon: "📖", title: "The Lost Chapter (Digital)", desc: "Exclusive digital poems and behind-the-scenes.", tag: "free" },
+                    { icon: "📦", title: "Free Tracked Shipping", desc: "Delivered safely anywhere across Pan-India.", tag: "free" },
+                    { icon: "✍️", title: "Personal Dedication", desc: "Available in the premium bundle. Hand-written for you.", tag: "premium" },
+                    { icon: "🎙️", title: "Private VIP Q&A", desc: "Available in the premium bundle. Closed-door virtual session.", tag: "premium" },
                   ].map((item, i) => (
                     <div key={i} className="flex items-start gap-4 pb-5 border-b border-dashed border-[#D8CFC0] last:border-0 last:pb-0">
                       <div className="text-3xl shrink-0">{item.icon}</div>
                       <div className="flex-1">
                         <div className="flex items-center gap-2 mb-1">
                           <span className="font-ui font-semibold text-base">{item.title}</span>
-                          <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold border border-[#1A1A1A] ${item.tag === "free" ? "bg-[#A8D8C0]" : "bg-[#F7E56B]"}`}>
+                          <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold border border-[#1A1A1A] ${item.tag === "free" ? "bg-[#A8D8C0]" : item.tag === "premium" ? "bg-[#F7E56B]" : "bg-[#F2A7B0]"}`}>
                             {item.tag}
                           </span>
                         </div>
@@ -694,9 +676,9 @@ export default function DaniyaKhanPage() {
                 {/* Ticket footer */}
                 <div className="p-8 flex flex-col sm:flex-row items-center justify-between gap-6">
                   <div>
-                    <p className="font-ui text-xs text-[#888] line-through mb-1">Total value: ₹1,899</p>
-                    <p className="font-display italic text-4xl font-bold text-[#1A1A1A]">₹399</p>
-                    <p className="font-ui text-xs text-[#888] mt-1">+ free shipping across India</p>
+                    <p className="font-ui text-xs text-[#888] line-through mb-1">Total value: ₹999</p>
+                    <p className="font-display italic text-4xl font-bold text-[#1A1A1A]">Starts at ₹229</p>
+                    <p className="font-ui text-xs text-[#888] mt-1">First edition paperback</p>
                   </div>
                   <div className="flex flex-col items-center gap-2">
                     <button className="pill-btn-pink text-base px-8 py-4" onClick={() => router.push('/daniya-khan/checkout')}>

@@ -1,7 +1,10 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { Search, Sparkles, AlertCircle, ArrowUp, User, Globe, Trophy, Award } from 'lucide-react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+import {
+  Search, AlertCircle, ArrowUp, User, Trophy, Award,
+  X, Download, FileText, Loader2, BookOpen, ChevronRight, Eye
+} from 'lucide-react';
 import Link from 'next/link';
 
 const AUTHORS = [
@@ -211,16 +214,316 @@ const AUTHORS = [
   "Amita Saxena",
   "Himanshi Priyani",
   "Mitali Saikia",
-  "Lavanya"
+  "Lavanya",
 ];
 
+interface Poem {
+  id: string;
+  title: string;
+  authorName: string;
+  poemNumber: number;
+  wordCount: number;
+  plainText: string;
+  submittedAt: string;
+}
+
+interface PoemModalProps {
+  authorName: string;
+  onClose: () => void;
+}
+
+/* ─── POEM MODAL ──────────────────────────────────────────── */
+function PoemModal({ authorName, onClose }: PoemModalProps) {
+  const [poems, setPoems] = useState<Poem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [activePoem, setActivePoem] = useState(0);
+  const overlayRef = useRef<HTMLDivElement>(null);
+
+  // Lock body scroll while modal is open
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => { document.body.style.overflow = ''; };
+  }, []);
+
+  // Keyboard: Escape to close
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
+    document.addEventListener('keydown', handler);
+    return () => document.removeEventListener('keydown', handler);
+  }, [onClose]);
+
+  // Fetch poems from API
+  useEffect(() => {
+    const fetchPoems = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const res = await fetch(`/api/poetry-festival-s2/poems-by-name?name=${encodeURIComponent(authorName)}`);
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Failed to fetch');
+        setPoems(data.poems || []);
+      } catch (err: any) {
+        setError(err.message || 'Could not load poems');
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchPoems();
+  }, [authorName]);
+
+  // Generate markdown string for a poem
+  const buildMarkdown = (poem: Poem): string => {
+    const dateStr = poem.submittedAt
+      ? new Date(poem.submittedAt).toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' })
+      : '';
+    return [
+      `# ${poem.title}`,
+      ``,
+      `*by ${poem.authorName}*`,
+      ``,
+      dateStr ? `*Submitted: ${dateStr}*` : '',
+      dateStr ? `` : '',
+      `---`,
+      ``,
+      poem.plainText,
+      ``,
+      `---`,
+      ``,
+      `*Poetry Festival Season 2 — Hall of Fame Top 200*`,
+      `*Published by Inkfetish Publications*`,
+    ].filter(line => line !== null).join('\n');
+  };
+
+  // Download markdown file
+  const handleDownload = (poem: Poem) => {
+    const md = buildMarkdown(poem);
+    const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    const safeName = poem.authorName.replace(/[^a-z0-9]/gi, '_');
+    const safeTitle = poem.title.replace(/[^a-z0-9]/gi, '_');
+    a.download = `${safeName}_${safeTitle}_PFS2.md`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  // Download ALL poems as one combined markdown
+  const handleDownloadAll = () => {
+    const combined = poems.map((poem, idx) => {
+      const md = buildMarkdown(poem);
+      return idx > 0 ? `\n\n---\n\n${md}` : md;
+    }).join('');
+    const blob = new Blob([combined], { type: 'text/markdown;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    const safeName = authorName.replace(/[^a-z0-9]/gi, '_');
+    a.download = `${safeName}_PFS2_Poems.md`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const currentPoem = poems[activePoem];
+
+  return (
+    <div
+      ref={overlayRef}
+      className="fixed inset-0 z-[200] flex items-center justify-center p-4"
+      onClick={(e) => { if (e.target === overlayRef.current) onClose(); }}
+    >
+      {/* Backdrop */}
+      <div className="absolute inset-0 bg-black/85 backdrop-blur-md" />
+
+      {/* Modal */}
+      <div className="relative w-full max-w-2xl max-h-[90vh] flex flex-col bg-[#0a0908] border border-gold/20 rounded-xl shadow-[0_30px_80px_rgba(0,0,0,0.9)] overflow-hidden">
+
+        {/* Top accent line */}
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold/60 to-transparent" />
+
+        {/* Header */}
+        <div className="flex items-start justify-between p-5 border-b border-white/5 shrink-0">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-full bg-gold/10 border border-gold/25 flex items-center justify-center">
+              <BookOpen className="w-4 h-4 text-gold" />
+            </div>
+            <div>
+              <p className="text-[10px] font-mono uppercase tracking-[0.25em] text-gold/70">Poetry Festival S2 — Hall of Fame</p>
+              <h2 className="text-sm font-bold text-white tracking-wide">{authorName}</h2>
+            </div>
+          </div>
+          <button
+            onClick={onClose}
+            className="text-[#555] hover:text-white transition-colors p-1 rounded-md hover:bg-white/5"
+            aria-label="Close"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+
+        {/* Body */}
+        <div className="flex-1 overflow-y-auto overscroll-contain">
+          {loading && (
+            <div className="flex flex-col items-center justify-center py-20 gap-4">
+              <Loader2 className="w-8 h-8 text-gold animate-spin" />
+              <p className="text-xs font-mono uppercase tracking-widest text-[#555]">Fetching submitted poems...</p>
+            </div>
+          )}
+
+          {!loading && error && (
+            <div className="flex flex-col items-center justify-center py-20 gap-3 px-6">
+              <AlertCircle className="w-8 h-8 text-red-400/70" />
+              <p className="text-xs text-center text-[#666] font-mono">{error}</p>
+            </div>
+          )}
+
+          {!loading && !error && poems.length === 0 && (
+            <div className="flex flex-col items-center justify-center py-20 gap-3 px-8 text-center">
+              <FileText className="w-10 h-10 text-[#222]" />
+              <p className="text-sm font-serif text-[#555] italic">No submitted poems found for this writer.</p>
+              <p className="text-[11px] text-[#444] font-mono">Their submission may have been recorded under a different name or they may not have submitted yet.</p>
+            </div>
+          )}
+
+          {!loading && !error && poems.length > 0 && (
+            <div className="flex flex-col">
+
+              {/* Poem Tabs (if 2 poems) */}
+              {poems.length > 1 && (
+                <div className="flex border-b border-white/5 shrink-0">
+                  {poems.map((poem, idx) => (
+                    <button
+                      key={poem.id}
+                      onClick={() => setActivePoem(idx)}
+                      className={`flex-1 py-3 px-4 text-[11px] font-mono uppercase tracking-wider transition-all flex items-center justify-center gap-2 ${
+                        activePoem === idx
+                          ? 'text-gold border-b-2 border-gold bg-gold/5'
+                          : 'text-[#555] hover:text-[#888] hover:bg-white/3'
+                      }`}
+                    >
+                      <FileText className="w-3 h-3" />
+                      Poem {idx + 1}
+                      {activePoem === idx && <ChevronRight className="w-3 h-3" />}
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              {/* Poem Content */}
+              {currentPoem && (
+                <div className="p-6">
+                  {/* Poem Title */}
+                  <div className="mb-6">
+                    <h3 className="text-xl md:text-2xl font-serif font-bold text-white leading-snug mb-2">
+                      {currentPoem.title}
+                    </h3>
+                    <div className="flex items-center gap-3 text-[10px] font-mono uppercase tracking-widest text-[#555]">
+                      <span className="text-gold/60">{currentPoem.wordCount} words</span>
+                      <span>•</span>
+                      <span>Poem {currentPoem.poemNumber}</span>
+                      {currentPoem.submittedAt && (
+                        <>
+                          <span>•</span>
+                          <span>
+                            {new Date(currentPoem.submittedAt).toLocaleDateString('en-IN', {
+                              day: 'numeric', month: 'short', year: 'numeric'
+                            })}
+                          </span>
+                        </>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Divider */}
+                  <div className="w-12 h-px bg-gold/30 mb-6" />
+
+                  {/* Poem Body — Markdown-style rendering */}
+                  <div className="font-serif text-[15px] leading-loose text-[#ddd] whitespace-pre-wrap tracking-wide poem-body">
+                    {currentPoem.plainText}
+                  </div>
+
+                  {/* Bottom metadata */}
+                  <div className="mt-8 pt-6 border-t border-white/5">
+                    <p className="text-[10px] font-mono text-[#444] uppercase tracking-[0.2em]">
+                      Poetry Festival Season 2 — Hall of Fame Top 200 · Inkfetish Publications
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* Footer Actions */}
+        {!loading && !error && poems.length > 0 && currentPoem && (
+          <div className="border-t border-white/5 p-4 shrink-0 bg-[#060605]">
+            <div className="flex items-center gap-3">
+              {/* Download current poem */}
+              <button
+                onClick={() => handleDownload(currentPoem)}
+                className="flex-1 flex items-center justify-center gap-2 bg-[#111] hover:bg-[#181818] border border-white/8 hover:border-gold/30 text-white text-[11px] font-mono uppercase tracking-widest py-2.5 px-4 rounded-md transition-all"
+              >
+                <Download className="w-3.5 h-3.5 text-gold" />
+                Download Poem {currentPoem.poemNumber} (.md)
+              </button>
+
+              {/* Download all if 2 poems */}
+              {poems.length > 1 && (
+                <button
+                  onClick={handleDownloadAll}
+                  className="flex items-center justify-center gap-2 bg-gold hover:bg-[#cda640] text-black text-[11px] font-mono font-bold uppercase tracking-widest py-2.5 px-4 rounded-md transition-all whitespace-nowrap"
+                >
+                  <Download className="w-3.5 h-3.5" />
+                  All Poems
+                </button>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/* ─── MAIN PAGE ───────────────────────────────────────────── */
 export default function TopWritersClient() {
   const [searchTerm, setSearchTerm] = useState('');
+  const [bulkDownloading, setBulkDownloading] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [selectedAuthor, setSelectedAuthor] = useState<string | null>(null);
+
+  // Bulk download all poems as one .md file
+  const handleBulkDownload = async () => {
+    setBulkDownloading(true);
+    try {
+      const res = await fetch('/api/poetry-festival-s2/export-all-poems');
+      if (!res.ok) throw new Error('Export failed');
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'PFS2_Hall_of_Fame_All_Poems.md';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error('Bulk download error:', err);
+      alert('Download failed. Please try again.');
+    } finally {
+      setBulkDownloading(false);
+    }
+  };
 
   // Filter list
   const filteredAuthors = AUTHORS.filter(name =>
     name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  // Deduplicate for display (some appear twice due to double-plan)
+  const displayAuthors = filteredAuthors.filter(
+    (name, idx, arr) => arr.findIndex(n => n.toLowerCase() === name.toLowerCase()) === idx
   );
 
   // Monitor scroll for "back to top" button
@@ -242,7 +545,6 @@ export default function TopWritersClient() {
 
   // Helper to extract initials for placeholder monograms
   const getInitials = (name: string) => {
-    // Remove title prefixes like Dr.
     const cleanName = name.replace(/^(Dr\.|Pen name -|Advocate)\s+/i, '').trim();
     const parts = cleanName.split(/[\s/_()]+/);
     const initials = parts
@@ -253,6 +555,14 @@ export default function TopWritersClient() {
     return initials || 'PF';
   };
 
+  const openPoems = useCallback((name: string) => {
+    setSelectedAuthor(name);
+  }, []);
+
+  const closePoems = useCallback(() => {
+    setSelectedAuthor(null);
+  }, []);
+
   return (
     <main className="min-h-screen bg-[#050505] text-[#eee] font-sans antialiased relative overflow-hidden py-16 px-4 md:px-8">
       {/* Decorative background spotlights */}
@@ -261,11 +571,11 @@ export default function TopWritersClient() {
       <div className="absolute bottom-[20%] right-[-10%] w-[400px] h-[400px] rounded-full bg-gold/5 blur-[150px] pointer-events-none" />
 
       <div className="max-w-6xl mx-auto relative z-10">
-        
+
         {/* Navigation / Back to main site link */}
         <div className="flex justify-between items-center mb-10 border-b border-white/5 pb-4">
-          <Link 
-            href="/poetry-festival-s2" 
+          <Link
+            href="/poetry-festival-s2"
             className="text-xs uppercase tracking-widest text-[#888] hover:text-gold transition-colors font-mono"
           >
             ← Back to Festival Page
@@ -288,6 +598,38 @@ export default function TopWritersClient() {
           <p className="text-sm md:text-base text-gold font-serif italic mb-8 max-w-xl mx-auto">
             Poetry Festival Season 2
           </p>
+
+          {/* Bulk Download Button */}
+          <div className="mb-6">
+            <button
+              onClick={handleBulkDownload}
+              disabled={bulkDownloading}
+              className="inline-flex items-center gap-2.5 bg-gold hover:bg-[#cda640] disabled:bg-gold/50 text-black font-black uppercase tracking-widest text-xs py-3 px-8 rounded-sm transition-all shadow-[0_0_25px_rgba(212,175,55,0.3)] hover:shadow-[0_0_40px_rgba(212,175,55,0.5)] hover:scale-[1.02] active:scale-95 disabled:cursor-not-allowed disabled:scale-100"
+            >
+              {bulkDownloading ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Preparing Download...
+                </>
+              ) : (
+                <>
+                  <Download className="w-4 h-4" />
+                  Download All Poems (.md)
+                </>
+              )}
+            </button>
+            <p className="text-[10px] font-mono text-[#555] mt-2 uppercase tracking-widest">
+              All {AUTHORS.length}+ submitted poems in one Markdown file
+            </p>
+          </div>
+
+          {/* Clickable hint banner */}
+          <div className="max-w-xl mx-auto mb-6 bg-[#0f0f0a] border border-gold/15 px-4 py-2.5 rounded-sm flex items-center justify-center gap-2">
+            <Eye className="w-3.5 h-3.5 text-gold" />
+            <p className="text-[11px] font-mono uppercase tracking-widest text-[#777]">
+              Click any writer card to read & download their submitted poem(s) as Markdown
+            </p>
+          </div>
 
           {/* CRITICAL: Non-ranked Disclaimer Banner */}
           <div className="max-w-2xl mx-auto bg-[#181410] border border-gold/20 p-4 rounded-sm text-left flex gap-3.5 items-start shadow-xl relative overflow-hidden group">
@@ -317,7 +659,7 @@ export default function TopWritersClient() {
               className="w-full bg-[#121212] border border-white/10 rounded-sm py-2 pl-10 pr-4 text-xs text-white placeholder-[#444] focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold/30 transition-all font-mono"
             />
             {searchTerm && (
-              <button 
+              <button
                 onClick={() => setSearchTerm('')}
                 className="absolute right-3 top-2 text-xs text-[#555] hover:text-white font-mono"
               >
@@ -330,23 +672,24 @@ export default function TopWritersClient() {
           <div className="flex gap-6 text-[10px] uppercase font-mono tracking-wider text-[#666] select-none">
             <div className="flex items-center gap-1.5">
               <User className="w-3.5 h-3.5 text-gold" />
-              <span>Total Honorees: <strong className="text-white font-bold">{AUTHORS.length}</strong></span>
+              <span>Total Honorees: <strong className="text-white font-bold">{displayAuthors.length}</strong></span>
             </div>
             {searchTerm && (
               <div className="flex items-center gap-1.5 bg-gold/10 px-2 py-0.5 rounded-sm border border-gold/20">
-                <span className="text-gold">Matches: <strong>{filteredAuthors.length}</strong></span>
+                <span className="text-gold">Matches: <strong>{displayAuthors.length}</strong></span>
               </div>
             )}
           </div>
         </div>
 
         {/* Writers Grid Container */}
-        {filteredAuthors.length > 0 ? (
+        {displayAuthors.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {filteredAuthors.map((name, index) => (
-              <div
+            {displayAuthors.map((name, index) => (
+              <button
                 key={`${name}-${index}`}
-                className="bg-[#0a0a0a] border border-white/5 p-4 rounded-sm hover:border-gold/30 hover:shadow-[0_0_20px_rgba(212,175,55,0.05)] transition-all duration-300 flex items-center gap-3.5 group relative overflow-hidden"
+                onClick={() => openPoems(name)}
+                className="bg-[#0a0a0a] border border-white/5 p-4 rounded-sm hover:border-gold/40 hover:shadow-[0_0_20px_rgba(212,175,55,0.08)] transition-all duration-300 flex items-center gap-3.5 group relative overflow-hidden text-left cursor-pointer w-full active:scale-[0.98]"
               >
                 {/* Thin gold side line active on hover */}
                 <div className="absolute top-0 left-0 w-0.5 h-full bg-gold scale-y-0 group-hover:scale-y-100 transition-transform duration-300 origin-center" />
@@ -359,16 +702,19 @@ export default function TopWritersClient() {
                 </div>
 
                 {/* Name Info */}
-                <div className="overflow-hidden space-y-0.5">
+                <div className="overflow-hidden space-y-0.5 flex-1">
                   <h3 className="text-xs font-bold text-white uppercase tracking-wider group-hover:text-gold transition-colors truncate">
                     {name}
                   </h3>
                   <div className="flex items-center gap-1 text-[9px] text-[#555] uppercase tracking-widest font-mono">
-                    <Award className="w-2.5 h-2.5 text-[#333]" />
+                    <Award className="w-2.5 h-2.5 text-[#333] group-hover:text-gold/40 transition-colors" />
                     <span>Honored Poet</span>
                   </div>
                 </div>
-              </div>
+
+                {/* Read icon */}
+                <Eye className="w-3.5 h-3.5 text-[#333] group-hover:text-gold/60 transition-colors shrink-0" />
+              </button>
             ))}
           </div>
         ) : (
@@ -376,7 +722,7 @@ export default function TopWritersClient() {
           <div className="text-center py-20 bg-[#0a0a0a] border border-white/5 rounded-sm">
             <Award className="w-10 h-10 text-[#222] mx-auto mb-3" />
             <p className="text-xs uppercase tracking-widest text-[#444] font-mono mb-2">No Writers Match Your Search</p>
-            <button 
+            <button
               onClick={() => setSearchTerm('')}
               className="text-xs text-gold hover:underline font-mono uppercase tracking-widest"
             >
@@ -405,6 +751,14 @@ export default function TopWritersClient() {
         >
           <ArrowUp className="w-4 h-4" />
         </button>
+      )}
+
+      {/* Poem Modal */}
+      {selectedAuthor && (
+        <PoemModal
+          authorName={selectedAuthor}
+          onClose={closePoems}
+        />
       )}
     </main>
   );

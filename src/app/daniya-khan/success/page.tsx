@@ -137,7 +137,7 @@ function SuccessContent() {
       <div className="min-h-screen bg-[#F5F0E8] font-body">
         {/* Nav */}
         <div className="border-b-2 border-[#1A1A1A] px-5 py-4 text-center">
-          <span className="font-display italic text-lg">The Weight of Secrets</span>
+          <span className="font-display italic text-lg">Deserted Hearts</span>
         </div>
 
         <div className="max-w-2xl mx-auto px-5 py-16">
@@ -270,8 +270,8 @@ function SuccessContent() {
                   onClick={() => {
                     if (navigator.share) {
                       navigator.share({
-                        title: "The Weight of Secrets — Daniya Khan",
-                        text: "I just pre-ordered The Weight of Secrets by Daniya Khan! 📚",
+                        title: "Deserted Hearts — Daniya Khan",
+                        text: "I just pre-ordered Deserted Hearts by Daniya Khan! 📚",
                         url: window.location.origin + "/daniya-khan",
                       });
                     }

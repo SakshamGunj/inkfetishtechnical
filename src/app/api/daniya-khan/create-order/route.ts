@@ -47,8 +47,8 @@ export async function POST(request: Request) {
     const baseUrl = getCashfreeBaseUrl(appId);
     const siteUrl = getBaseUrl();
 
-    // ₹399 for either bundle — bonuses are the same; a "signed + dedication" tier could be ₹599
-    const amount = bundleType === 'signed' ? 599 : 399;
+    // ₹229 for standard, ₹289 for special edition
+    const amount = bundleType === 'signed' ? 289 : 229;
 
     const orderId = `dkbook_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
     const customerId = `dk_${toBase64(customerEmail).replace(/[^a-zA-Z0-9]/g, '').slice(0, 20)}`;

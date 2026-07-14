@@ -26,12 +26,11 @@ const BUNDLES = [
   {
     id: "standard",
     label: "First Edition",
-    price: 399,
-    strikePrice: 1899,
+    price: 229,
+    strikePrice: 599,
     perks: [
       { icon: "📚", text: "First Edition Paperback" },
       { icon: "📖", text: "The Lost Chapter (Digital)" },
-      { icon: "🎙️", text: "Private VIP Q&A Invite" },
       { icon: "📦", text: "Free tracked shipping (Pan-India)" },
     ],
     badge: "Most Popular",
@@ -39,15 +38,14 @@ const BUNDLES = [
   },
   {
     id: "signed",
-    label: "Signed + Dedication",
-    price: 599,
-    strikePrice: 2199,
+    label: "Special Edition",
+    price: 289,
+    strikePrice: 899,
     perks: [
       { icon: "📚", text: "First Edition Paperback" },
-      { icon: "✍️", text: "Hand-Signed Bookplate" },
-      { icon: "💌", text: "Personal dedication from Daniya" },
       { icon: "📖", text: "The Lost Chapter (Digital)" },
-      { icon: "🎙️", text: "Private VIP Q&A Invite" },
+      { icon: "💌", text: "Personal dedication" },
+      { icon: "🎙️", text: "Private VIP Q&A" },
       { icon: "📦", text: "Free tracked shipping (Pan-India)" },
     ],
     badge: "Premium",
@@ -300,7 +298,7 @@ export default function CheckoutPage() {
           >
             ← {step === 2 ? "Change bundle" : "Back to book"}
           </button>
-          <div className="font-display italic text-lg">The Weight of Secrets</div>
+          <div className="font-display italic text-lg">Deserted Hearts</div>
           <div className="flex items-center gap-2">
             <span className={`step-pill ${step === 1 ? "active" : ""}`}>1 Bundle</span>
             <span className="text-[#CCC]">—</span>
@@ -324,7 +322,7 @@ export default function CheckoutPage() {
                   <h1 className="font-display italic text-4xl md:text-5xl text-[#1A1A1A]">
                     Choose your bundle.
                   </h1>
-                  <p className="text-[#777] mt-3">All bunuses vanish on launch day.</p>
+                  <p className="text-[#777] mt-3">All bonuses vanish on launch day.</p>
                 </motion.div>
 
                 <motion.div variants={fadeUp} className="grid md:grid-cols-2 gap-6 mb-8">
@@ -577,7 +575,7 @@ export default function CheckoutPage() {
                       />
                       <div>
                         <p className="font-display italic text-[#F5F0E8] text-lg leading-tight">
-                          The Weight of Secrets
+                          Deserted Hearts
                         </p>
                         <p className="font-ui text-xs text-[#999] mt-1">Daniya Khan</p>
                         <div

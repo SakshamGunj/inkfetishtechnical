@@ -568,17 +568,7 @@ export default function DaniyaKhanPage() {
           >
             {/* Author Info */}
             <motion.div variants={fadeUp} className="relative flex flex-col items-center">
-              <div
-                className="w-4/5 aspect-[3/4] rounded-3xl overflow-hidden border-2 border-[#1A1A1A] mb-8"
-                style={{ boxShadow: "6px 6px 0px #1A1A1A" }}
-              >
-                <img
-                  src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1974&auto=format&fit=crop"
-                  alt="Daniya Khan"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              
+
               {/* About the Author */}
               <div className="text-center w-full max-w-sm">
                 <h3 className="font-display italic text-3xl mb-4 text-[#1A1A1A]">About The Author</h3>

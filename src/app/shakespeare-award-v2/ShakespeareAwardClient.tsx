@@ -177,7 +177,7 @@ export default function ShakespeareAwardClient() {
                 <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-gold/60 to-transparent"></div>
                 <div className="w-2 h-2 rounded-full bg-gold animate-pulse shadow-[0_0_8px_rgba(197,160,89,0.8)] shrink-0"></div>
                 <span className="text-[#ebd298] text-[11px] sm:text-xs font-black uppercase tracking-[0.25em]">
-                  Live Results Event · 19th July 2026
+                  Live Results Event · 26th July 2026
                 </span>
               </motion.div>
 

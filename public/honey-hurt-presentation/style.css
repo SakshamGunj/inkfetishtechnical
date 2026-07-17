@@ -1,0 +1,467 @@
+:root {
+    /* Inkfetish Brand Colors */
+    --gold-main: #D88A06;
+    --gold-light: #FFCC66;
+    --gold-dark: #8F4D00;
+    --obsidian: #0B0B0C;
+    --ivory: #F5F2EE;
+    
+    --font-heading: 'Cinzel', serif;
+    --font-body: 'Cormorant Garamond', serif;
+    --font-sans: 'Inter', sans-serif;
+    
+    --transition-speed: 0.9s;
+    --bezier: cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--ivory);
+    color: var(--obsidian);
+    font-family: var(--font-body);
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+}
+
+/* Global Faded Background Image */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-image: url('https://res.cloudinary.com/dde8ekuuu/image/upload/q_auto/f_auto/v1779675277/ChatGPTImageMay25202607_43_49A_chgtxw.jpg');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.08; /* Very subtle on light background */
+    z-index: 0;
+    pointer-events: none;
+    filter: blur(2px) grayscale(50%);
+}
+
+/* Navigation Zones */
+.nav-zone {
+    position: fixed;
+    top: 0;
+    height: 100vh;
+    width: 50vw;
+    z-index: 100;
+    cursor: pointer;
+}
+
+.nav-left { left: 0; cursor: w-resize; }
+.nav-right { right: 0; cursor: e-resize; }
+
+/* Progress Bar */
+#progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: rgba(0, 0, 0, 0.05);
+    z-index: 1000;
+}
+
+#progress {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--gold-main), var(--gold-light));
+    transition: width 0.3s ease;
+    box-shadow: 0 0 10px var(--gold-main);
+}
+
+/* Presentation Container */
+.presentation {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+/* Slide Base */
+.slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    visibility: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity var(--transition-speed) var(--bezier),
+                visibility var(--transition-speed) var(--bezier),
+                transform var(--transition-speed) var(--bezier);
+    transform: scale(0.95) translateY(20px);
+    z-index: 1;
+}
+
+.slide.active {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1) translateY(0);
+    z-index: 10;
+}
+
+.slide.prev {
+    transform: scale(1.05) translateY(-20px);
+}
+
+/* Content Styling */
+.content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    width: 90vw;
+    max-width: 950px;
+    max-height: 90vh;
+    padding: clamp(1.5rem, 4vh, 4rem);
+    overflow-y: auto; /* Prevent clipping if content is too long */
+    scrollbar-width: none; /* Firefox */
+}
+
+.content::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
+}
+
+.glass {
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 20px;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.08);
+}
+
+/* Dark mode glass override - removed to match light theme */
+
+.title {
+    font-family: var(--font-heading);
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    font-weight: 900;
+    margin-bottom: clamp(0.5rem, 2vh, 1rem);
+    line-height: 1.1;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.subtitle {
+    font-family: var(--font-sans);
+    font-size: clamp(0.8rem, 1vw, 1rem);
+    font-weight: 600;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold-dark);
+}
+
+.body-text {
+    font-size: clamp(1rem, 1.5vw, 1.3rem);
+    line-height: 1.6;
+    font-weight: 400;
+    margin-bottom: clamp(1rem, 3vh, 1.5rem);
+}
+
+.instructions {
+    margin-top: clamp(2rem, 5vh, 4rem);
+    font-family: var(--font-sans);
+    font-size: clamp(0.7rem, 1vw, 0.8rem);
+    opacity: 0.5;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-weight: 600;
+}
+
+.instructions span {
+    font-weight: 800;
+    color: var(--gold-main);
+}
+
+/* Icons */
+.icon-wrapper {
+    width: clamp(50px, 8vh, 80px);
+    height: clamp(50px, 8vh, 80px);
+    margin: 0 auto clamp(1rem, 3vh, 2rem);
+    border-radius: 50%;
+    background: rgba(216, 138, 6, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gold-main);
+}
+
+.graphic-icon {
+    width: clamp(24px, 4vh, 40px);
+    height: clamp(24px, 4vh, 40px);
+}
+
+.gold-glow {
+    box-shadow: 0 0 30px rgba(216, 138, 6, 0.4);
+    background: rgba(216, 138, 6, 0.2);
+}
+
+/* Intro specific styles */
+.book-cover-main {
+    height: clamp(160px, 28vh, 280px);
+    width: auto;
+    border-radius: 8px;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+    margin-bottom: clamp(1rem, 3vh, 2rem);
+}
+
+.quote {
+    font-size: clamp(1rem, 1.8vw, 1.4rem);
+    font-style: italic;
+    line-height: 1.5;
+    margin: clamp(1rem, 3vh, 2.5rem) 0;
+    color: var(--obsidian);
+    opacity: 0.85;
+}
+
+.brand-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(0.5rem, 1vw, 1rem);
+    margin-top: clamp(1rem, 3vh, 2rem);
+    padding-top: clamp(1rem, 3vh, 2rem);
+    border-top: 1px solid rgba(0,0,0,0.1);
+}
+
+.inkfetish-logo-small {
+    width: clamp(24px, 4vh, 30px);
+    height: clamp(24px, 4vh, 30px);
+    border-radius: 50%;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.hosted-by {
+    font-family: var(--font-sans);
+    font-size: clamp(0.8rem, 1.2vw, 1rem);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--gold-dark);
+}
+
+/* Theme Specifics */
+
+/* Intro */
+.theme-intro {
+    background: transparent;
+}
+
+.theme-intro .title {
+    color: var(--obsidian);
+}
+
+/* About Slide */
+.theme-about {
+    background: transparent;
+    color: var(--obsidian);
+}
+
+.logo-container {
+    margin-bottom: clamp(1rem, 3vh, 2rem);
+    display: flex;
+    justify-content: center;
+}
+
+.inkfetish-logo {
+    width: clamp(120px, 15vw, 150px);
+    height: auto;
+    filter: drop-shadow(0 0 15px rgba(216, 138, 6, 0.3));
+    animation: float 6s ease-in-out infinite;
+}
+
+.theme-about .title {
+    color: var(--gold-main);
+}
+
+.about-particles {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-image: radial-gradient(var(--gold-main) 1px, transparent 1px);
+    background-size: 60px 60px;
+    opacity: 0.1;
+    z-index: 0;
+}
+
+/* Testimonials Slide */
+.theme-testimonials {
+    background: transparent;
+    color: var(--obsidian);
+}
+
+.gallery-content {
+    max-width: 1300px;
+    padding: clamp(1rem, 2vh, 2rem);
+    width: 95vw;
+}
+
+.gallery-cols {
+    display: flex;
+    gap: 15px;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.g-col {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.g-col-small { flex: 1; }
+.g-col-medium { flex: 1.5; }
+.g-col-large { flex: 2; }
+.g-col-xlarge { flex: 2.2; }
+
+.g-col img {
+    width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    border: 1px solid rgba(216, 138, 6, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.g-col img:hover {
+    transform: scale(1.03);
+    box-shadow: 0 10px 25px rgba(216, 138, 6, 0.3);
+    cursor: pointer;
+    z-index: 10;
+    position: relative;
+}
+
+/* Add some random staggers to the columns so they look like a real masonry wall */
+.mt-10 { margin-top: 40px; }
+.mt-16 { margin-top: 80px; }
+
+/* Struggle Slide */
+.theme-struggle {
+    background: transparent;
+    color: var(--obsidian);
+}
+.theme-struggle .title {
+    color: var(--obsidian);
+    opacity: 0.9;
+}
+
+/* Turning Point Slide */
+.theme-turning-point {
+    background: transparent;
+    color: var(--obsidian);
+}
+.theme-turning-point .title {
+    color: var(--gold-dark);
+}
+
+.highlight-text {
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    color: var(--gold-main);
+    font-weight: 700;
+}
+
+.light-rays {
+    position: absolute;
+    bottom: -20%;
+    left: 50%;
+    width: 200%;
+    height: 100%;
+    transform: translateX(-50%);
+    background: conic-gradient(from 180deg at 50% 100%, transparent 0deg, rgba(216,138,6,0.1) 45deg, transparent 90deg);
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* Celebration Slide */
+.theme-celebration {
+    background: transparent;
+}
+.theme-celebration .title {
+    color: var(--obsidian);
+}
+
+.quote-box {
+    background: #FFF;
+    padding: clamp(1.5rem, 4vh, 3rem);
+    border-radius: 15px;
+    border-left: 6px solid var(--gold-main);
+    box-shadow: 0 25px 50px rgba(0,0,0,0.05);
+    margin-top: clamp(1rem, 3vh, 2rem);
+}
+
+.standout-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--gold-light), var(--gold-main));
+    color: var(--obsidian);
+    padding: clamp(0.4rem, 1vh, 0.6rem) clamp(1rem, 2vw, 1.5rem);
+    border-radius: 50px;
+    margin-top: clamp(1rem, 2vh, 1.5rem);
+    font-size: clamp(1rem, 1.5vw, 1.2rem);
+    box-shadow: 0 10px 20px rgba(216,138,6,0.2);
+}
+
+.gold-confetti {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-image: 
+        radial-gradient(circle at 20% 30%, var(--gold-main) 2px, transparent 3px),
+        radial-gradient(circle at 70% 60%, var(--gold-light) 3px, transparent 4px),
+        radial-gradient(circle at 40% 80%, var(--gold-dark) 2px, transparent 3px),
+        radial-gradient(circle at 80% 20%, var(--gold-main) 4px, transparent 5px);
+    background-size: 200px 200px;
+    opacity: 0.4;
+    z-index: 0;
+    animation: drift 20s linear infinite;
+}
+
+/* Animations */
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-15px); }
+    100% { transform: translateY(0px); }
+}
+
+@keyframes drift {
+    0% { background-position: 0 0; }
+    100% { background-position: 200px 200px; }
+}
+
+/* Micro-animations for active slide contents */
+.slide.active .title,
+.slide.active .book-cover-main,
+.slide.active .icon-wrapper {
+    animation: fadeUp 1s var(--bezier) 0.1s both;
+}
+
+.slide.active .subtitle,
+.slide.active .body-text,
+.slide.active .quote,
+.slide.active .quote-box {
+    animation: fadeUp 1s var(--bezier) 0.3s both;
+}
+
+.slide.active .brand-badge,
+.slide.active .standout-badge {
+    animation: fadeUp 1s var(--bezier) 0.5s both;
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

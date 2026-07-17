@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Honey & Hurt</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="progress-bar">
+        <div id="progress"></div>
+    </div>
+    <div id="slide-number" style="position: fixed; top: 20px; right: 20px; z-index: 9999; font-family: monospace; font-size: 1.2rem; color: #fff; background: rgba(0,0,0,0.5); padding: 5px 10px; border-radius: 5px; pointer-events: none;"></div>
+    
+    <div class="nav-zone nav-left" id="nav-left"></div>
+    <div class="nav-zone nav-right" id="nav-right"></div>
+
+    <main class="presentation">
+        
+        <!-- Slide 1: Intro -->
+        <section class="slide active theme-intro">
+            <div class="content">
+                <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/q_auto/f_auto/v1779675277/ChatGPTImageMay25202607_43_49A_chgtxw.jpg" alt="Honey and Hurt Book" class="book-cover-main">
+                <h1 class="title">HONEY & HURT</h1>
+                <p class="subtitle">Official Launch Ceremony 2026</p>
+                <div class="quote">
+                    "Every story begins with a single word.<br>
+                    Every author begins with a single decision.<br>
+                    Tonight, we celebrate the hundreds of writers who chose to share a piece of their heart with the world."
+                </div>
+                <div class="brand-badge">
+                    <img src="/images/inkfetish_logo.png" alt="Inkfetish Logo" class="inkfetish-logo-small">
+                    <p class="hosted-by">Hosted by Inkfetish Publications</p>
+                </div>
+                <div class="instructions">Click right or press <span>&rarr;</span> to begin</div>
+            </div>
+        </section>
+
+        <!-- Slide 2: About -->
+        <section class="slide theme-about">
+            <div class="content glass about-content" style="max-width: 1100px;">
+                <div class="logo-container" style="margin-bottom: clamp(1rem, 2vh, 1.5rem);">
+                    <img src="/images/inkfetish_logo.png" alt="Inkfetish Logo" class="inkfetish-logo" style="width: clamp(80px, 12vw, 120px);">
+                </div>
+                <h2 class="title" style="font-size: clamp(1.8rem, 4vw, 3rem); line-height: 1.2;">"We Are Not a<br>Publishing Company."</h2>
+                <p class="subtitle" style="margin-bottom: clamp(1.5rem, 3vh, 2rem); color: var(--gold-main); font-size: clamp(0.9rem, 1.5vw, 1.2rem);">We are a publishing ecosystem — built for writers, by writers.</p>
+                
+                <p class="body-text" style="font-size: clamp(1rem, 1.8vw, 1.4rem); margin-bottom: 1rem;">Most publishing platforms take your manuscript. Format it quickly. Print a generic cover. And call it published.</p>
+                <p class="quote" style="margin: clamp(1rem, 2vh, 1.5rem) 0; font-size: clamp(1.2rem, 2vw, 1.6rem); color: var(--gold-dark); font-weight: 700;">"That's not publishing. That's printing."</p>
+                
+                <p class="body-text" style="font-size: clamp(1rem, 1.8vw, 1.4rem); margin-bottom: clamp(1.5rem, 3vh, 2rem);">At Inkfetish, we believe your book should look like it belongs in a bookstore — because it does. We believe writing contests should feel like real competition. We believe anthologies should be something writers are proud to hold.</p>
+                
+                <h3 class="title" style="font-size: clamp(1.2rem, 2vw, 1.8rem); margin-bottom: 0.5rem;">This is not a platform. This is a standard.</h3>
+                <div class="standout-badge" style="margin-top: 1rem;">
+                    Premium Publishing
+                </div>
+                <p class="body-text" style="margin-top: 1rem; font-size: clamp(0.9rem, 1.2vw, 1.1rem); font-family: var(--font-sans); text-transform: uppercase; letter-spacing: 2px; opacity: 0.8;">From ISBN to royalties — we build books that look extraordinary.</p>
+            </div>
+            <div class="visual about-particles"></div>
+        </section>
+
+        <!-- Slide 3: Numbers -->
+        <section class="slide theme-stats">
+            <div class="content glass about-content" style="max-width: 1100px; padding: clamp(2rem, 4vh, 4rem);">
+                <h2 class="title" style="font-size: clamp(2rem, 5vw, 4rem); line-height: 1.1; margin-bottom: 1rem;">"The Numbers Don't Lie."</h2>
+                <p class="subtitle" style="margin-bottom: clamp(1.5rem, 4vh, 3rem); color: var(--gold-main); font-size: clamp(1rem, 1.5vw, 1.2rem);">Built slowly. Delivered consistently. Trusted completely.</p>
+                
+                <div class="stats-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(1rem, 2vw, 2rem); margin-bottom: clamp(1.5rem, 4vh, 2rem);">
+                    <div class="stat-box" style="padding: clamp(1rem, 2vh, 1.5rem); background: rgba(255,255,255,0.6); border-radius: 15px; border-left: 5px solid var(--gold-main); text-align: left;">
+                        <h3 style="font-family: var(--font-heading); font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 900; color: var(--obsidian); line-height: 1;">₹5,75,000+</h3>
+                        <p style="font-family: var(--font-sans); text-transform: uppercase; letter-spacing: 2px; font-size: clamp(0.7rem, 1vw, 0.9rem); font-weight: 700; color: var(--gold-dark); margin-top: 0.8rem;">Total Prize Money</p>
+                        <p style="font-size: clamp(0.9rem, 1.2vw, 1.1rem); margin-top: 0.3rem; opacity: 0.8;">Given Away To Indian Writers</p>
+                    </div>
+                    <div class="stat-box" style="padding: clamp(1rem, 2vh, 1.5rem); background: rgba(255,255,255,0.6); border-radius: 15px; border-left: 5px solid var(--gold-main); text-align: left;">
+                        <h3 style="font-family: var(--font-heading); font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 900; color: var(--obsidian); line-height: 1;">1,155+</h3>
+                        <p style="font-family: var(--font-sans); text-transform: uppercase; letter-spacing: 2px; font-size: clamp(0.7rem, 1vw, 0.9rem); font-weight: 700; color: var(--gold-dark); margin-top: 0.8rem;">Writers Competed</p>
+                        <p style="font-size: clamp(0.9rem, 1.2vw, 1.1rem); margin-top: 0.3rem; opacity: 0.8;">Across All Our Contests</p>
+                    </div>
+                    <div class="stat-box" style="padding: clamp(1rem, 2vh, 1.5rem); background: rgba(255,255,255,0.6); border-radius: 15px; border-left: 5px solid var(--gold-main); text-align: left;">
+                        <h3 style="font-family: var(--font-heading); font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 900; color: var(--obsidian); line-height: 1;">165+</h3>
+                        <p style="font-family: var(--font-sans); text-transform: uppercase; letter-spacing: 2px; font-size: clamp(0.7rem, 1vw, 0.9rem); font-weight: 700; color: var(--gold-dark); margin-top: 0.8rem;">Anthology Writers</p>
+                        <p style="font-size: clamp(0.9rem, 1.2vw, 1.1rem); margin-top: 0.3rem; opacity: 0.8;">Published in Our Anthologies</p>
+                    </div>
+                    <div class="stat-box" style="padding: clamp(1rem, 2vh, 1.5rem); background: rgba(255,255,255,0.6); border-radius: 15px; border-left: 5px solid var(--gold-main); text-align: left;">
+                        <h3 style="font-family: var(--font-heading); font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 900; color: var(--obsidian); line-height: 1;">48</h3>
+                        <p style="font-family: var(--font-sans); text-transform: uppercase; letter-spacing: 2px; font-size: clamp(0.7rem, 1vw, 0.9rem); font-weight: 700; color: var(--gold-dark); margin-top: 0.8rem;">Books Sold</p>
+                        <p style="font-size: clamp(0.9rem, 1.2vw, 1.1rem); margin-top: 0.3rem; opacity: 0.8;">In Just 32 Hours</p>
+                    </div>
+                </div>
+
+                <div style="display: flex; justify-content: center; gap: clamp(1rem, 3vw, 3rem); margin-top: clamp(1rem, 3vh, 2rem);">
+                    <span style="font-family: var(--font-sans); font-weight: 700; color: var(--obsidian); font-size: clamp(0.9rem, 1.2vw, 1.2rem);"><span style="color: var(--gold-main);">✔️</span> Launched 4+ anthologies</span>
+                    <span style="font-family: var(--font-sans); font-weight: 700; color: var(--obsidian); font-size: clamp(0.9rem, 1.2vw, 1.2rem);"><span style="color: var(--gold-main);">✔️</span> 7 Successful Competitions Hosted</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 4: Previous Books -->
+        <section class="slide theme-books">
+            <div class="content glass about-content" style="max-width: 1400px; padding: clamp(1.5rem, 3vh, 3rem) clamp(1.5rem, 3vw, 3rem);">
+                <h2 class="title" style="font-size: clamp(1.8rem, 3.5vw, 3rem); line-height: 1.1; margin-bottom: 0.5rem;">OUR JOURNEY SO FAR</h2>
+                <p class="subtitle" style="margin-bottom: clamp(1rem, 3vh, 2rem); color: var(--gold-main); font-size: clamp(0.8rem, 1.2vw, 1rem);">A legacy of premium anthologies that broke records.</p>
+                
+                <div class="books-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(1rem, 2vw, 1.5rem);">
+                    <!-- Book 1 -->
+                    <div class="book-card" style="background: rgba(255,255,255,0.7); border-radius: 12px; padding: 1rem; border: 1px solid rgba(0,0,0,0.05); text-align: left;">
+                        <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/q_auto/f_auto/v1778137587/pezfosvx2fszfwxaffhs_mtcvbi.webp" style="width: 100%; aspect-ratio: 3/4; object-fit: cover; border-radius: 8px; margin-bottom: 1rem; box-shadow: 0 10px 20px rgba(0,0,0,0.15);">
+                        <h4 style="font-family: var(--font-heading); font-size: clamp(1rem, 1.5vw, 1.2rem); font-weight: 900; color: var(--obsidian); margin-bottom: 0.2rem; line-height: 1.2;">Syaahi</h4>
+                        <p style="font-family: var(--font-sans); text-transform: uppercase; font-size: clamp(0.6rem, 1vw, 0.7rem); color: var(--gold-main); font-weight: 700; margin-bottom: 0.8rem;">Collection of top 200 writers</p>
+                        <div style="background: rgba(216, 138, 6, 0.1); color: var(--gold-dark); padding: 0.4rem; border-radius: 5px; font-size: clamp(0.65rem, 1vw, 0.75rem); font-weight: 700; text-align: center; margin-bottom: 0.8rem;">185 Sales in 24 Hours</div>
+                        <p style="font-size: clamp(0.75rem, 1.2vw, 0.85rem); opacity: 0.8; line-height: 1.4;">Our all-time best-selling book. Compiles masterpiece works of the top 200 elite writers from the prestigious Indian Writers League (IWL).</p>
+                    </div>
+                    <!-- Book 2 -->
+                    <div class="book-card" style="background: rgba(255,255,255,0.7); border-radius: 12px; padding: 1rem; border: 1px solid rgba(0,0,0,0.05); text-align: left;">
+                        <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/q_auto/f_auto/v1779673450/ChatGPT_Image_May_25_2026_07_12_11_AM_yaaaie.webp" style="width: 100%; aspect-ratio: 3/4; object-fit: cover; border-radius: 8px; margin-bottom: 1rem; box-shadow: 0 10px 20px rgba(0,0,0,0.15);">
+                        <h4 style="font-family: var(--font-heading); font-size: clamp(1rem, 1.5vw, 1.2rem); font-weight: 900; color: var(--obsidian); margin-bottom: 0.2rem; line-height: 1.2;">Shakespeare &<br>What Remained</h4>
+                        <p style="font-family: var(--font-sans); text-transform: uppercase; font-size: clamp(0.6rem, 1vw, 0.7rem); color: var(--gold-main); font-weight: 700; margin-bottom: 0.8rem;">Poetry Anthology</p>
+                        <div style="background: rgba(216, 138, 6, 0.1); color: var(--gold-dark); padding: 0.4rem; border-radius: 5px; font-size: clamp(0.65rem, 1vw, 0.75rem); font-weight: 700; text-align: center; margin-bottom: 0.8rem;">65 Sales in 48 Hours</div>
+                        <p style="font-size: clamp(0.75rem, 1.2vw, 0.85rem); opacity: 0.8; line-height: 1.4;">A compilation celebrating classic verses, featuring all fine poetries from the Shakespeare Poetry Award hosted in 2025.</p>
+                    </div>
+                    <!-- Book 3 -->
+                    <div class="book-card" style="background: rgba(255,255,255,0.7); border-radius: 12px; padding: 1rem; border: 1px solid rgba(0,0,0,0.05); text-align: left;">
+                        <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/q_auto/f_auto/v1779674268/ChatGPTImageMay25202607_27_27A_h2iwrz.jpg" style="width: 100%; aspect-ratio: 3/4; object-fit: cover; border-radius: 8px; margin-bottom: 1rem; box-shadow: 0 10px 20px rgba(0,0,0,0.15);">
+                        <h4 style="font-family: var(--font-heading); font-size: clamp(1rem, 1.5vw, 1.2rem); font-weight: 900; color: var(--obsidian); margin-bottom: 0.2rem; line-height: 1.2;">Love at<br>Minus One</h4>
+                        <p style="font-family: var(--font-sans); text-transform: uppercase; font-size: clamp(0.6rem, 1vw, 0.7rem); color: var(--gold-main); font-weight: 700; margin-bottom: 0.8rem;">Romance Anthology</p>
+                        <div style="background: rgba(216, 138, 6, 0.1); color: var(--gold-dark); padding: 0.4rem; border-radius: 5px; font-size: clamp(0.65rem, 1vw, 0.75rem); font-weight: 700; text-align: center; margin-bottom: 0.8rem;">155 Sales in 2 Days</div>
+                        <p style="font-size: clamp(0.75rem, 1.2vw, 0.85rem); opacity: 0.8; line-height: 1.4;">Launched in the chilling winter of December 2025. A poetry anthology exploring romance and heartbreak where the heart freezes.</p>
+                    </div>
+                    <!-- Book 4 -->
+                    <div class="book-card" style="background: rgba(255,255,255,0.7); border-radius: 12px; padding: 1rem; border: 1px solid rgba(0,0,0,0.05); text-align: left;">
+                        <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/q_auto/f_auto/v1779673963/ChatGPTImageMay25202607_20_11A_vcxbxc.jpg" style="width: 100%; aspect-ratio: 3/4; object-fit: cover; border-radius: 8px; margin-bottom: 1rem; box-shadow: 0 10px 20px rgba(0,0,0,0.15);">
+                        <h4 style="font-family: var(--font-heading); font-size: clamp(1rem, 1.5vw, 1.2rem); font-weight: 900; color: var(--obsidian); margin-bottom: 0.2rem; line-height: 1.2;">Petals and<br>Scars</h4>
+                        <p style="font-family: var(--font-sans); text-transform: uppercase; font-size: clamp(0.6rem, 1vw, 0.7rem); color: var(--gold-main); font-weight: 700; margin-bottom: 0.8rem;">Poetry Collection</p>
+                        <div style="background: rgba(216, 138, 6, 0.1); color: var(--gold-dark); padding: 0.4rem; border-radius: 5px; font-size: clamp(0.65rem, 1vw, 0.75rem); font-weight: 700; text-align: center; margin-bottom: 0.8rem;">48 Sales in 24 Hours</div>
+                        <p style="font-size: clamp(0.75rem, 1.2vw, 0.85rem); opacity: 0.8; line-height: 1.4;">A masterpiece collection featuring all top writings from our Authorverse Summit and the September Writing Competition.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 5: Testimonials -->
+        <section class="slide theme-testimonials">
+            <div class="content glass gallery-content" style="max-width: 1400px; padding: clamp(1rem, 2vh, 2rem); overflow-y: auto;">
+                <h2 class="title" style="color: var(--gold-main); font-size: clamp(1.8rem, 3.5vw, 3rem); margin-bottom: 1rem;">TESTIMONIALS FROM WRITERS</h2>
+                <div class="gallery-cols">
+                    <!-- Column 1 (Small) -->
+                    <div class="g-col g-col-small">
+                        <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1776100331/WhatsApp_Image_2026-04-13_at_9.06.50_PM-compressed_f54p62.webp">
+                        <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1776100331/WhatsApp_Image_2026-04-13_at_9.06.50_PM_1_-compressed_bla9w8.webp">
+                        <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1776100331/WhatsApp_Image_2026-04-13_at_9.06.49_PM-compressed_krdg8g.webp">
+                        <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1776100330/WhatsApp_Image_2026-04-13_at_9.06.49_PM_1_-compressed_ylopb7.webp">
+                        <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1776100330/WhatsApp_Image_2026-04-13_at_9.06.50_PM_2_-compressed_nrkzf4.webp">
+                        <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1776100330/WhatsApp_Image_2026-04-13_at_8.12.24_PM-compressed_skr10b.webp">
+                    </div>
+                    <!-- Column 2 (Large) -->
+                    <div class="g-col g-col-large mt-10">
+                        <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1776100330/WhatsApp_Image_2026-04-13_at_9.06.48_PM-compressed_ftx5ea.webp">
+                        <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1776100330/WhatsApp_Image_2026-04-13_at_9.06.48_PM_1_-compressed_zolkao.webp">
+                        <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1776100330/WhatsApp_Image_2026-04-13_at_8.27.49_PM-compressed_hhn7yj.webp">
+                        <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1776100329/WhatsApp_Image_2026-04-13_at_8.19.16_PM-compressed_pii87q.webp">
+                    </div>
+                    <!-- Column 3 (Medium) -->
+                    <div class="g-col g-col-medium">
+                        <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1775933371/WhatsApp_Image_2026-03-29_at_12.40.13_PM-compressed_wjaeil.webp">
+                        <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1775933370/WhatsApp_Image_2026-03-29_at_12.35.16_PM-compressed_qldola.webp">
+                        <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1775933368/WhatsApp_Image_2026-03-29_at_12.35.16_PM_2_-compressed_d12sxy.webp">
+                        <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1775933367/WhatsApp_Image_2026-03-29_at_12.35.16_PM_1_-compressed_ddda2d.webp">
+                        <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1775933367/WhatsApp_Image_2026-03-28_at_8.00.34_PM-compressed_yfhhz2.webp">
+                    </div>
+                    <!-- Column 4 (X-Large) -->
+                    <div class="g-col g-col-xlarge mt-16">
+                        <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897600/WhatsApp_Image_2026-04-09_at_2.59.25_PM-compressed_in2led.webp">
+                        <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897599/WhatsApp_Image_2026-04-09_at_2.53.04_PM-compressed_wsnhmu.webp">
+                        <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897599/WhatsApp_Image_2026-04-07_at_8.39.44_PM-compressed_ztxsge.webp">
+                        <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897598/WhatsApp_Image_2026-04-07_at_8.39.44_PM_2_-compressed_hfr0wv.webp">
+                    </div>
+                    <!-- Column 5 (Small) -->
+                    <div class="g-col g-col-small">
+                        <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897598/WhatsApp_Image_2026-04-07_at_8.39.44_PM_1_-compressed_gjnlck.webp">
+                        <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897597/WhatsApp_Image_2026-04-04_at_12.20.06_PM_1_-compressed_lrqjv2.webp">
+                        <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897597/WhatsApp_Image_2026-04-03_at_10.52.05_AM_2_-compressed_m2qlui.webp">
+                        <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897597/WhatsApp_Image_2026-04-03_at_10.52.05_AM_1_-compressed_uphqxg.webp">
+                        <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897596/WhatsApp_Image_2026-04-03_at_10.52.04_AM_1_-compressed_pp9tww.webp">
+                        <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897596/WhatsApp_Image_2026-04-02_at_5.42.20_PM-compressed_sq3utn.webp">
+                        <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897595/WhatsApp_Image_2026-04-02_at_5.42.20_PM_1_-compressed_khfil0.webp">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 6: Honey & Hurt Reveal -->
+        <section class="slide theme-reveal">
+            <div class="content glass reveal-content" style="max-width: 1400px; display: flex; align-items: center; gap: 4rem; padding: clamp(2rem, 4vh, 4rem); flex-wrap: wrap;">
+                
+                <!-- Book Image (Left) -->
+                <div style="flex: 1; min-width: 300px; display: flex; justify-content: center; position: relative;">
+                    <div style="position: absolute; inset: -30px; background: radial-gradient(circle, rgba(216,138,6,0.3) 0%, transparent 60%); z-index: 0; filter: blur(20px);"></div>
+                    <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/q_auto/f_auto/v1779675277/ChatGPTImageMay25202607_43_49A_chgtxw.jpg" style="width: 100%; max-width: 450px; border-radius: 12px; box-shadow: 0 25px 60px rgba(0,0,0,0.4); position: relative; z-index: 1; border: 1px solid rgba(255,255,255,0.5); transform: perspective(1000px) rotateY(-5deg); transition: transform 0.5s ease;" onmouseover="this.style.transform='perspective(1000px) rotateY(0deg) scale(1.02)'" onmouseout="this.style.transform='perspective(1000px) rotateY(-5deg)'">
+                </div>
+
+                <!-- Text Content (Right) -->
+                <div style="flex: 1.2; min-width: 350px; text-align: left;">
+                    <span style="font-family: var(--font-sans); text-transform: uppercase; font-weight: 800; letter-spacing: 3px; font-size: clamp(0.7rem, 1vw, 0.9rem); color: var(--gold-main); background: rgba(216,138,6,0.1); padding: 5px 15px; border-radius: 20px; border: 1px solid rgba(216,138,6,0.3); margin-bottom: 1.5rem; display: inline-block;">Premium Output</span>
+                    
+                    <h2 style="font-family: var(--font-heading); font-size: clamp(2.5rem, 5vw, 4.5rem); color: var(--obsidian); font-weight: 900; line-height: 1.1; margin-bottom: 1rem;">Introducing:<br>Honey & Hurt</h2>
+                    
+                    <p style="font-family: var(--font-sans); font-size: clamp(1rem, 1.5vw, 1.3rem); color: var(--obsidian); font-weight: 700; margin-bottom: 2.5rem; line-height: 1.5;">An open-theme anthology exploring the beautiful duality of the human experience.</p>
+                    
+                    <h3 style="font-family: var(--font-heading); font-size: clamp(1.5rem, 2.5vw, 2rem); color: var(--gold-dark); font-weight: 800; margin-bottom: 1rem;">What is "Honey & Hurt"?</h3>
+                    
+                    <p style="font-family: var(--font-sans); font-size: clamp(0.9rem, 1.2vw, 1.1rem); color: rgba(15,23,42,0.8); font-weight: 500; line-height: 1.7; margin-bottom: 1.5rem;"><strong style="color: var(--obsidian); font-weight: 800;">HONEY</strong> represents the sweet, the beautiful, and the light. It's the love that heals, the moments of pure joy, and the gentle side of life.</p>
+                    
+                    <p style="font-family: var(--font-sans); font-size: clamp(0.9rem, 1.2vw, 1.1rem); color: rgba(15,23,42,0.8); font-weight: 500; line-height: 1.7; margin-bottom: 1.5rem;"><strong style="color: var(--obsidian); font-weight: 800;">HURT</strong> represents the dark, the trauma, and the pain. It's the heartbreak that shatters, the grief that lingers, and the struggles we face.</p>
+                    
+                    <div style="border-left: 4px solid var(--gold-main); padding-left: 1.5rem; margin-top: 2rem; background: linear-gradient(90deg, rgba(216,138,6,0.05) 0%, transparent 100%); padding: 1rem 1rem 1rem 1.5rem; border-radius: 0 10px 10px 0;">
+                        <p style="font-family: var(--font-sans); font-size: clamp(0.9rem, 1.2vw, 1.1rem); color: var(--obsidian); font-weight: 700; line-height: 1.6; margin: 0;">There is always a good and a bad side. This is an open-theme anthology giving you the freedom to write about the entire spectrum of human emotion.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 7: Curation Process -->
+        <section class="slide theme-curation">
+            <div class="content glass curation-content" style="max-width: 1200px; padding: clamp(2rem, 4vh, 4rem);">
+                <span style="font-family: var(--font-sans); text-transform: uppercase; font-weight: 800; letter-spacing: 3px; font-size: clamp(0.7rem, 1vw, 0.9rem); color: var(--gold-main); margin-bottom: 1rem; display: inline-block;">The Selection Standard</span>
+                <h2 class="title" style="font-size: clamp(2.5rem, 4vw, 4.5rem); line-height: 1.1; margin-bottom: 1.5rem; color: var(--obsidian);">Curating Excellence.</h2>
+                <p class="subtitle" style="margin-bottom: 4rem; color: rgba(15,23,42,0.8); font-size: clamp(1rem, 1.5vw, 1.2rem); max-width: 800px; margin-left: auto; margin-right: auto; line-height: 1.6; font-weight: 600;">We don't just accept every manuscript. To guarantee a premium, high-quality anthology, every single entry undergoes a rigorous review process.</p>
+                
+                <div style="display: flex; gap: 2rem; flex-wrap: wrap; justify-content: center;">
+                    <!-- Step 1 -->
+                    <div style="flex: 1; min-width: 280px; background: rgba(255,255,255,0.7); padding: 2.5rem 2rem; border-radius: 15px; border-left: 5px solid var(--obsidian); text-align: left; box-shadow: 0 10px 30px rgba(0,0,0,0.05); transition: transform 0.3s;" onmouseover="this.style.transform='translateY(-10px)'" onmouseout="this.style.transform='translateY(0)'">
+                        <h3 style="font-family: var(--font-heading); font-size: clamp(2.5rem, 4vw, 3.5rem); font-weight: 900; color: var(--obsidian); margin-bottom: 0.5rem; line-height: 1;">350+</h3>
+                        <h4 style="font-family: var(--font-sans); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 800; font-size: 0.85rem; color: var(--gold-dark); margin-bottom: 1rem;">Submissions Received</h4>
+                        <p style="font-size: 0.95rem; color: var(--slate); line-height: 1.6; font-weight: 500;">An overwhelming response from talented writers nationwide, all wanting to be part of the legacy.</p>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div style="flex: 1; min-width: 280px; background: rgba(255,255,255,0.7); padding: 2.5rem 2rem; border-radius: 15px; border-left: 5px solid var(--gold-main); text-align: left; box-shadow: 0 10px 30px rgba(0,0,0,0.05); transition: transform 0.3s;" onmouseover="this.style.transform='translateY(-10px)'" onmouseout="this.style.transform='translateY(0)'">
+                        <h3 style="font-family: var(--font-heading); font-size: clamp(2.5rem, 4vw, 3.5rem); font-weight: 900; color: var(--obsidian); margin-bottom: 0.5rem; line-height: 1;">Filtered</h3>
+                        <h4 style="font-family: var(--font-sans); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 800; font-size: 0.85rem; color: var(--gold-dark); margin-bottom: 1rem;">Strict Quality Control</h4>
+                        <p style="font-size: 0.95rem; color: var(--slate); line-height: 1.6; font-weight: 500;">To maintain exclusivity, pieces that didn't meet our strict premium standards were respectfully declined.</p>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div style="flex: 1; min-width: 280px; background: rgba(15,23,42,0.95); padding: 2.5rem 2rem; border-radius: 15px; border-left: 5px solid var(--gold-main); text-align: left; box-shadow: 0 15px 40px rgba(0,0,0,0.2); transition: transform 0.3s;" onmouseover="this.style.transform='translateY(-10px)'" onmouseout="this.style.transform='translateY(0)'">
+                        <h3 style="font-family: var(--font-heading); font-size: clamp(2.5rem, 4vw, 3.5rem); font-weight: 900; color: #fff; margin-bottom: 0.5rem; line-height: 1;">110</h3>
+                        <h4 style="font-family: var(--font-sans); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 800; font-size: 0.85rem; color: var(--gold-main); margin-bottom: 1rem;">Elite Voices Selected</h4>
+                        <p style="font-size: 0.95rem; color: rgba(255,255,255,0.8); line-height: 1.6; font-weight: 500;">Only 110 extraordinary writers from diverse backgrounds made the final cut, guaranteeing a masterpiece.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 8: The Package -->
+        <section class="slide theme-package">
+            <div class="content glass package-content" style="max-width: 1200px; padding: clamp(1.5rem, 3vh, 3rem); overflow-y: auto; max-height: 95vh;">
+                <span style="font-family: var(--font-sans); text-transform: uppercase; font-weight: 800; letter-spacing: 3px; font-size: clamp(0.7rem, 1vw, 0.9rem); color: var(--gold-main); margin-bottom: 0.5rem; display: inline-block;">Your Packages</span>
+                <h2 class="title" style="font-size: clamp(2rem, 3.5vw, 3.5rem); line-height: 1.1; margin-bottom: 1rem; color: var(--obsidian);">The Value You Unlocked.</h2>
+                <p class="subtitle" style="margin-bottom: 2rem; color: rgba(15,23,42,0.8); font-size: clamp(0.9rem, 1.2vw, 1.1rem); max-width: 800px; margin-left: auto; margin-right: auto; line-height: 1.5; font-weight: 600;">You all started here. Some of you chose the digital publishing suite, while others opted for the physical upgrades. Here is a reminder of the massive benefits you secured.</p>
+                
+                <div style="display: flex; gap: 1.5rem; flex-wrap: wrap; justify-content: center; align-items: stretch;">
+                    
+                    <!-- Base Package -->
+                    <div style="flex: 1.5; min-width: 320px; background: rgba(255,255,255,0.9); border: 2px solid var(--gold-main); border-radius: 15px; padding: clamp(1.5rem, 3vh, 2.5rem); text-align: left; box-shadow: 0 20px 50px rgba(216,138,6,0.15); display: flex; flex-direction: column; justify-content: center;">
+                        <h3 style="font-family: var(--font-heading); font-size: clamp(1.8rem, 2.5vw, 2.2rem); font-weight: 900; color: var(--obsidian); margin-bottom: 0.2rem; line-height: 1.2;">Digital Publishing Suite</h3>
+                        <p style="font-family: var(--font-sans); color: var(--slate); margin-bottom: 1rem; font-weight: 500; font-size: 1rem;">The foundational package for every verified author.</p>
+                        <div style="font-family: var(--font-heading); font-size: clamp(3rem, 5vw, 4.5rem); font-weight: 900; color: var(--gold-main); line-height: 1; margin-bottom: 1.5rem; letter-spacing: -2px;">₹485</div>
+                        
+                        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.8rem;">
+                            <li style="display: flex; gap: 10px; align-items: flex-start;">
+                                <svg style="width: 20px; height: 20px; color: #16a34a; flex-shrink: 0; margin-top: 2px;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                <div><strong style="color: var(--obsidian); font-size: 0.95rem;">Official ISBN Listing:</strong> <span style="color: var(--slate); font-size: 0.85rem; display: block; margin-top: 1px;">Globally recognized book credit in national databases.</span></div>
+                            </li>
+                            <li style="display: flex; gap: 10px; align-items: flex-start;">
+                                <svg style="width: 20px; height: 20px; color: #16a34a; flex-shrink: 0; margin-top: 2px;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                <div><strong style="color: var(--obsidian); font-size: 0.95rem;">"Published Author" Badge:</strong> <span style="color: var(--slate); font-size: 0.85rem; display: block; margin-top: 1px;">Secured your verified status within the community.</span></div>
+                            </li>
+                            <li style="display: flex; gap: 10px; align-items: flex-start;">
+                                <svg style="width: 20px; height: 20px; color: #16a34a; flex-shrink: 0; margin-top: 2px;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                <div><strong style="color: var(--obsidian); font-size: 0.95rem;">Free Portfolio Website:</strong> <span style="color: var(--slate); font-size: 0.85rem; display: block; margin-top: 1px;">A high-end dedicated author portfolio (Worth ₹15,000).</span></div>
+                            </li>
+                            <li style="display: flex; gap: 10px; align-items: flex-start;">
+                                <svg style="width: 20px; height: 20px; color: #16a34a; flex-shrink: 0; margin-top: 2px;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                <div><strong style="color: var(--obsidian); font-size: 0.95rem;">PR & Promotion:</strong> <span style="color: var(--slate); font-size: 0.85rem; display: block; margin-top: 1px;">Social media promotion campaigns to build your fanbase.</span></div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Physical Add-ons -->
+                    <div style="flex: 1; min-width: 300px; display: flex; flex-direction: column; gap: 1rem;">
+                        <!-- Addon 1 -->
+                        <div style="background: rgba(255,255,255,0.7); border: 1px solid rgba(0,0,0,0.1); border-radius: 15px; padding: clamp(1.5rem, 3vh, 2rem) 1.5rem; text-align: left; display: flex; flex-direction: column; justify-content: center; flex: 1; box-shadow: 0 10px 25px rgba(0,0,0,0.05); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+                            <h4 style="font-family: var(--font-heading); font-size: clamp(1.2rem, 2vw, 1.4rem); font-weight: 900; color: var(--obsidian); margin: 0 0 0.5rem 0; line-height: 1.2;">Physical Paperback<br>Anthology</h4>
+                            <div style="font-family: var(--font-heading); font-size: clamp(2rem, 3vw, 2.5rem); font-weight: 900; color: var(--gold-main); line-height: 1; margin-bottom: 0.8rem;">+ ₹150</div>
+                            <p style="font-size: 0.85rem; color: var(--slate); line-height: 1.5; margin: 0; font-weight: 500;">For those who wanted a premium, beautifully printed physical copy delivered directly to their doorstep.</p>
+                        </div>
+                        <!-- Addon 2 -->
+                        <div style="background: rgba(255,255,255,0.7); border: 1px solid rgba(0,0,0,0.1); border-radius: 15px; padding: clamp(1.5rem, 3vh, 2rem) 1.5rem; text-align: left; display: flex; flex-direction: column; justify-content: center; flex: 1; box-shadow: 0 10px 25px rgba(0,0,0,0.05); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+                            <h4 style="font-family: var(--font-heading); font-size: clamp(1.2rem, 2vw, 1.4rem); font-weight: 900; color: var(--obsidian); margin: 0 0 0.5rem 0; line-height: 1.2;">Engraved Medal &<br>Gilded Certificate</h4>
+                            <div style="font-family: var(--font-heading); font-size: clamp(2rem, 3vw, 2.5rem); font-weight: 900; color: var(--gold-main); line-height: 1; margin-bottom: 0.8rem;">+ ₹150</div>
+                            <p style="font-size: 0.85rem; color: var(--slate); line-height: 1.5; margin: 0; font-weight: 500;">For those who wanted a heavy, custom engraved physical medal and a gilded co-authorship certificate to hang on the wall.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 9: The Certificate -->
+        <section class="slide theme-certificate">
+            <div class="content glass cert-content" style="max-width: 1300px; display: flex; align-items: center; gap: 4rem; padding: clamp(2rem, 4vh, 4rem); flex-wrap: wrap;">
+                
+                <!-- Certificate Image (Left) -->
+                <div style="flex: 1; min-width: 300px; display: flex; justify-content: center; position: relative;">
+                    <div style="position: absolute; inset: -20px; background: radial-gradient(circle, rgba(216,138,6,0.3) 0%, transparent 60%); z-index: 0; filter: blur(20px);"></div>
+                    <img src="https://via.placeholder.com/600x800/F5F2EE/0F172A?text=Replace+With+Certificate+Image" id="certificate-img" alt="Certificate of Publication" style="width: 100%; max-width: 450px; border-radius: 8px; box-shadow: 0 25px 60px rgba(0,0,0,0.4); position: relative; z-index: 1; border: 4px solid var(--gold-main); transform: perspective(1000px) rotateY(5deg); transition: transform 0.5s ease;" onmouseover="this.style.transform='perspective(1000px) rotateY(0deg) scale(1.02)'" onmouseout="this.style.transform='perspective(1000px) rotateY(5deg)'">
+                    <div style="position: absolute; top: -15px; left: -15px; background: #16a34a; color: white; padding: 10px; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; z-index: 2; box-shadow: 0 10px 20px rgba(22,163,74,0.4); font-weight: 900; font-size: 1.2rem;">✓</div>
+                </div>
+
+                <!-- Text Content (Right) -->
+                <div style="flex: 1.2; min-width: 350px; text-align: left;">
+                    <span style="font-family: var(--font-sans); text-transform: uppercase; font-weight: 800; letter-spacing: 3px; font-size: clamp(0.7rem, 1vw, 0.9rem); color: var(--gold-main); background: rgba(216,138,6,0.1); padding: 5px 15px; border-radius: 20px; border: 1px solid rgba(216,138,6,0.3); margin-bottom: 1.5rem; display: inline-block;">Official Credentials</span>
+                    
+                    <h2 style="font-family: var(--font-heading); font-size: clamp(2.5rem, 4vw, 4.2rem); color: var(--obsidian); font-weight: 900; line-height: 1.1; margin-bottom: 1.5rem;">The Mark of a<br>Published Author.</h2>
+                    
+                    <div style="background: rgba(255,255,255,0.7); border-left: 4px solid var(--gold-main); padding: 1.5rem; border-radius: 0 15px 15px 0; margin-bottom: 2rem; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
+                        <p style="font-family: var(--font-sans); font-size: clamp(1rem, 1.3vw, 1.2rem); color: var(--obsidian); font-weight: 800; line-height: 1.6; margin: 0;">And the best part is: Every certificate comes with a unique QR code and a Certificate ID.</p>
+                    </div>
+                    
+                    <p style="font-family: var(--font-sans); font-size: clamp(0.95rem, 1.2vw, 1.1rem); color: var(--slate); font-weight: 500; line-height: 1.7; margin-bottom: 1.5rem;">
+                        Anyone—your family, friends, school, college, or workplace—can simply scan the QR code to instantly verify that your certificate is genuine and officially issued by us, <strong style="color: var(--obsidian); font-weight: 800;">Inkfetish Publications</strong>.
+                    </p>
+                    
+                    <p style="font-family: var(--font-sans); font-size: clamp(0.95rem, 1.2vw, 1.1rem); color: var(--slate); font-weight: 500; line-height: 1.7; margin-bottom: 2rem;">
+                        It will confirm beyond any doubt that you are a verified and proud Co-Author of the Honey & Hurt Anthology.
+                    </p>
+                    
+                    <div style="display: flex; gap: 15px; align-items: center; background: rgba(216,138,6,0.05); padding: 1rem 1.5rem; border-radius: 12px; border: 1px solid rgba(216,138,6,0.2);">
+                        <svg style="width: 25px; height: 25px; color: #16a34a; flex-shrink: 0;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
+                        <p style="font-family: var(--font-sans); font-size: clamp(0.85rem, 1vw, 0.95rem); color: var(--obsidian); font-weight: 700; line-height: 1.5; margin: 0;">We have added this feature to make every certificate authentic, transparent, and easy to verify.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 10: Stay Till The End (Certificates) -->
+        <section class="slide theme-stay-tuned" style="background: var(--ivory);">
+            <div class="content" style="max-width: 1000px; padding: 4rem 2rem; position: relative; z-index: 2; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
+                
+                <span style="font-family: var(--font-sans); text-transform: uppercase; font-weight: 800; letter-spacing: 3px; font-size: 0.9rem; color: #dc2626; background: rgba(220,38,38,0.1); padding: 8px 20px; border-radius: 30px; margin-bottom: 2rem;">Wait... Don't leave yet!</span>
+                
+                <h2 style="font-family: var(--font-heading); font-size: clamp(3rem, 5vw, 4.5rem); color: var(--obsidian); font-weight: 900; line-height: 1.1; margin-bottom: 2rem;">
+                    Please Stay Till The End
+                </h2>
+                
+                <p style="font-family: var(--font-sans); font-size: clamp(1.2rem, 1.8vw, 1.5rem); color: var(--slate); font-weight: 600; line-height: 1.5; margin-bottom: 2rem;">
+                    At the very end of this session, we will reveal exactly how you will receive your <strong style="color: var(--gold-main);">Digital Documents</strong>.
+                </p>
+
+                <div style="background: white; border: 2px solid rgba(216,138,6,0.3); border-radius: 15px; padding: 2rem; max-width: 800px; box-shadow: 0 15px 30px rgba(0,0,0,0.05);">
+                    <p style="font-family: var(--font-sans); font-size: 1.2rem; color: var(--obsidian); font-weight: 800; margin-bottom: 10px;">
+                        Your QR-Verified Publication Certificate PDF
+                    </p>
+                    <p style="font-family: var(--font-sans); font-size: 1rem; color: var(--slate); font-weight: 500; margin: 0; line-height: 1.6;">
+                        Even if you opted for the physical certificate delivery (which you will absolutely receive), you DO NOT want to miss out on claiming your official digital copy today!
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 11: Stay Till The End (Books & Launch) -->
+        <section class="slide theme-stay-tuned-2" style="background: var(--obsidian);">
+            <div class="content" style="max-width: 1000px; padding: 4rem 2rem; position: relative; z-index: 2; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
+                
+                <span style="font-family: var(--font-sans); text-transform: uppercase; font-weight: 800; letter-spacing: 3px; font-size: 0.9rem; color: var(--gold-main); margin-bottom: 2rem; display: inline-block;">But that's not all...</span>
+                
+                <h2 style="font-family: var(--font-heading); font-size: clamp(2.5rem, 4vw, 4rem); color: white; font-weight: 900; line-height: 1.2; margin-bottom: 3rem;">
+                    We have huge announcements to make.
+                </h2>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; width: 100%;">
+                    <!-- Box 1 -->
+                    <div style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 15px; padding: 2rem; text-align: left;">
+                        <svg style="width: 40px; height: 40px; color: var(--gold-main); margin-bottom: 1rem;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+                        <h3 style="font-family: var(--font-heading); font-size: 1.5rem; color: white; font-weight: 800; margin-bottom: 10px;">Solo Publishing & Events</h3>
+                        <p style="font-family: var(--font-sans); font-size: 1rem; color: #cbd5e1; font-weight: 500; margin: 0; line-height: 1.5;">
+                            We will be unveiling our exclusive Solo Book Publishing opportunities and amazing upcoming events just for you.
+                        </p>
+                    </div>
+
+                    <!-- Box 2 -->
+                    <div style="background: rgba(216,138,6,0.1); border: 1px solid rgba(216,138,6,0.3); border-radius: 15px; padding: 2rem; text-align: left;">
+                        <svg style="width: 40px; height: 40px; color: var(--gold-main); margin-bottom: 1rem;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                        <h3 style="font-family: var(--font-heading); font-size: 1.5rem; color: var(--gold-main); font-weight: 800; margin-bottom: 10px;">Physical Book Delivery</h3>
+                        <p style="font-family: var(--font-sans); font-size: 1rem; color: #cbd5e1; font-weight: 500; margin: 0; line-height: 1.5;">
+                            Finally, at the very end, we will give you the complete timeline and information regarding the delivery of your physical books!
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 12: Quiz Transition -->
+        <section class="slide theme-quiz-intro" style="background: var(--obsidian); display: flex; align-items: center; justify-content: center; text-align: center; position: relative; overflow: hidden;">
+            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.05; background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 32px 32px;"></div>
+            <div class="content quiz-intro-content" style="max-width: 900px; padding: clamp(2rem, 4vh, 4rem); position: relative; z-index: 1;">
+                <span style="font-family: var(--font-sans); text-transform: uppercase; font-weight: 800; letter-spacing: 4px; font-size: clamp(0.8rem, 1.2vw, 1rem); color: var(--gold-main); margin-bottom: 2rem; display: inline-block; border: 2px solid var(--gold-main); padding: 10px 25px; border-radius: 30px;">Interactive Session</span>
+                
+                <h2 style="font-family: var(--font-heading); font-size: clamp(3.5rem, 6vw, 6rem); color: #fff; font-weight: 900; line-height: 1.1; margin-bottom: 2rem;">Let's Play A Quick Quiz!</h2>
+                
+                <p style="font-family: var(--font-sans); font-size: clamp(1.1rem, 1.8vw, 1.5rem); color: #cbd5e1; font-weight: 500; line-height: 1.6; margin-bottom: 4rem; max-width: 750px; margin-left: auto; margin-right: auto;">
+                    Before we dive into the deep end of publishing and self-publishing benefits, let's see how much you actually know about the publishing industry.
+                </p>
+                
+                <div style="font-family: var(--font-sans); font-size: clamp(1.2rem, 2vw, 1.8rem); color: var(--gold-main); font-weight: 800; text-transform: uppercase; letter-spacing: 2px;">
+                    Are you ready?
+                </div>
+            </div>
+        </section>
+
+        <!-- Slides 11-18: Reserved Blank Slides for Quiz -->
+        <section class="slide"><div class="content glass" style="display:flex; justify-content:center; align-items:center; height:100%; color:var(--slate); opacity:0.5;">[Quiz Slide 1 - Reserved]</div></section>
+        <section class="slide"><div class="content glass" style="display:flex; justify-content:center; align-items:center; height:100%; color:var(--slate); opacity:0.5;">[Quiz Slide 2 - Reserved]</div></section>
+        <section class="slide"><div class="content glass" style="display:flex; justify-content:center; align-items:center; height:100%; color:var(--slate); opacity:0.5;">[Quiz Slide 3 - Reserved]</div></section>
+        <section class="slide"><div class="content glass" style="display:flex; justify-content:center; align-items:center; height:100%; color:var(--slate); opacity:0.5;">[Quiz Slide 4 - Reserved]</div></section>
+        <section class="slide"><div class="content glass" style="display:flex; justify-content:center; align-items:center; height:100%; color:var(--slate); opacity:0.5;">[Quiz Slide 5 - Reserved]</div></section>
+        <section class="slide"><div class="content glass" style="display:flex; justify-content:center; align-items:center; height:100%; color:var(--slate); opacity:0.5;">[Quiz Slide 6 - Reserved]</div></section>
+        <section class="slide"><div class="content glass" style="display:flex; justify-content:center; align-items:center; height:100%; color:var(--slate); opacity:0.5;">[Quiz Slide 7 - Reserved]</div></section>
+        <section class="slide"><div class="content glass" style="display:flex; justify-content:center; align-items:center; height:100%; color:var(--slate); opacity:0.5;">[Quiz Slide 8 - Reserved]</div></section>
+
+        <!-- Slide 19: The Reality of Publishing -->
+        <section class="slide theme-reality">
+            <div class="content glass" style="max-width: 1400px; padding: clamp(2rem, 4vh, 4rem); display: flex; flex-direction: column; justify-content: center; height: 100%;">
+                <div style="text-align: center; margin-bottom: 3rem;">
+                    <span style="font-family: var(--font-sans); text-transform: uppercase; font-weight: 800; letter-spacing: 3px; font-size: 0.9rem; color: #dc2626; margin-bottom: 1rem; display: inline-block;">The Hard Truth</span>
+                    <h2 style="font-family: var(--font-heading); font-size: clamp(2.5rem, 4vw, 4.5rem); color: var(--obsidian); font-weight: 900; line-height: 1.1; margin-bottom: 1.5rem;">The Reality of Publishing in India</h2>
+                    <p style="font-family: var(--font-sans); font-size: clamp(1rem, 1.5vw, 1.2rem); color: var(--slate); font-weight: 500; line-height: 1.6; max-width: 800px; margin: 0 auto;">
+                        Every year, thousands of aspiring writers dream of publishing their first book. Yet, for most of them, the journey ends before it even begins. <strong style="color: var(--obsidian);">Not because they lack talent.</strong> But because the publishing industry often feels confusing, expensive, and out of reach.
+                    </p>
+                </div>
+
+                <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1.5rem; margin-bottom: 4rem;">
+                    <!-- Questions as striking floating tags -->
+                    <div style="background: rgba(220, 38, 38, 0.05); border: 1px solid rgba(220, 38, 38, 0.2); padding: 1rem 2rem; border-radius: 30px; font-weight: 700; color: #b91c1c; font-size: clamp(0.9rem, 1vw, 1.1rem); transform: rotate(-2deg); box-shadow: 0 5px 15px rgba(220,38,38,0.05);">Where do I begin?</div>
+                    <div style="background: rgba(220, 38, 38, 0.05); border: 1px solid rgba(220, 38, 38, 0.2); padding: 1rem 2rem; border-radius: 30px; font-weight: 700; color: #b91c1c; font-size: clamp(0.9rem, 1vw, 1.1rem); transform: rotate(1deg); box-shadow: 0 5px 15px rgba(220,38,38,0.05);">How do I publish my book?</div>
+                    <div style="background: rgba(220, 38, 38, 0.05); border: 1px solid rgba(220, 38, 38, 0.2); padding: 1rem 2rem; border-radius: 30px; font-weight: 700; color: #b91c1c; font-size: clamp(0.9rem, 1vw, 1.1rem); transform: rotate(-1deg); box-shadow: 0 5px 15px rgba(220,38,38,0.05);">Will anyone even read it?</div>
+                    <div style="background: rgba(220, 38, 38, 0.05); border: 1px solid rgba(220, 38, 38, 0.2); padding: 1rem 2rem; border-radius: 30px; font-weight: 700; color: #b91c1c; font-size: clamp(0.9rem, 1vw, 1.1rem); transform: rotate(2deg); box-shadow: 0 5px 15px rgba(220,38,38,0.05);">What if I lose my money?</div>
+                    <div style="background: rgba(220, 38, 38, 0.05); border: 1px solid rgba(220, 38, 38, 0.2); padding: 1rem 2rem; border-radius: 30px; font-weight: 700; color: #b91c1c; font-size: clamp(0.9rem, 1vw, 1.1rem); transform: rotate(0deg); box-shadow: 0 5px 15px rgba(220,38,38,0.05);">What if my book never reaches readers?</div>
+                </div>
+
+                <div style="background: var(--obsidian); color: white; padding: 2rem 3rem; border-radius: 20px; text-align: center; max-width: 900px; margin: 0 auto; box-shadow: 0 20px 40px rgba(0,0,0,0.2);">
+                    <p style="font-family: var(--font-heading); font-size: clamp(1.4rem, 2vw, 1.8rem); font-weight: 900; line-height: 1.4; margin: 0; color: var(--gold-main);">
+                        The biggest challenge isn't writing a book.<br>
+                        <span style="color: white; display: block; margin-top: 10px;">It's knowing how to turn that manuscript into a professional publication with confidence.</span>
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 20: The Challenges -->
+        <section class="slide theme-challenges">
+            <div class="content glass" style="max-width: 1400px; padding: clamp(2rem, 4vh, 4rem); display: flex; flex-direction: column; justify-content: center; height: 100%;">
+                
+                <div style="text-align: center; margin-bottom: 3rem;">
+                    <h2 style="font-family: var(--font-heading); font-size: clamp(2.5rem, 4vw, 4.5rem); color: var(--obsidian); font-weight: 900; line-height: 1.1; margin-bottom: 1rem;">The Challenges Every New Author Faces</h2>
+                    <p style="font-family: var(--font-sans); font-size: clamp(1rem, 1.3vw, 1.1rem); color: var(--slate); font-weight: 600; line-height: 1.6; max-width: 700px; margin: 0 auto;">
+                        Publishing isn't just about printing pages. It's about navigating an entire ecosystem that most first-time writers have never experienced.
+                    </p>
+                </div>
+
+                <!-- Challenges Grid -->
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-bottom: 3.5rem;">
+                    
+                    <div style="background: rgba(255,255,255,0.8); border: 1px solid rgba(0,0,0,0.05); padding: 1.5rem; border-radius: 15px; display: flex; align-items: flex-start; gap: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.02);">
+                        <div style="background: rgba(220, 38, 38, 0.1); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #dc2626; font-size: 1.2rem;">✖</div>
+                        <p style="font-size: 0.95rem; font-weight: 600; color: var(--obsidian); margin: 0; padding-top: 8px;">Finding a trustworthy publishing partner.</p>
+                    </div>
+                    
+                    <div style="background: rgba(255,255,255,0.8); border: 1px solid rgba(0,0,0,0.05); padding: 1.5rem; border-radius: 15px; display: flex; align-items: flex-start; gap: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.02);">
+                        <div style="background: rgba(220, 38, 38, 0.1); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #dc2626; font-size: 1.2rem;">✖</div>
+                        <p style="font-size: 0.95rem; font-weight: 600; color: var(--obsidian); margin: 0; padding-top: 8px;">Understanding ISBNs, copyrights, and distribution.</p>
+                    </div>
+
+                    <div style="background: rgba(255,255,255,0.8); border: 1px solid rgba(0,0,0,0.05); padding: 1.5rem; border-radius: 15px; display: flex; align-items: flex-start; gap: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.02);">
+                        <div style="background: rgba(220, 38, 38, 0.1); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #dc2626; font-size: 1.2rem;">✖</div>
+                        <p style="font-size: 0.95rem; font-weight: 600; color: var(--obsidian); margin: 0; padding-top: 8px;">Professional editing that preserves unique voice.</p>
+                    </div>
+
+                    <div style="background: rgba(255,255,255,0.8); border: 1px solid rgba(0,0,0,0.05); padding: 1.5rem; border-radius: 15px; display: flex; align-items: flex-start; gap: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.02);">
+                        <div style="background: rgba(220, 38, 38, 0.1); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #dc2626; font-size: 1.2rem;">✖</div>
+                        <p style="font-size: 0.95rem; font-weight: 600; color: var(--obsidian); margin: 0; padding-top: 8px;">Cover design and formatting that meet standards.</p>
+                    </div>
+
+                    <div style="background: rgba(255,255,255,0.8); border: 1px solid rgba(0,0,0,0.05); padding: 1.5rem; border-radius: 15px; display: flex; align-items: flex-start; gap: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.02);">
+                        <div style="background: rgba(220, 38, 38, 0.1); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #dc2626; font-size: 1.2rem;">✖</div>
+                        <p style="font-size: 0.95rem; font-weight: 600; color: var(--obsidian); margin: 0; padding-top: 8px;">Reaching readers after the book is published.</p>
+                    </div>
+
+                    <div style="background: rgba(255,255,255,0.8); border: 1px solid rgba(0,0,0,0.05); padding: 1.5rem; border-radius: 15px; display: flex; align-items: flex-start; gap: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.02);">
+                        <div style="background: rgba(220, 38, 38, 0.1); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #dc2626; font-size: 1.2rem;">✖</div>
+                        <p style="font-size: 0.95rem; font-weight: 600; color: var(--obsidian); margin: 0; padding-top: 8px;">Feeling overwhelmed by multiple vendors and costs.</p>
+                    </div>
+
+                </div>
+
+                <div style="background: rgba(216,138,6,0.1); border: 1px solid rgba(216,138,6,0.3); border-radius: 15px; padding: 2rem; text-align: center; max-width: 900px; margin: 0 auto; box-shadow: 0 10px 30px rgba(216,138,6,0.05);">
+                    <p style="font-family: var(--font-sans); font-size: clamp(1rem, 1.4vw, 1.2rem); color: var(--obsidian); font-weight: 600; margin-bottom: 0.5rem;">Many publishing services stop after the book is printed.</p>
+                    <p style="font-family: var(--font-heading); font-size: clamp(1.5rem, 2.2vw, 2rem); color: var(--gold-main); font-weight: 900; margin: 0;">But authors don't just want a printed book.<br><span style="color: var(--obsidian); display: inline-block; margin-top: 5px;">They want to become recognised, respected, and remembered.</span></p>
+                </div>
+                
+            </div>
+        </section>
+
+        <!-- Slide 21: Market Offerings -->
+        <section class="slide theme-market">
+            <div class="content glass" style="max-width: 1400px; padding: clamp(2rem, 4vh, 4rem); display: flex; flex-direction: column; justify-content: center; height: 100%;">
+                <div style="text-align: center; margin-bottom: 3rem;">
+                    <h2 style="font-family: var(--font-heading); font-size: clamp(2.5rem, 4vw, 4.5rem); color: var(--obsidian); font-weight: 900; line-height: 1.1; margin-bottom: 1rem;">What Does The Market Usually Offer?</h2>
+                    <p style="font-family: var(--font-sans); font-size: clamp(1rem, 1.3vw, 1.1rem); color: var(--slate); font-weight: 600; line-height: 1.6; max-width: 700px; margin: 0 auto;">
+                        Most publishing services focus heavily on helping you print and publish a book. A typical publishing package generally includes:
+                    </p>
+                </div>
+
+                <div style="display: flex; gap: 3rem; flex-wrap: wrap; align-items: stretch;">
+                    <!-- Typical Package Grid -->
+                    <div style="flex: 1; min-width: 350px; background: rgba(255,255,255,0.9); border: 2px solid rgba(216,138,6,0.3); border-radius: 20px; padding: 2.5rem; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
+                        <h3 style="font-family: var(--font-sans); text-transform: uppercase; font-weight: 800; letter-spacing: 2px; font-size: 1rem; color: var(--obsidian); margin-bottom: 1.5rem; border-bottom: 2px solid rgba(0,0,0,0.05); padding-bottom: 1rem;">The Typical Package</h3>
+                        <ul style="list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                            <li style="display: flex; gap: 10px; align-items: center; font-weight: 600; color: var(--slate);"><span style="color: #16a34a; font-weight: 900;">✔</span> ISBN Registration</li>
+                            <li style="display: flex; gap: 10px; align-items: center; font-weight: 600; color: var(--slate);"><span style="color: #16a34a; font-weight: 900;">✔</span> Basic Cover Design</li>
+                            <li style="display: flex; gap: 10px; align-items: center; font-weight: 600; color: var(--slate);"><span style="color: #16a34a; font-weight: 900;">✔</span> Interior Formatting</li>
+                            <li style="display: flex; gap: 10px; align-items: center; font-weight: 600; color: var(--slate);"><span style="color: #16a34a; font-weight: 900;">✔</span> Paperback Printing</li>
+                            <li style="display: flex; gap: 10px; align-items: center; font-weight: 600; color: var(--slate);"><span style="color: #16a34a; font-weight: 900;">✔</span> Amazon Listing</li>
+                            <li style="display: flex; gap: 10px; align-items: center; font-weight: 600; color: var(--slate);"><span style="color: #16a34a; font-weight: 900;">✔</span> Author Copies</li>
+                            <li style="display: flex; gap: 10px; align-items: center; font-weight: 600; color: var(--slate); grid-column: span 2;"><span style="color: #16a34a; font-weight: 900;">✔</span> Basic Publishing Support</li>
+                        </ul>
+                    </div>
+
+                    <!-- The Reality Gap -->
+                    <div style="flex: 1.2; min-width: 350px; display: flex; flex-direction: column; justify-content: center;">
+                        <h3 style="font-family: var(--font-heading); font-size: clamp(1.8rem, 2.5vw, 2.2rem); font-weight: 900; color: #dc2626; line-height: 1.2; margin-bottom: 1rem;">Once the book is published...</h3>
+                        <p style="font-family: var(--font-sans); font-size: 1.1rem; font-weight: 600; color: var(--obsidian); margin-bottom: 1.5rem;">The journey often becomes your responsibility.</p>
+                        
+                        <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 2rem;">
+                            <span style="background: var(--obsidian); color: white; padding: 10px 20px; border-radius: 8px; font-weight: 600;">Finding readers</span>
+                            <span style="background: var(--obsidian); color: white; padding: 10px 20px; border-radius: 8px; font-weight: 600;">Building personal brand</span>
+                            <span style="background: var(--obsidian); color: white; padding: 10px 20px; border-radius: 8px; font-weight: 600;">Growing audience</span>
+                            <span style="background: var(--obsidian); color: white; padding: 10px 20px; border-radius: 8px; font-weight: 600;">Marketing your book</span>
+                            <span style="background: var(--obsidian); color: white; padding: 10px 20px; border-radius: 8px; font-weight: 600;">Creating author identity</span>
+                        </div>
+                        
+                        <div style="border-left: 4px solid var(--gold-main); padding-left: 1.5rem;">
+                            <p style="font-family: var(--font-sans); font-size: 1.1rem; color: var(--slate); font-weight: 600; line-height: 1.6; margin: 0;">These are areas where many first-time authors still need to figure things out entirely on their own.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 22: The Dilemma (Part 1) -->
+        <section class="slide theme-dilemma-1">
+            <div class="content glass" style="max-width: 1400px; padding: clamp(2rem, 4vh, 4rem); display: flex; flex-direction: column; justify-content: center; height: 100%;">
+                
+                <div style="text-align: center; margin-bottom: 3rem;">
+                    <h2 style="font-family: var(--font-heading); font-size: clamp(2.5rem, 4vw, 4.5rem); color: var(--obsidian); font-weight: 900; line-height: 1.1; margin-bottom: 1rem;">The Biggest Dilemma<br>Every First-Time Author Faces</h2>
+                    <p style="font-family: var(--font-sans); font-size: clamp(1rem, 1.3vw, 1.2rem); color: var(--slate); font-weight: 600; max-width: 800px; margin: 0 auto;">
+                        When you finally decide to publish, you open Google. Suddenly, you're faced with hundreds of options.
+                    </p>
+                </div>
+
+                <div style="display: flex; flex-wrap: wrap; gap: 3rem; justify-content: center;">
+                    <!-- Cheap Options -->
+                    <div style="flex: 1; min-width: 300px; background: rgba(255,255,255,0.8); border: 2px dashed #94a3b8; border-radius: 15px; padding: 2.5rem; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
+                        <p style="font-weight: 800; color: var(--slate); margin-bottom: 1.5rem; text-transform: uppercase; font-size: 1rem; letter-spacing: 1px;">Some companies promise:</p>
+                        <div style="display: flex; flex-direction: column; gap: 15px;">
+                            <div style="background: #f1f5f9; padding: 15px; border-radius: 10px; font-weight: 700; color: #475569; font-size: 1.1rem;">"Publish Your Book for ₹999"</div>
+                            <div style="background: #f1f5f9; padding: 15px; border-radius: 10px; font-weight: 700; color: #475569; font-size: 1.1rem;">"Complete Publishing from ₹1,999"</div>
+                            <div style="background: #f1f5f9; padding: 15px; border-radius: 10px; font-weight: 700; color: #475569; font-size: 1.1rem;">"Book Publishing from ₹2,999"</div>
+                        </div>
+                    </div>
+
+                    <!-- Expensive Options -->
+                    <div style="flex: 1; min-width: 300px; background: var(--obsidian); border: 2px solid var(--gold-main); border-radius: 15px; padding: 2.5rem; text-align: center; display: flex; flex-direction: column; justify-content: center; box-shadow: 0 15px 40px rgba(0,0,0,0.2);">
+                        <p style="font-weight: 800; color: var(--gold-main); margin-bottom: 2rem; text-transform: uppercase; font-size: 1rem; letter-spacing: 1px;">On the other side... Publishers charging:</p>
+                        <div style="display: flex; flex-direction: column; justify-content: center; gap: 15px;">
+                            <div style="font-family: var(--font-heading); font-size: 3rem; font-weight: 900; color: white; line-height: 1;">₹25,000</div>
+                            <div style="font-family: var(--font-heading); font-size: 3rem; font-weight: 900; color: white; line-height: 1;">₹50,000</div>
+                            <div style="font-family: var(--font-heading); font-size: 3rem; font-weight: 900; color: white; line-height: 1;">₹1,00,000+</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 23: The Dilemma (Part 2) -->
+        <section class="slide theme-dilemma-2">
+            <div class="content glass dilemma-content" style="max-width: 1400px; padding: clamp(2rem, 4vh, 4rem); display: flex; flex-direction: column; justify-content: center; height: 100%;">
+                
+                <div style="background: rgba(216,138,6,0.05); border-radius: 20px; padding: 2.5rem; margin-bottom: 3rem; text-align: center;">
+                    <p style="font-family: var(--font-heading); font-weight: 900; color: var(--obsidian); font-size: 2rem; margin-bottom: 2rem;">And that's where the confusion begins...</p>
+                    <div style="display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; max-width: 1000px; margin: 0 auto;">
+                        <span style="background: white; border: 1px solid rgba(0,0,0,0.1); padding: 10px 20px; border-radius: 25px; font-size: 1rem; font-weight: 600; color: var(--slate); box-shadow: 0 5px 15px rgba(0,0,0,0.05);">"Do I really need to spend this much?"</span>
+                        <span style="background: white; border: 1px solid rgba(0,0,0,0.1); padding: 10px 20px; border-radius: 25px; font-size: 1rem; font-weight: 600; color: var(--slate); box-shadow: 0 5px 15px rgba(0,0,0,0.05);">"Can I even afford it right now?"</span>
+                        <span style="background: white; border: 1px solid rgba(0,0,0,0.1); padding: 10px 20px; border-radius: 25px; font-size: 1rem; font-weight: 600; color: var(--slate); box-shadow: 0 5px 15px rgba(0,0,0,0.05);">"What if I invest and don't get the results I expected?"</span>
+                        <span style="background: white; border: 1px solid rgba(0,0,0,0.1); padding: 10px 20px; border-radius: 25px; font-size: 1rem; font-weight: 600; color: var(--slate); box-shadow: 0 5px 15px rgba(0,0,0,0.05);">"I have EMIs and other priorities—should I really spend?"</span>
+                        <span style="background: white; border: 1px solid rgba(0,0,0,0.1); padding: 10px 20px; border-radius: 25px; font-size: 1rem; font-weight: 600; color: var(--slate); box-shadow: 0 5px 15px rgba(0,0,0,0.05);">"What if I choose the cheapest option now, only to regret it?"</span>
+                    </div>
+                    
+                    <p style="margin-top: 2.5rem; font-weight: 500; color: var(--slate); max-width: 900px; margin-left: auto; margin-right: auto; line-height: 1.7; font-size: 1.1rem;">
+                        For many writers, the dream doesn't stop because they lack talent. <strong style="color: var(--obsidian);">It stops because they don't know which investment is right for their stage.</strong> A lower-priced service suits authors whose goal is just to print. Others need broader support—editing, branding, and long-term development.
+                    </p>
+                </div>
+
+                <div style="text-align: center;">
+                    <p style="font-family: var(--font-sans); text-transform: uppercase; font-weight: 800; letter-spacing: 2px; font-size: 1.1rem; color: var(--slate); margin-bottom: 1rem;">The real question isn't "What's the cheapest way?"</p>
+                    <p style="font-family: var(--font-heading); font-size: clamp(2rem, 3.5vw, 4rem); color: var(--gold-main); font-weight: 900; line-height: 1.1; margin: 0; text-shadow: 0 5px 15px rgba(216,138,6,0.1);">
+                        What kind of author do I want to become over the next 5 years?
+                    </p>
+                </div>
+                
+            </div>
+        </section>
+
+        <!-- Slide 24: The Journey Graph -->
+        <section class="slide theme-journey-graph">
+            <!-- Background Grid -->
+            <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-image: linear-gradient(rgba(0,0,0,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.05) 1px, transparent 1px); background-size: 50px 50px; z-index: 1;"></div>
+            
+            <div class="content" style="max-width: 1400px; margin: 0 auto; padding: 4rem 2rem; position: relative; z-index: 2; width: 100%;">
+                
+                <div style="text-align: center; margin-bottom: 4rem;">
+                    <h2 style="font-family: var(--font-heading); font-size: clamp(2.5rem, 4vw, 4.5rem); color: var(--obsidian); font-weight: 900; line-height: 1.1; margin-bottom: 0.5rem;">The Journey Ahead</h2>
+                    <p style="font-family: var(--font-sans); font-size: clamp(1rem, 1.3vw, 1.2rem); color: var(--slate); font-weight: 600;">Bridging the gap between where you are and where you want to be.</p>
+                </div>
+
+                <div style="position: relative; width: 100%; max-width: 900px; height: 450px; margin: 0 auto; background: rgba(255,255,255,0.95); border-left: 4px solid var(--obsidian); border-bottom: 4px solid var(--obsidian); border-radius: 0 15px 15px 0; box-shadow: 20px 20px 60px rgba(0,0,0,0.08);">
+                    
+                    <!-- Axis Labels -->
+                    <div style="position: absolute; bottom: -35px; left: 50%; transform: translateX(-50%); font-weight: 800; color: var(--slate); letter-spacing: 2px; text-transform: uppercase; font-size: clamp(0.6rem, 1vw, 0.9rem); white-space: nowrap;">Time & Investment</div>
+                    <div style="position: absolute; left: -40px; top: 50%; transform: translateY(-50%) rotate(-90deg); font-weight: 800; color: var(--slate); letter-spacing: 2px; text-transform: uppercase; font-size: clamp(0.6rem, 1vw, 0.9rem); white-space: nowrap; transform-origin: center;">Growth & Recognition</div>
+
+                    <!-- The Line Chart SVG -->
+                    <svg style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 5; display: block;" viewBox="0 0 1000 500" preserveAspectRatio="none">
+                        <!-- Dashed Straight line (the hard path) -->
+                        <path d="M 50,450 L 950,50" fill="none" stroke="#D88A06" stroke-opacity="0.3" stroke-width="4" stroke-dasharray="10 15" />
+                        <!-- Smooth Exponential line (The Dream path) -->
+                        <path d="M 50,450 C 400,450 600,50 950,50" fill="none" stroke="#D88A06" stroke-width="8" stroke-linecap="round" />
+                    </svg>
+
+                    <!-- Point 1: You are here -->
+                    <div style="position: absolute; left: 5%; bottom: 10%; z-index: 10;">
+                        <!-- The Dot -->
+                        <div style="width: 22px; height: 22px; background: var(--obsidian); border: 4px solid white; border-radius: 50%; box-shadow: 0 0 15px rgba(0,0,0,0.3); position: absolute; top: -11px; left: -11px; z-index: 2;"></div>
+                        <!-- The Box -->
+                        <div style="position: absolute; top: 15px; left: 0; background: white; border: 1px solid rgba(0,0,0,0.1); padding: 10px 15px; border-radius: 12px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); width: max-content; text-align: left;">
+                            <p style="font-size: clamp(0.6rem, 1vw, 0.8rem); font-weight: 800; color: #dc2626; text-transform: uppercase; margin-bottom: 5px; letter-spacing: 1px;">Current Situation</p>
+                            <p style="font-family: var(--font-heading); font-weight: 900; font-size: clamp(1rem, 2vw, 1.5rem); color: var(--obsidian); margin: 0;">You Are Here</p>
+                            <p style="font-size: clamp(0.7rem, 1vw, 0.9rem); font-weight: 600; color: var(--slate); margin: 5px 0 0 0;">An aspiring writer</p>
+                        </div>
+                    </div>
+
+                    <!-- Point 2: The Dream -->
+                    <div style="position: absolute; left: 95%; top: 10%; z-index: 10;">
+                        <!-- The Dot -->
+                        <div style="width: 28px; height: 28px; background: #D88A06; border: 4px solid white; border-radius: 50%; box-shadow: 0 0 20px rgba(216,138,6,0.6); position: absolute; top: -14px; left: -14px; z-index: 2;"></div>
+                        <!-- The Box -->
+                        <div style="position: absolute; bottom: 20px; right: 0; background: var(--obsidian); border: 1px solid rgba(255,255,255,0.1); padding: 15px 20px; border-radius: 12px; box-shadow: 0 15px 30px rgba(0,0,0,0.2); width: max-content; text-align: right;">
+                            <p style="font-size: clamp(0.6rem, 1vw, 0.8rem); font-weight: 800; color: #D88A06; text-transform: uppercase; margin-bottom: 5px; letter-spacing: 1px;">The Goal</p>
+                            <p style="font-family: var(--font-heading); font-weight: 900; font-size: clamp(1.2rem, 2vw, 1.8rem); color: white; margin: 0;">Where You Want To Be</p>
+                            <p style="font-size: clamp(0.7rem, 1vw, 1rem); font-weight: 500; color: #cbd5e1; margin: 5px 0 0 0;">A recognized & respected author</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 25: Author Launchpad -->
+        <section class="slide theme-author-launchpad" style="background: var(--obsidian);">
+            <!-- Subtle Gold Glow Background -->
+            <div style="position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle at center, rgba(216,138,6,0.15) 0%, transparent 40%); z-index: 1;"></div>
+            
+            <div class="content" style="max-width: 1200px; margin: 0 auto; padding: 4rem 2rem; position: relative; z-index: 2; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                
+                <span style="font-family: var(--font-sans); text-transform: uppercase; font-weight: 800; letter-spacing: 3px; font-size: 0.9rem; color: var(--gold-main); background: rgba(216,138,6,0.1); padding: 8px 20px; border-radius: 30px; border: 1px solid rgba(216,138,6,0.3); margin-bottom: 2rem;">The Ultimate Solution</span>
+                
+                <h2 style="font-family: var(--font-heading); font-size: clamp(2.5rem, 4vw, 4rem); color: white; font-weight: 900; line-height: 1.2; margin-bottom: 1.5rem; text-align: center;">
+                    To reach the top in 2026,<br>you need more than a printer.
+                </h2>
+                
+                <p style="font-family: var(--font-sans); font-size: clamp(1.1rem, 1.5vw, 1.3rem); color: #cbd5e1; font-weight: 500; text-align: center; max-width: 800px; margin-bottom: 3.5rem; line-height: 1.6;">
+                    We believe we are the <strong style="color: var(--gold-light);">best partner</strong> to bridge the gap between where you are today and where you want to be.
+                </p>
+
+                <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(216,138,6,0.2); border-radius: 20px; padding: 4rem 3rem; max-width: 900px; width: 100%; backdrop-filter: blur(10px); box-shadow: 0 20px 40px rgba(0,0,0,0.5), inset 0 0 20px rgba(216,138,6,0.05); position: relative; overflow: hidden;">
+                    
+                    <!-- Decorative corner glow -->
+                    <div style="position: absolute; top: -30px; right: -30px; width: 150px; height: 150px; background: var(--gold-main); filter: blur(60px); opacity: 0.3; border-radius: 50%;"></div>
+
+                    <h3 style="font-family: var(--font-heading); font-size: clamp(1.8rem, 3vw, 2.5rem); color: var(--gold-main); font-weight: 800; margin-bottom: 1.5rem; text-align: center; position: relative; z-index: 2;">Our Flagship AuthorLaunchpad™ Program</h3>
+                    
+                    <p style="font-family: var(--font-sans); font-size: clamp(1.1rem, 1.5vw, 1.3rem); color: white; font-weight: 600; text-align: center; line-height: 1.6; margin: 0; position: relative; z-index: 2;">
+                        We don't just publish your book.<br>
+                        <span style="font-size: clamp(1.5rem, 2vw, 1.8rem); color: var(--gold-light); font-weight: 800; display: block; margin-top: 15px; letter-spacing: 1px;">We launch your Author Brand.</span>
+                    </p>
+                </div>
+                
+            </div>
+        </section>
+
+        <!-- Slide 26: Flagship Package Intro & Discount -->
+        <section class="slide theme-package-intro" style="background: var(--obsidian);">
+            <!-- Elegant background accent -->
+            <div style="position: absolute; bottom: 0; left: 0; width: 100%; height: 50%; background: linear-gradient(to top, rgba(216,138,6,0.1), transparent); z-index: 1;"></div>
+            
+            <div class="content" style="max-width: 1200px; margin: 0 auto; padding: 4rem 2rem; position: relative; z-index: 2; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                
+                <p style="font-family: var(--font-sans); text-transform: uppercase; font-weight: 800; letter-spacing: 4px; font-size: clamp(0.7rem, 1.2vw, 0.9rem); color: var(--gold-main); margin-bottom: 2rem;">A Special Announcement</p>
+                
+                <h2 style="font-family: var(--font-heading); font-size: clamp(2.5rem, 5vw, 4rem); color: white; font-weight: 900; line-height: 1.2; margin-bottom: 1.5rem; text-align: center;">
+                    Because you are still here...
+                </h2>
+                
+                <p style="font-family: var(--font-sans); font-size: clamp(1.1rem, 1.5vw, 1.3rem); color: #cbd5e1; font-weight: 500; text-align: center; max-width: 900px; margin-bottom: 3.5rem; line-height: 1.6;">
+                    We are offering an exclusive <strong style="color: var(--gold-light); font-size: 1.3em;">Flat ₹5,000 Discount</strong> on our Flagship Package, only for those who are serious about their journey today.
+                </p>
+
+                <div style="background: rgba(216,138,6,0.05); border: 1px solid rgba(216,138,6,0.3); border-radius: 20px; padding: 3rem; max-width: 800px; width: 100%; backdrop-filter: blur(10px); text-align: center; margin-bottom: 2rem;">
+                    <p style="font-family: var(--font-heading); font-size: clamp(1.8rem, 2.5vw, 2.2rem); color: white; font-weight: 800; margin-bottom: 1rem; font-style: italic;">
+                        "This is not a cost. This is not an expense."
+                    </p>
+                    <p style="font-family: var(--font-sans); font-size: clamp(1rem, 1.5vw, 1.2rem); color: var(--gold-main); font-weight: 700; margin: 0; text-transform: uppercase; letter-spacing: 2px;">
+                        It is an investment in your brand that will generate returns for years.
+                    </p>
+                </div>
+
+                <h3 style="font-family: var(--font-heading); font-size: clamp(1.5rem, 2vw, 2rem); color: white; font-weight: 700; margin-top: 2rem; letter-spacing: 1px;">
+                    Let's explore what's inside.
+                </h3>
+                
+            </div>
+        </section>
+
+        <!-- Slide 27: Package Details & Pricing -->
+        <section class="slide theme-package-details" style="background: var(--ivory);">
+            <div class="content" style="max-width: 1400px; margin: 0 auto; padding: 4rem 2rem; position: relative; z-index: 2; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                
+                <!-- Header -->
+                <div style="text-align: center; margin-bottom: 3rem;">
+                    <h2 style="font-family: var(--font-heading); font-size: clamp(2rem, 3.5vw, 3.5rem); color: var(--obsidian); font-weight: 900; line-height: 1.1; margin-bottom: 0.5rem;">Flagship AuthorLaunchpad™</h2>
+                    <p style="font-family: var(--font-sans); color: var(--slate); font-weight: 600; font-size: clamp(1rem, 1.5vw, 1.2rem);">Everything you need to build your author brand.</p>
+                </div>
+
+                <!-- Main Layout Grid -->
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; width: 100%; max-width: 1100px; margin-bottom: 3rem;">
+                    
+                    <!-- Pricing Card -->
+                    <div style="background: var(--obsidian); border-radius: 20px; padding: 3rem 2rem; box-shadow: 0 20px 40px rgba(0,0,0,0.15); text-align: center; position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: center;">
+                        <div style="position: absolute; top: -50px; right: -50px; width: 150px; height: 150px; background: var(--gold-main); filter: blur(50px); opacity: 0.2; border-radius: 50%;"></div>
+                        <p style="font-family: var(--font-sans); color: var(--gold-main); font-weight: 800; text-transform: uppercase; letter-spacing: 2px; font-size: 0.9rem; margin-bottom: 1rem;">Exclusive Attendee Price</p>
+                        
+                        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; margin-bottom: 1rem;">
+                            <span style="font-size: clamp(1.5rem, 2vw, 2rem); color: rgba(255,255,255,0.4); text-decoration: line-through; font-weight: 600;">₹15,000</span>
+                            <div style="font-family: var(--font-heading); font-size: clamp(3rem, 5vw, 4.5rem); color: white; font-weight: 900; line-height: 1;">
+                                ₹10,000
+                            </div>
+                        </div>
+                        
+                        <div style="background: rgba(216,138,6,0.15); border: 1px solid rgba(216,138,6,0.3); padding: 8px 15px; border-radius: 8px; display: inline-block; margin: 0 auto;">
+                            <p style="font-family: var(--font-sans); color: var(--gold-light); font-weight: 700; font-size: 0.9rem; margin: 0; text-transform: uppercase; letter-spacing: 1px;">Flat ₹5,000 Off Today</p>
+                        </div>
+                    </div>
+
+                    <!-- Benefits List -->
+                    <div style="background: white; border: 1px solid rgba(0,0,0,0.05); border-radius: 20px; padding: 2.5rem 2rem; box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-align: left; display: flex; flex-direction: column; justify-content: center;">
+                        <h3 style="font-family: var(--font-heading); font-size: 1.5rem; color: var(--obsidian); font-weight: 800; margin-bottom: 1.5rem;">What's Included:</h3>
+                        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 1.2rem;">
+                            <li style="display: flex; align-items: flex-start; gap: 12px;">
+                                <div style="background: var(--gold-main); border-radius: 50%; padding: 4px; display: flex; align-items: center; justify-content: center; margin-top: 2px;">
+                                    <svg style="width: 14px; height: 14px; color: white;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                </div>
+                                <span style="font-size: 1.05rem; color: var(--obsidian); font-weight: 600;">Complete Author Brand Identity Setup</span>
+                            </li>
+                            <li style="display: flex; align-items: flex-start; gap: 12px;">
+                                <div style="background: var(--gold-main); border-radius: 50%; padding: 4px; display: flex; align-items: center; justify-content: center; margin-top: 2px;">
+                                    <svg style="width: 14px; height: 14px; color: white;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                </div>
+                                <span style="font-size: 1.05rem; color: var(--obsidian); font-weight: 600;">Premium Book Cover & Interior Design</span>
+                            </li>
+                            <li style="display: flex; align-items: flex-start; gap: 12px;">
+                                <div style="background: var(--gold-main); border-radius: 50%; padding: 4px; display: flex; align-items: center; justify-content: center; margin-top: 2px;">
+                                    <svg style="width: 14px; height: 14px; color: white;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                </div>
+                                <span style="font-size: 1.05rem; color: var(--obsidian); font-weight: 600;">Global Distribution & ISBN Assignment</span>
+                            </li>
+                            <li style="display: flex; align-items: flex-start; gap: 12px;">
+                                <div style="background: var(--gold-main); border-radius: 50%; padding: 4px; display: flex; align-items: center; justify-content: center; margin-top: 2px;">
+                                    <svg style="width: 14px; height: 14px; color: white;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                </div>
+                                <span style="font-size: 1.05rem; color: var(--obsidian); font-weight: 600;">Verified Author Recognition Certificate</span>
+                            </li>
+                            <li style="display: flex; align-items: flex-start; gap: 12px;">
+                                <div style="background: var(--gold-main); border-radius: 50%; padding: 4px; display: flex; align-items: center; justify-content: center; margin-top: 2px;">
+                                    <svg style="width: 14px; height: 14px; color: white;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                </div>
+                                <span style="font-size: 1.05rem; color: var(--obsidian); font-weight: 600;">Dedicated Launchpad Support Team</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- EMI Banner -->
+                <div style="background: rgba(216,138,6,0.1); border: 2px dashed rgba(216,138,6,0.5); border-radius: 15px; padding: 1.5rem 2rem; width: 100%; max-width: 1100px; display: flex; align-items: center; justify-content: center; gap: 1.5rem; flex-wrap: wrap;">
+                    <div style="background: var(--obsidian); color: white; padding: 8px 15px; border-radius: 8px; font-weight: 800; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">0% Interest</div>
+                    <p style="font-family: var(--font-sans); font-size: 1.1rem; color: var(--obsidian); font-weight: 700; margin: 0; text-align: center;">
+                        Flexible EMI Options Available: <span style="color: var(--gold-main); font-weight: 900;">10 Days</span> &nbsp;•&nbsp; <span style="color: var(--gold-main); font-weight: 900;">15 Days</span> &nbsp;•&nbsp; <span style="color: var(--gold-main); font-weight: 900;">2 Months</span>
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Slide 4: The Struggle (Hurt) -->
+        <section class="slide theme-struggle">
+            <div class="content glass">
+                <div class="icon-wrapper">
+                    <svg class="graphic-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"></path>
+                    </svg>
+                </div>
+                <h2 class="title">THE SILENT YEARS</h2>
+                <p class="body-text">Most spend a lifetime hiding their voice.<br><br>Poems deleted in the dark. Stories locked away in phone notes. Pages buried in forgotten notebooks. The quiet fear of being truly seen.</p>
+            </div>
+        </section>
+
+        <!-- Slide 4: The Turning Point (Bridge) -->
+        <section class="slide theme-turning-point">
+            <div class="content glass">
+                <div class="icon-wrapper gold-glow">
+                    <svg class="graphic-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                    </svg>
+                </div>
+                <h2 class="title">THE DEFINING DECISION</h2>
+                <p class="body-text highlight-text">But today, the silence breaks.</p>
+                <p class="body-text">Hundreds of writers made the ultimate choice—deciding that their words, their pain, and their love absolutely <strong>deserve to be immortalized</strong>.</p>
+            </div>
+            <div class="visual light-rays"></div>
+        </section>
+
+        <!-- Slide 5: The Celebration (Honey) -->
+        <section class="slide theme-celebration">
+            <div class="content">
+                <h2 class="title text-obsidian">MORE THAN A BOOK</h2>
+                <div class="quote-box">
+                    <p class="body-text">This is not just a book launch.</p>
+                    <p class="body-text">Tonight, we celebrate the absolute courage it takes to bare your soul to the world. Tonight, we celebrate <strong>YOU</strong>.</p>
+                    <h3 class="subtitle standout-badge">The Published Author</h3>
+                </div>
+            </div>
+            <div class="visual gold-confetti"></div>
+        </section>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

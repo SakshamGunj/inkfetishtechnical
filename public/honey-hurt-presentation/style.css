@@ -125,11 +125,20 @@ body::before {
     max-height: 90vh;
     padding: clamp(1.5rem, 4vh, 4rem);
     overflow-y: auto; /* Prevent clipping if content is too long */
-    scrollbar-width: none; /* Firefox */
+    scrollbar-width: thin;
+    scrollbar-color: var(--gold-main) rgba(255,255,255,0.1);
 }
 
 .content::-webkit-scrollbar {
-    display: none; /* Chrome/Safari */
+    width: 6px;
+}
+.content::-webkit-scrollbar-track {
+    background: rgba(255,255,255,0.1);
+    border-radius: 10px;
+}
+.content::-webkit-scrollbar-thumb {
+    background: var(--gold-main);
+    border-radius: 10px;
 }
 
 .glass {

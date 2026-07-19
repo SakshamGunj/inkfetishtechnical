@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Download, ArrowLeft, CheckCircle2, ShieldCheck, Share2 } from "lucide-react";
+import { Download, ArrowLeft, CheckCircle2, ShieldCheck, Share2, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 
@@ -14,6 +14,7 @@ export default function CertificateDownloadPage() {
   
   const [recordName, setRecordName] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isDownloading, setIsDownloading] = useState(false);
 
   // We fetch the CSV again here to verify the name, just to show it in the UI.
   useEffect(() => {
@@ -50,14 +51,30 @@ export default function CertificateDownloadPage() {
 
   const pdfUrl = `/hnhcertificatefolder/${id}.pdf`;
 
-  const handleDownload = () => {
-    // Programmatic download
-    const link = document.createElement("a");
-    link.href = pdfUrl;
-    link.download = `Certificate-${recordName || id}.pdf`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+  const handleDownload = async () => {
+    setIsDownloading(true);
+    try {
+      const response = await fetch(pdfUrl);
+      if (!response.ok) throw new Error("Network response was not ok");
+      
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `Certificate-${recordName || id}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Error downloading file:", error);
+      // Fallback for extreme cases
+      window.open(pdfUrl, '_blank');
+    } finally {
+      setIsDownloading(false);
+    }
   };
 
   const handleShare = async () => {
@@ -119,9 +136,18 @@ export default function CertificateDownloadPage() {
               <Share2 className="w-4 h-4" />
               <span className="hidden sm:inline">Share</span>
             </Button>
-            <Button onClick={handleDownload} className="gap-2 bg-gradient-to-r from-amber-500 to-rose-500 hover:from-amber-600 hover:to-rose-600 text-white shadow-md hover:shadow-lg transition-all">
-              <Download className="w-4 h-4" />
-              Download PDF
+            <Button onClick={handleDownload} disabled={isDownloading} className="gap-2 bg-gradient-to-r from-amber-500 to-rose-500 hover:from-amber-600 hover:to-rose-600 text-white shadow-md hover:shadow-lg transition-all min-w-[140px]">
+              {isDownloading ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Downloading...
+                </>
+              ) : (
+                <>
+                  <Download className="w-4 h-4" />
+                  Download PDF
+                </>
+              )}
             </Button>
           </motion.div>
         </div>
@@ -145,7 +171,17 @@ export default function CertificateDownloadPage() {
         </motion.div>
         
         <div className="mt-12 text-center text-slate-500 text-sm">
-          <p>Having trouble viewing? <button onClick={handleDownload} className="text-amber-600 font-medium hover:underline">Download directly</button></p>
+          <p>
+            Having trouble downloading?{' '}
+            <a 
+              href={pdfUrl} 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="text-amber-600 font-medium hover:underline"
+            >
+              Open the PDF directly in a new tab
+            </a>
+          </p>
         </div>
       </div>
     </div>

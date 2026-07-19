@@ -43,9 +43,21 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Click Events
-    navRight.addEventListener('click', nextSlide);
-    navLeft.addEventListener('click', prevSlide);
+    // Click Events (Navigate by clicking edges of screen)
+    document.addEventListener('click', (e) => {
+        // Prevent navigation if clicking on a button or link or input
+        if (e.target.closest('button') || e.target.closest('a') || e.target.closest('input')) return;
+        
+        const clickX = e.clientX;
+        const width = window.innerWidth;
+        
+        // Left 15% goes back, right 15% goes forward
+        if (clickX < width * 0.15) {
+            prevSlide();
+        } else if (clickX > width * 0.85) {
+            nextSlide();
+        }
+    });
 
     // Keyboard Events
     document.addEventListener('keydown', (e) => {

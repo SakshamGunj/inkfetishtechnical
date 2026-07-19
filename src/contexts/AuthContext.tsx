@@ -39,8 +39,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                     } else {
                         setAuthorUsername(null);
                     }
-                } catch (error) {
-                    console.error("Error fetching author profile mapping:", error);
+                } catch (error: any) {
+                    if (error?.code === 'unavailable' || error?.message?.includes('offline')) {
+                        console.warn("Firestore unavailable (offline), skipping profile fetch.");
+                    } else {
+                        console.error("Error fetching author profile mapping:", error);
+                    }
                     setAuthorUsername(null);
                 }
             } else {

@@ -21,6 +21,7 @@ const authors = [
   { name: 'Mahika Mukund', slug: 'mahika', role: 'Contemporary Author & Poet', imageBg: 'bg-ink-900/5' },
   { name: 'Anonymous', slug: 'anonymous', role: 'The Love Anthology Co-Author', imageBg: 'bg-ink-900/10' },
   { name: 'Umme Kulsum', slug: 'etherea', role: 'Poet & Student', imageBg: 'bg-ink-900/5' },
+  { name: 'Aritra Banerjee', slug: 'aritra', role: 'Creative Writer & Singer', imageBg: 'bg-ink-900/10' },
 ];
 
 export default function AuthorsPage() {

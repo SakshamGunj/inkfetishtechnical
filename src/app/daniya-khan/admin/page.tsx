@@ -6,21 +6,13 @@ import { Lock, Search, Package, TrendingUp, Users, BookOpen } from 'lucide-react
 import { useRouter } from 'next/navigation';
 
 const MOCK_STATS = {
-  totalRevenue: 35280,
-  totalOrders: 142,
-  signedEditions: 89,
-  standardEditions: 53,
+  totalRevenue: 0,
+  totalOrders: 0,
+  signedEditions: 0,
+  standardEditions: 0,
 };
 
-const MOCK_ORDERS = [
-  { id: 'dkbook_170123_4a9z1', date: '2026-07-22', name: 'Ayesha Khan', email: 'ayesha.k@example.com', bundle: 'signed', status: 'PAID', amount: 289 },
-  { id: 'dkbook_170124_7c2b3', date: '2026-07-22', name: 'Rohan Sharma', email: 'rohan.s@example.com', bundle: 'standard', status: 'PAID', amount: 229 },
-  { id: 'dkbook_170125_1p8x4', date: '2026-07-21', name: 'Sara Ali', email: 'sara.ali@example.com', bundle: 'signed', status: 'PAID', amount: 289 },
-  { id: 'dkbook_170126_9m3v2', date: '2026-07-21', name: 'Kabir Das', email: 'kabir.d@example.com', bundle: 'signed', status: 'PAID', amount: 289 },
-  { id: 'dkbook_170127_4k6n7', date: '2026-07-20', name: 'Priya Patel', email: 'priya.p@example.com', bundle: 'standard', status: 'PAID', amount: 229 },
-  { id: 'dkbook_170128_2b5m8', date: '2026-07-20', name: 'Omar Farooq', email: 'omar.f@example.com', bundle: 'signed', status: 'PAID', amount: 289 },
-  { id: 'dkbook_170129_8t1c4', date: '2026-07-19', name: 'Neha Gupta', email: 'neha.g@example.com', bundle: 'standard', status: 'PAID', amount: 229 },
-];
+const MOCK_ORDERS: any[] = [];
 
 export default function DaniyaAdminDashboard() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);

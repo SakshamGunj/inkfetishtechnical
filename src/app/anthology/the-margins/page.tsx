@@ -89,81 +89,67 @@ export default function TheMarginsLandingPage() {
       
       <div className="min-h-screen bg-vibrant-orange text-[#111] font-inter selection:bg-[#111] selection:text-white pb-24 sm:pb-0 overflow-x-hidden">
         
-        {/* Navigation */}
-        <nav className="w-full py-4 px-6 lg:px-12 flex justify-between items-center relative z-50">
-          <div className="flex items-center gap-3">
-            <div className="bg-white px-4 py-2 rounded shadow-sm border-2 border-white/20 text-[#F05C33] font-oswald tracking-wide font-bold flex flex-col leading-tight">
-               <span>Inkfetish</span>
-               <span className="text-xs">Publications</span>
-            </div>
-          </div>
-        </nav>
+
 
         {/* Hero Section */}
-        <section className="relative pt-4 pb-12 lg:pb-0 px-4 sm:px-6 lg:px-12 flex flex-col lg:flex-row items-center justify-center min-h-[90vh] lg:h-[calc(100vh-90px)] lg:min-h-0 gap-8 lg:gap-10 max-w-7xl mx-auto overflow-hidden">
+        <section className="relative pt-10 pb-16 lg:py-12 px-4 sm:px-6 lg:px-12 flex flex-col-reverse lg:flex-row items-center justify-center lg:min-h-[95vh] gap-8 max-w-[90rem] mx-auto">
           
           {/* Left Column: Typewriter Paper Concept */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
-            className="w-full lg:w-5/12 z-10 max-w-md mx-auto lg:mx-0 flex flex-col justify-center h-full"
+            className="w-full lg:w-8/12 z-10 max-w-2xl mx-auto lg:mx-0 flex flex-col justify-center"
           >
-            <div className="bg-typewriter-paper p-6 sm:p-8 lg:p-8 xl:p-10 shadow-2xl relative border-l-4 border-black/10 transform rotate-[-1deg] flex-shrink-0">
-                <div className="typewriter-dots mb-3 sm:mb-4">
+            <div className="bg-typewriter-paper p-4 sm:p-5 lg:p-6 shadow-2xl relative border-l-4 border-black/10 transform rotate-[-1deg] flex-shrink-0">
+                <div className="typewriter-dots mb-2 sm:mb-3">
                     <span className="dot-red"></span>
                     <span className="dot-green"></span>
                     <span className="dot-yellow"></span>
                 </div>
                 
-                <p className="font-mono text-[11px] sm:text-xs font-bold mb-3 tracking-tight">inkfetish.in</p>
+                <p className="font-mono text-xs sm:text-sm font-bold mb-2 tracking-tight">inkfetish.in</p>
                 
-                <div className="typewriter-dash my-3 sm:my-4"></div>
+                <div className="typewriter-dash my-2 sm:my-3"></div>
                 
-                <div className="bg-[#F05C33] text-white px-2 py-0.5 sm:px-3 sm:py-1 font-mono text-[10px] sm:text-xs font-bold inline-block mb-3 sm:mb-4 uppercase tracking-wider">
+                <div className="bg-[#F05C33] text-white px-2 py-0.5 sm:px-3 sm:py-1 font-mono text-[10px] sm:text-xs font-bold inline-block mb-2 sm:mb-3 uppercase tracking-wider">
                     Presenting
                 </div>
                 
-                <h3 className="font-mono font-bold text-sm sm:text-base lg:text-lg xl:text-xl leading-relaxed tracking-tight">
+                <h3 className="font-mono font-bold text-base sm:text-xl lg:text-2xl xl:text-3xl leading-relaxed tracking-tight">
                     MEET THE <br/>
                     <span className="text-[#F05C33]">TOP 200 POETS OF</span>
                 </h3>
                 
-                <div className="typewriter-dash my-3 sm:my-4"></div>
+                <div className="typewriter-dash my-2 sm:my-3"></div>
                 
-                <p className="font-mono font-bold text-xs sm:text-sm tracking-tight mb-2">Poetry Festival - Season 2</p>
-                <div className="typewriter-dash my-3 sm:my-4"></div>
+                <p className="font-mono font-bold text-sm sm:text-base tracking-tight mb-1">Poetry Festival - Season 2</p>
+                <div className="typewriter-dash my-2 sm:my-3"></div>
                 
-                <p className="font-mono text-[11px] sm:text-xs font-bold leading-relaxed mb-3 sm:mb-4 mt-3 sm:mt-4">
+                <p className="font-mono text-xs sm:text-sm font-bold leading-relaxed mb-2 sm:mb-3 mt-2 sm:mt-3">
                     Two hundred voices.<br/>
                     One stage.<br/>
                     Countless stories.
                 </p>
                 
-                <div className="typewriter-dash my-3 sm:my-4"></div>
+                <p className="font-mono text-[11px] sm:text-sm leading-relaxed mb-2 sm:mb-3 opacity-80 border-l-2 border-[#F05C33] pl-3">
+                    A culmination of literary excellence from across the nation. The finest poems from the most anticipated poetry event of the year have been immortalized in this exclusive anthology. Experience the raw emotion and undeniable talent of India's rising literary stars.
+                </p>
+
+                <div className="typewriter-dash my-2 sm:my-3"></div>
                 
-                <p className="font-mono font-bold text-[11px] sm:text-xs tracking-tight">A celebration of words.</p>
-                <div className="typewriter-dash my-3 sm:my-4"></div>
+                <p className="font-mono font-bold text-[11px] sm:text-sm tracking-tight">A celebration of words.</p>
+                <div className="typewriter-dash my-2 sm:my-3"></div>
                 
                 {/* Embedded paper slip */}
-                <div className="bg-[#F6F2EB] shadow-lg p-3 sm:p-4 transform rotate-2 font-mono font-bold text-xs sm:text-sm text-center leading-snug border border-black/5 mt-2">
+                <div className="bg-[#F6F2EB] shadow-lg p-2 sm:p-3 transform rotate-2 font-mono font-bold text-xs sm:text-sm text-center leading-snug border border-black/5 mt-1">
                     Presenting<br/>
                     the top 200 poets<br/>
                     from poetry<br/>
                     festival season 2
                 </div>
             </div>
-            
-            {/* The CTA Button for Hero */}
-            <div className="mt-6 transform translate-x-0 sm:translate-x-2">
-                <Link 
-                  href="/anthology/the-margins/buy"
-                  className="group w-full relative bg-[#111] text-white px-6 py-3.5 sm:py-4 font-oswald tracking-widest font-bold text-sm sm:text-base flex items-center justify-center gap-3 overflow-hidden shadow-2xl hover:bg-white hover:text-[#111] transition-all border-2 border-[#111]"
-                >
-                  RESERVE YOUR COPY
-                  <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
-                </Link>
-            </div>
+
           </motion.div>
 
           {/* Right Column: Title text */}
@@ -171,9 +157,14 @@ export default function TheMarginsLandingPage() {
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="w-full lg:w-7/12 flex flex-col justify-center items-center lg:items-start h-full pb-8 lg:pb-0"
+            className="w-full lg:w-4/12 flex flex-col justify-center items-center lg:items-start pb-8 lg:pb-0"
           >
-            <h1 className="font-oswald font-bold text-[25vw] sm:text-[9rem] lg:text-[8rem] xl:text-[10rem] 2xl:text-[11rem] leading-[0.85] text-[#111] tracking-tighter drop-shadow-md text-center lg:text-left mb-4 sm:mb-6 uppercase flex flex-col">
+            <div className="flex flex-col items-center lg:items-start mb-2 sm:mb-4 text-[#111]">
+               <span className="font-oswald font-bold text-xl sm:text-2xl tracking-widest uppercase leading-none">INKFETISH</span>
+               <span className="font-mono text-[0.65rem] sm:text-xs tracking-[0.3em] uppercase font-bold mt-1 opacity-80">Publications</span>
+            </div>
+
+            <h1 className="font-oswald font-bold text-[25vw] sm:text-[8rem] lg:text-[5rem] xl:text-[6rem] 2xl:text-[7rem] leading-[0.85] text-[#111] tracking-tighter drop-shadow-md text-center lg:text-left mb-2 uppercase flex flex-col">
               <span className="text-[#F5EEDB]">THE</span>
               <span>MARGINS</span>
             </h1>
@@ -187,19 +178,54 @@ export default function TheMarginsLandingPage() {
                 </div>
             </div>
             
-            <h2 className="font-mono text-base sm:text-lg lg:text-xl xl:text-2xl font-bold uppercase tracking-tight text-center lg:text-left mt-4 border-l-4 border-[#111] pl-3 sm:pl-4">
+            <h2 className="font-mono text-base sm:text-lg lg:text-lg xl:text-xl font-bold uppercase tracking-tight text-center lg:text-left mt-4 border-l-4 border-[#111] pl-3 sm:pl-4">
                 Where Stories Live<br/>
                 Between The Lines
             </h2>
+
+            <div className="mt-4 lg:mt-6 flex flex-col items-center lg:items-start">
+                <Link 
+                  href="/anthology/the-margins/buy"
+                  className="group inline-flex items-center justify-center w-full sm:w-auto gap-3 bg-[#00C853] text-[#111] px-8 py-3.5 font-oswald tracking-widest font-bold text-base sm:text-lg shadow-[0_0_20px_rgba(0,200,83,0.4)] hover:bg-[#111] hover:text-[#00C853] transition-all border-2 border-[#111]"
+                >
+                  RESERVE YOUR COPY
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </Link>
+                
+                <div className="grid grid-cols-3 gap-2 sm:gap-3 w-full max-w-[26rem] mt-6">
+                    <div className="bg-[#111] p-3 flex flex-col items-center text-center justify-center border-b-2 border-[#F5EEDB] shadow-lg">
+                        <ShieldCheck className="w-5 h-5 mb-1.5 text-[#F5EEDB]" />
+                        <span className="font-oswald font-bold text-[10px] sm:text-[11px] text-white uppercase tracking-widest leading-tight">99% Delivery<br/>Success</span>
+                    </div>
+                    <div className="bg-[#111] p-3 flex flex-col items-center text-center justify-center border-b-2 border-[#F5EEDB] shadow-lg">
+                        <Star className="w-5 h-5 mb-1.5 text-[#F5EEDB]" />
+                        <span className="font-oswald font-bold text-[10px] sm:text-[11px] text-white uppercase tracking-widest leading-tight">Trusted By<br/>20K+ Readers</span>
+                    </div>
+                    <div className="bg-[#111] p-3 flex flex-col items-center text-center justify-center border-b-2 border-[#F5EEDB] shadow-lg">
+                        <BookOpen className="w-5 h-5 mb-1.5 text-[#F5EEDB]" />
+                        <span className="font-oswald font-bold text-[10px] sm:text-[11px] text-white uppercase tracking-widest leading-tight">Premium<br/>Quality</span>
+                    </div>
+                </div>
+            </div>
+
+
           </motion.div>
         </section>
 
         {/* Back Cover / About Section */}
         <section className="bg-[#111] text-[#F5EEDB] py-24 px-6 relative border-t-8 border-[#F5EEDB]">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl sm:text-4xl font-oswald font-bold uppercase tracking-wider mb-10 text-center text-[#F05C33]">
+            <h2 className="text-3xl sm:text-4xl font-oswald font-bold uppercase tracking-wider mb-12 text-center text-[#F05C33]">
               About The Book
             </h2>
+            
+            <div className="w-full flex justify-center mb-12 drop-shadow-[0_20px_50px_rgba(240,92,51,0.2)] hover:-translate-y-2 transition-transform duration-500">
+                <img 
+                    src="/margins-mockup.png" 
+                    alt="The Margins Book Mockup" 
+                    className="w-full max-w-md h-auto object-contain"
+                />
+            </div>
             
             <div className="space-y-8 font-inter text-lg sm:text-xl font-medium leading-relaxed opacity-90 text-center sm:text-left">
                 <p>
@@ -292,19 +318,29 @@ export default function TheMarginsLandingPage() {
                 <span className="font-bold whitespace-nowrap ml-4">₹499</span>
               </div>
               <div className="flex justify-between items-center py-4 border-b border-white/10 text-[#F05C33]">
-                <span className="font-bold flex items-center gap-2">Special Discount</span>
-                <span className="font-bold whitespace-nowrap ml-4">-₹100</span>
+                <span className="font-bold flex items-center gap-2">Early Bird / Community Discount</span>
+                <span className="font-bold whitespace-nowrap ml-4">-₹114</span>
               </div>
               <div className="flex justify-between items-center py-4 border-b border-white/10">
                 <span className="opacity-80">Shipping</span>
                 <span className="font-mono font-bold uppercase tracking-widest text-sm whitespace-nowrap ml-4">Free</span>
+              </div>
+
+              <div className="bg-[#F05C33]/20 border border-[#F05C33] p-5 rounded-sm mt-8 mb-8">
+                <div className="flex items-start gap-4">
+                  <Star className="w-6 h-6 text-[#F05C33] shrink-0 mt-0.5" />
+                  <div className="text-left">
+                    <span className="font-oswald font-bold text-white block text-sm lg:text-base tracking-widest uppercase mb-1">FREE BONUS SECURED</span>
+                    <span className="text-sm lg:text-base text-white/80 font-mono">₹150 Digital Cash to redeem on the next Inkfetish contest.</span>
+                  </div>
+                </div>
               </div>
             </div>
 
             <div className="bg-[#F5EEDB] p-8 lg:p-10 text-center text-[#111] mt-8 shadow-inner border border-black/20">
               <div className="flex justify-between items-center mb-8 border-b border-black/20 pb-6">
                  <span className="font-oswald font-bold text-xl lg:text-2xl uppercase tracking-widest">Final Total</span>
-                 <span className="text-5xl lg:text-6xl font-oswald font-black text-[#F05C33]">₹399</span>
+                 <span className="text-5xl lg:text-6xl font-oswald font-black text-[#F05C33]">₹385</span>
               </div>
               
               <Link 

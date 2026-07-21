@@ -387,7 +387,7 @@ export default function DaniyaKhanPage() {
             </motion.h1>
 
             <motion.p variants={fadeUp} className="font-body text-base md:text-lg text-[#555] leading-relaxed max-w-md mx-auto mt-6 mb-8">
-              Poems about the people who left. The silences they left behind. And the strange, quiet courage of learning to stay anyway.
+              A piece of my heart for those who find it difficult to cross the threshold of childhood, who cannot disentangle themselves from nostalgia and memories, for every soul that lost its own Freny.
             </motion.p>
 
             <motion.div variants={fadeUp} className="flex flex-wrap gap-3 justify-center mb-10">
@@ -475,11 +475,8 @@ export default function DaniyaKhanPage() {
           >
             <motion.div variants={fadeUp} className="text-5xl mb-6 select-none">🌵</motion.div>
             <motion.h2 variants={fadeUp} className="font-display italic text-[clamp(28px,5vw,52px)] text-[#1A1A1A] leading-tight">
-              "A piece of my heart for those who find it difficult to cross the threshold of childhood, who cannot disentangle themselves from nostalgia and memories, for every soul that lost its own Freny."
-            </motion.h2>
-            <motion.div variants={fadeUp} className="mt-8 text-lg font-ui text-[#555] italic">
               “to those who adorn their cemetery of grief with flowers of poetry.”
-            </motion.div>
+            </motion.h2>
             <motion.div variants={fadeUp} className="mt-4">
               <span className="badge-tag-mint">— from the dedication</span>
             </motion.div>
@@ -578,13 +575,13 @@ export default function DaniyaKhanPage() {
                 
                 {/* Instagram Highlight */}
                 <a 
-                  href="https://instagram.com/daniyakhan" 
+                  href="https://instagram.com/altruistic_writer" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="inline-flex flex-col items-center justify-center bg-[#F7E56B] border-2 border-[#1A1A1A] rounded-2xl p-4 shadow-[4px_4px_0px_#1A1A1A] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_#1A1A1A] transition-all w-full"
                 >
                   <span className="font-ui text-xs uppercase tracking-widest text-[#888] mb-1">Follow her journey</span>
-                  <span className="font-display italic text-2xl text-[#1A1A1A]">@daniyakhan</span>
+                  <span className="font-display italic text-2xl text-[#1A1A1A]">@altruistic_writer</span>
                 </a>
               </div>
             </motion.div>

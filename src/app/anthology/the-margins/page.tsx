@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { BookOpen, Star, ShieldCheck, Truck, ArrowRight, BookType, MessageSquare } from 'lucide-react';
+import { BookOpen, Star, ShieldCheck, Truck, ArrowRight, BookType, MessageSquare, CheckCircle2 } from 'lucide-react';
 
 export default function TheMarginsLandingPage() {
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
@@ -212,8 +212,31 @@ export default function TheMarginsLandingPage() {
           </motion.div>
         </section>
 
+        {/* Gold Standard Image Section */}
+        <section className="bg-[#111] pt-20 pb-10 px-4 sm:px-6 relative border-t-8 border-[#F5EEDB]">
+          <div className="max-w-5xl mx-auto">
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-oswald font-bold uppercase tracking-widest mb-8 lg:mb-10 text-center text-white">
+              Gold Standard of Poems
+            </h2>
+            
+            <div className="relative w-full max-w-4xl mx-auto shadow-[0_20px_50px_rgba(0,0,0,0.5)] border-2 sm:border-4 border-[#111] group">
+                <img 
+                    src="/margins-landscape.png" 
+                    alt="The Margins Book Display" 
+                    className="w-full h-auto object-cover"
+                />
+                
+                {/* Floating Price Card */}
+                <div className="absolute bottom-3 right-3 sm:bottom-6 sm:right-6 bg-[#F05C33] text-white p-3 sm:p-5 shadow-2xl border-2 sm:border-4 border-[#111] rotate-[-2deg] group-hover:rotate-0 transition-transform duration-300">
+                    <p className="font-mono text-[10px] sm:text-xs font-bold uppercase tracking-widest opacity-90 mb-0.5 sm:mb-1">Pre-order Offer</p>
+                    <p className="font-oswald text-2xl sm:text-4xl font-black leading-none">₹385 <span className="text-sm sm:text-lg opacity-70 uppercase tracking-widest">Only</span></p>
+                </div>
+            </div>
+          </div>
+        </section>
+
         {/* Back Cover / About Section */}
-        <section className="bg-[#111] text-[#F5EEDB] py-24 px-6 relative border-t-8 border-[#F5EEDB]">
+        <section className="bg-[#111] text-[#F5EEDB] py-16 lg:py-24 px-6 relative">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-3xl sm:text-4xl font-oswald font-bold uppercase tracking-wider mb-12 text-center text-[#F05C33]">
               About The Book
@@ -239,16 +262,92 @@ export default function TheMarginsLandingPage() {
                 </p>
             </div>
             
-            <div className="mt-16 text-center border-t-2 border-[#F05C33]/50 pt-10">
-                <h3 className="font-oswald text-4xl mb-2 tracking-wide text-white">The Margins</h3>
-                <p className="font-inter font-bold opacity-80 mb-1">The Official Collection of the Top 200 Hall of Fame Poets</p>
-                <p className="font-mono text-[#F05C33] font-bold">"Where Stories Live Between the Lines"</p>
+                        <div className="mt-12 p-8 border-2 border-dashed border-white/20 bg-white/5 rounded-sm mb-12">
+                    <h3 className="font-oswald font-bold text-2xl uppercase tracking-widest text-[#F05C33] mb-2">The Margins</h3>
+                    <p className="font-mono text-sm tracking-widest uppercase mb-6 opacity-80">The Official Collection of the Top 200 Hall of Fame Poets</p>
+                    <blockquote className="font-oswald text-xl sm:text-2xl italic tracking-wide text-white border-l-4 border-[#F05C33] pl-4">
+                        "Where Stories Live Between the Lines"
+                    </blockquote>
+                </div>
+
+                {/* Quality Box */}
+                <div className="bg-[#F05C33] text-[#111] p-8 sm:p-12 shadow-2xl relative border-4 border-[#111]">
+                    <div className="absolute -top-4 -right-2 bg-white text-[#111] font-mono text-xs sm:text-sm font-bold uppercase tracking-widest px-3 py-1 border-2 border-[#111] shadow-[4px_4px_0_#111] rotate-3">
+                        Quality Check
+                    </div>
+                    
+                    <p className="font-inter text-xl sm:text-2xl font-semibold italic leading-relaxed mb-10 text-[#111]">
+                        "We’ve treated this book like our own baby. From the best paper quality to the exquisite finish, everything has been carefully chosen."
+                    </p>
+                    
+                    <div className="grid sm:grid-cols-2 gap-6 sm:gap-8 font-oswald text-lg sm:text-xl font-bold uppercase tracking-widest">
+                        <div className="flex items-center gap-4">
+                            <div className="bg-[#111] p-2 text-white shrink-0"><CheckCircle2 className="w-5 h-5" /></div>
+                            <span>Premium-Grade Pages</span>
+                        </div>
+                        <div className="flex items-center gap-4">
+                            <div className="bg-[#111] p-2 text-white shrink-0"><CheckCircle2 className="w-5 h-5" /></div>
+                            <span>Rich Matte Finish</span>
+                        </div>
+                        <div className="flex items-center gap-4">
+                            <div className="bg-[#111] p-2 text-white shrink-0"><CheckCircle2 className="w-5 h-5" /></div>
+                            <span>Built to keep, not just read</span>
+                        </div>
+                        <div className="flex items-center gap-4">
+                            <div className="bg-[#111] p-2 text-white shrink-0"><BookOpen className="w-5 h-5" /></div>
+                            <span className="tracking-wider">ISBN: 978-81-685965-4-2</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        {/* More Than Just Pages Section */}
+        <section className="bg-[#F05C33] py-24 px-6 relative border-y-8 border-[#F5EEDB]">
+          <div className="max-w-6xl mx-auto">
+            <h2 className="text-4xl sm:text-5xl font-oswald font-bold uppercase tracking-widest mb-16 text-center text-[#111]">
+              More Than Just Pages
+            </h2>
+            
+            <div className="grid md:grid-cols-2 gap-8 lg:gap-12 mb-20">
+                <div className="bg-[#111] text-[#F5EEDB] p-8 sm:p-12 border-4 border-[#111] shadow-[12px_12px_0_#F5EEDB] hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[16px_16px_0_#F5EEDB] transition-all">
+                    <div className="text-5xl mb-6">🏆</div>
+                    <h3 className="font-oswald text-2xl lg:text-3xl font-bold uppercase tracking-widest mb-4">For All Top 200 Writers</h3>
+                    <p className="font-inter text-lg opacity-90 leading-relaxed">
+                        This will be your achievement—something you’ll actually feel incredibly proud to keep on your bookshelf forever.
+                    </p>
+                </div>
+                <div className="bg-[#F5EEDB] text-[#111] p-8 sm:p-12 border-4 border-[#111] shadow-[12px_12px_0_#111] hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[16px_16px_0_#111] transition-all">
+                    <div className="text-5xl mb-6">✍️</div>
+                    <h3 className="font-oswald text-2xl lg:text-3xl font-bold uppercase tracking-widest mb-4">For Everyone Else</h3>
+                    <p className="font-inter text-lg opacity-90 leading-relaxed">
+                        A masterpiece of literature and design. This is something you’ll absolutely still want to have with you, simply to hold and experience.
+                    </p>
+                </div>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-8">
+                <div className="flex flex-col gap-5 p-8 bg-[#111] text-white border-2 border-white shadow-[6px_6px_0_#F5EEDB]">
+                    <div className="w-14 h-14 bg-[#F5EEDB] rounded-full flex items-center justify-center text-[#111] shrink-0"><Star className="w-7 h-7" /></div>
+                    <h4 className="font-oswald text-2xl font-bold uppercase tracking-widest text-[#F05C33]">Curated Brilliance</h4>
+                    <p className="font-inter opacity-90 leading-relaxed text-[15px]">Selected from thousands, only the top 200 most evocative voices made it. Owning this means holding history.</p>
+                </div>
+                <div className="flex flex-col gap-5 p-8 bg-[#111] text-white border-2 border-white shadow-[6px_6px_0_#F5EEDB]">
+                    <div className="w-14 h-14 bg-[#F5EEDB] rounded-full flex items-center justify-center text-[#111] shrink-0"><BookType className="w-7 h-7" /></div>
+                    <h4 className="font-oswald text-2xl font-bold uppercase tracking-widest text-[#F05C33]">Regal Craftsmanship</h4>
+                    <p className="font-inter opacity-90 leading-relaxed text-[15px]">Antique-finish pages, deep navy binding, and gold-foil accents. A masterpiece worthy of your finest shelf.</p>
+                </div>
+                <div className="flex flex-col gap-5 p-8 bg-[#111] text-white border-2 border-white shadow-[6px_6px_0_#F5EEDB]">
+                    <div className="w-14 h-14 bg-[#F5EEDB] rounded-full flex items-center justify-center text-[#111] shrink-0"><MessageSquare className="w-7 h-7" /></div>
+                    <h4 className="font-oswald text-2xl font-bold uppercase tracking-widest text-[#F05C33]">Elite Brotherhood</h4>
+                    <p className="font-inter opacity-90 leading-relaxed text-[15px]">Gain entry to the exclusive Poetry festival Inner Circle. Network, collaborate, and grow with the nation's best minds.</p>
+                </div>
             </div>
           </div>
         </section>
 
         {/* Trust & Delivery Section (adapted from Syaahi) */}
-        <section className="bg-typewriter-paper py-16 px-4 border-y-8 border-[#111]">
+        <section className="bg-typewriter-paper py-16 px-4 border-b-8 border-[#111]">
           <div className="max-w-7xl mx-auto grid grid-cols-2 md:flex md:flex-row md:flex-wrap justify-center gap-8 gap-y-10 lg:gap-20 text-[#111]">
             <div className="flex flex-col items-center text-center gap-3">
               <BookOpen className="w-8 h-8 lg:w-10 lg:h-10 text-[#F05C33]" />

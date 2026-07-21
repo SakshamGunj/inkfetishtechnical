@@ -18,7 +18,6 @@ export default function BuyClient() {
   });
 
   const [addCertificate, setAddCertificate] = useState(false);
-  const [addPortfolio, setAddPortfolio] = useState(false);
 
   const [paymentStatus, setPaymentStatus] = useState<PaymentStatus>('idle');
   const [cashfree, setCashfree] = useState<any>(null);
@@ -38,10 +37,9 @@ export default function BuyClient() {
   const basePrice = 499;
   const earlyBirdDiscount = 114;
   const discountedPrice = basePrice - earlyBirdDiscount; // 385
-  const certPrice = 50;
-  const portPrice = 150;
+  const certPrice = 99;
 
-  const totalAmount = discountedPrice + (addCertificate ? certPrice : 0) + (addPortfolio ? portPrice : 0);
+  const totalAmount = discountedPrice + (addCertificate ? certPrice : 0);
 
   useEffect(() => {
     // Check for previous successful order
@@ -123,7 +121,6 @@ export default function BuyClient() {
           customerEmail: formData.email,
           customerPhone: formData.whatsapp,
           boughtCertificate: addCertificate,
-          boughtPortfolio: addPortfolio,
           ...formData,
         }),
       });
@@ -199,13 +196,13 @@ export default function BuyClient() {
               animate={{ opacity: 1, y: 0 }}
               className="order-1 lg:order-2 lg:col-span-5 space-y-6"
             >
-              <div className="bg-[#111] text-[#F5EEDB] p-6 sm:p-8 shadow-2xl relative border-l-4 border-[#F05C33]">
-                <h3 className="text-2xl font-oswald font-bold uppercase tracking-widest border-b border-white/20 pb-4 mb-6 flex items-center justify-between text-white">
+              <div className="bg-[#111] text-[#F5EEDB] p-5 sm:p-6 shadow-2xl relative border-l-4 border-[#F05C33]">
+                <h3 className="text-xl font-oswald font-bold uppercase tracking-widest border-b border-white/20 pb-3 mb-4 flex items-center justify-between text-white">
                   Order Summary
                 </h3>
                 
-                <div className="flex items-center gap-5 mb-8 bg-white/5 p-4 border border-white/10">
-                  <div className="w-24 h-32 shrink-0 relative flex items-center justify-center drop-shadow-2xl">
+                <div className="flex items-center gap-4 mb-5 bg-white/5 p-3 border border-white/10">
+                  <div className="w-16 h-24 shrink-0 relative flex items-center justify-center drop-shadow-2xl">
                     <img 
                       src="/margins-mockup.png" 
                       alt="The Margins Book Cover" 
@@ -213,45 +210,39 @@ export default function BuyClient() {
                     />
                   </div>
                   <div className="flex flex-col justify-center">
-                    <h4 className="text-xl font-oswald font-bold text-white leading-tight mb-1">The Margins</h4>
-                    <p className="text-sm font-inter opacity-70 mb-3">Official Collection</p>
+                    <h4 className="text-lg font-oswald font-bold text-white leading-tight mb-0.5">The Margins</h4>
+                    <p className="text-xs font-inter opacity-70 mb-2">Official Collection</p>
                     <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#111] uppercase tracking-widest bg-[#F05C33] px-2 py-1">
                       <Star className="w-3 h-3 fill-current" /> Hall of Fame
                     </div>
                   </div>
                 </div>
 
-                <div className="space-y-4 font-inter text-sm mb-6">
-                  <div className="flex justify-between items-center py-2 border-b border-white/10">
+                <div className="space-y-3 font-inter text-[13px] mb-5">
+                  <div className="flex justify-between items-center py-1.5 border-b border-white/10">
                     <span className="opacity-90">The Margins (Launch Price)</span>
                     <span className="font-bold">₹{basePrice}</span>
                   </div>
-                  <div className="flex justify-between items-center py-2 border-b border-white/10 text-[#F05C33]">
+                  <div className="flex justify-between items-center py-1.5 border-b border-white/10 text-[#F05C33]">
                     <span className="font-bold flex items-center gap-2"><CheckCircle2 className="w-4 h-4"/> Early Bird / Community Discount</span>
                     <span className="font-bold">-₹{earlyBirdDiscount}</span>
                   </div>
 
                   {addCertificate && (
-                    <div className="flex justify-between items-center py-2 border-b border-white/10">
+                    <div className="flex justify-between items-center py-1.5 border-b border-white/10">
                       <span className="opacity-90">Official IWL Certificate</span>
                       <span className="font-bold">+₹{certPrice}</span>
                     </div>
                   )}
-                  {addPortfolio && (
-                    <div className="flex justify-between items-center py-2 border-b border-white/10">
-                      <span className="opacity-90">1-Year Author Portfolio</span>
-                      <span className="font-bold">+₹{portPrice}</span>
-                    </div>
-                  )}
 
-                  <div className="flex justify-between items-center py-2 border-b border-white/10 text-[#25D366]">
+                  <div className="flex justify-between items-center py-1.5 border-b border-white/10 text-[#25D366]">
                     <span className="opacity-90">Shipping</span>
                     <span className="font-bold uppercase tracking-widest">Free</span>
                   </div>
                 </div>
 
                 {/* Free Bonus */}
-                <div className="bg-[#F05C33]/20 border border-[#F05C33] p-4 mb-6">
+                <div className="bg-[#F05C33]/20 border border-[#F05C33] p-3 mb-5">
                   <div className="flex items-start gap-3">
                     <Gift className="w-5 h-5 text-[#F05C33] shrink-0 mt-0.5" />
                     <div>
@@ -263,9 +254,9 @@ export default function BuyClient() {
                   </div>
                 </div>
 
-                <div className="bg-[#F5EEDB] text-[#111] p-5 flex justify-between items-center -mx-6 sm:-mx-8 -mb-6 sm:-mb-8 mt-6">
-                  <span className="text-lg font-oswald font-bold uppercase tracking-widest">Final Total</span>
-                  <span className="text-4xl font-oswald font-black text-[#F05C33]">₹{totalAmount}</span>
+                <div className="bg-[#F5EEDB] text-[#111] p-4 flex justify-between items-center -mx-5 sm:-mx-6 -mb-5 sm:-mb-6 mt-5">
+                  <span className="text-base font-oswald font-bold uppercase tracking-widest">Final Total</span>
+                  <span className="text-3xl font-oswald font-black text-[#F05C33]">₹{totalAmount}</span>
                 </div>
               </div>
 
@@ -387,29 +378,10 @@ export default function BuyClient() {
                         <div>
                           <div className="flex items-center justify-between mb-1">
                             <h4 className="font-oswald font-bold text-base sm:text-lg uppercase tracking-wide">Official Inkfetish Certificate</h4>
-                            <span className={`font-bold ${addCertificate ? 'text-[#F05C33]' : 'text-[#111]'}`}>+₹50</span>
+                            <span className={`font-bold ${addCertificate ? 'text-[#F05C33]' : 'text-[#111]'}`}>+₹99</span>
                           </div>
                           <p className={`text-sm leading-relaxed ${addCertificate ? 'text-white/80' : 'text-[#111]/70'}`}>
                             Get your own personalized, printed community certificate from Inkfetish alongside your book.
-                          </p>
-                        </div>
-                      </div>
-
-                      {/* Bump 2 */}
-                      <div 
-                        onClick={() => setAddPortfolio(!addPortfolio)}
-                        className={`p-4 sm:p-5 border-2 cursor-pointer transition-all flex items-start gap-4 ${addPortfolio ? 'bg-[#111] border-[#111] text-white shadow-xl' : 'bg-white border-[#111]/20 hover:border-[#111]/50 text-[#111]'}`}
-                      >
-                        <div className={`w-6 h-6 border-2 flex items-center justify-center shrink-0 mt-0.5 ${addPortfolio ? 'border-white bg-[#F05C33] text-white' : 'border-[#111]/30 bg-[#F5EEDB]'}`}>
-                          {addPortfolio && <CheckCircle2 className="w-4 h-4" />}
-                        </div>
-                        <div>
-                          <div className="flex items-center justify-between mb-1">
-                            <h4 className="font-oswald font-bold text-base sm:text-lg uppercase tracking-wide">1-Year Author Portfolio Site</h4>
-                            <span className={`font-bold ${addPortfolio ? 'text-[#F05C33]' : 'text-[#111]'}`}>+₹150</span>
-                          </div>
-                          <p className={`text-sm leading-relaxed ${addPortfolio ? 'text-white/80' : 'text-[#111]/70'}`}>
-                            Establish your digital presence with a premium, verified author portfolio website hosted by Inkfetish.
                           </p>
                         </div>
                       </div>

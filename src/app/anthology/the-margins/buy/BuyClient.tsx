@@ -34,11 +34,11 @@ export default function BuyClient() {
     "Delhi", "Jammu and Kashmir", "Ladakh", "Lakshadweep", "Puducherry"
   ];
 
-  // Pricing Logic (TESTING MODE - 1 Rs)
+  // Pricing Logic
   const basePrice = 499;
-  const earlyBirdDiscount = 498; // Testing discount
-  const discountedPrice = basePrice - earlyBirdDiscount; // 1 Rs
-  const certPrice = 1;
+  const earlyBirdDiscount = 114;
+  const discountedPrice = basePrice - earlyBirdDiscount; // 385
+  const certPrice = 99;
 
   const totalAmount = (discountedPrice * quantity) + (addCertificate ? certPrice : 0);
 

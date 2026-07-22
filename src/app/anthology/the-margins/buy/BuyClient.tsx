@@ -159,8 +159,10 @@ export default function BuyClient() {
 
   return (
     <>
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+      <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
       <style dangerouslySetInnerHTML={{__html: `
-        @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap');
         .font-oswald { font-family: 'Oswald', sans-serif; }
         .font-mono { font-family: 'Space Mono', monospace; }
         .font-inter { font-family: 'Inter', sans-serif; }
@@ -213,9 +215,8 @@ export default function BuyClient() {
                   </div>
                   <div className="flex flex-col justify-center">
                     <h4 className="text-lg font-oswald font-bold text-white leading-tight mb-0.5">The Margins</h4>
-                    <p className="text-xs font-inter opacity-70 mb-2 uppercase tracking-wide">Official Anthology</p>
                     <div className="inline-flex items-center gap-1.5 text-[10px] font-bold text-[#111] uppercase tracking-widest bg-[#F05C33] px-2 py-1 w-fit mt-1">
-                      <Star className="w-3 h-3 fill-current" /> Exclusive Upgrade
+                      <Star className="w-3 h-3 fill-current" /> Official Anthology
                     </div>
                   </div>
                   

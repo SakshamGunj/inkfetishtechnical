@@ -22,56 +22,56 @@ function getBaseUrl(): string {
   return process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
 }
 
-export async function POST(request: Request) {
-  try {
-    const { amount, customerName, customerEmail, customerPhone, address, city, state, pincode, boughtCertificate, boughtPortfolio } = await request.json();
-
-    const appId = process.env.CASHFREE_APP_ID;
-    const secretKey = process.env.CASHFREE_SECRET_KEY;
-
-    if (!appId || !secretKey) {
-      return NextResponse.json({ error: 'Server configuration error' }, { status: 500 });
-    }
-
-    const baseUrl = getCashfreeBaseUrl(appId);
-    const siteUrl = getBaseUrl();
-
-    const randomPart = Math.random().toString(36).slice(2, 7);
-    const orderId = `margins_${Date.now()}_${randomPart}`;
-
-    const customerIdRaw = `margins_${toBase64(customerEmail).replace(/[^a-zA-Z0-9]/g, '').slice(0, 20)}`;
-    const phone = `91${customerPhone.replace(/\D/g, '').slice(-10)}`;
-
-    const response = await fetch(`${baseUrl}/pg/orders`, {
-      method: 'POST',
-      headers: {
-        'x-client-id': appId,
-        'x-client-secret': secretKey,
-        'x-api-version': '2025-01-01',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        order_id: orderId,
-        order_amount: amount,
-        order_currency: 'INR',
-        customer_details: {
-          customer_id: customerIdRaw,
-          customer_name: customerName,
-          customer_email: customerEmail,
-          customer_phone: phone,
+  export async function POST(request: Request) {
+    try {
+      const { amount, customerName, customerEmail, customerPhone, address, city, state, pincode, boughtCertificate, boughtPortfolio, quantity } = await request.json();
+  
+      const appId = process.env.CASHFREE_APP_ID;
+      const secretKey = process.env.CASHFREE_SECRET_KEY;
+  
+      if (!appId || !secretKey) {
+        return NextResponse.json({ error: 'Server configuration error' }, { status: 500 });
+      }
+  
+      const baseUrl = getCashfreeBaseUrl(appId);
+      const siteUrl = getBaseUrl();
+  
+      const randomPart = Math.random().toString(36).slice(2, 7);
+      const orderId = `margins_${Date.now()}_${randomPart}`;
+  
+      const customerIdRaw = `margins_${toBase64(customerEmail).replace(/[^a-zA-Z0-9]/g, '').slice(0, 20)}`;
+      const phone = `91${customerPhone.replace(/\D/g, '').slice(-10)}`;
+  
+      const response = await fetch(`${baseUrl}/pg/orders`, {
+        method: 'POST',
+        headers: {
+          'x-client-id': appId,
+          'x-client-secret': secretKey,
+          'x-api-version': '2025-01-01',
+          'Content-Type': 'application/json',
         },
-        order_tags: {
-          source: 'the_margins',
-          email: customerEmail,
-          name: customerName,
-          whatsapp: customerPhone,
-          address,
-          city,
-          state,
-          pincode,
-          cert: boughtCertificate ? 'yes' : 'no',
-          port: boughtPortfolio ? 'yes' : 'no',
-        },
+        body: JSON.stringify({
+          order_id: orderId,
+          order_amount: amount,
+          order_currency: 'INR',
+          customer_details: {
+            customer_id: customerIdRaw,
+            customer_name: customerName,
+            customer_email: customerEmail,
+            customer_phone: phone,
+          },
+          order_tags: {
+            source: 'the_margins',
+            email: customerEmail,
+            name: customerName,
+            whatsapp: customerPhone,
+            address,
+            city,
+            state,
+            pincode,
+            cert: boughtCertificate ? 'yes' : 'no',
+            qty: String(quantity || 1)
+          },
         order_meta: {
           return_url: `${siteUrl}/anthology/the-margins/thank-you?order_id={order_id}`,
           notify_url: `${siteUrl}/api/cashfree/webhook`,

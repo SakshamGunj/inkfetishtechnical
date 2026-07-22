@@ -70,7 +70,32 @@ export async function POST(request: Request) {
           console.error('Supabase webhook update error:', dbErr);
         }
 
-      // 2b. ORIGINAL POETRY FESTIVAL ORDERS → Update Supabase
+      // 2b. THE MARGINS ORDERS → Insert to Supabase
+      } else if (orderId.startsWith('margins_')) {
+        const { error } = await supabase
+          .from('the_margins_orders')
+          .upsert({
+            order_id: orderId,
+            cf_order_id: order.cf_order_id,
+            email: tags.email || '',
+            name: tags.name || '',
+            whatsapp: tags.whatsapp || '',
+            address: tags.address || '',
+            city: tags.city || '',
+            state: tags.state || '',
+            pincode: tags.pincode || '',
+            quantity: parseInt(tags.qty || '1', 10),
+            amount: order.order_amount,
+            status: 'PAID',
+            updated_at: new Date().toISOString(),
+          }, { onConflict: 'order_id' });
+
+        if (error) {
+          console.error('Webhook Supabase Margins DB Error:', error.message);
+          return NextResponse.json({ error: 'Database update failed' }, { status: 500 });
+        }
+
+      // 2c. ORIGINAL POETRY FESTIVAL ORDERS → Update Supabase
       } else {
         const { error } = await supabase
           .from('poetry_festival_s2_payments')

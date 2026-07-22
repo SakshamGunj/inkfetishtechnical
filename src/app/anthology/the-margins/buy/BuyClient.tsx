@@ -17,6 +17,7 @@ export default function BuyClient() {
     pincode: '',
   });
 
+  const [quantity, setQuantity] = useState(1);
   const [addCertificate, setAddCertificate] = useState(false);
 
   const [paymentStatus, setPaymentStatus] = useState<PaymentStatus>('idle');
@@ -33,13 +34,13 @@ export default function BuyClient() {
     "Delhi", "Jammu and Kashmir", "Ladakh", "Lakshadweep", "Puducherry"
   ];
 
-  // Pricing Logic
+  // Pricing Logic (TESTING MODE - 1 Rs)
   const basePrice = 499;
-  const earlyBirdDiscount = 114;
-  const discountedPrice = basePrice - earlyBirdDiscount; // 385
-  const certPrice = 99;
+  const earlyBirdDiscount = 498; // Testing discount
+  const discountedPrice = basePrice - earlyBirdDiscount; // 1 Rs
+  const certPrice = 1;
 
-  const totalAmount = discountedPrice + (addCertificate ? certPrice : 0);
+  const totalAmount = (discountedPrice * quantity) + (addCertificate ? certPrice : 0);
 
   useEffect(() => {
     // Check for previous successful order
@@ -121,6 +122,7 @@ export default function BuyClient() {
           customerEmail: formData.email,
           customerPhone: formData.whatsapp,
           boughtCertificate: addCertificate,
+          quantity: quantity,
           ...formData,
         }),
       });
@@ -201,8 +203,8 @@ export default function BuyClient() {
                   Order Summary
                 </h3>
                 
-                <div className="flex items-center gap-4 mb-5 bg-white/5 p-3 border border-white/10">
-                  <div className="w-16 h-24 shrink-0 relative flex items-center justify-center drop-shadow-2xl">
+                <div className="flex items-center gap-5 mb-6 bg-white/5 p-4 border border-white/10">
+                  <div className="w-24 h-32 shrink-0 relative flex items-center justify-center drop-shadow-2xl">
                     <img 
                       src="/margins-mockup.png" 
                       alt="The Margins Book Cover" 
@@ -211,21 +213,35 @@ export default function BuyClient() {
                   </div>
                   <div className="flex flex-col justify-center">
                     <h4 className="text-lg font-oswald font-bold text-white leading-tight mb-0.5">The Margins</h4>
-                    <p className="text-xs font-inter opacity-70 mb-2">Official Collection</p>
-                    <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#111] uppercase tracking-widest bg-[#F05C33] px-2 py-1">
-                      <Star className="w-3 h-3 fill-current" /> Hall of Fame
+                    <p className="text-xs font-inter opacity-70 mb-2 uppercase tracking-wide">Official Anthology</p>
+                    <div className="inline-flex items-center gap-1.5 text-[10px] font-bold text-[#111] uppercase tracking-widest bg-[#F05C33] px-2 py-1 w-fit mt-1">
+                      <Star className="w-3 h-3 fill-current" /> Exclusive Upgrade
                     </div>
+                  </div>
+                  
+                  <div className="ml-auto flex items-center border border-white/20 rounded-sm bg-white/5">
+                    <button 
+                      type="button"
+                      onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                      className="px-3 py-1 hover:bg-white/10 transition-colors text-white"
+                    >-</button>
+                    <div className="px-2 text-sm font-bold font-mono text-white min-w-[1.5rem] text-center">{quantity}</div>
+                    <button 
+                      type="button"
+                      onClick={() => setQuantity(quantity + 1)}
+                      className="px-3 py-1 hover:bg-white/10 transition-colors text-white"
+                    >+</button>
                   </div>
                 </div>
 
                 <div className="space-y-3 font-inter text-[13px] mb-5">
                   <div className="flex justify-between items-center py-1.5 border-b border-white/10">
-                    <span className="opacity-90">The Margins (Launch Price)</span>
-                    <span className="font-bold">₹{basePrice}</span>
+                    <span className="opacity-90">The Margins <span className="text-xs opacity-70">x {quantity}</span></span>
+                    <span className="font-bold">₹{basePrice * quantity}</span>
                   </div>
                   <div className="flex justify-between items-center py-1.5 border-b border-white/10 text-[#F05C33]">
-                    <span className="font-bold flex items-center gap-2"><CheckCircle2 className="w-4 h-4"/> Early Bird / Community Discount</span>
-                    <span className="font-bold">-₹{earlyBirdDiscount}</span>
+                    <span className="font-bold flex items-center gap-2"><CheckCircle2 className="w-4 h-4"/> Early Bird Discount</span>
+                    <span className="font-bold">-₹{earlyBirdDiscount * quantity}</span>
                   </div>
 
                   {addCertificate && (
@@ -261,17 +277,23 @@ export default function BuyClient() {
               </div>
 
               {/* Badges */}
-              <div className="grid grid-cols-2 gap-4">
-                <div className="bg-white/20 p-4 border border-[#111]/20 flex flex-col items-center text-center backdrop-blur-sm">
-                  <Truck className="w-6 h-6 text-[#111] mb-2" />
-                  <div className="text-xs font-oswald font-bold text-[#111] tracking-widest uppercase">Free Delivery</div>
-                  <div className="text-[10px] font-mono text-[#111]/70 mt-1">Pan India Shipping</div>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-white/20 p-2 sm:p-3 border border-[#111]/20 flex flex-col items-center text-center backdrop-blur-sm">
+                  <Truck className="w-4 h-4 text-[#111] mb-1" />
+                  <div className="text-[10px] sm:text-xs font-oswald font-bold text-[#111] tracking-widest uppercase leading-tight">Free Delivery</div>
+                  <div className="text-[9px] sm:text-[10px] font-mono text-[#111]/70 mt-0.5 leading-tight">Pan India Shipping</div>
                 </div>
-                <div className="bg-white/20 p-4 border border-[#111]/20 flex flex-col items-center text-center backdrop-blur-sm">
-                  <ShieldCheck className="w-6 h-6 text-[#111] mb-2" />
-                  <div className="text-xs font-oswald font-bold text-[#111] tracking-widest uppercase">Secure Pay</div>
-                  <div className="text-[10px] font-mono text-[#111]/70 mt-1">100% Protected</div>
+                <div className="bg-white/20 p-2 sm:p-3 border border-[#111]/20 flex flex-col items-center text-center backdrop-blur-sm">
+                  <ShieldCheck className="w-4 h-4 text-[#111] mb-1" />
+                  <div className="text-[10px] sm:text-xs font-oswald font-bold text-[#111] tracking-widest uppercase leading-tight">Secure Pay</div>
+                  <div className="text-[9px] sm:text-[10px] font-mono text-[#111]/70 mt-0.5 leading-tight">100% Protected</div>
                 </div>
+              </div>
+
+              <div className="mt-4 flex flex-col sm:flex-row flex-wrap justify-center items-center gap-3 sm:gap-4 font-inter text-[11px] text-[#111]/80 text-center uppercase tracking-wider font-semibold">
+                <div className="flex items-center justify-center gap-1.5"><Star className="w-3 h-3 text-[#111]"/> Premium Quality</div>
+                <div className="flex items-center justify-center gap-1.5"><Heart className="w-3 h-3 text-[#111]"/> Curated With Love</div>
+                <div className="flex items-center justify-center gap-1.5"><Clock className="w-3 h-3 text-[#111]"/> Dispatches in 7-10 Days</div>
               </div>
             </motion.div>
 

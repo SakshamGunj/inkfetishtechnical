@@ -1,13 +1,20 @@
+'use client';
+
 import React from 'react';
 import Link from 'next/link';
-import { CheckCircle2, ArrowRight, Heart, ArrowLeft } from 'lucide-react';
+import { CheckCircle2, ArrowRight, Heart, ArrowLeft, Plus } from 'lucide-react';
 
 export default function MarginsThankYouPage({
   searchParams,
 }: {
   searchParams: { order_id?: string };
 }) {
-  const orderId = searchParams.order_id;
+  const orderId = searchParams?.order_id;
+
+  const handleOrderAnother = () => {
+    localStorage.removeItem('margins_paid_order_id');
+    window.location.href = '/anthology/the-margins/buy';
+  };
 
   return (
     <>
@@ -70,12 +77,12 @@ export default function MarginsThankYouPage({
                 >
                   <ArrowLeft className="w-4 h-4" /> Back to Page
                 </Link>
-                <Link 
-                  href="/"
+                <button 
+                  onClick={handleOrderAnother}
                   className="bg-transparent text-white border-2 border-white/30 px-8 py-4 font-oswald font-bold tracking-widest uppercase text-sm hover:bg-white hover:text-[#111] transition-colors flex items-center justify-center gap-2"
                 >
-                  Explore Inkfetish <ArrowRight className="w-4 h-4" />
-                </Link>
+                  Order Another Copy <Plus className="w-4 h-4" />
+                </button>
               </div>
 
               <div className="mt-12 pt-8 border-t border-white/10 flex items-center justify-center gap-2 text-white/40 text-xs font-mono">

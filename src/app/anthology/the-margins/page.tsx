@@ -89,8 +89,18 @@ export default function TheMarginsLandingPage() {
       
       <div className="min-h-screen bg-vibrant-orange text-[#111] font-inter selection:bg-[#111] selection:text-white pb-24 sm:pb-0 overflow-x-hidden">
         
-
-
+        {/* Minimal Navbar */}
+        <nav className="w-full bg-[#111] text-[#F5EEDB] py-1.5 px-4 sm:px-6 flex items-center justify-between border-b-4 border-[#F5EEDB] relative z-50">
+           <div className="flex items-center gap-3 max-w-7xl mx-auto w-full">
+               <div className="w-7 h-7 sm:w-8 sm:h-8 bg-white rounded-full flex items-center justify-center p-0.5 shrink-0 border border-[#111]">
+                 <img src="/images/inkfetish_logo.png" alt="Inkfetish Logo" className="w-full h-full object-contain rounded-full" />
+               </div>
+               <div className="flex flex-col justify-center">
+                   <span className="font-oswald font-bold text-xs sm:text-sm uppercase tracking-widest leading-none mt-0.5">Inkfetish Publications</span>
+                   <span className="font-mono text-[8px] sm:text-[10px] uppercase tracking-wider text-[#F05C33] mt-0.5 leading-none">Organizer of Poetry Festival Season 2</span>
+               </div>
+           </div>
+        </nav>
         {/* Hero Section */}
         <section className="relative pt-10 pb-16 lg:py-12 px-4 sm:px-6 lg:px-12 flex flex-col-reverse lg:flex-row items-center justify-center lg:min-h-[95vh] gap-8 max-w-[90rem] mx-auto">
           
@@ -117,8 +127,8 @@ export default function TheMarginsLandingPage() {
                 </div>
                 
                 <h3 className="font-mono font-bold text-base sm:text-xl lg:text-2xl xl:text-3xl leading-relaxed tracking-tight">
-                    MEET THE <br/>
-                    <span className="text-[#F05C33]">TOP 200 POETS OF</span>
+                    An Anthology Featuring <br/>
+                    <span className="text-[#F05C33]">Top 200 Poets from</span>
                 </h3>
                 
                 <div className="typewriter-dash my-2 sm:my-3"></div>
@@ -133,7 +143,7 @@ export default function TheMarginsLandingPage() {
                 </p>
                 
                 <p className="font-mono text-[11px] sm:text-sm leading-relaxed mb-2 sm:mb-3 opacity-80 border-l-2 border-[#F05C33] pl-3">
-                    A culmination of literary excellence from across the nation. The finest poems from the most anticipated poetry event of the year have been immortalized in this exclusive anthology. Experience the raw emotion and undeniable talent of India's rising literary stars.
+                    The finest poems from the year's most anticipated poetry event, now immortalized in one exclusive anthology. Experience the raw emotion and undeniable talent of India's rising literary stars.
                 </p>
 
                 <div className="typewriter-dash my-2 sm:my-3"></div>
@@ -159,9 +169,19 @@ export default function TheMarginsLandingPage() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="w-full lg:w-4/12 flex flex-col justify-center items-center lg:items-start pb-8 lg:pb-0"
           >
-            <div className="flex flex-col items-center lg:items-start mb-2 sm:mb-4 text-[#111]">
-               <span className="font-oswald font-bold text-xl sm:text-2xl tracking-widest uppercase leading-none">INKFETISH</span>
-               <span className="font-mono text-[0.65rem] sm:text-xs tracking-[0.3em] uppercase font-bold mt-1 opacity-80">Publications</span>
+            <div className="flex flex-col items-center lg:items-start mb-6 text-[#111] space-y-2">
+                <div className="flex text-[#EBB036] gap-1">
+                    <Star className="w-5 h-5 fill-current" />
+                    <Star className="w-5 h-5 fill-current" />
+                    <Star className="w-5 h-5 fill-current" />
+                    <Star className="w-5 h-5 fill-current" />
+                    <Star className="w-5 h-5 fill-current" />
+                </div>
+                <span className="font-oswald font-bold text-2xl sm:text-3xl tracking-wide">Limited Collector's Edition</span>
+                <div className="flex items-center gap-2 text-[#388470] font-oswald font-bold tracking-widest uppercase mt-1">
+                    <ShieldCheck className="w-5 h-5" />
+                    <span>100% SECURE CHECKOUT</span>
+                </div>
             </div>
 
             <h1 className="font-oswald font-bold text-[25vw] sm:text-[8rem] lg:text-[5rem] xl:text-[6rem] 2xl:text-[7rem] leading-[0.85] text-[#111] tracking-tighter drop-shadow-md text-center lg:text-left mb-2 uppercase flex flex-col">
@@ -232,6 +252,38 @@ export default function TheMarginsLandingPage() {
                     <p className="font-oswald text-2xl sm:text-4xl font-black leading-none">₹385 <span className="text-sm sm:text-lg opacity-70 uppercase tracking-widest">Only</span></p>
                 </div>
             </div>
+
+            <div className="mt-20 flex justify-center">
+                <Link 
+                  href="/anthology/the-margins/buy"
+                  className="group inline-flex items-center justify-center w-full sm:w-auto gap-3 bg-[#111] text-[#F5EEDB] px-12 py-5 font-oswald tracking-widest font-bold text-xl sm:text-2xl shadow-[8px_8px_0_#F5EEDB] hover:shadow-[12px_12px_0_#F5EEDB] hover:-translate-y-1 transition-all border-4 border-[#111]"
+                >
+                  SECURE YOUR LEGACY NOW
+                  <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
+                </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* Trust & Delivery Section (adapted from Syaahi) */}
+        <section className="bg-typewriter-paper py-12 lg:py-16 px-4 border-b-8 border-[#F05C33]">
+          <div className="max-w-7xl mx-auto grid grid-cols-2 md:flex md:flex-row md:flex-wrap justify-center gap-8 gap-y-10 lg:gap-20 text-[#111]">
+            <div className="flex flex-col items-center text-center gap-3">
+              <BookOpen className="w-8 h-8 lg:w-10 lg:h-10 text-[#F05C33]" />
+              <span className="font-oswald font-bold tracking-widest text-sm lg:text-base uppercase">220+ Pages</span>
+            </div>
+            <div className="flex flex-col items-center text-center gap-3">
+              <Star className="w-8 h-8 lg:w-10 lg:h-10 text-[#F05C33]" />
+              <span className="font-oswald font-bold tracking-widest text-sm lg:text-base uppercase">Rich Matte Finish</span>
+            </div>
+            <div className="flex flex-col items-center text-center gap-3">
+              <BookType className="w-8 h-8 lg:w-10 lg:h-10 text-[#F05C33]" />
+              <span className="font-oswald font-bold tracking-widest text-sm lg:text-base uppercase">High Quality Paper</span>
+            </div>
+            <div className="flex flex-col items-center text-center gap-3">
+              <ShieldCheck className="w-8 h-8 lg:w-10 lg:h-10 text-[#F05C33]" />
+              <span className="font-oswald font-bold tracking-widest text-sm lg:text-base uppercase">100% Secure Checkout</span>
+            </div>
           </div>
         </section>
 
@@ -242,12 +294,25 @@ export default function TheMarginsLandingPage() {
               About The Book
             </h2>
             
-            <div className="w-full flex justify-center mb-12 drop-shadow-[0_20px_50px_rgba(240,92,51,0.2)] hover:-translate-y-2 transition-transform duration-500">
-                <img 
-                    src="/margins-mockup.png" 
-                    alt="The Margins Book Mockup" 
-                    className="w-full max-w-md h-auto object-contain"
-                />
+            <div className="relative w-full flex justify-center mb-16 px-4">
+                <div className="relative w-full max-w-xl mx-auto drop-shadow-[0_20px_50px_rgba(240,92,51,0.2)] hover:-translate-y-2 transition-transform duration-500">
+                    <img 
+                        src="/margins-mockup.png" 
+                        alt="The Margins Book Mockup" 
+                        className="w-full h-auto object-contain relative z-10"
+                    />
+                    
+                    {/* Floating Cards */}
+                    <div className="absolute -top-6 -left-4 sm:-top-8 sm:-left-12 bg-white text-[#111] p-3 sm:p-4 border-2 sm:border-4 border-[#111] shadow-[4px_4px_0_#111] z-20 rotate-[-4deg] max-w-[140px] sm:max-w-[180px]">
+                        <span className="block font-oswald font-bold text-sm sm:text-lg leading-tight uppercase tracking-widest text-[#F05C33]">80 GSM</span>
+                        <span className="block font-inter text-[10px] sm:text-xs font-semibold leading-tight mt-1 opacity-80">Highest paper quality</span>
+                    </div>
+
+                    <div className="absolute -bottom-6 -right-4 sm:-bottom-8 sm:-right-12 bg-[#111] text-white p-3 sm:p-4 border-2 sm:border-4 border-[#F5EEDB] shadow-[4px_4px_0_#F5EEDB] z-20 rotate-[3deg] max-w-[150px] sm:max-w-[190px]">
+                        <span className="block font-oswald font-bold text-sm sm:text-lg leading-tight uppercase tracking-widest text-[#F05C33]">Matte Finish</span>
+                        <span className="block font-inter text-[10px] sm:text-xs font-semibold leading-tight mt-1 opacity-80">Rich & Refined texture</span>
+                    </div>
+                </div>
             </div>
             
             <div className="space-y-8 font-inter text-lg sm:text-xl font-medium leading-relaxed opacity-90 text-center sm:text-left">
@@ -299,6 +364,16 @@ export default function TheMarginsLandingPage() {
                         </div>
                     </div>
                 </div>
+
+                <div className="mt-16 flex justify-center">
+                    <Link 
+                      href="/anthology/the-margins/buy"
+                      className="group inline-flex items-center justify-center w-full sm:w-auto gap-3 bg-[#F05C33] text-[#111] px-10 py-4 font-oswald tracking-widest font-bold text-lg sm:text-xl shadow-[8px_8px_0_#F05C33] hover:bg-white hover:shadow-[10px_10px_0_white] hover:-translate-y-1 transition-all border-4 border-[#111]"
+                    >
+                      GET YOUR COLLECTOR'S EDITION
+                      <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
+                    </Link>
+                </div>
             </div>
         </section>
 
@@ -343,63 +418,17 @@ export default function TheMarginsLandingPage() {
                     <p className="font-inter opacity-90 leading-relaxed text-[15px]">Gain entry to the exclusive Poetry festival Inner Circle. Network, collaborate, and grow with the nation's best minds.</p>
                 </div>
             </div>
-          </div>
-        </section>
-
-        {/* Trust & Delivery Section (adapted from Syaahi) */}
-        <section className="bg-typewriter-paper py-16 px-4 border-b-8 border-[#111]">
-          <div className="max-w-7xl mx-auto grid grid-cols-2 md:flex md:flex-row md:flex-wrap justify-center gap-8 gap-y-10 lg:gap-20 text-[#111]">
-            <div className="flex flex-col items-center text-center gap-3">
-              <BookOpen className="w-8 h-8 lg:w-10 lg:h-10 text-[#F05C33]" />
-              <span className="font-oswald font-bold tracking-widest text-sm lg:text-base uppercase">Premium Print</span>
-            </div>
-            <div className="flex flex-col items-center text-center gap-3">
-              <Star className="w-8 h-8 lg:w-10 lg:h-10 text-[#F05C33]" />
-              <span className="font-oswald font-bold tracking-widest text-sm lg:text-base uppercase">Collector's Edition</span>
-            </div>
-            <div className="flex flex-col items-center text-center gap-3">
-              <ShieldCheck className="w-8 h-8 lg:w-10 lg:h-10 text-[#F05C33]" />
-              <span className="font-oswald font-bold tracking-widest text-sm lg:text-base uppercase">Secure Checkout</span>
-            </div>
-            <div className="flex flex-col items-center text-center gap-3">
-              <Truck className="w-8 h-8 lg:w-10 lg:h-10 text-[#F05C33]" />
-              <span className="font-oswald font-bold tracking-widest text-sm lg:text-base uppercase">Nationwide Delivery</span>
+            
+            <div className="mt-20 flex justify-center">
+                <Link 
+                  href="/anthology/the-margins/buy"
+                  className="group inline-flex items-center justify-center w-full sm:w-auto gap-3 bg-[#111] text-[#F5EEDB] px-12 py-5 font-oswald tracking-widest font-bold text-xl sm:text-2xl shadow-[8px_8px_0_#F5EEDB] hover:shadow-[12px_12px_0_#F5EEDB] hover:-translate-y-1 transition-all border-4 border-[#111]"
+                >
+                  JOIN THE HALL OF FAME
+                  <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
+                </Link>
             </div>
           </div>
-        </section>
-
-        {/* Publish With Us Section */}
-        <section className="bg-[#F5EEDB] text-[#111] py-20 px-6 font-inter">
-            <div className="max-w-3xl mx-auto bg-white p-8 sm:p-12 shadow-xl border-l-8 border-[#F05C33]">
-                <div className="flex items-center gap-4 mb-6">
-                    <BookType className="w-10 h-10 text-[#111]" />
-                    <h2 className="font-oswald font-bold text-3xl sm:text-4xl uppercase tracking-tight leading-none">
-                        Publish Your Own Book<br/>
-                        <span className="text-xl sm:text-2xl text-gray-500 tracking-wide">With Inkfetish Publications</span>
-                    </h2>
-                </div>
-                
-                <p className="font-semibold text-lg sm:text-xl mb-6 opacity-90 leading-relaxed">
-                    If you've enjoyed the quality of this anthology from the cover design to the printing and overall presentation—imagine your own book in readers' hands.
-                </p>
-                <p className="text-base sm:text-lg mb-8 opacity-80 leading-relaxed">
-                    Whether it's a poetry collection, a novel, or a personal memoir, we'll help you publish it professionally.
-                </p>
-                
-                <div className="bg-[#25D366]/10 border-2 border-[#25D366] p-6 rounded-lg text-center flex flex-col items-center justify-center">
-                    <div className="flex items-center gap-3 text-[#25D366] mb-4">
-                        <MessageSquare className="w-8 h-8 fill-current" />
-                        <span className="font-oswald font-bold text-2xl tracking-wide uppercase">WhatsApp Us</span>
-                    </div>
-                    <a href="https://wa.me/917850963709" target="_blank" rel="noopener noreferrer" className="text-3xl sm:text-4xl font-oswald font-bold text-[#111] hover:text-[#F05C33] transition-colors mb-4">
-                        +91 78509 63709
-                    </a>
-                    <p className="font-mono font-bold text-sm sm:text-base text-gray-700">
-                        Your story deserves to be published.<br/>
-                        Let us help you bring it to life.
-                    </p>
-                </div>
-            </div>
         </section>
 
         {/* Pricing & CTA */}

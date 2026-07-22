@@ -1,19 +1,19 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'The Margins | The Official Collection of Top 200 Hall of Fame Poets',
-  description: 'The Margins is the official collection of the Top 200 Hall of Fame poets from Poetry Festival - Season 2. A premium anthology by Inkfetish Publications.',
+  title: 'The Margins | Limited Collector\'s Edition',
+  description: 'The finest poems from the year\'s most anticipated poetry event, now immortalized in one exclusive anthology. Secure your physical copy of The Margins.',
   openGraph: {
-    title: 'The Margins | The Official Collection of Top 200 Hall of Fame Poets',
-    description: 'The Margins is the official collection of the Top 200 Hall of Fame poets from Poetry Festival - Season 2. A premium anthology by Inkfetish Publications.',
+    title: 'The Margins | Limited Collector\'s Edition',
+    description: 'The finest poems from the year\'s most anticipated poetry event, now immortalized in one exclusive anthology. Secure your physical copy of The Margins.',
     url: 'https://www.inkfetish.in/anthology/the-margins',
-    siteName: 'Inkfetish',
+    siteName: 'Inkfetish Publications',
     images: [
       {
-        url: 'https://res.cloudinary.com/dde8ekuuu/image/upload/v1778137798/margins-cover.webp',
+        url: 'https://www.inkfetish.in/margins-landscape.png',
         width: 1200,
         height: 630,
-        alt: 'The Margins Anthology Cover',
+        alt: 'The Margins Anthology Book Display',
       },
     ],
     locale: 'en_US',
@@ -21,8 +21,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'The Margins | The Official Collection of Top 200 Hall of Fame Poets',
-    description: 'The Margins is the official collection of the Top 200 Hall of Fame poets from Poetry Festival - Season 2. A premium anthology by Inkfetish Publications.',
+    title: 'The Margins | Limited Collector\'s Edition',
+    description: 'The finest poems from the year\'s most anticipated poetry event, now immortalized in one exclusive anthology. Secure your physical copy of The Margins.',
+    images: ['https://www.inkfetish.in/margins-landscape.png'],
   },
 };
 

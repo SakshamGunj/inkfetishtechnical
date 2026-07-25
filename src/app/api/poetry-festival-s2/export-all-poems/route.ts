@@ -60,27 +60,23 @@ const HALL_OF_FAME_AUTHORS = [
 // Used when the writer typed a slightly different name when submitting their poem
 const NAME_ALIASES: Record<string, string> = {
   "vanya singh jauhar":            "vanya singh",
-  "the new era":                   "the new era",   // check DB — may not have submitted
   "gs chandrashekhar":             "g s chandrashekhar",
-  "jump start your heart":         "jump start your heart", // check DB
-  "meenakshi":                     "meenakshi",
-  "kumkum saxena":                 "kumkum saxena",
-  "ਹਰਮਨਪ੍ਰੀ ਤ ਕੌਰ":                "✍️ਹਰਮਨਪ੍ਰੀਤ ਕੌਰ ✍️",
+  "ਹਰਮਨਪ੍ਰੀ ਤ ਕੌਰ":               "✍️ਹਰਮਨਪ੍ਰੀਤ ਕੌਰ ✍️",
   "naqiyah jariwala":              "naqiyah jariwala / n.h. jariwalala",
   "इम्ति या ज़ संजी दा":           "इम्तियाज़ संजीदा",
   "dr. ekta priya":                "dr.ekta priya",
   "डॉ अनुरा ग शर्मा":              "dr. anurag sharma",
-  "shashank tripathi (rahi)":      "shashank tripathi (rahi)",
-  "rahul kulkarni":                "rahul kulkarni _ poet loading",
+  "shashank tripathi (rahi)":      "shashank tripathi(rahi)",
+  "rahul kulkarni":                "rahul kulkarni / poet loading",
   "k. bhuvaneeshwari/sriko":       "k.bhuvaneeshwari/sriko",
   "ayush kartik/aoi raikage":      "ayush kartik/ aoi raikage",
-  "divya kumawat":                 "dr divya kumawat",
-  "swara moharkar":                "swara moharkar",
   "vijay pratap":                  "vijay pratap tadashi",
-  "amita saxena":                  "amita saxena",
-  "mitali saikia":                 "mitali saikia",
   "lavanya":                       "lavanya venugopal",
+  // Odd entries — they typed the poem title in the name field
+  "meenakshi":                     "dream of life                by...            meenakshi",
+  "kumkum saxena":                 "maa ka anchal by kumkum saxena",
 };
+
 
 function htmlToPlainText(html: string): string {
   if (!html) return '';

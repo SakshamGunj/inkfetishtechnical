@@ -7,7 +7,7 @@ import {
   Trophy, Star, Clock, 
   Video, Users, MapPin, 
   Calendar, Gift, ChevronRight, ChevronLeft,
-  PlayCircle, Award, BookOpen, Gamepad2, BrainCircuit, Puzzle, Rocket, X, CheckCircle
+  PlayCircle, Award, BookOpen, Gamepad2, BrainCircuit, Puzzle, Rocket, X, CheckCircle, PenTool, Heart, User, Sun
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -36,7 +36,7 @@ export default function LiveEventClient() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
 
-  const totalSlides = 62; // 0-14 (content), 15-25 (pitch), 26 (games intro), 27 (quiz intro), 28-63 (quiz Q&A), 64 (final)
+  const totalSlides = 73; // 0-11 (content), 12-22 (pitch), 23-24 (intro), 25-60 (quiz), 61 (game intro), 62-66 (poetry game), 67 (final)
 
   const nextSlide = useCallback(() => {
     setCurrentSlide((prev) => (prev < totalSlides - 1 ? prev + 1 : prev));
@@ -111,7 +111,7 @@ export default function LiveEventClient() {
         return (
           <div className="flex flex-col items-center justify-center h-full w-full max-w-5xl mx-auto px-4 text-center relative">
             <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="mb-4">
-              <Image src="/inkfetish_logo.png" alt="Inkfetish Logo" width={80} height={80} className="w-12 sm:w-16 h-auto mx-auto object-contain drop-shadow-[0_0_10px_rgba(255,255,255,0.1)]" />
+              <Image src="https://res.cloudinary.com/dde8ekuuu/image/upload/q_auto/f_auto/v1777556045/iflogo_y3ss8e.png" alt="Inkfetish Logo" width={120} height={120} className="w-20 sm:w-28 h-auto mx-auto object-contain drop-shadow-[0_0_10px_rgba(255,255,255,0.1)]" />
             </motion.div>
 
             <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="mb-6 flex items-center gap-3">
@@ -467,6 +467,11 @@ export default function LiveEventClient() {
 
               <div className="flex gap-4 overflow-x-auto pb-6 pt-2 h-full snap-x snap-mandatory hide-scrollbar items-center scroll-smooth">
                 {[
+                  "https://res.cloudinary.com/dde8ekuuu/image/upload/v1776100330/WhatsApp_Image_2026-04-13_at_9.06.50_PM_2_-compressed_nrkzf4.webp",
+                  "https://res.cloudinary.com/dde8ekuuu/image/upload/v1776100330/WhatsApp_Image_2026-04-13_at_8.27.49_PM-compressed_hhn7yj.webp",
+                  "https://res.cloudinary.com/dde8ekuuu/image/upload/v1776100329/WhatsApp_Image_2026-04-13_at_8.19.16_PM-compressed_pii87q.webp",
+                  "https://res.cloudinary.com/dde8ekuuu/image/upload/v1775933367/WhatsApp_Image_2026-03-29_at_12.35.16_PM_1_-compressed_ddda2d.webp",
+                  "https://res.cloudinary.com/dde8ekuuu/image/upload/v1775933367/WhatsApp_Image_2026-03-28_at_8.00.34_PM-compressed_yfhhz2.webp",
                   "https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897715/WhatsApp_Image_2026-04-01_at_1.54.07_PM_3_-compressed_moo9ra.webp",
                   "https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897714/WhatsApp_Image_2026-04-01_at_1.54.07_PM_2_-compressed_j6w9sn.webp",
                   "https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897713/WhatsApp_Image_2026-04-01_at_1.54.07_PM_1_-compressed_slt2mj.webp",
@@ -475,6 +480,28 @@ export default function LiveEventClient() {
                   "https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897711/WhatsApp_Image_2026-04-01_at_1.54.05_PM_1_-compressed_eoiarj.webp",
                   "https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897716/WhatsApp_Image_2026-04-07_at_12.09.27_AM-compressed_bzgl8t.webp",
                   "https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897715/WhatsApp_Image_2026-04-07_at_12.09.27_AM_1_-compressed_ugjy5e.webp",
+                  "https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897600/WhatsApp_Image_2026-04-09_at_2.59.25_PM-compressed_in2led.webp",
+                  "https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897599/WhatsApp_Image_2026-04-09_at_2.53.04_PM-compressed_wsnhmu.webp",
+                  "https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897599/WhatsApp_Image_2026-04-07_at_8.39.44_PM-compressed_ztxsge.webp",
+                  "https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897598/WhatsApp_Image_2026-04-07_at_8.39.44_PM_2_-compressed_hfr0wv.webp",
+                  "https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897598/WhatsApp_Image_2026-04-07_at_8.39.44_PM_1_-compressed_gjnlck.webp",
+                  "https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897597/WhatsApp_Image_2026-04-04_at_12.20.06_PM_1_-compressed_lrqjv2.webp",
+                  "https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897597/WhatsApp_Image_2026-04-03_at_10.52.05_AM_2_-compressed_m2qlui.webp",
+                  "https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897597/WhatsApp_Image_2026-04-03_at_10.52.05_AM_1_-compressed_uphqxg.webp",
+                  "https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897596/WhatsApp_Image_2026-04-03_at_10.52.04_AM_1_-compressed_pp9tww.webp",
+                  "https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897596/WhatsApp_Image_2026-04-02_at_5.42.20_PM-compressed_sq3utn.webp",
+                  "https://res.cloudinary.com/dde8ekuuu/image/upload/v1776100331/WhatsApp_Image_2026-04-13_at_9.06.50_PM-compressed_f54p62.webp",
+                  "https://res.cloudinary.com/dde8ekuuu/image/upload/v1776100331/WhatsApp_Image_2026-04-13_at_9.06.50_PM_1_-compressed_bla9w8.webp",
+                  "https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897590/WhatsApp_Image_2026-03-23_at_7.03.30_PM-compressed_fsgkug.webp",
+                  "https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897591/WhatsApp_Image_2026-03-23_at_7.03.31_PM_3_-compressed_ofwyil.webp",
+                  "https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897591/WhatsApp_Image_2026-03-23_at_7.03.31_PM_4_-compressed_dnisid.webp",
+                  "https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897592/WhatsApp_Image_2026-03-23_at_7.03.31_PM_5_-compressed_hgy6j1.webp",
+                  "https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897592/WhatsApp_Image_2026-03-28_at_11.47.30_PM_1_-compressed_abkbxy.webp",
+                  "https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897593/WhatsApp_Image_2026-03-31_at_11.00.31_PM-compressed_a58ono.webp",
+                  "https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897593/WhatsApp_Image_2026-04-01_at_6.40.37_AM-compressed_eibjs4.webp",
+                  "https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897594/WhatsApp_Image_2026-04-01_at_6.40.55_AM_1_-compressed_j51ngs.webp",
+                  "https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897594/WhatsApp_Image_2026-04-02_at_5.17.33_PM_2_-compressed_sz4wld.webp",
+                  "https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897595/WhatsApp_Image_2026-04-02_at_5.17.33_PM_3_-compressed_kosajj.webp"
                 ].map((src, i) => (
                   <div key={i} className="relative h-full aspect-[4/5] sm:aspect-auto sm:w-[320px] shrink-0 snap-center border border-gold/20 rounded-sm overflow-hidden bg-[#1A1613] shadow-[0_10px_30px_rgba(0,0,0,0.5)] hover:border-gold/60 transition-colors duration-300">
                     <Image 
@@ -539,17 +566,10 @@ export default function LiveEventClient() {
                     </div>
                   </li>
                   <li className="flex gap-4 items-start">
-                    <div className="bg-gold/10 p-2 rounded-full shrink-0"><Users className="w-4 h-4 text-gold" /></div>
-                    <div>
-                      <div className="text-white font-bold text-sm mb-1">Official Appreciation Letter</div>
-                      <div className="text-ink-400 text-xs font-light leading-relaxed">A signed appreciation letter recognising your participation.</div>
-                    </div>
-                  </li>
-                  <li className="flex gap-4 items-start">
                     <div className="bg-gold/10 p-2 rounded-full shrink-0"><MapPin className="w-4 h-4 text-gold" /></div>
                     <div>
                       <div className="text-white font-bold text-sm mb-1">Home Delivery</div>
-                      <div className="text-ink-400 text-xs font-light leading-relaxed">Your certificate and appreciation letter will be safely delivered to your doorstep.</div>
+                      <div className="text-ink-400 text-xs font-light leading-relaxed">Your certificate will be safely delivered to your doorstep.</div>
                     </div>
                   </li>
                 </ul>
@@ -913,31 +933,31 @@ export default function LiveEventClient() {
       case 18:
         return (
           <div className="flex flex-col items-center justify-center h-full w-full max-w-6xl mx-auto px-4 text-center">
-            <h2 className="text-xl md:text-2xl font-serif text-ink-300 mb-6 italic font-light drop-shadow-md">
+            <h2 className="text-lg md:text-xl font-serif text-ink-300 mb-3 md:mb-4 italic font-light drop-shadow-md">
               Now you know the path.
             </h2>
             
-            <h3 className="text-4xl md:text-6xl font-serif font-black text-white mb-8 leading-tight drop-shadow-[0_0_20px_rgba(255,255,255,0.1)]">
+            <h3 className="text-3xl md:text-5xl lg:text-5xl font-serif font-black text-white mb-4 md:mb-6 leading-tight drop-shadow-[0_0_20px_rgba(255,255,255,0.1)]">
               But the real question is... <br/>
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ebd298] via-[#c5a059] to-[#ebd298]">who will help you cross the Shakespeare Bridge?</span>
             </h3>
 
-            <p className="text-lg md:text-2xl text-ink-300 font-light max-w-3xl mx-auto mb-10 italic border-l-2 border-gold/30 pl-6 text-left">
+            <p className="text-base md:text-xl text-ink-300 font-light max-w-3xl mx-auto mb-4 md:mb-6 italic border-l-2 border-gold/30 pl-4 md:pl-6 text-left">
               "Who will help you go beyond simply publishing a book and start building your own author identity?"
             </p>
             
-            <div className="w-full max-w-md h-px bg-gradient-to-r from-transparent via-gold/30 to-transparent mb-10 mx-auto"></div>
+            <div className="w-full max-w-md h-px bg-gradient-to-r from-transparent via-gold/30 to-transparent mb-4 md:mb-6 mx-auto"></div>
 
-            <div className="bg-gradient-to-b from-[#1A1613] to-[#14100C] border border-gold/20 p-8 md:p-12 rounded-sm shadow-[0_20px_60px_rgba(197,160,89,0.15)] transform transition-transform hover:scale-[1.01] duration-500 relative overflow-hidden group w-full max-w-4xl mx-auto">
+            <div className="bg-gradient-to-b from-[#1A1613] to-[#14100C] border border-gold/20 p-6 md:p-8 rounded-sm shadow-[0_20px_60px_rgba(197,160,89,0.15)] transform transition-transform hover:scale-[1.01] duration-500 relative overflow-hidden group w-full max-w-4xl mx-auto">
               <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-10 pointer-events-none mix-blend-overlay"></div>
               
-              <div className="bg-gold/10 p-3 rounded-full inline-block mb-6 relative z-10"><Star className="w-6 h-6 text-gold" /></div>
+              <div className="bg-gold/10 p-2 md:p-3 rounded-full inline-block mb-3 md:mb-4 relative z-10"><Star className="w-5 h-5 md:w-6 md:h-6 text-gold" /></div>
               
-              <h4 className="text-3xl md:text-5xl font-serif font-black text-white mb-8 relative z-10">
+              <h4 className="text-2xl md:text-4xl lg:text-5xl font-serif font-black text-white mb-3 md:mb-4 relative z-10">
                 That is where <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ebd298] via-[#c5a059] to-[#ebd298] italic">Inkfetish Publications</span> comes in.
               </h4>
               
-              <p className="text-base md:text-xl text-ink-200 font-light leading-relaxed max-w-3xl mx-auto relative z-10">
+              <p className="text-sm md:text-lg text-ink-200 font-light leading-relaxed max-w-3xl mx-auto relative z-10">
                 Our mission is <strong className="text-white font-medium">not just to publish your book.</strong> We are here to help you begin your journey as an author, build your author brand, and share your words with readers across the world. Just like every great author started with one step, we're here to help you take yours.
               </p>
             </div>
@@ -1119,6 +1139,253 @@ export default function LiveEventClient() {
         );
 
       case 61:
+        return (
+          <div className="flex flex-col items-center justify-center h-full w-full max-w-4xl mx-auto px-4 text-center">
+            <PenTool className="w-16 h-16 text-gold mx-auto mb-8 drop-shadow-[0_0_20px_rgba(197,160,89,0.6)]" />
+            <h2 className="text-4xl md:text-6xl lg:text-7xl font-serif font-black text-white mb-6 drop-shadow-[0_0_30px_rgba(197,160,89,0.3)] leading-tight">
+              Let's begin <br/> <span className="italic text-transparent bg-clip-text bg-gradient-to-b from-[#fdfbf7] to-[#c5a059]">Complete the Poetry.</span>
+            </h2>
+            <p className="text-lg md:text-2xl text-ink-300 font-light leading-relaxed mb-12">
+              We will give you the first two lines.<br/>You have to complete the next two lines in the chat!
+            </p>
+            <div className="bg-[#1A1613]/50 px-8 py-4 rounded-full border border-gold/30 shadow-[0_0_20px_rgba(197,160,89,0.15)] animate-pulse">
+              <p className="text-gold uppercase tracking-[0.3em] font-bold text-sm md:text-base">
+                Get your keyboards ready
+              </p>
+            </div>
+          </div>
+        );
+
+      case 62:
+        return (
+          <div className="flex flex-col items-center justify-center h-full w-full max-w-5xl mx-auto px-4 text-center">
+            <h2 className="text-[10px] md:text-xs uppercase font-bold tracking-[0.4em] text-gold mb-6 inline-flex items-center gap-2 border-b border-gold/20 pb-2">
+              <Star className="w-4 h-4" /> Theme: Dreams
+            </h2>
+            <h3 className="text-3xl md:text-5xl font-serif font-black text-white mb-10 leading-relaxed max-w-3xl drop-shadow-[0_0_20px_rgba(255,255,255,0.2)]">
+              "I carried tomorrow inside my hands,<br/>Yet fear kept drawing invisible lands..."
+            </h3>
+            <div className="bg-[#1A1613] border border-gold/40 p-8 shadow-[0_10px_30px_rgba(197,160,89,0.2)] rounded-sm max-w-lg mx-auto">
+              <p className="text-gold font-bold uppercase tracking-widest text-sm mb-3 flex items-center justify-center gap-2">
+                <PenTool className="w-4 h-4" /> Complete the poetry
+              </p>
+              <p className="text-white text-base md:text-lg">
+                Write the next 2 lines in the chat!
+              </p>
+            </div>
+          </div>
+        );
+
+      case 63:
+        return (
+          <div className="flex flex-col items-center justify-center h-full w-full max-w-5xl mx-auto px-4 text-center">
+            <h2 className="text-[10px] md:text-xs uppercase font-bold tracking-[0.4em] text-gold mb-6 inline-flex items-center gap-2 border-b border-gold/20 pb-2">
+              <Clock className="w-4 h-4" /> Theme: Time
+            </h2>
+            <h3 className="text-3xl md:text-5xl font-serif font-black text-white mb-10 leading-relaxed max-w-3xl drop-shadow-[0_0_20px_rgba(255,255,255,0.2)]">
+              "The clock remembers every silent goodbye,<br/>While forgotten moments refuse to die..."
+            </h3>
+            <div className="bg-[#1A1613] border border-gold/40 p-8 shadow-[0_10px_30px_rgba(197,160,89,0.2)] rounded-sm max-w-lg mx-auto">
+              <p className="text-gold font-bold uppercase tracking-widest text-sm mb-3 flex items-center justify-center gap-2">
+                <PenTool className="w-4 h-4" /> Complete the poetry
+              </p>
+              <p className="text-white text-base md:text-lg">
+                Write the next 2 lines in the chat!
+              </p>
+            </div>
+          </div>
+        );
+
+      case 64:
+        return (
+          <div className="flex flex-col items-center justify-center h-full w-full max-w-5xl mx-auto px-4 text-center">
+            <h2 className="text-[10px] md:text-xs uppercase font-bold tracking-[0.4em] text-gold mb-6 inline-flex items-center gap-2 border-b border-gold/20 pb-2">
+              <Heart className="w-4 h-4" /> Theme: Love & Loss
+            </h2>
+            <h3 className="text-3xl md:text-5xl font-serif font-black text-white mb-10 leading-relaxed max-w-3xl drop-shadow-[0_0_20px_rgba(255,255,255,0.2)]">
+              "We buried forever beneath a single word,<br/>Where even the echoes refused to be heard..."
+            </h3>
+            <div className="bg-[#1A1613] border border-gold/40 p-8 shadow-[0_10px_30px_rgba(197,160,89,0.2)] rounded-sm max-w-lg mx-auto">
+              <p className="text-gold font-bold uppercase tracking-widest text-sm mb-3 flex items-center justify-center gap-2">
+                <PenTool className="w-4 h-4" /> Complete the poetry
+              </p>
+              <p className="text-white text-base md:text-lg">
+                Write the next 2 lines in the chat!
+              </p>
+            </div>
+          </div>
+        );
+
+      case 65:
+        return (
+          <div className="flex flex-col items-center justify-center h-full w-full max-w-5xl mx-auto px-4 text-center">
+            <h2 className="text-[10px] md:text-xs uppercase font-bold tracking-[0.4em] text-gold mb-6 inline-flex items-center gap-2 border-b border-gold/20 pb-2">
+              <User className="w-4 h-4" /> Theme: Identity
+            </h2>
+            <h3 className="text-3xl md:text-5xl font-serif font-black text-white mb-10 leading-relaxed max-w-3xl drop-shadow-[0_0_20px_rgba(255,255,255,0.2)]">
+              "I wore borrowed names until they fit my skin,<br/>Then wondered where my own voice had been..."
+            </h3>
+            <div className="bg-[#1A1613] border border-gold/40 p-8 shadow-[0_10px_30px_rgba(197,160,89,0.2)] rounded-sm max-w-lg mx-auto">
+              <p className="text-gold font-bold uppercase tracking-widest text-sm mb-3 flex items-center justify-center gap-2">
+                <PenTool className="w-4 h-4" /> Complete the poetry
+              </p>
+              <p className="text-white text-base md:text-lg">
+                Write the next 2 lines in the chat!
+              </p>
+            </div>
+          </div>
+        );
+
+      case 66:
+        return (
+          <div className="flex flex-col items-center justify-center h-full w-full max-w-5xl mx-auto px-4 text-center">
+            <h2 className="text-[10px] md:text-xs uppercase font-bold tracking-[0.4em] text-gold mb-6 inline-flex items-center gap-2 border-b border-gold/20 pb-2">
+              <Sun className="w-4 h-4" /> Theme: Hope
+            </h2>
+            <h3 className="text-3xl md:text-5xl font-serif font-black text-white mb-10 leading-relaxed max-w-3xl drop-shadow-[0_0_20px_rgba(255,255,255,0.2)]">
+              "Even the darkest horizon hides a flame unseen,<br/>Waiting for the brave to believe where none have been..."
+            </h3>
+            <div className="bg-[#1A1613] border border-gold/40 p-8 shadow-[0_10px_30px_rgba(197,160,89,0.2)] rounded-sm max-w-lg mx-auto">
+              <p className="text-gold font-bold uppercase tracking-widest text-sm mb-3 flex items-center justify-center gap-2">
+                <PenTool className="w-4 h-4" /> Complete the poetry
+              </p>
+              <p className="text-white text-base md:text-lg">
+                Write the next 2 lines in the chat!
+              </p>
+            </div>
+          </div>
+        );
+
+      case 67:
+        return (
+          <div className="flex flex-col items-center justify-center h-full w-full max-w-5xl mx-auto px-4 text-center">
+            <h2 className="text-[10px] md:text-xs uppercase font-bold tracking-[0.4em] text-gold mb-6 inline-flex items-center gap-2 border-b border-gold/20 pb-2">
+              <Trophy className="w-4 h-4" /> The Grand Finale
+            </h2>
+            <h3 className="text-3xl md:text-5xl lg:text-7xl font-serif font-black text-white mb-8 leading-tight drop-shadow-[0_0_30px_rgba(197,160,89,0.3)]">
+              Now it's time to announce <br/>
+              <span className="text-transparent bg-clip-text bg-gradient-to-b from-[#fdfbf7] to-[#c5a059] italic text-4xl md:text-6xl mt-4 inline-block">The Top 10 Winners.</span>
+            </h3>
+            <p className="text-lg md:text-2xl text-ink-300 font-light max-w-2xl mx-auto leading-relaxed">
+              The next Shakespeare Crown awaits. In the next slide, we will reveal the Top 10 poets of the Shakespeare Poetry Award Season 2.
+            </p>
+          </div>
+        );
+
+      case 68:
+        return (
+          <div className="flex flex-col items-center justify-center h-full w-full max-w-6xl mx-auto px-4 text-center">
+            <h2 className="text-[10px] md:text-xs uppercase font-bold tracking-[0.4em] text-gold mb-6 inline-flex items-center gap-2 border-b border-gold/20 pb-2">
+              <Award className="w-4 h-4" /> Leaderboard
+            </h2>
+            <h3 className="text-3xl md:text-5xl font-serif font-black text-white mb-10 leading-tight">
+              Top 10 <span className="text-transparent bg-clip-text bg-gradient-to-b from-[#fdfbf7] to-[#c5a059] italic">— The Finalists</span>
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-5xl text-left">
+              {[
+                { rank: "4th", name: "Devdeep Bhattacharya", title: "कलाकार" },
+                { rank: "5th", name: "Shivam Kumar", title: "Sonnet of the Unreachable Beloved" },
+                { rank: "6th", name: "Vashvi Upendra Singh", title: "I Carry the Ghost" },
+                { rank: "7th", name: "Sumita Purkayasth", title: "If Shakespeare Logged Into My Notebook" },
+                { rank: "8th", name: "Sarah Wassim", title: "Museum of Almosts" },
+                { rank: "9th", name: "Hensi Chelani", title: "When the Sky Remembered My Name" },
+                { rank: "10th", name: "Priyanshi Sharma", title: "The Grammar of Holding" },
+              ].map((winner, idx) => (
+                <div key={idx} className={`bg-[#1A1613] border border-gold/20 p-4 rounded-sm flex items-center gap-4 ${idx === 6 ? 'md:col-span-2 max-w-md mx-auto w-full' : ''}`}>
+                  <div className="text-gold font-serif font-black text-2xl w-14 text-center">{winner.rank}</div>
+                  <div className="w-px h-10 bg-gold/30"></div>
+                  <div>
+                    <h4 className="text-white font-bold text-lg">{winner.name}</h4>
+                    <p className="text-ink-400 text-sm font-light italic">{winner.title}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+
+      case 69:
+        return (
+          <div className="flex flex-col items-center justify-center h-full w-full max-w-5xl mx-auto px-4 text-center relative">
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gold/10 blur-[100px] rounded-full pointer-events-none"></div>
+            <h2 className="text-[10px] md:text-xs uppercase font-bold tracking-[0.4em] text-gold mb-6 inline-flex items-center gap-2 border-b border-gold/20 pb-2">
+              <Trophy className="w-4 h-4" /> The Pinnacle
+            </h2>
+            <h3 className="text-4xl md:text-6xl font-serif font-black text-white mb-12 leading-tight">
+              The <span className="text-transparent bg-clip-text bg-gradient-to-b from-[#fdfbf7] to-[#c5a059] italic text-5xl md:text-7xl">Top 3</span>
+            </h3>
+            <div className="flex flex-col gap-6 w-full max-w-3xl text-left relative z-10">
+              {[
+                { rank: "1st", name: "Sana Shabbir", title: "A Definition That Bleeds" },
+                { rank: "2nd", name: "Anjum Fakirmahmad Shaikh", title: "अधूरा सफ़र" },
+                { rank: "3rd", name: "Archit Shankar", title: "The Arrival Gate" },
+              ].map((winner, idx) => (
+                <div key={idx} className="bg-gradient-to-r from-gold/10 to-[#1A1613] border border-gold/40 p-6 shadow-[0_10px_30px_rgba(197,160,89,0.15)] rounded-sm flex items-center gap-6 transform transition-transform hover:scale-105 duration-300 cursor-pointer">
+                  <div className="text-gold font-serif font-black text-4xl md:text-5xl w-20 text-center drop-shadow-md">{winner.rank}</div>
+                  <div className="w-px h-16 bg-gold/40"></div>
+                  <div>
+                    <h4 className="text-white font-bold text-2xl md:text-3xl mb-1">{winner.name}</h4>
+                    <p className="text-gold text-base font-light italic">{winner.title}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+
+      case 70:
+        return (
+          <div className="flex flex-col items-center justify-center h-full w-full max-w-5xl mx-auto px-4 text-center">
+            <h2 className="text-[10px] md:text-xs uppercase font-bold tracking-[0.4em] text-gold mb-6 inline-flex items-center gap-2 border-b border-gold/20 pb-2">
+              <Award className="w-4 h-4" /> Next Steps
+            </h2>
+            <h3 className="text-3xl md:text-5xl lg:text-6xl font-serif font-black text-white mb-10 leading-tight drop-shadow-[0_0_30px_rgba(197,160,89,0.3)]">
+              Certificates & <span className="text-transparent bg-clip-text bg-gradient-to-b from-[#fdfbf7] to-[#c5a059] italic">Delivery.</span>
+            </h3>
+            <div className="grid md:grid-cols-2 gap-8 w-full max-w-4xl mx-auto text-left">
+              <div className="bg-[#1A1613] border border-gold/30 p-8 shadow-[0_10px_30px_rgba(197,160,89,0.1)] rounded-sm group hover:-translate-y-1 transition-transform duration-500 text-center">
+                <div className="bg-gold/10 p-4 rounded-full inline-flex mb-4 group-hover:scale-110 transition-transform">
+                  <Award className="w-8 h-8 text-gold" />
+                </div>
+                <h4 className="text-xl font-serif font-bold text-white mb-3">Digital Certificates</h4>
+                <p className="text-ink-300 font-light leading-relaxed">
+                  We will provide your official digital certificates within the next <strong className="text-white">3 working days.</strong>
+                </p>
+              </div>
+              <div className="bg-[#1A1613] border border-gold/30 p-8 shadow-[0_10px_30px_rgba(197,160,89,0.1)] rounded-sm group hover:-translate-y-1 transition-transform duration-500 text-center">
+                <div className="bg-gold/10 p-4 rounded-full inline-flex mb-4 group-hover:scale-110 transition-transform">
+                  <MapPin className="w-8 h-8 text-gold" />
+                </div>
+                <h4 className="text-xl font-serif font-bold text-white mb-3">Home Delivery</h4>
+                <p className="text-ink-300 font-light leading-relaxed">
+                  Home delivery of the physical copies will commence soon. We will <strong className="text-white">announce the live date</strong> shortly.
+                </p>
+              </div>
+            </div>
+          </div>
+        );
+
+      case 71:
+        return (
+          <div className="flex flex-col items-center justify-center h-full w-full max-w-5xl mx-auto px-4 text-center">
+            <h3 className="text-4xl md:text-6xl lg:text-7xl font-serif font-black text-white mb-8 leading-tight drop-shadow-[0_0_30px_rgba(197,160,89,0.3)]">
+              Thank You <br/>
+              <span className="text-transparent bg-clip-text bg-gradient-to-b from-[#fdfbf7] to-[#c5a059] italic text-3xl md:text-5xl mt-4 inline-block">for joining the Shakespeare Poetry Live.</span>
+            </h3>
+            <p className="text-lg md:text-2xl text-ink-300 font-light max-w-2xl mx-auto leading-relaxed mb-12">
+              We are so grateful to have you with us.<br/>We wish you the very best on your writing journey!
+            </p>
+            <div className="inline-flex items-center gap-4 opacity-80 mt-10">
+              <div className="w-12 h-px bg-gold/50"></div>
+              <p className="text-gold uppercase tracking-[0.3em] font-bold text-xs md:text-sm">
+                Inkfetish Publications
+              </p>
+              <div className="w-12 h-px bg-gold/50"></div>
+            </div>
+          </div>
+        );
+
+      case 72:
         return (
           <div className="flex flex-col items-center justify-center h-full w-full max-w-4xl mx-auto px-4 text-center">
             <Trophy className="w-16 h-16 text-gold mx-auto mb-8 drop-shadow-[0_0_20px_rgba(197,160,89,0.6)]" />

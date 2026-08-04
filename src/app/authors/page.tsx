@@ -23,6 +23,7 @@ const authors = [
   { name: 'Umme Kulsum', slug: 'etherea', role: 'Poet & Student', imageBg: 'bg-ink-900/5' },
   { name: 'Aritra Banerjee', slug: 'aritra', role: 'Creative Writer & Singer', imageBg: 'bg-ink-900/10' },
   { name: 'Sunitha Sukumaran', slug: 'sunitha', role: 'IT Professional & Author', imageBg: 'bg-ink-900/5' },
+  { name: 'Thalir', slug: 'thalir', role: 'Tamil & English Poet', imageBg: 'bg-ink-900/10' },
 ];
 
 export default function AuthorsPage() {

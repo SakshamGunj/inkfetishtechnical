@@ -38,18 +38,18 @@ const BUNDLES = [
   },
   {
     id: "signed",
-    label: "Special Edition",
+    label: "The Mystery Box Bundle",
     price: 289,
     strikePrice: 899,
     perks: [
       { icon: "📚", text: "First Edition Paperback" },
-      { icon: "📖", text: "The Lost Chapter (Digital)" },
-      { icon: "💌", text: "Personal dedication" },
-      { icon: "🎙️", text: "Private VIP Q&A" },
+      { icon: "🎁", text: "Curated vintage polaroids & goodies" },
+      { icon: "💌", text: "A secret wax-sealed poem" },
+      { icon: "✍️", text: "Personal dedication" },
       { icon: "📦", text: "Free tracked shipping (Pan-India)" },
     ],
-    badge: "Premium",
-    badgeColor: "#F7E56B",
+    badge: "Limited Edition",
+    badgeColor: "#B497D6",
   },
 ];
 

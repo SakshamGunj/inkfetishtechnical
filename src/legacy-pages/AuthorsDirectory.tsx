@@ -21,6 +21,7 @@ const authors = [
   { name: 'Aritra Banerjee', slug: 'aritra', role: 'Creative Writer & Singer', imageBg: 'bg-ink-900/5' },
   { name: 'Sunitha Sukumaran', slug: 'sunitha', role: 'IT Professional & Author', imageBg: 'bg-ink-900/10' },
   { name: 'Thalir', slug: 'thalir', role: 'Tamil & English Poet', imageBg: 'bg-ink-900/5' },
+  { name: 'Niman', slug: 'niman', role: 'Medical Professional & Author', imageBg: 'bg-ink-900/10' },
 ];
 
 const AuthorsDirectory = () => {

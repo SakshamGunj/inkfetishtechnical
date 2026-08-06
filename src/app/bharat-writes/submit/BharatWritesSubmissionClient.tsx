@@ -1365,32 +1365,34 @@ export default function BharatWritesSubmissionClient() {
       {status === 'confirming' && <ConfirmationModal />}
 
       {/* CUSTOM FOOTER */}
-      <footer className="w-full bg-[#1A202C] text-white py-12 px-6 mt-auto border-t-[4px] border-[#000080]">
-        <div className="max-w-4xl mx-auto text-center space-y-8">
-          <div>
-            <h2 className="text-2xl font-display font-bold uppercase tracking-widest text-[#FF9933] mb-2">Bharat Writes National Independence Poetry Contest</h2>
-            <p className="text-sm tracking-[0.2em] text-[#E2E8F0] opacity-80">🇮🇳 Independence • Freedom • India • Bharat</p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 py-8 border-y border-[#4A5568]/30">
-            <div>
-              <h3 className="text-[#138808] font-bold tracking-widest uppercase text-xs mb-2 flex items-center justify-center gap-2">🌍 Languages</h3>
-              <p className="text-sm text-[#A0AEC0]">All Indian languages are welcome.</p>
-            </div>
-            <div>
-              <h3 className="text-[#138808] font-bold tracking-widest uppercase text-xs mb-2 flex items-center justify-center gap-2">✍️ Poetry Length</h3>
-              <p className="text-sm text-[#A0AEC0]">There is no word limit. Express your thoughts freely.</p>
-            </div>
-            <div>
-              <h3 className="text-[#138808] font-bold tracking-widest uppercase text-xs mb-2 flex items-center justify-center gap-2">👥 Participation Limit</h3>
-              <p className="text-sm text-[#A0AEC0]">Only 100 writers will be accepted on a first-come, first-served basis.</p>
-            </div>
-          </div>
+      <footer className="w-full bg-[#F8F9FA] border-t border-[#E2E8F0] mt-auto py-8 px-6 text-center">
+        <div className="max-w-4xl mx-auto flex flex-col items-center justify-center space-y-6">
           
           <div>
-            <div className="inline-block bg-[#000080] px-4 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase mb-3">MODE - ONLINE</div>
-            <p className="text-lg font-serif italic text-[#E2E8F0]">Write for Bharat. Let your words become a part of history. 🇮🇳</p>
+            <h2 className="text-sm font-display font-bold uppercase tracking-widest text-[#000080] mb-1">Bharat Writes National Independence Poetry Contest</h2>
+            <p className="text-[10px] tracking-[0.2em] text-[#4A5568] uppercase font-semibold">🇮🇳 Independence • Freedom • India • Bharat</p>
           </div>
+          
+          <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4 text-xs">
+            <div className="flex items-center gap-2">
+              <span className="text-[#FF9933]">🌍</span>
+              <span className="text-[#4A5568] font-medium"><strong className="text-[#1A202C]">Languages:</strong> All Indian languages</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-[#000080]">✍️</span>
+              <span className="text-[#4A5568] font-medium"><strong className="text-[#1A202C]">Length:</strong> No word limit</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-[#138808]">👥</span>
+              <span className="text-[#4A5568] font-medium"><strong className="text-[#1A202C]">Limit:</strong> 100 writers</span>
+            </div>
+          </div>
+          
+          <div className="pt-6 border-t border-[#E2E8F0] w-full max-w-lg">
+            <div className="inline-block border border-[#000080] text-[#000080] px-3 py-0.5 rounded-full text-[9px] font-bold tracking-widest uppercase mb-2 bg-white">MODE - ONLINE</div>
+            <p className="text-xs font-serif italic text-[#4A5568]">Write for Bharat. Let your words become a part of history. 🇮🇳</p>
+          </div>
+          
         </div>
       </footer>
     </div>

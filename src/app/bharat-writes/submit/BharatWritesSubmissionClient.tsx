@@ -372,71 +372,7 @@ export default function BharatWritesSubmissionClient() {
     }
   };
 
-  const editor2 = useEditor({
-    extensions: [
-      StarterKit,
-      Underline,
-      LineHeight,
-      LetterSpacing,
-      TextAlign.configure({ types: ['heading', 'paragraph'] })
-    ],
-    content: '',
-    immediatelyRender: false,
-    editorProps: {
-      attributes: { class: 'tiptap-editor outline-none h-full' },
-      handleKeyDown: (view, event) => {
-        const allowedKeys = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Tab', 'Meta', 'Control', 'Alt', 'Shift'];
-        if (allowedKeys.includes(event.key) || event.metaKey || event.ctrlKey) return false;
-        
-        const dom = view.dom;
-        if (dom.scrollHeight > dom.clientHeight + 1) {
-          event.preventDefault();
-          showToast('Maximum 2 pages allowed per submission.');
-          return true;
-        }
-        return false;
-      },
-      handlePaste: (view, event, slice) => {
-        event.preventDefault();
-        const pastedText = event.clipboardData?.getData('text/plain') || '';
-        if (!pastedText) return true;
-        
-        const currentChars = view.state.doc.textContent.length;
-        const maxChars = 2500;
-        const remainingChars = Math.max(0, maxChars - currentChars);
-        
-        if (remainingChars === 0 || view.dom.scrollHeight > view.dom.clientHeight + 1) {
-          showToast('Page limit reached.');
-          return true;
-        }
-        
-        const trimmedText = pastedText.slice(0, remainingChars);
-        const { state, dispatch } = view;
-        dispatch(state.tr.insertText(trimmedText));
-        
-        if (pastedText.length > remainingChars) {
-          showToast('Text truncated to fit submission constraints.', 'info');
-        }
-        return true;
-      }
-    },
-    onUpdate: ({ editor }) => {
-      setTimeout(() => {
-        const dom = editor.view.dom;
-        if (dom.scrollHeight > dom.clientHeight + 1) {
-          const { from } = editor.state.selection;
-          if (from > 1) {
-             editor.commands.deleteRange({ from: from - 1, to: from });
-          }
-        }
-      }, 50);
-      
-      if (editor.isEmpty) {
-        editor1?.commands.focus('end');
-      }
-    },
-    onFocus: () => setActiveEditorId(2),
-  });
+
 
   const editor1 = useEditor({
     extensions: [
@@ -449,52 +385,8 @@ export default function BharatWritesSubmissionClient() {
     content: '',
     immediatelyRender: false,
     editorProps: {
-      attributes: { class: 'tiptap-editor outline-none h-full' },
+      attributes: { class: 'tiptap-editor outline-none min-h-[400px]' },
     },
-    onUpdate: ({ editor }) => {
-      setTimeout(() => {
-        const dom = editor.view.dom;
-        if (dom.scrollHeight > dom.clientHeight + 1) {
-          const { state } = editor;
-          const { doc } = state;
-          
-          const lastChild = doc.lastChild;
-          if (lastChild && lastChild.isTextblock) {
-            const text = lastChild.textContent;
-            const lastSpaceIndex = text.lastIndexOf(' ');
-            
-            if (lastSpaceIndex !== -1) {
-              const lastWord = text.slice(lastSpaceIndex);
-              const pos = doc.content.size - lastWord.length - 1;
-              editor.chain().deleteRange({ from: pos, to: doc.content.size }).run();
-              
-              if (editor2 && !editor2.isDestroyed) {
-                editor2.chain().insertContentAt(0, lastWord).focus('start').run();
-              }
-              return;
-            }
-          }
-
-          if (lastChild && doc.childCount > 1) {
-            const docSize = doc.content.size;
-            const deleteFrom = docSize - lastChild.nodeSize;
-            const json = editor.getJSON();
-            if (json.content && json.content.length > 0) {
-              const lastNodeJSON = json.content.pop();
-              editor.commands.deleteRange({ from: deleteFrom, to: docSize });
-              if (editor2 && !editor2.isDestroyed && lastNodeJSON) {
-                editor2.commands.insertContentAt(0, lastNodeJSON);
-                editor2.commands.focus('start');
-              }
-            }
-          } else {
-            editor.commands.undo();
-            showToast('Line limit exceeded. Use return key.', 'info');
-          }
-        }
-      }, 50);
-    },
-    onFocus: () => setActiveEditorId(1),
   });
 
   useEffect(() => {
@@ -510,28 +402,14 @@ export default function BharatWritesSubmissionClient() {
     return () => window.removeEventListener('resize', checkScale);
   }, []);
 
-  useEffect(() => {
-    if (!editor1 || !editor2) return;
-    const handleBackflow = ({ editor }: { editor: any }) => {
-      const { state } = editor;
-      const { selection } = state;
-      if (selection.empty && selection.anchor === 1 && state.doc.content.size === 2) {
-        editor1.commands.focus('end');
-      }
-    };
-    editor2.on('selectionUpdate', handleBackflow);
-    return () => {
-      editor2.off('selectionUpdate', handleBackflow);
-    };
-  }, [editor1, editor2]);
+
 
   const [wordCount, setWordCount] = useState(0);
   const [charCount, setCharCount] = useState(0);
 
   const updateStats = () => {
     const text1 = editor1?.getText() || '';
-    const text2 = editor2?.getText() || '';
-    const fullText = (text1 + (text2 ? '\n' + text2 : '')).trim();
+    const fullText = text1.trim();
     
     if (!fullText) {
       setWordCount(0);
@@ -545,16 +423,14 @@ export default function BharatWritesSubmissionClient() {
   };
 
   useEffect(() => {
-    if (!editor1 || !editor2) return;
+    if (!editor1) return;
     const triggerUpdate = () => updateStats();
     editor1.on('update', triggerUpdate);
-    editor2.on('update', triggerUpdate);
     triggerUpdate();
     return () => {
       editor1.off('update', triggerUpdate);
-      editor2.off('update', triggerUpdate);
     };
-  }, [editor1, editor2]);
+  }, [editor1]);
 
   const WORD_LIMIT = 600;
   const CHAR_LIMIT = 4000;
@@ -587,8 +463,7 @@ export default function BharatWritesSubmissionClient() {
     
     try {
       const combinedHtml = `
-        <div class="poetry-page-1">${editor1?.getHTML()}</div>
-        <div class="poetry-page-2">${editor2?.getHTML()}</div>
+        <div class="poetry-content">${editor1?.getHTML()}</div>
       `;
 
       const docRef = await addDoc(collection(db, 'bharat_writes_submissions'), {
@@ -624,7 +499,6 @@ export default function BharatWritesSubmissionClient() {
           setEditorMode('dashboard');
           setTitle('');
           editor1?.commands.clearContent();
-          editor2?.commands.clearContent();
           confetti({ particleCount: 80, spread: 60, origin: { y: 0.6 }, colors: ['#FF9933', '#138808'] });
           showToast(`Entry ${activePoemSlot} recorded. Please proceed to Entry ${activePoemSlot + 1}.`, 'success');
         } else {
@@ -806,7 +680,7 @@ export default function BharatWritesSubmissionClient() {
             <div className="h-full flex-1 bg-[#138808]" />
           </div>
 
-          <nav className="fixed top-1 w-full bg-white/95 backdrop-blur-md border-b border-[#E2E8F0] z-50 px-6 py-4 flex items-center justify-between shadow-sm">
+          <nav className="fixed top-0 w-full bg-white/95 backdrop-blur-md border-b border-[#E2E8F0] z-50 px-6 py-3 flex items-center justify-between shadow-sm">
             <div className="flex items-center gap-4">
               <div className="hidden sm:flex items-center gap-2 pr-4 border-r border-[#E2E8F0]">
                 <img src="/images/inkfetish_logo.png" alt="Inkfetish Logo" className="w-6 h-6 object-contain" />
@@ -816,7 +690,10 @@ export default function BharatWritesSubmissionClient() {
                 <div className="w-8 h-8 rounded-full bg-[#F7FAFC] border border-[#E2E8F0] flex items-center justify-center">
                   <Flag className="w-4 h-4 text-[#000080]" />
                 </div>
-                <span className="font-display font-bold text-lg tracking-tight text-[#000080]">Bharat Writes</span>
+                <div className="flex flex-col">
+                  <span className="font-display font-bold text-lg leading-none tracking-tight text-[#000080]">Bharat Writes</span>
+                  <span className="text-[10px] uppercase font-bold text-[#4A5568] tracking-widest mt-1">Inkfetish Publication</span>
+                </div>
               </div>
             </div>
             <div className="flex items-center gap-4 text-xs font-semibold text-[#4A5568] tracking-widest uppercase">
@@ -834,6 +711,28 @@ export default function BharatWritesSubmissionClient() {
               )}
             </div>
           </nav>
+          
+          <div className="fixed top-[60px] w-full bg-[#000080] text-white overflow-hidden z-40 py-1.5 border-b border-[#FF9933]/30 shadow-md">
+            <div className="whitespace-nowrap animate-[marquee_20s_linear_infinite] inline-block font-bold text-sm tracking-widest">
+              <span className="mx-4">🎖️ EVERY PARTICIPANT WILL RECEIVE:</span>
+              <span className="mx-4 text-[#FF9933]">• BHARAT PRIDE CERTIFICATE (PDF)</span>
+              <span className="mx-4 text-[#138808]">• BHARAT PRIDE APPRECIATION LETTER (PDF)</span>
+              <span className="mx-8 opacity-50">|</span>
+              <span className="mx-4">🎖️ EVERY PARTICIPANT WILL RECEIVE:</span>
+              <span className="mx-4 text-[#FF9933]">• BHARAT PRIDE CERTIFICATE (PDF)</span>
+              <span className="mx-4 text-[#138808]">• BHARAT PRIDE APPRECIATION LETTER (PDF)</span>
+              <span className="mx-8 opacity-50">|</span>
+              <span className="mx-4">🎖️ EVERY PARTICIPANT WILL RECEIVE:</span>
+              <span className="mx-4 text-[#FF9933]">• BHARAT PRIDE CERTIFICATE (PDF)</span>
+              <span className="mx-4 text-[#138808]">• BHARAT PRIDE APPRECIATION LETTER (PDF)</span>
+            </div>
+            <style jsx>{`
+              @keyframes marquee {
+                0% { transform: translateX(0%); }
+                100% { transform: translateX(-33.33%); }
+              }
+            `}</style>
+          </div>
         </>
       )}
 
@@ -1083,7 +982,7 @@ export default function BharatWritesSubmissionClient() {
                     >
                       <div className="flex justify-between items-start mb-4">
                         <div>
-                          <h3 className="text-xl font-bold text-[#1A202C]">Standard Entry</h3>
+                          <h3 className="text-xl font-bold text-[#1A202C]">Bharat Writes 1 Poem Entry</h3>
                           <p className="text-[#4A5568] text-sm mt-1">Single poem submission</p>
                         </div>
                         <div className="text-right">
@@ -1106,7 +1005,7 @@ export default function BharatWritesSubmissionClient() {
                       <div className="absolute top-0 right-0 bg-[#FF9933] text-white text-[10px] font-bold uppercase tracking-widest py-1 px-3 rounded-bl-lg">Recommended</div>
                       <div className="flex justify-between items-start mb-4">
                         <div>
-                          <h3 className="text-xl font-bold text-[#1A202C]">Extended Entry</h3>
+                          <h3 className="text-xl font-bold text-[#1A202C]">Bharat Writes 2 Poem Entry</h3>
                           <p className="text-[#4A5568] text-sm mt-1">Two poem submissions</p>
                         </div>
                         <div className="text-right">
@@ -1129,7 +1028,7 @@ export default function BharatWritesSubmissionClient() {
                       <div className="absolute top-0 right-0 bg-[#138808] text-white text-[10px] font-bold uppercase tracking-widest py-1 px-3 rounded-bl-lg">Premium</div>
                       <div className="flex justify-between items-start mb-4">
                         <div>
-                          <h3 className="text-xl font-bold text-[#1A202C]">Premium Entry</h3>
+                          <h3 className="text-xl font-bold text-[#1A202C]">Bharat Writes 3 Poem Entry</h3>
                           <p className="text-[#4A5568] text-sm mt-1">Three poem submissions</p>
                         </div>
                         <div className="text-right">
@@ -1444,56 +1343,19 @@ export default function BharatWritesSubmissionClient() {
 
                 {/* EDITOR CANVAS */}
                 <div className="flex-1 mt-8 lg:mt-0 pb-20 relative w-full overflow-x-hidden min-h-[500px]">
-                  <div 
-                    className="flex flex-col xl:flex-row gap-8 items-center xl:items-start justify-center origin-top lg:origin-top-left transition-transform duration-300"
-                    style={{ transform: `scale(${scale})` }}
-                  >
-                    
-                    {/* PAGE 1 */}
-                    <div className="relative group shrink-0 transition-transform hover:-translate-y-1 duration-300">
-                      <div className="absolute -inset-1 bg-gradient-to-b from-[#FF9933]/20 via-[#ffffff]/0 to-[#138808]/20 rounded-lg blur opacity-75"></div>
-                      <div 
-                        className={`relative w-[520px] h-[735px] bg-white text-[#1A202C] shadow-lg rounded-sm overflow-hidden flex flex-col font-display ${activeEditorId === 1 ? 'ring-2 ring-[#000080] ring-offset-4 ring-offset-[#F8F9FA]' : 'opacity-80'}`}
-                      >
-                        <div className="w-full text-center py-6 pb-2 border-b border-[#E2E8F0]/50 shrink-0">
-                          <h1 className="text-3xl font-bold px-12 leading-tight uppercase tracking-wide text-[#000080]" style={{ wordBreak: 'break-word' }}>
-                            {title || <span className="opacity-30">Untitled Verse</span>}
-                          </h1>
-                          <p className="mt-2 text-sm text-[#4A5568] tracking-widest uppercase">— by {name || 'Author'} —</p>
-                        </div>
-
-                        <div className="flex-1 p-8 px-12 pb-12 overflow-hidden text-[15.5px] relative">
-                          <EditorContent editor={editor1} />
-                        </div>
-                        
-                        <div className="absolute bottom-4 w-full text-center text-[#A0AEC0] text-xs font-sans tracking-widest">PAGE 1 OF 2</div>
+                  <div className="relative w-full transition-transform duration-300">
+                    <div className="absolute -inset-1 bg-gradient-to-b from-[#FF9933]/20 via-[#ffffff]/0 to-[#138808]/20 rounded-lg blur opacity-75"></div>
+                    <div className="relative w-full min-h-[600px] bg-white text-[#1A202C] shadow-lg rounded-sm overflow-hidden flex flex-col font-display border border-[#E2E8F0]">
+                      <div className="w-full text-center py-8 pb-4 border-b border-[#E2E8F0]/50 shrink-0">
+                        <h1 className="text-4xl font-bold px-12 leading-tight uppercase tracking-wide text-[#000080]" style={{ wordBreak: 'break-word' }}>
+                          {title || <span className="opacity-30">Untitled Verse</span>}
+                        </h1>
+                        <p className="mt-4 text-sm text-[#4A5568] tracking-widest uppercase">— by {name || 'Author'} —</p>
+                      </div>
+                      <div className="flex-1 p-8 md:p-16 text-[17px] relative leading-relaxed">
+                        <EditorContent editor={editor1} />
                       </div>
                     </div>
-
-                    {/* PAGE 2 */}
-                    <div className="relative group shrink-0 transition-transform hover:-translate-y-1 duration-300 mt-8 xl:mt-0">
-                      <div className="absolute -inset-1 bg-gradient-to-b from-[#FF9933]/20 via-[#ffffff]/0 to-[#138808]/20 rounded-lg blur opacity-75"></div>
-                      <div 
-                        className={`relative w-[520px] h-[735px] bg-white text-[#1A202C] shadow-lg rounded-sm overflow-hidden flex flex-col font-display ${activeEditorId === 2 ? 'ring-2 ring-[#000080] ring-offset-4 ring-offset-[#F8F9FA]' : 'opacity-80'}`}
-                      >
-                        <div className="w-full text-center py-6 pb-2 border-b border-[#E2E8F0]/50 shrink-0 invisible">
-                          <h1 className="text-3xl font-bold px-12 leading-tight">{title || 'Blank'}</h1>
-                          <p className="mt-2 text-sm">by {name}</p>
-                        </div>
-                        
-                        <div className="flex-1 p-8 px-12 pb-12 overflow-hidden text-[15.5px] relative">
-                          {editor2?.isEmpty && editor1?.isEmpty && (
-                            <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-20">
-                              <Shield className="w-32 h-32 text-[#000080]" />
-                            </div>
-                          )}
-                          <EditorContent editor={editor2} />
-                        </div>
-
-                        <div className="absolute bottom-4 w-full text-center text-[#A0AEC0] text-xs font-sans tracking-widest">PAGE 2 OF 2</div>
-                      </div>
-                    </div>
-
                   </div>
                 </div>
               </div>

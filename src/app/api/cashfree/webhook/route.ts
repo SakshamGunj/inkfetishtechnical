@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import crypto from 'crypto';
+import { db } from '@/lib/firebase-admin';
 
 // Force Node.js runtime for crypto support
 export const runtime = 'nodejs';
@@ -95,7 +96,30 @@ export async function POST(request: Request) {
           return NextResponse.json({ error: 'Database update failed' }, { status: 500 });
         }
 
-      // 2c. ORIGINAL POETRY FESTIVAL ORDERS → Update Supabase
+      // 2c. BHARAT WRITES ORDERS → Insert to Firebase
+      } else if (orderId.startsWith('bw_')) {
+        if (db) {
+          try {
+            await db.collection('bharat_writes_registrations').doc(orderId).set({
+              order_id: orderId,
+              cf_order_id: order.cf_order_id,
+              email: tags.email || '',
+              authorName: tags.name || '',
+              whatsappNumber: tags.whatsapp || '',
+              plan: tags.plan || 'single',
+              amount: order.order_amount,
+              status: 'PAID',
+              updated_at: new Date().toISOString(),
+            }, { merge: true });
+          } catch (firebaseErr: any) {
+            console.error('Webhook Firebase DB Error:', firebaseErr.message);
+            return NextResponse.json({ error: 'Database update failed' }, { status: 500 });
+          }
+        } else {
+          console.error('Firebase Admin DB is not initialized.');
+        }
+
+      // 2d. ORIGINAL POETRY FESTIVAL ORDERS → Update Supabase
       } else {
         const { error } = await supabase
           .from('poetry_festival_s2_payments')

@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+import { db } from '@/lib/firebase-admin';
 
 // Force Node.js runtime — consistent with create-order
 export const runtime = 'nodejs';
@@ -58,30 +59,33 @@ export async function GET(request: Request) {
 
     const orderStatus = data.order_status; // PAID | ACTIVE | EXPIRED | TERMINATED
 
-    // If paid, persist to Supabase payments table
+    // If paid, persist to DB
     if (orderStatus === 'PAID') {
       const tags = data.order_tags || {};
 
-      const { error: dbError } = await supabase
-        .from('poetry_festival_s2_payments')
-        .upsert(
-          {
-            order_id: orderId,
-            cf_order_id: data.cf_order_id || '',
-            email: tags.email || '',
-            name: tags.name || '',
-            whatsapp: tags.whatsapp || '',
-            plan: tags.plan || 'single',
-            amount: data.order_amount,
-            status: 'PAID',
-            updated_at: new Date().toISOString(),
-          },
-          { onConflict: 'order_id' }
-        );
+      if (!orderId.startsWith('bw_')) {
+        // Original Poetry Festival logic: Save to Supabase
+        const { error: dbError } = await supabase
+          .from('poetry_festival_s2_payments')
+          .upsert(
+            {
+              order_id: orderId,
+              cf_order_id: data.cf_order_id || '',
+              email: tags.email || '',
+              name: tags.name || '',
+              whatsapp: tags.whatsapp || '',
+              plan: tags.plan || 'single',
+              amount: data.order_amount,
+              status: 'PAID',
+              updated_at: new Date().toISOString(),
+            },
+            { onConflict: 'order_id' }
+          );
 
-      if (dbError) {
-        // Log but don't fail — payment verification is more important than DB write
-        console.error('Supabase upsert error:', dbError.message);
+        if (dbError) {
+          // Log but don't fail — payment verification is more important than DB write
+          console.error('Supabase upsert error:', dbError.message);
+        }
       }
     }
 

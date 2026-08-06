@@ -127,5 +127,14 @@ service cloud.firestore {
       allow read, create: if true;
       allow update, delete: if false;
     }
+
+    // Bharat Writes Contest Collections
+    match /bharat_writes_registrations/{document} {
+      allow read, create, update: if true;
+    }
+    match /bharat_writes_submissions/{document} {
+      allow read, create: if true;
+      allow update, delete: if false;
+    }
   }
 }

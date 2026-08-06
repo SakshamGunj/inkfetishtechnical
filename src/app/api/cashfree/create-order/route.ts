@@ -32,7 +32,7 @@ function getBaseUrl(): string {
 
 export async function POST(request: Request) {
   try {
-    const { amount, customerName, customerEmail, customerPhone, plan } = await request.json();
+    const { amount, customerName, customerEmail, customerPhone, plan, source = 'poetry_festival_s2' } = await request.json();
 
     const appId = process.env.CASHFREE_APP_ID;
     const secretKey = process.env.CASHFREE_SECRET_KEY;
@@ -47,10 +47,20 @@ export async function POST(request: Request) {
 
     // Generate a unique order ID
     const randomPart = Math.random().toString(36).slice(2, 7);
-    const orderId = `pfs2_${Date.now()}_${randomPart}`;
+    
+    // Determine order prefix and return URL based on source
+    let orderIdPrefix = 'pfs2_';
+    let returnUrlPath = 'poetry-festival-s2/submit';
+    
+    if (source === 'bharat_writes') {
+      orderIdPrefix = 'bw_';
+      returnUrlPath = 'bharat-writes/submit';
+    }
+    
+    const orderId = `${orderIdPrefix}${Date.now()}_${randomPart}`;
 
     // Safe customer_id — no Buffer, works everywhere
-    const customerIdRaw = `pfs2_${toBase64(customerEmail).replace(/[^a-zA-Z0-9]/g, '').slice(0, 20)}`;
+    const customerIdRaw = `${orderIdPrefix}${toBase64(customerEmail).replace(/[^a-zA-Z0-9]/g, '').slice(0, 20)}`;
 
     // Normalize phone: strip non-digits, take last 10 digits, prepend 91
     const phone = `91${customerPhone.replace(/\D/g, '').slice(-10)}`;
@@ -79,10 +89,10 @@ export async function POST(request: Request) {
           email: customerEmail,
           name: customerName,
           whatsapp: customerPhone,
-          source: 'poetry_festival_s2',
+          source: source,
         },
         order_meta: {
-          return_url: `${siteUrl}/poetry-festival-s2/submit?order_id={order_id}&plan=${plan}`,
+          return_url: `${siteUrl}/${returnUrlPath}?order_id={order_id}&plan=${plan}`,
           notify_url: `${siteUrl}/api/cashfree/webhook`,
         },
       }),

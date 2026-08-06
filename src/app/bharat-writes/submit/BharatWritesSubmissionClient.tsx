@@ -1364,6 +1364,35 @@ export default function BharatWritesSubmissionClient() {
       )}
       {status === 'confirming' && <ConfirmationModal />}
 
+      {/* CUSTOM FOOTER */}
+      <footer className="w-full bg-[#1A202C] text-white py-12 px-6 mt-auto border-t-[4px] border-[#000080]">
+        <div className="max-w-4xl mx-auto text-center space-y-8">
+          <div>
+            <h2 className="text-2xl font-display font-bold uppercase tracking-widest text-[#FF9933] mb-2">Bharat Writes National Independence Poetry Contest</h2>
+            <p className="text-sm tracking-[0.2em] text-[#E2E8F0] opacity-80">🇮🇳 Independence • Freedom • India • Bharat</p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 py-8 border-y border-[#4A5568]/30">
+            <div>
+              <h3 className="text-[#138808] font-bold tracking-widest uppercase text-xs mb-2 flex items-center justify-center gap-2">🌍 Languages</h3>
+              <p className="text-sm text-[#A0AEC0]">All Indian languages are welcome.</p>
+            </div>
+            <div>
+              <h3 className="text-[#138808] font-bold tracking-widest uppercase text-xs mb-2 flex items-center justify-center gap-2">✍️ Poetry Length</h3>
+              <p className="text-sm text-[#A0AEC0]">There is no word limit. Express your thoughts freely.</p>
+            </div>
+            <div>
+              <h3 className="text-[#138808] font-bold tracking-widest uppercase text-xs mb-2 flex items-center justify-center gap-2">👥 Participation Limit</h3>
+              <p className="text-sm text-[#A0AEC0]">Only 100 writers will be accepted on a first-come, first-served basis.</p>
+            </div>
+          </div>
+          
+          <div>
+            <div className="inline-block bg-[#000080] px-4 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase mb-3">MODE - ONLINE</div>
+            <p className="text-lg font-serif italic text-[#E2E8F0]">Write for Bharat. Let your words become a part of history. 🇮🇳</p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

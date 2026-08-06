@@ -13,7 +13,8 @@ export function ConditionalFooter() {
     pathname.startsWith('/anthology/the-margins') ||
     pathname.startsWith('/poetryfestival/s2') ||
     pathname.startsWith('/open-mic') ||
-    pathname.startsWith('/shakespeare-award-v2')
+    pathname.startsWith('/shakespeare-award-v2') ||
+    pathname.startsWith('/bharat-writes')
   ) {
     return null;
   }

@@ -587,7 +587,7 @@ export default function BharatWritesSubmissionClient() {
     }, 800);
   };
 
-  if (!editor1 || !editor2) return null;
+  if (!editor1) return null;
 
   if (checkingStorage) {
     return (

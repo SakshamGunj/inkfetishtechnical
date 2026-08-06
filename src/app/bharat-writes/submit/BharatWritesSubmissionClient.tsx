@@ -672,72 +672,70 @@ export default function BharatWritesSubmissionClient() {
         )}
       </AnimatePresence>
 
-      {isOnboarded && (
-        <>
-          <div className="h-1 w-full flex">
-            <div className="h-full flex-1 bg-[#FF9933]" />
-            <div className="h-full flex-1 bg-white" />
-            <div className="h-full flex-1 bg-[#138808]" />
-          </div>
+      {/* GLOBAL NAVBAR */}
+      <div className="h-1 w-full flex fixed top-0 z-[60]">
+        <div className="h-full flex-1 bg-[#FF9933]" />
+        <div className="h-full flex-1 bg-white" />
+        <div className="h-full flex-1 bg-[#138808]" />
+      </div>
 
-          <nav className="fixed top-0 w-full bg-white/95 backdrop-blur-md border-b border-[#E2E8F0] z-50 px-6 py-3 flex items-center justify-between shadow-sm">
-            <div className="flex items-center gap-4">
-              <div className="hidden sm:flex items-center gap-2 pr-4 border-r border-[#E2E8F0]">
-                <img src="/images/inkfetish_logo.png" alt="Inkfetish Logo" className="w-6 h-6 object-contain" />
-                <span className="font-display font-bold text-[10px] tracking-widest uppercase text-[#1A202C]">Inkfetish Publications</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-[#F7FAFC] border border-[#E2E8F0] flex items-center justify-center">
-                  <Flag className="w-4 h-4 text-[#000080]" />
-                </div>
-                <div className="flex flex-col">
-                  <span className="font-display font-bold text-lg leading-none tracking-tight text-[#000080]">Bharat Writes</span>
-                  <span className="text-[10px] uppercase font-bold text-[#4A5568] tracking-widest mt-1">Inkfetish Publication</span>
-                </div>
-              </div>
-            </div>
-            <div className="flex items-center gap-4 text-xs font-semibold text-[#4A5568] tracking-widest uppercase">
-              <div className="hidden md:flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-[#138808]"></span>
-                Secure Session
-              </div>
-              {(plan === 'double' || plan === 'triple') && editorMode === 'writing' && (
-                <button
-                  onClick={() => setEditorMode('dashboard')}
-                  className="text-[#000080] hover:underline"
-                >
-                  Dashboard
-                </button>
-              )}
-            </div>
-          </nav>
-          
-          <div className="fixed top-[60px] w-full bg-[#000080] text-white overflow-hidden z-40 py-1.5 border-b border-[#FF9933]/30 shadow-md">
-            <div className="whitespace-nowrap animate-[marquee_20s_linear_infinite] inline-block font-bold text-sm tracking-widest">
-              <span className="mx-4">🎖️ EVERY PARTICIPANT WILL RECEIVE:</span>
-              <span className="mx-4 text-[#FF9933]">• BHARAT PRIDE CERTIFICATE (PDF)</span>
-              <span className="mx-4 text-[#138808]">• BHARAT PRIDE APPRECIATION LETTER (PDF)</span>
-              <span className="mx-8 opacity-50">|</span>
-              <span className="mx-4">🎖️ EVERY PARTICIPANT WILL RECEIVE:</span>
-              <span className="mx-4 text-[#FF9933]">• BHARAT PRIDE CERTIFICATE (PDF)</span>
-              <span className="mx-4 text-[#138808]">• BHARAT PRIDE APPRECIATION LETTER (PDF)</span>
-              <span className="mx-8 opacity-50">|</span>
-              <span className="mx-4">🎖️ EVERY PARTICIPANT WILL RECEIVE:</span>
-              <span className="mx-4 text-[#FF9933]">• BHARAT PRIDE CERTIFICATE (PDF)</span>
-              <span className="mx-4 text-[#138808]">• BHARAT PRIDE APPRECIATION LETTER (PDF)</span>
-            </div>
-            <style jsx>{`
-              @keyframes marquee {
-                0% { transform: translateX(0%); }
-                100% { transform: translateX(-33.33%); }
-              }
-            `}</style>
+      <nav className="fixed top-0 w-full bg-white/95 backdrop-blur-md border-b border-[#E2E8F0] z-50 px-6 py-3 flex items-center justify-between shadow-sm">
+        <div className="flex items-center gap-4">
+          <div className="hidden sm:flex items-center gap-2 pr-4 border-r border-[#E2E8F0]">
+            <img src="/images/inkfetish_logo.png" alt="Inkfetish Logo" className="w-6 h-6 object-contain" />
+            <span className="font-display font-bold text-[10px] tracking-widest uppercase text-[#1A202C]">Inkfetish Publications</span>
           </div>
-        </>
-      )}
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-full bg-[#F7FAFC] border border-[#E2E8F0] flex items-center justify-center">
+              <Shield className="w-4 h-4 text-[#000080]" />
+            </div>
+            <div className="flex flex-col">
+              <span className="font-display font-bold text-lg leading-none tracking-tight text-[#000080]">Bharat Writes</span>
+              <span className="text-[10px] uppercase font-bold text-[#4A5568] tracking-widest mt-1">Inkfetish Publication</span>
+            </div>
+          </div>
+        </div>
+        <div className="flex items-center gap-4 text-xs font-semibold text-[#4A5568] tracking-widest uppercase">
+          <div className="hidden md:flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-[#138808]"></span>
+            Secure Session
+          </div>
+          {isOnboarded && (plan === 'double' || plan === 'triple') && editorMode === 'writing' && (
+            <button
+              onClick={() => setEditorMode('dashboard')}
+              className="text-[#000080] hover:underline font-bold"
+            >
+              Dashboard
+            </button>
+          )}
+        </div>
+      </nav>
+      
+      {/* GLOBAL MARQUEE */}
+      <div className="fixed top-[60px] w-full bg-[#000080] text-white overflow-hidden z-40 py-1.5 border-b border-[#FF9933]/30 shadow-md">
+        <div className="whitespace-nowrap animate-[marquee_20s_linear_infinite] inline-block font-bold text-sm tracking-widest">
+          <span className="mx-4">🎖️ EVERY PARTICIPANT WILL RECEIVE:</span>
+          <span className="mx-4 text-[#FF9933]">• BHARAT PRIDE CERTIFICATE (PDF)</span>
+          <span className="mx-4 text-[#138808]">• BHARAT PRIDE APPRECIATION LETTER (PDF)</span>
+          <span className="mx-8 opacity-50">|</span>
+          <span className="mx-4">🎖️ EVERY PARTICIPANT WILL RECEIVE:</span>
+          <span className="mx-4 text-[#FF9933]">• BHARAT PRIDE CERTIFICATE (PDF)</span>
+          <span className="mx-4 text-[#138808]">• BHARAT PRIDE APPRECIATION LETTER (PDF)</span>
+          <span className="mx-8 opacity-50">|</span>
+          <span className="mx-4">🎖️ EVERY PARTICIPANT WILL RECEIVE:</span>
+          <span className="mx-4 text-[#FF9933]">• BHARAT PRIDE CERTIFICATE (PDF)</span>
+          <span className="mx-4 text-[#138808]">• BHARAT PRIDE APPRECIATION LETTER (PDF)</span>
+        </div>
+        <style jsx>{`
+          @keyframes marquee {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-33.33%); }
+          }
+        `}</style>
+      </div>
 
       {!isOnboarded ? (
-        <div className="flex flex-col md:flex-row w-full min-h-screen relative bg-[#F8F9FA]">
+        <div className="flex flex-col md:flex-row w-full min-h-screen pt-[90px] relative bg-[#F8F9FA]">
           <AnimatePresence mode="wait">
             {isRegistering ? (
               <motion.div 
@@ -989,11 +987,6 @@ export default function BharatWritesSubmissionClient() {
                           <span className="text-2xl font-bold text-[#000080]">₹1</span>
                         </div>
                       </div>
-                      <ul className="space-y-3 text-sm text-[#4A5568]">
-                        <li className="flex items-center gap-2"><Check className="w-4 h-4 text-[#138808]" /> Submit 1 Poem (Max 2 pages)</li>
-                        <li className="flex items-center gap-2"><Check className="w-4 h-4 text-[#138808]" /> National E-Certificate of Participation</li>
-                        <li className="flex items-center gap-2"><Check className="w-4 h-4 text-[#138808]" /> Eligible for Official Anthology Publication</li>
-                      </ul>
                     </div>
 
                     <div 
@@ -1012,11 +1005,6 @@ export default function BharatWritesSubmissionClient() {
                           <span className="text-2xl font-bold text-[#FF9933]">₹2</span>
                         </div>
                       </div>
-                      <ul className="space-y-3 text-sm text-[#4A5568]">
-                        <li className="flex items-center gap-2"><Check className="w-4 h-4 text-[#138808]" /> Submit 2 Poems (Higher selection chance)</li>
-                        <li className="flex items-center gap-2"><Check className="w-4 h-4 text-[#138808]" /> Special Recognition E-Certificate</li>
-                        <li className="flex items-center gap-2"><Check className="w-4 h-4 text-[#138808]" /> Priority consideration for anthology</li>
-                      </ul>
                     </div>
 
                     <div 
@@ -1035,11 +1023,6 @@ export default function BharatWritesSubmissionClient() {
                           <span className="text-2xl font-bold text-[#138808]">₹3</span>
                         </div>
                       </div>
-                      <ul className="space-y-3 text-sm text-[#4A5568]">
-                        <li className="flex items-center gap-2"><Check className="w-4 h-4 text-[#138808]" /> Submit 3 Poems (Highest selection chance)</li>
-                        <li className="flex items-center gap-2"><Check className="w-4 h-4 text-[#138808]" /> Premium Recognition E-Certificate</li>
-                        <li className="flex items-center gap-2"><Check className="w-4 h-4 text-[#138808]" /> Guaranteed publication in anthology (if selected)</li>
-                      </ul>
                     </div>
                   </div>
 

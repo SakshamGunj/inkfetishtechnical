@@ -263,7 +263,7 @@ export default function BharatWritesSubmissionClient() {
       return;
     }
 
-    const amount = planType === 'single' ? 1 : planType === 'double' ? 2 : 3;
+    const amount = planType === 'single' ? 299 : planType === 'double' ? 399 : 499;
     setPaymentStatus('creating');
     setIsRegistering(true);
 
@@ -984,7 +984,7 @@ export default function BharatWritesSubmissionClient() {
                           <p className="text-[#4A5568] text-sm mt-1">Single poem submission</p>
                         </div>
                         <div className="text-right">
-                          <span className="text-2xl font-bold text-[#000080]">₹1</span>
+                          <span className="text-2xl font-bold text-[#000080]">₹299</span>
                         </div>
                       </div>
                     </div>
@@ -1002,7 +1002,7 @@ export default function BharatWritesSubmissionClient() {
                           <p className="text-[#4A5568] text-sm mt-1">Two poem submissions</p>
                         </div>
                         <div className="text-right">
-                          <span className="text-2xl font-bold text-[#FF9933]">₹2</span>
+                          <span className="text-2xl font-bold text-[#FF9933]">₹399</span>
                         </div>
                       </div>
                     </div>
@@ -1020,7 +1020,7 @@ export default function BharatWritesSubmissionClient() {
                           <p className="text-[#4A5568] text-sm mt-1">Three poem submissions</p>
                         </div>
                         <div className="text-right">
-                          <span className="text-2xl font-bold text-[#138808]">₹3</span>
+                          <span className="text-2xl font-bold text-[#138808]">₹499</span>
                         </div>
                       </div>
                     </div>
@@ -1267,60 +1267,64 @@ export default function BharatWritesSubmissionClient() {
             ) : (
               <div className="max-w-[1400px] mx-auto px-4 lg:flex gap-8 items-start h-[calc(100vh-200px)]">
                 {/* TOOLBAR */}
-                <div className="lg:w-[320px] shrink-0 bg-white border border-[#E2E8F0] rounded-xl p-6 shadow-sm sticky top-28 h-fit max-h-[calc(100vh-140px)] overflow-y-auto">
+                <div className="lg:w-[320px] shrink-0 bg-white border border-[#E2E8F0] rounded-xl shadow-sm sticky top-32 h-[calc(100vh-160px)] flex flex-col overflow-hidden">
                   
-                  <div className="mb-6 p-4 bg-[#FF9933]/10 border border-[#FF9933]/20 rounded-lg">
-                    <label className="block text-[10px] font-bold text-[#FF9933] uppercase tracking-wider mb-1">Theme</label>
-                    <p className="text-sm font-semibold text-[#1A202C]">Freedom, Independence, India</p>
-                  </div>
-
-                  <div className="mb-6">
-                    <label className="block text-xs font-bold text-[#4A5568] uppercase tracking-wider mb-2">Title of the Verse</label>
-                    <input 
-                      type="text" 
-                      value={title}
-                      onChange={(e) => setTitle(e.target.value)}
-                      placeholder="Enter the title..."
-                      className="w-full bg-[#F7FAFC] border border-[#E2E8F0] rounded-lg px-4 py-3 text-[#1A202C] focus:outline-none focus:border-[#000080] font-display transition-colors"
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-5 gap-2 bg-[#F7FAFC] p-2 rounded-lg border border-[#E2E8F0] mb-6">
-                    <button onClick={() => editor1?.chain().focus().toggleBold().run()} className={`p-2 rounded flex items-center justify-center transition-colors ${editor1?.isActive('bold') ? 'bg-[#000080] text-white' : 'text-[#4A5568] hover:bg-[#E2E8F0]'}`}><Bold className="w-4 h-4" /></button>
-                    <button onClick={() => editor1?.chain().focus().toggleItalic().run()} className={`p-2 rounded flex items-center justify-center transition-colors ${editor1?.isActive('italic') ? 'bg-[#000080] text-white' : 'text-[#4A5568] hover:bg-[#E2E8F0]'}`}><Italic className="w-4 h-4" /></button>
-                    <button onClick={() => editor1?.chain().focus().toggleUnderline().run()} className={`p-2 rounded flex items-center justify-center transition-colors ${editor1?.isActive('underline') ? 'bg-[#000080] text-white' : 'text-[#4A5568] hover:bg-[#E2E8F0]'}`}><UnderlineIcon className="w-4 h-4" /></button>
-                    <button onClick={() => editor1?.chain().focus().toggleStrike().run()} className={`p-2 rounded flex items-center justify-center transition-colors ${editor1?.isActive('strike') ? 'bg-[#000080] text-white' : 'text-[#4A5568] hover:bg-[#E2E8F0]'}`}><Strikethrough className="w-4 h-4" /></button>
-                    <button onClick={() => editor1?.chain().focus().toggleBlockquote().run()} className={`p-2 rounded flex items-center justify-center transition-colors ${editor1?.isActive('blockquote') ? 'bg-[#000080] text-white' : 'text-[#4A5568] hover:bg-[#E2E8F0]'}`}><Quote className="w-4 h-4" /></button>
-                  </div>
-
-                  <div className="grid grid-cols-4 gap-2 bg-[#F7FAFC] p-2 rounded-lg border border-[#E2E8F0] mb-6">
-                    <button onClick={() => editor1?.chain().focus().setTextAlign('left').run()} className={`p-2 rounded flex items-center justify-center transition-colors ${editor1?.isActive({ textAlign: 'left' }) ? 'bg-[#000080] text-white' : 'text-[#4A5568] hover:bg-[#E2E8F0]'}`}><AlignLeft className="w-4 h-4" /></button>
-                    <button onClick={() => editor1?.chain().focus().setTextAlign('center').run()} className={`p-2 rounded flex items-center justify-center transition-colors ${editor1?.isActive({ textAlign: 'center' }) ? 'bg-[#000080] text-white' : 'text-[#4A5568] hover:bg-[#E2E8F0]'}`}><AlignCenter className="w-4 h-4" /></button>
-                    <button onClick={() => editor1?.chain().focus().setTextAlign('right').run()} className={`p-2 rounded flex items-center justify-center transition-colors ${editor1?.isActive({ textAlign: 'right' }) ? 'bg-[#000080] text-white' : 'text-[#4A5568] hover:bg-[#E2E8F0]'}`}><AlignRight className="w-4 h-4" /></button>
-                    <button onClick={() => editor1?.chain().focus().setTextAlign('justify').run()} className={`p-2 rounded flex items-center justify-center transition-colors ${editor1?.isActive({ textAlign: 'justify' }) ? 'bg-[#000080] text-white' : 'text-[#4A5568] hover:bg-[#E2E8F0]'}`}><AlignJustify className="w-4 h-4" /></button>
-                  </div>
-
-                  <div className="bg-[#F7FAFC] rounded-lg border border-[#E2E8F0] p-4 mb-6">
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="text-xs font-bold text-[#4A5568] uppercase tracking-wider">Document Volume</span>
-                      <span className={`text-sm font-bold ${wordCount > WORD_LIMIT ? 'text-red-600' : 'text-[#000080]'}`}>
-                        {wordCount} / {WORD_LIMIT}
-                      </span>
+                  <div className="p-6 flex-1 overflow-y-auto custom-scrollbar">
+                    <div className="mb-6 p-4 bg-[#FF9933]/10 border border-[#FF9933]/20 rounded-lg">
+                      <label className="block text-[10px] font-bold text-[#FF9933] uppercase tracking-wider mb-1">Theme</label>
+                      <p className="text-sm font-semibold text-[#1A202C]">Freedom, Independence, India</p>
                     </div>
-                    <div className="w-full bg-[#E2E8F0] h-1.5 rounded-full overflow-hidden">
-                      <div 
-                        className={`h-full transition-all duration-300 ${wordCount > WORD_LIMIT ? 'bg-red-600' : 'bg-[#FF9933]'}`}
-                        style={{ width: `${Math.min((wordCount / WORD_LIMIT) * 100, 100)}%` }}
+
+                    <div className="mb-6">
+                      <label className="block text-xs font-bold text-[#4A5568] uppercase tracking-wider mb-2">Title of the Verse</label>
+                      <input 
+                        type="text" 
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                        placeholder="Enter the title..."
+                        className="w-full bg-[#F7FAFC] border border-[#E2E8F0] rounded-lg px-4 py-3 text-[#1A202C] focus:outline-none focus:border-[#000080] font-display transition-colors"
                       />
                     </div>
+
+                    <div className="grid grid-cols-5 gap-2 bg-[#F7FAFC] p-2 rounded-lg border border-[#E2E8F0] mb-6">
+                      <button onClick={() => editor1?.chain().focus().toggleBold().run()} className={`p-2 rounded flex items-center justify-center transition-colors ${editor1?.isActive('bold') ? 'bg-[#000080] text-white' : 'text-[#4A5568] hover:bg-[#E2E8F0]'}`}><Bold className="w-4 h-4" /></button>
+                      <button onClick={() => editor1?.chain().focus().toggleItalic().run()} className={`p-2 rounded flex items-center justify-center transition-colors ${editor1?.isActive('italic') ? 'bg-[#000080] text-white' : 'text-[#4A5568] hover:bg-[#E2E8F0]'}`}><Italic className="w-4 h-4" /></button>
+                      <button onClick={() => editor1?.chain().focus().toggleUnderline().run()} className={`p-2 rounded flex items-center justify-center transition-colors ${editor1?.isActive('underline') ? 'bg-[#000080] text-white' : 'text-[#4A5568] hover:bg-[#E2E8F0]'}`}><UnderlineIcon className="w-4 h-4" /></button>
+                      <button onClick={() => editor1?.chain().focus().toggleStrike().run()} className={`p-2 rounded flex items-center justify-center transition-colors ${editor1?.isActive('strike') ? 'bg-[#000080] text-white' : 'text-[#4A5568] hover:bg-[#E2E8F0]'}`}><Strikethrough className="w-4 h-4" /></button>
+                      <button onClick={() => editor1?.chain().focus().toggleBlockquote().run()} className={`p-2 rounded flex items-center justify-center transition-colors ${editor1?.isActive('blockquote') ? 'bg-[#000080] text-white' : 'text-[#4A5568] hover:bg-[#E2E8F0]'}`}><Quote className="w-4 h-4" /></button>
+                    </div>
+
+                    <div className="grid grid-cols-4 gap-2 bg-[#F7FAFC] p-2 rounded-lg border border-[#E2E8F0] mb-6">
+                      <button onClick={() => editor1?.chain().focus().setTextAlign('left').run()} className={`p-2 rounded flex items-center justify-center transition-colors ${editor1?.isActive({ textAlign: 'left' }) ? 'bg-[#000080] text-white' : 'text-[#4A5568] hover:bg-[#E2E8F0]'}`}><AlignLeft className="w-4 h-4" /></button>
+                      <button onClick={() => editor1?.chain().focus().setTextAlign('center').run()} className={`p-2 rounded flex items-center justify-center transition-colors ${editor1?.isActive({ textAlign: 'center' }) ? 'bg-[#000080] text-white' : 'text-[#4A5568] hover:bg-[#E2E8F0]'}`}><AlignCenter className="w-4 h-4" /></button>
+                      <button onClick={() => editor1?.chain().focus().setTextAlign('right').run()} className={`p-2 rounded flex items-center justify-center transition-colors ${editor1?.isActive({ textAlign: 'right' }) ? 'bg-[#000080] text-white' : 'text-[#4A5568] hover:bg-[#E2E8F0]'}`}><AlignRight className="w-4 h-4" /></button>
+                      <button onClick={() => editor1?.chain().focus().setTextAlign('justify').run()} className={`p-2 rounded flex items-center justify-center transition-colors ${editor1?.isActive({ textAlign: 'justify' }) ? 'bg-[#000080] text-white' : 'text-[#4A5568] hover:bg-[#E2E8F0]'}`}><AlignJustify className="w-4 h-4" /></button>
+                    </div>
+
+                    <div className="bg-[#F7FAFC] rounded-lg border border-[#E2E8F0] p-4">
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-xs font-bold text-[#4A5568] uppercase tracking-wider">Document Volume</span>
+                        <span className={`text-sm font-bold ${wordCount > WORD_LIMIT ? 'text-red-600' : 'text-[#000080]'}`}>
+                          {wordCount} / {WORD_LIMIT}
+                        </span>
+                      </div>
+                      <div className="w-full bg-[#E2E8F0] h-1.5 rounded-full overflow-hidden">
+                        <div 
+                          className={`h-full transition-all duration-300 ${wordCount > WORD_LIMIT ? 'bg-red-600' : 'bg-[#FF9933]'}`}
+                          style={{ width: `${Math.min((wordCount / WORD_LIMIT) * 100, 100)}%` }}
+                        />
+                      </div>
+                    </div>
                   </div>
 
-                  <button 
-                    onClick={handleSubmit}
-                    className="w-full bg-[#000080] text-white py-4 rounded-lg font-bold uppercase tracking-widest hover:bg-[#1A202C] transition-all flex items-center justify-center gap-3"
-                  >
-                    Lodge Submission <ArrowRight className="w-4 h-4" />
-                  </button>
+                  <div className="p-5 border-t border-[#E2E8F0] bg-white shrink-0">
+                    <button 
+                      onClick={handleSubmit}
+                      className="w-full bg-[#000080] text-white py-4 rounded-lg font-bold uppercase tracking-widest hover:bg-[#1A202C] transition-all flex items-center justify-center gap-3 shadow-lg shadow-[#000080]/20"
+                    >
+                      Submit Entry <ArrowRight className="w-4 h-4" />
+                    </button>
+                  </div>
                   
                 </div>
 

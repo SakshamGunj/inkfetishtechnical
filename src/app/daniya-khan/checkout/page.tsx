@@ -25,7 +25,7 @@ declare global {
 const BUNDLES = [
   {
     id: "standard",
-    label: "First Edition",
+    label: "First Edition Paperback",
     price: 229,
     strikePrice: 599,
     perks: [
@@ -33,22 +33,37 @@ const BUNDLES = [
       { icon: "📖", text: "The Lost Chapter (Digital)" },
       { icon: "📦", text: "Free tracked shipping (Pan-India)" },
     ],
-    badge: "Most Popular",
-    badgeColor: "#F2A7B0",
+    badge: "Book Only",
+    badgeColor: "#A8D8C0",
   },
   {
     id: "signed",
-    label: "The Mystery Box Bundle",
+    label: "Elite Mystery Box",
     price: 289,
     strikePrice: 899,
     perks: [
       { icon: "📚", text: "First Edition Paperback" },
       { icon: "🎁", text: "Curated vintage polaroids & goodies" },
       { icon: "💌", text: "A secret wax-sealed poem" },
-      { icon: "✍️", text: "Personal dedication" },
+      { icon: "✍️", text: "Personal dedication by Daniya" },
       { icon: "📦", text: "Free tracked shipping (Pan-India)" },
     ],
-    badge: "Limited Edition",
+    badge: "Most Popular",
+    badgeColor: "#F7E56B",
+  },
+  {
+    id: "grand",
+    label: "Platinum Mystery Box",
+    price: 349,
+    strikePrice: 1299,
+    perks: [
+      { icon: "📚", text: "First Edition Paperback" },
+      { icon: "👑", text: "Everything in Elite Mystery Box" },
+      { icon: "✉️", text: "Handwritten letter from Daniya" },
+      { icon: "🔖", text: "Custom metal engraved bookmark" },
+      { icon: "📦", text: "Hardcover Gift Box + Priority Delivery" },
+    ],
+    badge: "Platinum Experience",
     badgeColor: "#B497D6",
   },
 ];
@@ -64,7 +79,7 @@ const INDIAN_STATES = [
 
 export default function CheckoutPage() {
   const router = useRouter();
-  const [selectedBundle, setSelectedBundle] = useState<"standard" | "signed">("standard");
+  const [selectedBundle, setSelectedBundle] = useState<"standard" | "signed" | "grand">("signed");
   const [step, setStep] = useState<1 | 2>(1); // 1 = bundle select, 2 = form+pay
   const [loading, setLoading] = useState(false);
   const [sdkReady, setSdkReady] = useState(false);
@@ -291,17 +306,17 @@ export default function CheckoutPage() {
 
       <div className="min-h-screen bg-[#F5F0E8] font-body">
         {/* Top nav bar */}
-        <div className="border-b-2 border-[#1A1A1A] bg-[#F5F0E8] px-5 py-4 flex items-center justify-between">
+        <div className="border-b-2 border-[#1A1A1A] bg-[#F5F0E8] px-3.5 sm:px-5 py-3 sm:py-4 flex items-center justify-between gap-2">
           <button
             onClick={() => (step === 2 ? setStep(1) : router.push("/daniya-khan"))}
-            className="font-ui text-sm font-medium text-[#777] hover:text-[#1A1A1A] transition-colors flex items-center gap-1"
+            className="font-ui text-xs sm:text-sm font-medium text-[#777] hover:text-[#1A1A1A] transition-colors flex items-center gap-1 shrink-0"
           >
             ← {step === 2 ? "Change bundle" : "Back to book"}
           </button>
-          <div className="font-display italic text-lg">Deserted Hearts</div>
-          <div className="flex items-center gap-2">
+          <div className="font-display italic text-base sm:text-lg truncate hidden xs:block">Deserted Hearts</div>
+          <div className="flex items-center gap-1 sm:gap-2 shrink-0">
             <span className={`step-pill ${step === 1 ? "active" : ""}`}>1 Bundle</span>
-            <span className="text-[#CCC]">—</span>
+            <span className="text-[#CCC] text-xs">—</span>
             <span className={`step-pill ${step === 2 ? "active" : ""}`}>2 Details</span>
           </div>
         </div>
@@ -325,12 +340,12 @@ export default function CheckoutPage() {
                   <p className="text-[#777] mt-3">All bonuses vanish on launch day.</p>
                 </motion.div>
 
-                <motion.div variants={fadeUp} className="grid md:grid-cols-2 gap-6 mb-8">
+                <motion.div variants={fadeUp} className="grid lg:grid-cols-3 md:grid-cols-2 gap-6 mb-8">
                   {BUNDLES.map((b) => (
                     <div
                       key={b.id}
                       className={`bundle-card ${selectedBundle === b.id ? "selected" : ""}`}
-                      onClick={() => setSelectedBundle(b.id as "standard" | "signed")}
+                      onClick={() => setSelectedBundle(b.id as "standard" | "signed" | "grand")}
                     >
                       {/* Badge */}
                       <div
@@ -423,7 +438,7 @@ export default function CheckoutPage() {
                         {errors.name && <p className="text-[#E05555] text-xs mt-1">{errors.name}</p>}
                       </div>
 
-                      <div className="grid grid-cols-2 gap-4">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                           <label className="font-ui text-sm font-medium text-[#1A1A1A] mb-1.5 block">Email *</label>
                           <input

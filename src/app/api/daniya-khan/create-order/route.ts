@@ -47,8 +47,13 @@ export async function POST(request: Request) {
     const baseUrl = getCashfreeBaseUrl(appId);
     const siteUrl = getBaseUrl();
 
-    // ₹229 for standard, ₹289 for special edition
-    const amount = bundleType === 'signed' ? 289 : 229;
+    // ₹229 for standard (book only), ₹289 for Elite Mystery Box, ₹349 for Platinum Mystery Box
+    let amount = 229;
+    if (bundleType === 'platinum' || bundleType === 'grand' || bundleType === 'grand_mystery') {
+      amount = 349;
+    } else if (bundleType === 'elite' || bundleType === 'signed' || bundleType === 'mystery' || bundleType === 'mini_mystery') {
+      amount = 289;
+    }
 
     const orderId = `dkbook_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
     const customerId = `dk_${toBase64(customerEmail).replace(/[^a-zA-Z0-9]/g, '').slice(0, 20)}`;

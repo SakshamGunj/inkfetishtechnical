@@ -595,7 +595,7 @@ export default function DaniyaKhanPage() {
                   </div>
 
                   {/* Stats */}
-                  <div className="flex gap-3 mb-4 text-[13px] border-y border-gray-800 py-3">
+                  <div className="flex justify-between gap-1 sm:gap-3 mb-4 text-[12px] sm:text-[13px] border-y border-gray-800 py-3">
                     <div className="text-gray-300"><span className="font-bold text-white">1,186</span> posts</div>
                     <div className="text-gray-300"><span className="font-bold text-white">170K</span> followers</div>
                     <div className="text-gray-300"><span className="font-bold text-white">126</span> following</div>
@@ -720,11 +720,10 @@ export default function DaniyaKhanPage() {
                 {/* Ticket body */}
                 <div className="p-8 space-y-5">
                   {[
-                    { icon: "📕", title: "First Edition Paperback", desc: "The debut poetry collection, beautifully printed.", tag: "the book" },
-                    { icon: "📖", title: "The Lost Chapter (Digital)", desc: "Exclusive digital poems and behind-the-scenes.", tag: "free" },
-                    { icon: "📦", title: "Free Tracked Shipping", desc: "Delivered safely anywhere across Pan-India.", tag: "free" },
-                    { icon: "🎁", title: "The Mystery Box", desc: "Available in the premium bundle. Includes vintage polaroids, a wax-sealed secret poem, and nostalgic goodies.", tag: "mystery" },
-                    { icon: "✍️", title: "Personal Dedication", desc: "Included in the Mystery Box bundle.", tag: "mystery" },
+                    { icon: "📕", title: "First Edition Paperback (₹229)", desc: "The debut poetry collection, beautifully printed + Lost Chapter digital bonus.", tag: "book only" },
+                    { icon: "🎁", title: "Elite Mystery Box (₹289)", desc: "Book + vintage polaroids, secret wax-sealed poem, and personal author dedication.", tag: "most popular" },
+                    { icon: "👑", title: "Platinum Mystery Box (₹349)", desc: "Includes everything in Elite Mystery Box + handwritten letter from Daniya, metal engraved bookmark, and hardcover gift box.", tag: "platinum" },
+                    { icon: "📦", title: "Free Pan-India Shipping", desc: "Delivered safely with tracked shipping straight to your doorstep.", tag: "free" },
                   ].map((item, i) => (
                     <div key={i} className="flex items-start gap-4 pb-5 border-b border-dashed border-[#D8CFC0] last:border-0 last:pb-0">
                       <div className="text-3xl shrink-0">{item.icon}</div>
@@ -871,13 +870,21 @@ export default function DaniyaKhanPage() {
         </section>
 
         {/* FOOTER */}
-        <footer className="py-8 px-5 border-t-2 border-[#1A1A1A] bg-[#F5F0E8]">
-          <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-[#999]">
-            <p className="font-ui">© 2026 Daniya Khan. All rights reserved.</p>
-            <div className="flex gap-6">
-              <a href="#" className="hover:text-[#1A1A1A] transition-colors font-ui">Privacy Policy</a>
-              <a href="#" className="hover:text-[#1A1A1A] transition-colors font-ui">Terms</a>
-              <a href="#" className="hover:text-[#1A1A1A] transition-colors font-ui">Contact</a>
+        <footer className="py-12 px-5 border-t-2 border-[#1A1A1A] bg-[#F5F0E8] text-center">
+          <div className="max-w-4xl mx-auto space-y-4">
+            <h3 className="font-display italic text-2xl md:text-3xl text-[#1A1A1A]">
+              Deserted Hearts · Daniya Khan
+            </h3>
+            <p className="font-ui text-sm text-[#555] tracking-wide">
+              Official Publication by <strong className="text-[#1A1A1A]">Inkfetish Publication</strong>
+            </p>
+            <div className="pt-6 border-t border-dashed border-[#D8CFC0] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#888] font-ui">
+              <p>© 2026 Daniya Khan. All rights reserved.</p>
+              <div className="flex gap-6">
+                <a href="#" className="hover:text-[#1A1A1A] transition-colors">Privacy Policy</a>
+                <a href="#" className="hover:text-[#1A1A1A] transition-colors">Terms of Service</a>
+                <a href="#" className="hover:text-[#1A1A1A] transition-colors">Contact</a>
+              </div>
             </div>
           </div>
         </footer>

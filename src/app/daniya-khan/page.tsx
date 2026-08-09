@@ -21,8 +21,22 @@ export default function DaniyaKhanPage() {
   useEffect(() => {
     const onScroll = () => setStickyVisible(window.scrollY > 500);
     window.addEventListener("scroll", onScroll);
+
+    // Auto-redirect if user already completed a purchase
+    const savedOrderId = localStorage.getItem("daniya_last_order_id");
+    if (savedOrderId) {
+      fetch(`/api/daniya-khan/verify-order?order_id=${savedOrderId}`)
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.order_status === "PAID") {
+            router.push(`/daniya-khan/success?order_id=${savedOrderId}`);
+          }
+        })
+        .catch(() => {});
+    }
+
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  }, [router]);
 
   /* ── Reusable animation variants ── */
   const fadeUp = {
@@ -326,6 +340,8 @@ export default function DaniyaKhanPage() {
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#38bdf8" className="w-4 h-4"><path fillRule="evenodd" d="M8.603 3.799A4.49 4.49 0 0112 2.25c1.357 0 2.573.6 3.397 1.549a4.49 4.49 0 013.498 1.307 4.491 4.491 0 011.307 3.497A4.49 4.49 0 0121.75 12a4.49 4.49 0 01-1.549 3.397 4.491 4.491 0 01-1.307 3.497 4.491 4.491 0 01-3.497 1.307A4.49 4.49 0 0112 21.75a4.49 4.49 0 01-3.397-1.549 4.49 4.49 0 01-3.498-1.306 4.491 4.491 0 01-1.307-3.498A4.49 4.49 0 012.25 12c0-1.357.6-2.573 1.549-3.397a4.49 4.49 0 011.307-3.497 4.49 4.49 0 013.497-1.307zm7.007 6.387a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clipRule="evenodd" /></svg>
           <span className="opacity-70 mx-1">—</span>
           <span>170k followers on instagram</span>
+          <span className="opacity-40 hidden sm:inline mx-1.5">|</span>
+          <a href="/bharat-writes/submit" className="text-[#F7E56B] underline underline-offset-2 hover:text-white transition-colors">Want to publish your writing? Click here ↗</a>
         </div>
 
         {/* ── STICKY MOBILE CTA ── */}
@@ -340,7 +356,7 @@ export default function DaniyaKhanPage() {
             >
               <div>
                 <p className="font-display italic text-base font-bold">Deserted Hearts</p>
-                <p className="font-ui text-xs text-[#777]">First edition poetry collection — Starts at ₹229</p>
+                <p className="font-ui text-xs text-[#777]">First edition poetry collection — Starts at ₹299</p>
               </div>
               <button className="pill-btn-pink text-sm px-5 py-3" onClick={() => router.push('/daniya-khan/checkout')}>Pre-Order ↗</button>
             </motion.div>
@@ -670,12 +686,12 @@ export default function DaniyaKhanPage() {
                 The beautiful <i>Deserted Hearts</i> book is permanently included. But along with the book, you will receive a secret, curated surprise gift from us that will absolutely make your month and day.
               </p>
               
-              <div className="flex flex-wrap items-center justify-center gap-4">
+              <div className="flex flex-wrap items-center justify-center gap-4 mb-8">
                 <div className="bg-[#2A2A2A] rounded-2xl px-6 py-4 flex items-center gap-4">
                   <div className="text-3xl">📕</div>
                   <div className="text-left">
-                    <p className="font-ui font-bold text-sm">The Book</p>
-                    <p className="font-ui text-xs text-[#888]">Guaranteed</p>
+                    <p className="font-ui font-bold text-sm">Signed Book</p>
+                    <p className="font-ui text-xs text-[#888]">Officially Signed & Stamped</p>
                   </div>
                 </div>
                 <div className="text-[#555] text-xl">+</div>
@@ -683,10 +699,20 @@ export default function DaniyaKhanPage() {
                   <div className="absolute -top-2 -right-2 text-xl animate-bounce">✨</div>
                   <div className="text-3xl">🎁</div>
                   <div className="text-left">
-                    <p className="font-ui font-bold text-sm text-[#B497D6]">Secret Gift</p>
-                    <p className="font-ui text-xs text-[#888]">A beautiful surprise</p>
+                    <p className="font-ui font-bold text-sm text-[#B497D6]">2 or 4 Mystery Items</p>
+                    <p className="font-ui text-xs text-[#888]">Elite (2 items) · Platinum (4 items)</p>
                   </div>
                 </div>
+              </div>
+
+              {/* ₹30,000 Lucky Draw Highlight */}
+              <div className="bg-[#F7E56B] text-[#1A1A1A] border-2 border-[#1A1A1A] rounded-2xl p-4 max-w-xl mx-auto text-center shadow-[4px_4px_0px_#1A1A1A]">
+                <p className="font-ui font-bold text-sm uppercase tracking-wide flex items-center justify-center gap-2">
+                  <span>🎉</span> 10 Lucky Buyers Win ₹30,000 in Gifts! <span>🎉</span>
+                </p>
+                <p className="font-body text-xs text-[#333] mt-1">
+                  Every pre-order enters the lucky draw! We will randomly select <strong>10 lucky buyers</strong> at the end of the pre-launch sale.
+                </p>
               </div>
             </motion.div>
           </motion.div>
@@ -720,9 +746,10 @@ export default function DaniyaKhanPage() {
                 {/* Ticket body */}
                 <div className="p-8 space-y-5">
                   {[
-                    { icon: "📕", title: "First Edition Paperback (₹229)", desc: "The debut poetry collection, beautifully printed + Lost Chapter digital bonus.", tag: "book only" },
-                    { icon: "🎁", title: "Elite Mystery Box (₹289)", desc: "Book + vintage polaroids, secret wax-sealed poem, and personal author dedication.", tag: "most popular" },
-                    { icon: "👑", title: "Platinum Mystery Box (₹349)", desc: "Includes everything in Elite Mystery Box + handwritten letter from Daniya, metal engraved bookmark, and hardcover gift box.", tag: "platinum" },
+                    { icon: "✍️", title: "Signed & Stamped (All Options)", desc: "Every single copy in all 3 tiers is officially signed & stamped by Daniya Khan.", tag: "guaranteed" },
+                    { icon: "📕", title: "First Edition Paperback (₹299)", desc: "Signed & Stamped Paperback + Lost Chapter digital bonus + ₹30,000 lucky draw entry.", tag: "book only" },
+                    { icon: "🎁", title: "Elite Mystery Box (₹599)", desc: "Signed & Stamped Book + 2 Secret Mystery Items + ₹30,000 lucky draw entry.", tag: "most popular" },
+                    { icon: "👑", title: "Platinum Mystery Box (₹999)", desc: "Signed & Stamped Book + 4 Secret Mystery Items + 2x Lucky Draw Entries.", tag: "platinum" },
                     { icon: "📦", title: "Free Pan-India Shipping", desc: "Delivered safely with tracked shipping straight to your doorstep.", tag: "free" },
                   ].map((item, i) => (
                     <div key={i} className="flex items-start gap-4 pb-5 border-b border-dashed border-[#D8CFC0] last:border-0 last:pb-0">
@@ -751,8 +778,8 @@ export default function DaniyaKhanPage() {
                 {/* Ticket footer */}
                 <div className="p-8 flex flex-col sm:flex-row items-center justify-between gap-6">
                   <div>
-                    <p className="font-ui text-xs text-[#888] line-through mb-1">Total value: ₹999</p>
-                    <p className="font-display italic text-4xl font-bold text-[#1A1A1A]">Starts at ₹229</p>
+                    <p className="font-ui text-xs text-[#888] line-through mb-1">Total value: ₹2,499</p>
+                    <p className="font-display italic text-4xl font-bold text-[#1A1A1A]">Starts at ₹299</p>
                     <p className="font-ui text-xs text-[#888] mt-1">First edition paperback</p>
                   </div>
                   <div className="flex flex-col items-center gap-2">
@@ -831,6 +858,48 @@ export default function DaniyaKhanPage() {
                   </AnimatePresence>
                 </div>
               ))}
+            </motion.div>
+          </motion.div>
+        </section>
+
+        {/* ────────────────────────────────────────────────
+            SECTION 8.5 — PUBLISH / FEATURE YOUR WRITING
+        ──────────────────────────────────────────────── */}
+        <section className="py-12 md:py-16 px-5 max-w-4xl mx-auto">
+          <motion.div
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+            variants={stagger}
+            className="border-2 border-[#1A1A1A] rounded-3xl bg-[#F7E56B] p-8 md:p-12 text-center relative overflow-hidden shadow-[6px_6px_0px_#1A1A1A]"
+          >
+            <motion.div variants={fadeUp}>
+              <span className="inline-block bg-[#1A1A1A] text-[#F5F0E8] font-ui font-bold text-xs uppercase tracking-widest px-4 py-1.5 rounded-full mb-4">
+                for poets & writers ✍️
+              </span>
+              <h2 className="font-display italic text-3xl md:text-5xl text-[#1A1A1A] mb-4">
+                Want to get published & feature your writing?
+              </h2>
+              <p className="font-body text-base md:text-lg text-[#333] max-w-2xl mx-auto mb-8 leading-relaxed">
+                Join 2 Lakh+ writers at <strong>Inkfetish Publication</strong>. Submit your poetry, short stories, or manuscripts to get featured in our upcoming national anthologies or publish your solo debut book just like Daniya!
+              </p>
+              
+              <div className="flex flex-wrap items-center justify-center gap-4">
+                <a 
+                  href="/bharat-writes/submit" 
+                  className="pill-btn-pink text-base px-8 py-4 border-2 border-[#1A1A1A] shadow-[4px_4px_0px_#1A1A1A] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_#1A1A1A] transition-all"
+                >
+                  Submit Your Writing ↗
+                </a>
+                <a 
+                  href="https://instagram.com/altruistic_writer" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="pill-btn-outline text-base px-8 py-4 border-2 border-[#1A1A1A] bg-white text-[#1A1A1A] hover:bg-[#F5F0E8] transition-all"
+                >
+                  Publish Solo Book →
+                </a>
+              </div>
             </motion.div>
           </motion.div>
         </section>

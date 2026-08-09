@@ -26,11 +26,13 @@ const BUNDLES = [
   {
     id: "standard",
     label: "First Edition Paperback",
-    price: 229,
-    strikePrice: 599,
+    price: 299,
+    strikePrice: 699,
     perks: [
+      { icon: "✍️", text: "Officially Signed & Stamped Copy by Daniya" },
       { icon: "📚", text: "First Edition Paperback" },
       { icon: "📖", text: "The Lost Chapter (Digital)" },
+      { icon: "🎟️", text: "Entry in ₹30,000 Lucky Draw" },
       { icon: "📦", text: "Free tracked shipping (Pan-India)" },
     ],
     badge: "Book Only",
@@ -39,13 +41,12 @@ const BUNDLES = [
   {
     id: "signed",
     label: "Elite Mystery Box",
-    price: 289,
-    strikePrice: 899,
+    price: 599,
+    strikePrice: 1299,
     perks: [
-      { icon: "📚", text: "First Edition Paperback" },
-      { icon: "🎁", text: "Curated vintage polaroids & goodies" },
-      { icon: "💌", text: "A secret wax-sealed poem" },
-      { icon: "✍️", text: "Personal dedication by Daniya" },
+      { icon: "✍️", text: "Officially Signed & Stamped Copy by Daniya" },
+      { icon: "🎁", text: "Book + 2 Secret Mystery Items" },
+      { icon: "🎟️", text: "Entry in ₹30,000 Lucky Draw" },
       { icon: "📦", text: "Free tracked shipping (Pan-India)" },
     ],
     badge: "Most Popular",
@@ -54,13 +55,12 @@ const BUNDLES = [
   {
     id: "grand",
     label: "Platinum Mystery Box",
-    price: 349,
-    strikePrice: 1299,
+    price: 999,
+    strikePrice: 2499,
     perks: [
-      { icon: "📚", text: "First Edition Paperback" },
-      { icon: "👑", text: "Everything in Elite Mystery Box" },
-      { icon: "✉️", text: "Handwritten letter from Daniya" },
-      { icon: "🔖", text: "Custom metal engraved bookmark" },
+      { icon: "✍️", text: "Officially Signed & Stamped Copy by Daniya" },
+      { icon: "👑", text: "Book + 4 Secret Mystery Items" },
+      { icon: "🎟️", text: "2x Entries in ₹30,000 Lucky Draw" },
       { icon: "📦", text: "Hardcover Gift Box + Priority Delivery" },
     ],
     badge: "Platinum Experience",
@@ -80,6 +80,7 @@ const INDIAN_STATES = [
 export default function CheckoutPage() {
   const router = useRouter();
   const [selectedBundle, setSelectedBundle] = useState<"standard" | "signed" | "grand">("signed");
+  const [quantity, setQuantity] = useState(1);
   const [step, setStep] = useState<1 | 2>(1); // 1 = bundle select, 2 = form+pay
   const [loading, setLoading] = useState(false);
   const [sdkReady, setSdkReady] = useState(false);
@@ -97,8 +98,20 @@ export default function CheckoutPage() {
     pincode: "",
   });
 
-  // Load Cashfree SDK
+  // Load Cashfree SDK & check existing paid order
   useEffect(() => {
+    const savedOrderId = localStorage.getItem("daniya_last_order_id");
+    if (savedOrderId) {
+      fetch(`/api/daniya-khan/verify-order?order_id=${savedOrderId}`)
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.order_status === "PAID") {
+            router.push(`/daniya-khan/success?order_id=${savedOrderId}`);
+          }
+        })
+        .catch(() => {});
+    }
+
     if (document.getElementById("cashfree-sdk")) {
       setSdkReady(true);
       return;
@@ -108,7 +121,7 @@ export default function CheckoutPage() {
     script.src = "https://sdk.cashfree.com/js/v3/cashfree.js";
     script.onload = () => setSdkReady(true);
     document.head.appendChild(script);
-  }, []);
+  }, [router]);
 
   const bundle = BUNDLES.find((b) => b.id === selectedBundle)!;
 
@@ -149,6 +162,7 @@ export default function CheckoutPage() {
           state: form.state,
           pincode: form.pincode,
           bundleType: selectedBundle,
+          quantity: quantity,
         }),
       });
 
@@ -158,6 +172,9 @@ export default function CheckoutPage() {
         setLoading(false);
         return;
       }
+
+      // Save generated order ID to localStorage to track payment attempt
+      localStorage.setItem("daniya_last_order_id", orderData.order_id);
 
       // Step 2: Open Cashfree checkout modal
       const cashfree = window.Cashfree({
@@ -180,6 +197,7 @@ export default function CheckoutPage() {
       const verifyData = await verifyRes.json();
 
       if (verifyData.order_status === "PAID") {
+        localStorage.setItem("daniya_last_order_id", orderData.order_id);
         router.push(`/daniya-khan/success?order_id=${orderData.order_id}`);
       } else {
         setPayError("Payment could not be confirmed. If amount was debited, contact us.");
@@ -391,13 +409,38 @@ export default function CheckoutPage() {
                   ))}
                 </motion.div>
 
+                {/* Quantity Selector Box */}
+                <motion.div variants={fadeUp} className="bg-[#FDFBF7] border-2 border-[#1A1A1A] rounded-2xl p-5 max-w-md mx-auto mb-8 shadow-[4px_4px_0px_#1A1A1A] flex items-center justify-between gap-4">
+                  <div>
+                    <p className="font-ui font-bold text-sm text-[#1A1A1A]">Select Quantity</p>
+                    <p className="font-ui text-xs text-[#777] mt-0.5">Subtotal: <strong className="text-[#1A1A1A]">₹{bundle.price * quantity}</strong></p>
+                  </div>
+                  <div className="flex items-center gap-3 bg-[#F5F0E8] border-2 border-[#1A1A1A] rounded-full px-3.5 py-1.5 shrink-0">
+                    <button
+                      type="button"
+                      onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                      className="w-7 h-7 rounded-full bg-white border border-[#1A1A1A] font-bold text-sm flex items-center justify-center hover:bg-[#F2A7B0] transition-colors"
+                    >
+                      -
+                    </button>
+                    <span className="font-ui font-bold text-base w-5 text-center">{quantity}</span>
+                    <button
+                      type="button"
+                      onClick={() => setQuantity(quantity + 1)}
+                      className="w-7 h-7 rounded-full bg-white border border-[#1A1A1A] font-bold text-sm flex items-center justify-center hover:bg-[#A8D8C0] transition-colors"
+                    >
+                      +
+                    </button>
+                  </div>
+                </motion.div>
+
                 <motion.div variants={fadeUp} className="flex justify-center">
                   <button
                     onClick={() => setStep(2)}
                     className="pill-pay-btn max-w-sm"
                     style={{ borderRadius: "100px" }}
                   >
-                    Continue to Details →
+                    Continue to Details (₹{bundle.price * quantity}) →
                   </button>
                 </motion.div>
               </motion.div>
@@ -564,7 +607,7 @@ export default function CheckoutPage() {
                         Processing...
                       </>
                     ) : (
-                      <>🔒 Pay ₹{bundle.price} Securely</>
+                      <>🔒 Pay ₹{bundle.price * quantity} Securely</>
                     )}
                   </motion.button>
 
@@ -581,13 +624,13 @@ export default function CheckoutPage() {
                   >
                     {/* Book preview */}
                     <div className="bg-[#1A1A1A] p-6 flex items-center gap-5">
-                      <div
-                        className="w-16 aspect-[2/3] rounded-lg overflow-hidden border border-white/20 shrink-0"
-                        style={{
-                          background: "linear-gradient(135deg, #2B1810, #8B4A2A)",
-                          boxShadow: "3px 3px 8px rgba(0,0,0,0.5)",
-                        }}
-                      />
+                      <div className="w-14 sm:w-16 shrink-0 relative">
+                        <img
+                          src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1785695857/Untitled_design_52_1_kymdoi.png"
+                          alt="Deserted Hearts Book Cover"
+                          className="w-full h-auto drop-shadow-md"
+                        />
+                      </div>
                       <div>
                         <p className="font-display italic text-[#F5F0E8] text-lg leading-tight">
                           Deserted Hearts
@@ -617,20 +660,36 @@ export default function CheckoutPage() {
                     <div className="border-t-2 border-dashed border-[#D8D0C0] mx-5" />
                     <div className="p-5 space-y-2">
                       <div className="flex justify-between text-sm text-[#777]">
-                        <span>Book (1st Edition)</span>
+                        <span>Unit Price ({bundle.label})</span>
                         <span>₹{bundle.price}</span>
                       </div>
-                      <div className="flex justify-between text-sm text-[#777]">
-                        <span>Bonuses worth</span>
-                        <span className="line-through">₹{bundle.strikePrice - bundle.price}</span>
+                      <div className="flex justify-between items-center text-sm text-[#777]">
+                        <span>Quantity</span>
+                        <div className="flex items-center gap-2 bg-white border border-[#1A1A1A] rounded-full px-2 py-0.5">
+                          <button
+                            type="button"
+                            onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                            className="w-4 h-4 rounded-full bg-[#F5F0E8] border border-[#1A1A1A] text-xs font-bold flex items-center justify-center hover:bg-[#F2A7B0]"
+                          >
+                            -
+                          </button>
+                          <span className="font-ui font-bold text-xs text-[#1A1A1A] min-w-[12px] text-center">{quantity}</span>
+                          <button
+                            type="button"
+                            onClick={() => setQuantity(quantity + 1)}
+                            className="w-4 h-4 rounded-full bg-[#F5F0E8] border border-[#1A1A1A] text-xs font-bold flex items-center justify-center hover:bg-[#A8D8C0]"
+                          >
+                            +
+                          </button>
+                        </div>
                       </div>
                       <div className="flex justify-between text-sm text-[#777]">
                         <span>Shipping</span>
                         <span className="text-[#A8D8C0] font-bold">Free</span>
                       </div>
                       <div className="flex justify-between font-ui font-bold text-[#1A1A1A] text-base pt-2 border-t border-[#D8D0C0]">
-                        <span>Total</span>
-                        <span>₹{bundle.price}</span>
+                        <span>Total ({quantity} {quantity > 1 ? "items" : "item"})</span>
+                        <span>₹{bundle.price * quantity}</span>
                       </div>
                     </div>
 

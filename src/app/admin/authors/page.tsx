@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { supabase } from "@/lib/supabase";
+import { collection, getDocs, addDoc, deleteDoc, doc } from "firebase/firestore";
+import { db } from "@/lib/firebase";
 import {
   Table,
   TableBody,
@@ -43,13 +44,23 @@ export default function AdminAuthorsPage() {
   const fetchAuthors = async () => {
     setLoading(true);
     try {
-      const { data, error } = await supabase
-        .from("author_profiles")
-        .select("*")
-        .order("created_at", { ascending: false });
+      const ref = collection(db, "author_portfolios");
+      const snapshot = await getDocs(ref);
 
-      if (error) throw error;
-      setAuthors(data || []);
+      const list: Author[] = [];
+      snapshot.forEach((docSnap) => {
+        const data = docSnap.data();
+        list.push({
+          id: docSnap.id,
+          name: data.name || data.username || "Author",
+          phone: data.phone || "N/A",
+          email: data.email || null,
+          created_at: data.created_at || new Date().toISOString(),
+        });
+      });
+
+      list.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+      setAuthors(list);
     } catch (error: any) {
       toast.error("Failed to load authors: " + error.message);
     } finally {
@@ -70,22 +81,28 @@ export default function AdminAuthorsPage() {
 
     setIsSubmitting(true);
     try {
-      const { data, error } = await supabase
-        .from("author_profiles")
-        .insert([
-          {
-            name: newAuthor.name,
-            phone: newAuthor.phone,
-            email: newAuthor.email || null,
-          },
-        ])
-        .select()
-        .single();
+      const now = new Date().toISOString();
+      const docRef = await addDoc(collection(db, "author_portfolios"), {
+        name: newAuthor.name,
+        phone: newAuthor.phone,
+        email: newAuthor.email || null,
+        username: newAuthor.name.toLowerCase().replace(/[^a-z0-9]/g, '_'),
+        status: "approved",
+        approved: true,
+        created_at: now,
+        updated_at: now,
+      });
 
-      if (error) throw error;
+      const created: Author = {
+        id: docRef.id,
+        name: newAuthor.name,
+        phone: newAuthor.phone,
+        email: newAuthor.email || null,
+        created_at: now,
+      };
 
       toast.success("Author created successfully!");
-      setAuthors([data, ...authors]);
+      setAuthors([created, ...authors]);
       setIsDialogOpen(false);
       setNewAuthor({ name: "", phone: "", email: "" });
     } catch (error: any) {
@@ -101,11 +118,10 @@ export default function AdminAuthorsPage() {
   };
 
   const deleteAuthor = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this author and all their data?")) return;
+    if (!confirm("Are you sure you want to delete this author?")) return;
     
     try {
-      const { error } = await supabase.from("author_profiles").delete().eq("id", id);
-      if (error) throw error;
+      await deleteDoc(doc(db, "author_portfolios", id));
       toast.success("Author deleted.");
       setAuthors(authors.filter((a) => a.id !== id));
     } catch (error: any) {

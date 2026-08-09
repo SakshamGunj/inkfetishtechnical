@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { db } from '@/lib/firebase-admin';
 
 export const runtime = 'nodejs';
 
@@ -45,8 +46,29 @@ export async function GET(request: Request) {
     const orderStatus: string = data.order_status; // PAID | ACTIVE | EXPIRED | TERMINATED
     const tags = data.order_tags || {};
 
-    // Future: persist to Supabase here if needed
-    // if (orderStatus === 'PAID') { ... }
+    // Save to Firebase Firestore on PAID
+    if (orderStatus === 'PAID' && db) {
+      try {
+        await db.collection('daniya_khan_preorders').doc(orderId).set({
+          order_id: orderId,
+          cf_order_id: data.cf_order_id || '',
+          customer_name: tags.name || '',
+          customer_email: tags.email || '',
+          customer_phone: tags.phone || tags.whatsapp || '',
+          address: tags.address || '',
+          pincode: tags.pincode || '',
+          city: tags.city || '',
+          state: tags.state || '',
+          bundle: tags.bundle || 'standard',
+          amount: data.order_amount,
+          currency: data.order_currency || 'INR',
+          order_status: 'PAID',
+          updated_at: new Date().toISOString(),
+        }, { merge: true });
+      } catch (fbErr: any) {
+        console.error('Firebase Firestore Save Error:', fbErr.message);
+      }
+    }
 
     return NextResponse.json({
       order_id: orderId,

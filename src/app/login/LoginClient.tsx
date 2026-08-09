@@ -3,7 +3,8 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '@/lib/firebase';
+import { doc, getDoc } from 'firebase/firestore';
+import { auth, db } from '@/lib/firebase';
 import { LogIn, Key, Mail, AlertTriangle } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import Link from 'next/link';
@@ -23,7 +24,30 @@ const LoginClient = () => {
         setError('');
 
         try {
-            await signInWithEmailAndPassword(auth, email, password);
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // Check approval status in Firestore author_portfolios
+            const docRef = doc(db, 'author_portfolios', user.uid);
+            const docSnap = await getDoc(docRef);
+
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                // If status is explicitly pending or approved is false
+                if (data.status === 'pending' || data.approved === false) {
+                    await auth.signOut();
+                    const pendingMsg = "ACCOUNT PENDING APPROVAL: Your author application is under review by our admin team. You can log in once approved.";
+                    setError(pendingMsg);
+                    toast({
+                        title: "PENDING APPROVAL",
+                        description: pendingMsg,
+                        variant: 'destructive',
+                    });
+                    setIsLoading(false);
+                    return;
+                }
+            }
+
             toast({
                 title: "WELCOME BACK",
                 description: "Good to see you again.",

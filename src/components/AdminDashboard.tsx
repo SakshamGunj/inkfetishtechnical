@@ -4,8 +4,9 @@ import { db } from "@/lib/firebase";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { RefreshCw, PenTool, Users } from "lucide-react";
+import { RefreshCw, PenTool, Users, BookOpen } from "lucide-react";
 import InkculttAdmin from "@/components/InkculttAdmin";
+import AuthorApprovalsAdmin from "@/components/AuthorApprovalsAdmin";
 
 interface Registration {
   id: string;
@@ -99,8 +100,12 @@ const AdminDashboard = () => {
         </div>
       </div>
 
-      <Tabs defaultValue="competition" className="w-full">
-        <TabsList className="grid w-full grid-cols-2 mb-6 bg-white/10 backdrop-blur-md">
+      <Tabs defaultValue="approvals" className="w-full">
+        <TabsList className="grid w-full grid-cols-3 mb-6 bg-white/10 backdrop-blur-md">
+          <TabsTrigger value="approvals" className="flex items-center gap-2 text-gray-300 data-[state=active]:text-white">
+            <BookOpen className="h-4 w-4" />
+            Author Site Approvals
+          </TabsTrigger>
           <TabsTrigger value="competition" className="flex items-center gap-2 text-gray-300 data-[state=active]:text-white">
             <Users className="h-4 w-4" />
             Competition Management
@@ -110,6 +115,10 @@ const AdminDashboard = () => {
             Inkcultt Poetry Portal
           </TabsTrigger>
         </TabsList>
+
+        <TabsContent value="approvals" className="space-y-6">
+          <AuthorApprovalsAdmin />
+        </TabsContent>
 
         <TabsContent value="competition" className="space-y-6">
           <Card className="mb-6 bg-white/10 backdrop-blur-md border-blue-500/30">

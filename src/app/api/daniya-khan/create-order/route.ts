@@ -13,11 +13,13 @@ function toBase64(str: string): string {
 }
 
 function getBaseUrl(): string {
-  if (process.env.NEXT_PUBLIC_BASE_URL && !process.env.NEXT_PUBLIC_BASE_URL.includes('localhost')) {
+  if (process.env.NEXT_PUBLIC_BASE_URL && process.env.NEXT_PUBLIC_BASE_URL.startsWith('https://')) {
     return process.env.NEXT_PUBLIC_BASE_URL;
   }
-  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
-  return process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+  if (process.env.VERCEL_URL) {
+    return `https://${process.env.VERCEL_URL}`;
+  }
+  return 'https://inkfetish.in';
 }
 
 export async function POST(request: Request) {
@@ -31,7 +33,8 @@ export async function POST(request: Request) {
       city,
       state,
       pincode,
-      bundleType, // 'standard' | 'signed'
+      bundleType, // 'standard' | 'signed' | 'grand'
+      quantity,
     } = await request.json();
 
     if (!customerName || !customerEmail || !customerPhone || !addressLine1 || !pincode) {
@@ -47,13 +50,15 @@ export async function POST(request: Request) {
     const baseUrl = getCashfreeBaseUrl(appId);
     const siteUrl = getBaseUrl();
 
-    // ₹229 for standard (book only), ₹289 for Elite Mystery Box, ₹349 for Platinum Mystery Box
-    let amount = 229;
+    // ₹299 for standard (book only), ₹599 for Elite Mystery Box, ₹999 for Platinum Mystery Box
+    const qty = Math.max(1, parseInt(quantity || 1, 10));
+    let unitPrice = 299;
     if (bundleType === 'platinum' || bundleType === 'grand' || bundleType === 'grand_mystery') {
-      amount = 349;
+      unitPrice = 999;
     } else if (bundleType === 'elite' || bundleType === 'signed' || bundleType === 'mystery' || bundleType === 'mini_mystery') {
-      amount = 289;
+      unitPrice = 599;
     }
+    const amount = unitPrice * qty;
 
     const orderId = `dkbook_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
     const customerId = `dk_${toBase64(customerEmail).replace(/[^a-zA-Z0-9]/g, '').slice(0, 20)}`;
@@ -80,6 +85,7 @@ export async function POST(request: Request) {
         order_tags: {
           source: 'daniya_khan_preorder',
           bundle: bundleType || 'standard',
+          quantity: String(qty),
           email: customerEmail,
           name: customerName,
           phone: customerPhone,
@@ -90,7 +96,7 @@ export async function POST(request: Request) {
         },
         order_meta: {
           return_url: `${siteUrl}/daniya-khan/success?order_id={order_id}`,
-          notify_url: `${siteUrl}/api/daniya-khan/verify-order`,
+          notify_url: `${siteUrl}/api/cashfree/webhook`,
         },
       }),
     });

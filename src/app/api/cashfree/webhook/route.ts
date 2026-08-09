@@ -96,7 +96,34 @@ export async function POST(request: Request) {
           return NextResponse.json({ error: 'Database update failed' }, { status: 500 });
         }
 
-      // 2c. BHARAT WRITES ORDERS → Insert to Firebase
+      // 2c. DANIYA KHAN PRE-ORDERS → Insert to Firebase Firestore
+      } else if (orderId.startsWith('dkbook_')) {
+        console.log(`Daniya Khan Pre-order Payment Confirmed: ${orderId}`);
+        if (db) {
+          try {
+            await db.collection('daniya_khan_preorders').doc(orderId).set({
+              order_id: orderId,
+              cf_order_id: order.cf_order_id || '',
+              customer_name: tags.name || '',
+              customer_email: tags.email || '',
+              customer_phone: tags.phone || tags.whatsapp || '',
+              address: tags.address || '',
+              pincode: tags.pincode || '',
+              city: tags.city || '',
+              state: tags.state || '',
+              bundle: tags.bundle || 'standard',
+              amount: order.order_amount,
+              currency: 'INR',
+              order_status: 'PAID',
+              updated_at: new Date().toISOString(),
+            }, { merge: true });
+            console.log(`Saved Daniya Khan pre-order ${orderId} to Firebase Firestore`);
+          } catch (fbErr: any) {
+            console.error('Webhook Firebase Firestore Error for Daniya Khan:', fbErr.message);
+          }
+        }
+
+      // 2d. BHARAT WRITES ORDERS → Insert to Firebase
       } else if (orderId.startsWith('bw_')) {
         if (db) {
           try {

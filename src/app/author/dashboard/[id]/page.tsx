@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { supabase } from "@/lib/supabase";
+import { doc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
+import { db } from "@/lib/firebase";
 import { useParams } from "next/navigation";
 import {
   Table,
@@ -59,25 +60,91 @@ export default function AuthorDashboard() {
   useEffect(() => {
     const fetchDashboard = async () => {
       try {
-        const [authorRes, booksRes, salesRes, logsRes] = await Promise.all([
-          supabase.from("author_profiles").select("*").eq("id", authorId).single(),
-          supabase.from("author_books").select("*").eq("author_id", authorId),
-          supabase.from("author_sales_reports").select("*").eq("author_id", authorId).order("period_end", { ascending: false }),
-          supabase.from("author_audit_logs").select("*").eq("author_id", authorId).order("created_at", { ascending: false }),
-        ]);
+        // 1. Fetch Author Profile from Firestore
+        const authorDocRef = doc(db, "author_portfolios", authorId);
+        const authorSnap = await getDoc(authorDocRef);
 
-        if (authorRes.data) setAuthor(authorRes.data);
-        if (booksRes.data) {
-          const processedBooks = booksRes.data.map(b => ({
-            ...b,
-            custom_expenses: Array.isArray(b.custom_expenses) ? b.custom_expenses : []
-          }));
-          setBooks(processedBooks);
+        if (authorSnap.exists()) {
+          const data = authorSnap.data();
+          setAuthor({
+            id: authorSnap.id,
+            name: data.name || data.username || "Author",
+            email: data.email || "",
+            phone: data.phone || "",
+          });
+        } else {
+          // Query by ID parameter if document ID differs
+          const q = query(collection(db, "author_portfolios"), where("uid", "==", authorId));
+          const qSnap = await getDocs(q);
+          if (!qSnap.empty) {
+            const first = qSnap.docs[0];
+            const data = first.data();
+            setAuthor({
+              id: first.id,
+              name: data.name || data.username || "Author",
+              email: data.email || "",
+              phone: data.phone || "",
+            });
+          }
         }
-        if (salesRes.data) setSales(salesRes.data);
-        if (logsRes.data) setLogs(logsRes.data);
+
+        // 2. Fetch Books from Firestore
+        const booksQuery = query(collection(db, "author_books"), where("author_id", "==", authorId));
+        const booksSnap = await getDocs(booksQuery);
+        const booksList: BookType[] = [];
+        booksSnap.forEach((docSnap) => {
+          const b = docSnap.data();
+          booksList.push({
+            id: docSnap.id,
+            title: b.title || "Untitled Book",
+            price: Number(b.price) || 0,
+            custom_expenses: Array.isArray(b.custom_expenses) ? b.custom_expenses : [],
+            royalty_percentage: Number(b.royalty_percentage) || 0,
+            format: b.format || "Paperback",
+          });
+        });
+        setBooks(booksList);
+
+        // 3. Fetch Sales Reports from Firestore
+        const salesQuery = query(collection(db, "author_sales_reports"), where("author_id", "==", authorId));
+        const salesSnap = await getDocs(salesQuery);
+        const salesList: SaleReport[] = [];
+        salesSnap.forEach((docSnap) => {
+          const s = docSnap.data();
+          salesList.push({
+            id: docSnap.id,
+            book_id: s.book_id || "",
+            period_start: s.period_start || "",
+            period_end: s.period_end || "",
+            units_sold: Number(s.units_sold) || 0,
+            revenue_generated: Number(s.revenue_generated) || 0,
+            royalty_earned: Number(s.royalty_earned) || 0,
+            status: s.status || "pending",
+            created_at: s.created_at || new Date().toISOString(),
+          });
+        });
+        salesList.sort((a, b) => new Date(b.period_end).getTime() - new Date(a.period_end).getTime());
+        setSales(salesList);
+
+        // 4. Fetch Audit Logs from Firestore
+        const logsQuery = query(collection(db, "author_audit_logs"), where("author_id", "==", authorId));
+        const logsSnap = await getDocs(logsQuery);
+        const logsList: AuditLog[] = [];
+        logsSnap.forEach((docSnap) => {
+          const l = docSnap.data();
+          logsList.push({
+            id: docSnap.id,
+            book_id: l.book_id || null,
+            action_type: l.action_type || "log",
+            description: l.description || "",
+            created_at: l.created_at || new Date().toISOString(),
+          });
+        });
+        logsList.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+        setLogs(logsList);
+
       } catch (error) {
-        console.error("Dashboard error:", error);
+        console.error("Dashboard Firestore error:", error);
       } finally {
         setLoading(false);
       }

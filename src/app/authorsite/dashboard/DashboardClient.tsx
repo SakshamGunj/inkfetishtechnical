@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Plus, Trash2, BookOpen, FileText, UserCircle, Type, Eye, EyeOff, X, Award, Copy, Check, Headset } from 'lucide-react';
+import { Plus, Trash2, BookOpen, FileText, UserCircle, Type, Eye, EyeOff, X, Award, Copy, Check, Headset, TrendingUp, Globe, Palette, Mail, MessageSquareQuote, QrCode, Share2, Sparkles, Download } from 'lucide-react';
 import BrutalistEditor from '@/components/BrutalistEditor';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
@@ -191,15 +191,123 @@ const DashboardClient = () => {
         }
     };
 
-    // Helper functions (Tags, Books, Pieces, Awards) - simplified for migration
-    const handleAddTag = (e: any) => {
-        if (e.key && e.key !== 'Enter') return;
-        const trimmed = tagInput.trim().toUpperCase();
-        if (trimmed && formData.tags.length < 3 && !formData.tags.includes(trimmed)) {
-            setFormData({ ...formData, tags: [...formData.tags, trimmed] });
-            setTagInput('');
-            setIsSaved(false);
+    // Module Form States & Handlers
+    const [bookForm, setBookForm] = useState({ title: '', price: '', format: 'Paperback', isbn: '', buy_link: '', description: '' });
+    const handleAddBook = () => {
+        if (!bookForm.title.trim()) return toast({ title: "BOOK TITLE REQUIRED", variant: "destructive" });
+        const newBook = { id: Date.now().toString(), ...bookForm };
+        setFormData((prev: any) => ({ ...prev, books: [...(prev.books || []), newBook] }));
+        setBookForm({ title: '', price: '', format: 'Paperback', isbn: '', buy_link: '', description: '' });
+        toast({ title: "BOOK ADDED!", description: "Don't forget to click SAVE PROFILE." });
+    };
+    const handleDeleteBook = (id: string) => {
+        setFormData((prev: any) => ({ ...prev, books: (prev.books || []).filter((b: any) => b.id !== id) }));
+        toast({ title: "BOOK REMOVED" });
+    };
+
+    const [storyForm, setStoryForm] = useState({ title: '', category: 'Short Story', content: '', published_date: new Date().toISOString().split('T')[0] });
+    const handleAddStory = () => {
+        if (!storyForm.title.trim()) return toast({ title: "STORY TITLE REQUIRED", variant: "destructive" });
+        const newStory = { id: Date.now().toString(), ...storyForm };
+        setFormData((prev: any) => ({ ...prev, experiences: [...(prev.experiences || []), newStory] }));
+        setStoryForm({ title: '', category: 'Short Story', content: '', published_date: new Date().toISOString().split('T')[0] });
+        toast({ title: "STORY ADDED!", description: "Don't forget to click SAVE PROFILE." });
+    };
+    const handleDeleteStory = (id: string) => {
+        setFormData((prev: any) => ({ ...prev, experiences: (prev.experiences || []).filter((s: any) => s.id !== id) }));
+        toast({ title: "STORY REMOVED" });
+    };
+
+    const [awardForm, setAwardForm] = useState({ title: '', issuer: '', year: new Date().getFullYear().toString(), description: '' });
+    const handleAddAward = () => {
+        if (!awardForm.title.trim()) return toast({ title: "AWARD TITLE REQUIRED", variant: "destructive" });
+        const newAward = { id: Date.now().toString(), ...awardForm };
+        setFormData((prev: any) => ({ ...prev, awards: [...(prev.awards || []), newAward] }));
+        setAwardForm({ title: '', issuer: '', year: new Date().getFullYear().toString(), description: '' });
+        toast({ title: "AWARD ADDED!", description: "Don't forget to click SAVE PROFILE." });
+    };
+    // Tag Handlers (Max 3 tags, Max 15 chars per tag)
+    const handleAddTag = (e?: React.FormEvent) => {
+        if (e) e.preventDefault();
+        const trimmed = tagInput.trim().replace(/^#/, '').toUpperCase();
+        if (!trimmed) return;
+        
+        if ((formData.tags || []).length >= 3) {
+            toast({ title: "MAX 3 TAGS ALLOWED", description: "You can only add up to 3 genre tags.", variant: "destructive" });
+            return;
         }
+
+        if (trimmed.length > 15) {
+            toast({ title: "TAG TOO LONG", description: "Each tag must be 15 characters or less.", variant: "destructive" });
+            return;
+        }
+
+        if ((formData.tags || []).includes(trimmed)) {
+            toast({ title: "TAG ALREADY ADDED", variant: "destructive" });
+            return;
+        }
+
+        setFormData((prev: any) => ({ ...prev, tags: [...(prev.tags || []), trimmed] }));
+        setTagInput('');
+        toast({ title: "TAG ADDED!", description: `#${trimmed}` });
+    };
+
+    const handleRemoveTag = (tagToRemove: string) => {
+        setFormData((prev: any) => ({ ...prev, tags: (prev.tags || []).filter((t: string) => t !== tagToRemove) }));
+        toast({ title: "TAG REMOVED" });
+    };
+
+    // Languages Handlers
+    const [langInput, setLangInput] = useState('');
+    const handleAddLang = (e?: React.FormEvent) => {
+        if (e) e.preventDefault();
+        const trimmed = langInput.trim().toUpperCase();
+        if (!trimmed) return;
+        if ((formData.languages || []).includes(trimmed)) return;
+        setFormData((prev: any) => ({ ...prev, languages: [...(prev.languages || []), trimmed] }));
+        setLangInput('');
+    };
+    const handleRemoveLang = (lToRemove: string) => {
+        setFormData((prev: any) => ({ ...prev, languages: (prev.languages || []).filter((l: string) => l !== lToRemove) }));
+    };
+
+    // Writing Types / Forms Handlers
+    const [writingTypeInput, setWritingTypeInput] = useState('');
+    const handleAddWritingType = (valToAdd?: string, e?: React.FormEvent) => {
+        if (e) e.preventDefault();
+        const trimmed = (valToAdd || writingTypeInput).trim();
+        if (!trimmed) return;
+        if ((formData.writing_types || []).includes(trimmed)) return;
+        setFormData((prev: any) => ({ ...prev, writing_types: [...(prev.writing_types || []), trimmed] }));
+        setWritingTypeInput('');
+    };
+    const handleRemoveWritingType = (wtToRemove: string) => {
+        setFormData((prev: any) => ({ ...prev, writing_types: (prev.writing_types || []).filter((wt: string) => wt !== wtToRemove) }));
+    };
+    const [reviewForm, setReviewForm] = useState({ reviewer: '', quote: '', source: 'Editorial Review', rating: '5' });
+    const handleAddReview = () => {
+        if (!reviewForm.quote.trim()) return toast({ title: "QUOTE CONTENT REQUIRED", variant: "destructive" });
+        const newReview = { id: Date.now().toString(), ...reviewForm };
+        setFormData((prev: any) => ({ ...prev, reviews: [...(prev.reviews || []), newReview] }));
+        setReviewForm({ reviewer: '', quote: '', source: 'Editorial Review', rating: '5' });
+        toast({ title: "REVIEW ADDED!", description: "Don't forget to click SAVE PROFILE." });
+    };
+    const handleDeleteReview = (id: string) => {
+        setFormData((prev: any) => ({ ...prev, reviews: (prev.reviews || []).filter((r: any) => r.id !== id) }));
+        toast({ title: "REVIEW REMOVED" });
+    };
+
+    const getReadingTime = (content: string) => {
+        if (!content) return "0 MIN READ";
+        const plainText = content.replace(/<[^>]+>/g, ' ').trim();
+        const words = plainText.split(/\s+/).filter(Boolean).length;
+        if (words === 0) return "0 MIN READ";
+        if (words < 150) {
+            const seconds = Math.max(15, Math.ceil((words / 200) * 60));
+            return `${seconds} SEC READ`;
+        }
+        const minutes = Math.ceil(words / 200);
+        return `${minutes} MIN READ`;
     };
 
     if (authLoading) return <div className="min-h-screen bg-[#FFFDF7] flex items-center justify-center font-mono font-black animate-pulse">LOADING...</div>;
@@ -246,6 +354,10 @@ const DashboardClient = () => {
                         { id: 'library', label: 'My Books', icon: <BookOpen size={20} />, color: '#00A3FF' },
                         { id: 'archive', label: 'My Stories', icon: <FileText size={20} />, color: '#FF4F00' },
                         { id: 'awards', label: 'My Awards', icon: <Award size={20} />, color: '#9D00FF' },
+                        { id: 'wip', label: 'WIP Tracker', icon: <TrendingUp size={20} />, color: '#FF0055' },
+                        { id: 'reviews', label: 'Reviews & Praise', icon: <MessageSquareQuote size={20} />, color: '#FFD700' },
+                        { id: 'socials', label: 'Socials & Collab', icon: <Globe size={20} />, color: '#00E5FF' },
+                        { id: 'share', label: 'QR Code & Share', icon: <QrCode size={20} />, color: '#39FF14' },
                     ].map((tab) => (
                         <button
                             key={tab.id}
@@ -288,40 +400,782 @@ const DashboardClient = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="space-y-2">
+
+                                {/* TAGLINE & AVAILABILITY STATUS */}
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t-2 border-black">
+                                    <div>
+                                        <label className="block text-xs font-black text-gray-500 uppercase mb-1">⚡ One-Line Tagline / Motto</label>
+                                        <input
+                                            type="text"
+                                            name="tagline"
+                                            value={formData.tagline || ""}
+                                            onChange={handleChange}
+                                            className="w-full bg-white border-2 border-black p-3 font-bold text-sm outline-none focus:bg-[#39FF14]/10"
+                                            placeholder="e.g. Weaving heartbreak into stanzas since 2019"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-xs font-black text-gray-500 uppercase mb-1">🎯 Current Availability / Status Badge</label>
+                                        <select
+                                            name="availability_status"
+                                            value={formData.availability_status || "OPEN_FOR_SUBMISSIONS"}
+                                            onChange={handleChange}
+                                            className="w-full bg-white border-2 border-black p-3 font-bold text-sm outline-none focus:bg-[#39FF14]/10"
+                                        >
+                                            <option value="OPEN_FOR_SUBMISSIONS">🟢 Open for Book Deals & Agent Queries</option>
+                                            <option value="DEEP_WRITING_MODE">🟡 Writing Next Manuscript (Deep Focus)</option>
+                                            <option value="AVAILABLE_FOR_SPEAKING">🔵 Available for Keynote Speaking & Workshops</option>
+                                            <option value="OPEN_FOR_COLLABS">🟣 Open for Co-Authorship & Anthologies</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                {/* HOMETOWN & PRESS KIT URL */}
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label className="block text-xs font-black text-gray-500 uppercase mb-1">📍 Hometown / Writing Base</label>
+                                        <input
+                                            type="text"
+                                            name="hometown"
+                                            value={formData.hometown || ""}
+                                            onChange={handleChange}
+                                            className="w-full bg-white border-2 border-black p-3 font-bold text-sm outline-none focus:bg-[#39FF14]/10"
+                                            placeholder="e.g. New Delhi, India"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-xs font-black text-gray-500 uppercase mb-1">📄 Downloadable Press Kit / Media Resume URL</label>
+                                        <input
+                                            type="url"
+                                            name="press_kit_url"
+                                            value={formData.press_kit_url || ""}
+                                            onChange={handleChange}
+                                            className="w-full bg-white border-2 border-black p-3 font-bold text-sm outline-none focus:bg-[#39FF14]/10"
+                                            placeholder="e.g. https://drive.google.com/your-press-kit.pdf"
+                                        />
+                                    </div>
+                                </div>
+
+                                {/* TYPES / FORMS OF WRITING & WRITING LANGUAGES */}
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t-2 border-black">
+                                    {/* Primary Types of Writing */}
+                                    <div className="space-y-3">
+                                        <label className="block text-xs font-black text-gray-500 uppercase">✍️ Primary Forms / Types of Writing</label>
+                                        <form onSubmit={(e) => handleAddWritingType(undefined, e)} className="flex gap-2">
+                                            <input
+                                                type="text"
+                                                value={writingTypeInput}
+                                                onChange={(e) => setWritingTypeInput(e.target.value)}
+                                                className="w-full bg-white border-2 border-black p-2.5 font-bold text-xs outline-none"
+                                                placeholder="e.g. Poetry, Novels, Short Story..."
+                                            />
+                                            <button type="submit" className="bg-black text-white font-black px-4 py-2 text-xs uppercase border-2 border-black hover:bg-[#39FF14] hover:text-black shrink-0">+ ADD</button>
+                                        </form>
+                                        {/* Quick preset buttons */}
+                                        <div className="flex flex-wrap gap-1.5 pt-1">
+                                            {['Poetry', 'Short Story', 'Novel', 'Essays', 'Screenplays'].map((preset) => (
+                                                <button
+                                                    key={preset}
+                                                    type="button"
+                                                    onClick={() => handleAddWritingType(preset)}
+                                                    className="bg-gray-100 border border-black px-2 py-0.5 text-[10px] font-bold uppercase hover:bg-[#39FF14]"
+                                                >
+                                                    + {preset}
+                                                </button>
+                                            ))}
+                                        </div>
+                                        {/* Live Badges */}
+                                        <div className="flex flex-wrap gap-2 pt-1">
+                                            {(formData.writing_types || []).map((wt: string, idx: number) => (
+                                                <span key={idx} className="bg-black text-white border-2 border-black px-2.5 py-1 text-xs font-black uppercase flex items-center gap-2">
+                                                    {wt}
+                                                    <button type="button" onClick={() => handleRemoveWritingType(wt)} className="hover:text-red-400"><X size={12} /></button>
+                                                </span>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    {/* Writing Languages */}
+                                    <div className="space-y-3">
+                                        <label className="block text-xs font-black text-gray-500 uppercase">🗣️ Writing Languages & Dialects</label>
+                                        <form onSubmit={handleAddLang} className="flex gap-2">
+                                            <input
+                                                type="text"
+                                                value={langInput}
+                                                onChange={(e) => setLangInput(e.target.value)}
+                                                className="w-full bg-white border-2 border-black p-2.5 font-bold text-xs uppercase outline-none"
+                                                placeholder="e.g. ENGLISH, HINDI, URDU..."
+                                            />
+                                            <button type="submit" className="bg-black text-white font-black px-4 py-2 text-xs uppercase border-2 border-black hover:bg-[#39FF14] hover:text-black shrink-0">+ ADD</button>
+                                        </form>
+                                        {/* Live Badges */}
+                                        <div className="flex flex-wrap gap-2 pt-1">
+                                            {(formData.languages || []).map((lang: string, idx: number) => (
+                                                <span key={idx} className="bg-[#00A3FF] text-white border-2 border-black px-2.5 py-1 text-xs font-black uppercase flex items-center gap-2">
+                                                    {lang}
+                                                    <button type="button" onClick={() => handleRemoveLang(lang)} className="hover:text-red-400"><X size={12} /></button>
+                                                </span>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="space-y-2 w-full min-w-0 overflow-hidden">
                                     <label className="block text-xs font-black text-gray-400 uppercase">My Bio</label>
-                                    <textarea name="bio" value={formData.bio} onChange={handleChange} className="w-full h-32 bg-white border-2 border-black p-4 font-medium focus:bg-[#39FF14]/5 outline-none resize-none" />
+                                    <textarea name="bio" value={formData.bio} onChange={handleChange} className="w-full h-32 bg-white border-2 border-black p-4 font-medium focus:bg-[#39FF14]/5 outline-none resize-none break-words [overflow-wrap:anywhere]" placeholder="Share your literary journey, themes, signature style, and inspirations..." />
+                                </div>
+
+                                {/* PRO-TIPS FOR A WOW AUTHOR BIO (THEORY GUIDE) */}
+                                <div className="bg-[#FFC700]/15 p-6 border-[3px] border-black space-y-3">
+                                    <h4 className="font-black text-sm uppercase flex items-center gap-2 bg-black text-[#FFC700] px-3 py-1 w-fit">
+                                        💡 PRO-TIPS FOR A WOW AUTHOR BIO
+                                    </h4>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-bold text-gray-800">
+                                        <div className="bg-white p-3 border-2 border-black space-y-1 shadow-[2px_2px_0_0_#000]">
+                                            <span className="text-[#FF4F00] font-black">1. THE HOOK & GENRE</span>
+                                            <p className="font-medium text-gray-600">State your core writing style and primary genres (e.g. "Dark Romance poet & speculative fiction author").</p>
+                                        </div>
+                                        <div className="bg-white p-3 border-2 border-black space-y-1 shadow-[2px_2px_0_0_#000]">
+                                            <span className="text-[#9D00FF] font-black">2. HONORS & MILESTONES</span>
+                                            <p className="font-medium text-gray-600">Mention notable contest features, published anthologies, or bestselling book launches.</p>
+                                        </div>
+                                        <div className="bg-white p-3 border-2 border-black space-y-1 shadow-[2px_2px_0_0_#000]">
+                                            <span className="text-[#00A3FF] font-black">3. INSPIRATION & ORIGIN</span>
+                                            <p className="font-medium text-gray-600">Briefly share when you began writing and key literary figures that shape your craft.</p>
+                                        </div>
+                                        <div className="bg-white p-3 border-2 border-black space-y-1 shadow-[2px_2px_0_0_#000]">
+                                            <span className="text-[#39FF14] font-black">4. CURRENT PROJECTS</span>
+                                            <p className="font-medium text-gray-600">Tease what you're currently working on to build anticipation among readers!</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* AGE / DOB & WRITING SINCE OPTIONS */}
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t-2 border-black">
+                                    {/* Age / DOB Option */}
+                                    <div className="bg-white p-4 border-2 border-black space-y-4 shadow-[4px_4px_0_0_#000]">
+                                        <div className="flex items-center gap-3">
+                                            <input
+                                                type="checkbox"
+                                                id="show_age_cb"
+                                                checked={formData.show_age === true}
+                                                onChange={(e) => setFormData({ ...formData, show_age: e.target.checked })}
+                                                className="w-5 h-5 border-2 border-black accent-black cursor-pointer"
+                                            />
+                                            <label htmlFor="show_age_cb" className="font-black text-xs uppercase cursor-pointer">
+                                                Show Age / DOB on my Public Profile
+                                            </label>
+                                        </div>
+
+                                        {formData.show_age && (
+                                            <div className="space-y-3 pt-2">
+                                                <div className="flex gap-4 text-xs font-black uppercase">
+                                                    <label className="flex items-center gap-1 cursor-pointer">
+                                                        <input type="radio" name="age_type" value="age" checked={formData.age_type !== 'dob'} onChange={() => setFormData({ ...formData, age_type: 'age' })} className="accent-black" />
+                                                        Exact Age (e.g. 24)
+                                                    </label>
+                                                    <label className="flex items-center gap-1 cursor-pointer">
+                                                        <input type="radio" name="age_type" value="dob" checked={formData.age_type === 'dob'} onChange={() => setFormData({ ...formData, age_type: 'dob' })} className="accent-black" />
+                                                        Date of Birth (DOB)
+                                                    </label>
+                                                </div>
+
+                                                {formData.age_type === 'dob' ? (
+                                                    <input
+                                                        type="date"
+                                                        name="age_val"
+                                                        value={formData.age_val || ""}
+                                                        onChange={handleChange}
+                                                        className="w-full bg-white border-2 border-black p-2.5 font-bold text-xs outline-none"
+                                                    />
+                                                ) : (
+                                                    <input
+                                                        type="number"
+                                                        name="age_val"
+                                                        placeholder="e.g. 24"
+                                                        value={formData.age_val || ""}
+                                                        onChange={handleChange}
+                                                        className="w-full bg-white border-2 border-black p-2.5 font-bold text-xs outline-none"
+                                                    />
+                                                )}
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    {/* Writing Since Year Option */}
+                                    <div className="bg-white p-4 border-2 border-black space-y-4 shadow-[4px_4px_0_0_#000]">
+                                        <div className="flex items-center gap-3">
+                                            <input
+                                                type="checkbox"
+                                                id="show_ws_cb"
+                                                checked={formData.show_writing_since !== false}
+                                                onChange={(e) => setFormData({ ...formData, show_writing_since: e.target.checked })}
+                                                className="w-5 h-5 border-2 border-black accent-black cursor-pointer"
+                                            />
+                                            <label htmlFor="show_ws_cb" className="font-black text-xs uppercase cursor-pointer">
+                                                Show "Writing Since" Year on Public Profile
+                                            </label>
+                                        </div>
+
+                                        {formData.show_writing_since !== false && (
+                                            <div className="space-y-1 pt-2">
+                                                <label className="block text-[10px] font-black text-gray-500 uppercase">Writing Since Year</label>
+                                                <input
+                                                    type="number"
+                                                    name="writing_since_year"
+                                                    placeholder="e.g. 2018"
+                                                    value={formData.writing_since_year || ""}
+                                                    onChange={handleChange}
+                                                    className="w-full bg-white border-2 border-black p-2.5 font-bold text-xs outline-none"
+                                                />
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+
+                                {/* Genre Hashtags Section (Max 3 tags, Max 15 chars per tag) */}
+                                <div className="space-y-4 pt-4 border-t-2 border-black">
+                                    <div className="flex justify-between items-center flex-wrap gap-2">
+                                        <label className="block text-xs font-black text-gray-500 uppercase">
+                                            GENRE HASHTAGS ({(formData.tags || []).length} / 3 TAGS USED)
+                                        </label>
+                                        <span className="text-[10px] font-black uppercase text-gray-400">MAX 15 CHARACTERS PER TAG</span>
+                                    </div>
+
+                                    {(formData.tags || []).length < 3 && (
+                                        <form onSubmit={handleAddTag} className="flex gap-2">
+                                            <div className="relative flex-grow">
+                                                <span className="absolute left-3 top-1/2 -translate-y-1/2 font-black text-sm text-black">#</span>
+                                                <input
+                                                    type="text"
+                                                    value={tagInput}
+                                                    maxLength={15}
+                                                    onChange={(e) => setTagInput(e.target.value.replace(/[^a-zA-Z0-9]/g, ''))}
+                                                    className="w-full bg-white border-2 border-black pl-8 pr-16 py-3 font-black text-sm uppercase outline-none focus:bg-[#39FF14]/10"
+                                                    placeholder="POETRY"
+                                                />
+                                                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-black text-gray-400">
+                                                    {tagInput.length}/15
+                                                </span>
+                                            </div>
+                                            <button
+                                                type="submit"
+                                                className="bg-black text-white font-black px-6 py-3 text-xs uppercase border-2 border-black hover:bg-[#39FF14] hover:text-black transition-colors shrink-0 shadow-[2px_2px_0_0_#000]"
+                                            >
+                                                + ADD TAG
+                                            </button>
+                                        </form>
+                                    )}
+
+                                    {/* Live Badges Display */}
+                                    <div className="flex flex-wrap gap-2 pt-2">
+                                        {(formData.tags || []).map((tag: string, idx: number) => (
+                                            <span
+                                                key={idx}
+                                                className="bg-[#FF4F00] text-white border-2 border-black px-3 py-1.5 text-xs font-black uppercase shadow-[3px_3px_0_0_#000] flex items-center gap-2"
+                                            >
+                                                #{tag}
+                                                <button
+                                                    type="button"
+                                                    onClick={() => handleRemoveTag(tag)}
+                                                    className="bg-black text-white rounded-full p-0.5 hover:bg-white hover:text-black transition-colors"
+                                                >
+                                                    <X size={12} />
+                                                </button>
+                                            </span>
+                                        ))}
+                                        {(formData.tags || []).length === 0 && (
+                                            <p className="text-xs font-bold text-gray-400 italic">No genre tags added yet. Add up to 3 tags (e.g. #POETRY, #ROMANCE).</p>
+                                        )}
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     )}
 
                     {activeTab === 'hero' && (
-                        <div className="bg-white border-[4px] border-black p-8 shadow-[12px_12px_0_0_#39FF14] min-h-[600px] flex flex-col">
-                            <h2 className="text-3xl font-black uppercase border-b-4 border-black pb-4 text-[#39FF14] bg-black px-4 -mx-8 -mt-8 mb-8">FEATURED WRITING</h2>
+                        <div className="bg-white border-[4px] border-black p-8 shadow-[12px_12px_0_0_#39FF14] min-h-[600px] flex flex-col space-y-6">
+                            <div className="flex justify-between items-center flex-wrap gap-4 border-b-4 border-black pb-4 text-[#39FF14] bg-black px-4 -mx-8 -mt-8">
+                                <h2 className="text-3xl font-black uppercase text-[#39FF14]">FEATURED WRITING</h2>
+                                <span className="bg-[#39FF14] text-black font-black text-xs px-3 py-1 border border-black uppercase">
+                                    ⏱️ {getReadingTime(formData.writing_content)}
+                                </span>
+                            </div>
+
+                            {/* SUB-GENRE FORMAT & TYPOGRAPHY PICKER */}
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gray-50 p-6 border-[3px] border-black">
+                                <div>
+                                    <label className="block text-xs font-black text-gray-600 uppercase mb-2">🏷️ Writing Format / Sub-Genre</label>
+                                    <select
+                                        name="writing_format"
+                                        value={formData.writing_format || "POETRY"}
+                                        onChange={handleChange}
+                                        className="w-full bg-white border-2 border-black p-3 font-black text-xs uppercase outline-none focus:bg-[#39FF14]/10"
+                                    >
+                                        <option value="POETRY">📜 Poetry</option>
+                                        <option value="PROSE_POETRY">✒️ Prose Poetry</option>
+                                        <option value="FLASH_FICTION">⚡ Flash Fiction</option>
+                                        <option value="CHAPTER_EXCERPT">📖 Chapter Excerpt</option>
+                                        <option value="SPOKEN_WORD">🎤 Spoken Word</option>
+                                        <option value="ESSAY">📝 Personal Essay</option>
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label className="block text-xs font-black text-gray-600 uppercase mb-2">🔤 Typography & Font Style</label>
+                                    <div className="grid grid-cols-3 gap-2">
+                                        {[
+                                            { id: 'SERIF', label: '📜 Serif', font: 'font-serif' },
+                                            { id: 'MONO', label: '⌨️ Mono', font: 'font-mono' },
+                                            { id: 'SANS', label: '✒️ Sans', font: 'font-sans' },
+                                        ].map((f) => (
+                                            <button
+                                                key={f.id}
+                                                type="button"
+                                                onClick={() => setFormData({ ...formData, writing_font: f.id })}
+                                                className={`p-2.5 border-2 border-black text-xs font-black uppercase transition-all ${formData.writing_font === f.id || (!formData.writing_font && f.id === 'SERIF') ? 'bg-black text-[#39FF14] shadow-[3px_3px_0_0_#39FF14]' : 'bg-white text-black hover:bg-gray-100'}`}
+                                            >
+                                                {f.label}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+
                             <div className="space-y-6 flex-grow flex flex-col">
-                                <input
-                                    type="text" name="writing_title" value={formData.writing_title} onChange={handleChange}
-                                    className="text-4xl md:text-6xl font-black uppercase bg-transparent border-b-4 border-black border-dashed outline-none pb-2 w-full"
-                                    placeholder="YOUR TITLE"
-                                />
+                                <div>
+                                    <label className="block text-xs font-black text-gray-500 uppercase mb-1">Featured Title</label>
+                                    <input
+                                        type="text" name="writing_title" value={formData.writing_title} onChange={handleChange}
+                                        className="text-3xl md:text-5xl font-black uppercase bg-transparent border-b-4 border-black border-dashed outline-none pb-2 w-full"
+                                        placeholder="YOUR FEATURED TITLE..."
+                                    />
+                                </div>
+
                                 <div className="flex-grow border-2 border-black p-4 bg-gray-50/50">
+                                    <label className="block text-xs font-black text-gray-500 uppercase mb-2">Featured Text Content</label>
                                     <BrutalistEditor
                                         value={formData.writing_content}
                                         onChange={(val) => setFormData({ ...formData, writing_content: val })}
-                                        placeholder="Write your story here..."
+                                        placeholder="Write your story or poem here..."
                                         maxWords={100}
+                                    />
+                                </div>
+
+                                <div>
+                                    <label className="block text-xs font-black text-gray-500 uppercase mb-1">📖 "Behind the Words" (Author Backstory Note - Optional)</label>
+                                    <input
+                                        type="text"
+                                        name="writing_backstory"
+                                        value={formData.writing_backstory || ""}
+                                        onChange={handleChange}
+                                        className="w-full bg-white border-2 border-black p-3 font-medium text-xs outline-none focus:bg-[#39FF14]/10"
+                                        placeholder="e.g. Written on a rainy train from Kyoto... Inspired by loss and memory."
                                     />
                                 </div>
                             </div>
                         </div>
                     )}
 
-                    {/* Placeholder for other tabs */}
-                    {['library', 'archive', 'awards'].includes(activeTab) && (
-                        <div className="bg-gray-100 border-[4px] border-black p-12 text-center text-gray-400 font-bold uppercase animate-pulse">
-                            COMING SOON...
-                            <p className="text-xs mt-4">Module {activeTab} is being updated.</p>
+                    {/* My Books Module */}
+                    {activeTab === 'library' && (
+                        <div className="bg-white border-[4px] border-black p-8 shadow-[12px_12px_0_0_#00A3FF] space-y-8 animate-in fade-in zoom-in-95">
+                            <h2 className="text-3xl font-black uppercase border-b-4 border-black pb-4 text-[#00A3FF]">MY BOOKS</h2>
+                            
+                            {/* Add Book Form */}
+                            <div className="bg-[#00A3FF]/5 p-6 border-[3px] border-black space-y-4">
+                                <h3 className="text-sm font-black uppercase tracking-wider bg-black text-white px-3 py-1 w-fit">ADD NEW BOOK</h3>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label className="block text-xs font-black text-gray-500 uppercase mb-1">Book Title *</label>
+                                        <input type="text" value={bookForm.title} onChange={(e) => setBookForm({ ...bookForm, title: e.target.value })} className="w-full bg-white border-2 border-black p-3 font-bold text-sm outline-none focus:bg-[#00A3FF]/10" placeholder="e.g. Legends of Tomorrow" />
+                                    </div>
+                                    <div>
+                                        <label className="block text-xs font-black text-gray-500 uppercase mb-1">Price (MRP in ₹)</label>
+                                        <input type="number" value={bookForm.price} onChange={(e) => setBookForm({ ...bookForm, price: e.target.value })} className="w-full bg-white border-2 border-black p-3 font-bold text-sm outline-none focus:bg-[#00A3FF]/10" placeholder="e.g. 499" />
+                                    </div>
+                                    <div>
+                                        <label className="block text-xs font-black text-gray-500 uppercase mb-1">Format</label>
+                                        <select value={bookForm.format} onChange={(e) => setBookForm({ ...bookForm, format: e.target.value })} className="w-full bg-white border-2 border-black p-3 font-bold text-sm outline-none focus:bg-[#00A3FF]/10">
+                                            <option value="Paperback">Paperback</option>
+                                            <option value="Hardcover">Hardcover</option>
+                                            <option value="E-Book">E-Book</option>
+                                            <option value="Audiobook">Audiobook</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label className="block text-xs font-black text-gray-500 uppercase mb-1">Buy Link / Amazon URL</label>
+                                        <input type="text" value={bookForm.buy_link} onChange={(e) => setBookForm({ ...bookForm, buy_link: e.target.value })} className="w-full bg-white border-2 border-black p-3 font-bold text-sm outline-none focus:bg-[#00A3FF]/10" placeholder="https://amazon.in/dp/..." />
+                                    </div>
+                                </div>
+                                <div>
+                                    <label className="block text-xs font-black text-gray-500 uppercase mb-1">Book Description / Tagline</label>
+                                    <textarea value={bookForm.description} onChange={(e) => setBookForm({ ...bookForm, description: e.target.value })} className="w-full h-24 bg-white border-2 border-black p-3 font-medium text-sm outline-none resize-none focus:bg-[#00A3FF]/10" placeholder="Brief synopsis or tagline..." />
+                                </div>
+                                <button onClick={handleAddBook} className="bg-[#00A3FF] text-white font-black px-6 py-3 border-[3px] border-black hover:bg-black transition-colors shadow-[4px_4px_0_0_#000]">
+                                    + ADD BOOK TO LIBRARY
+                                </button>
+                            </div>
+
+                            {/* Books List */}
+                            <div className="space-y-4">
+                                <h3 className="text-lg font-black uppercase border-b-2 border-black pb-2">PUBLISHED BOOKS ({(formData.books || []).length})</h3>
+                                {(formData.books || []).length === 0 ? (
+                                    <p className="text-sm font-bold text-gray-400 italic">No books added yet. Use the form above to add your first book.</p>
+                                ) : (
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        {(formData.books || []).map((book: any, idx: number) => (
+                                            <div key={book.id || idx} className="bg-white border-[3px] border-black p-4 shadow-[4px_4px_0_0_#000] flex justify-between items-start gap-4">
+                                                <div className="space-y-1">
+                                                    <div className="flex items-center gap-2">
+                                                        <span className="bg-[#00A3FF] text-white text-[10px] font-black px-2 py-0.5 uppercase border border-black">{book.format || 'Book'}</span>
+                                                        {book.price && <span className="font-black text-xs text-gray-700">₹{book.price}</span>}
+                                                    </div>
+                                                    <h4 className="font-black text-lg uppercase leading-tight">{book.title}</h4>
+                                                    {book.description && <p className="text-xs text-gray-600 font-medium line-clamp-2">{book.description}</p>}
+                                                </div>
+                                                <button onClick={() => handleDeleteBook(book.id)} className="text-red-500 hover:bg-red-100 p-2 border border-black rounded transition-colors shrink-0">
+                                                    <Trash2 size={16} />
+                                                </button>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    )}
+
+                    {/* My Stories Module */}
+                    {activeTab === 'archive' && (
+                        <div className="bg-white border-[4px] border-black p-8 shadow-[12px_12px_0_0_#FF4F00] space-y-8 animate-in fade-in zoom-in-95">
+                            <h2 className="text-3xl font-black uppercase border-b-4 border-black pb-4 text-[#FF4F00]">MY STORIES & PIECES</h2>
+                            
+                            {/* Add Story Form */}
+                            <div className="bg-[#FF4F00]/5 p-6 border-[3px] border-black space-y-4">
+                                <h3 className="text-sm font-black uppercase tracking-wider bg-black text-white px-3 py-1 w-fit">ADD NEW STORY</h3>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label className="block text-xs font-black text-gray-500 uppercase mb-1">Story / Piece Title *</label>
+                                        <input type="text" value={storyForm.title} onChange={(e) => setStoryForm({ ...storyForm, title: e.target.value })} className="w-full bg-white border-2 border-black p-3 font-bold text-sm outline-none focus:bg-[#FF4F00]/10" placeholder="e.g. Midnight Whispers" />
+                                    </div>
+                                    <div>
+                                        <label className="block text-xs font-black text-gray-500 uppercase mb-1">Category</label>
+                                        <select value={storyForm.category} onChange={(e) => setStoryForm({ ...storyForm, category: e.target.value })} className="w-full bg-white border-2 border-black p-3 font-bold text-sm outline-none focus:bg-[#FF4F00]/10">
+                                            <option value="Short Story">Short Story</option>
+                                            <option value="Essay">Essay</option>
+                                            <option value="Poetry">Poetry</option>
+                                            <option value="Manuscript">Manuscript</option>
+                                            <option value="Article">Article</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label className="block text-xs font-black text-gray-500 uppercase mb-1">Story Content / Excerpt</label>
+                                    <textarea value={storyForm.content} onChange={(e) => setStoryForm({ ...storyForm, content: e.target.value })} className="w-full h-32 bg-white border-2 border-black p-3 font-medium text-sm outline-none resize-none focus:bg-[#FF4F00]/10" placeholder="Write your piece or excerpt here..." />
+                                </div>
+                                <button onClick={handleAddStory} className="bg-[#FF4F00] text-white font-black px-6 py-3 border-[3px] border-black hover:bg-black transition-colors shadow-[4px_4px_0_0_#000]">
+                                    + ADD STORY TO ARCHIVE
+                                </button>
+                            </div>
+
+                            {/* Stories List */}
+                            <div className="space-y-4">
+                                <h3 className="text-lg font-black uppercase border-b-2 border-black pb-2">PUBLISHED STORIES ({(formData.experiences || []).length})</h3>
+                                {(formData.experiences || []).length === 0 ? (
+                                    <p className="text-sm font-bold text-gray-400 italic">No stories added yet. Use the form above to publish a piece.</p>
+                                ) : (
+                                    <div className="space-y-4">
+                                        {(formData.experiences || []).map((story: any, idx: number) => (
+                                            <div key={story.id || idx} className="bg-white border-[3px] border-black p-4 shadow-[4px_4px_0_0_#000] flex justify-between items-start gap-4">
+                                                <div className="space-y-1 w-full">
+                                                    <div className="flex items-center gap-2">
+                                                        <span className="bg-[#FF4F00] text-white text-[10px] font-black px-2 py-0.5 uppercase border border-black">{story.category || 'Story'}</span>
+                                                        {story.published_date && <span className="font-bold text-xs text-gray-500">{story.published_date}</span>}
+                                                    </div>
+                                                    <h4 className="font-black text-lg uppercase leading-tight">{story.title}</h4>
+                                                    {story.content && <p className="text-xs text-gray-700 font-serif leading-relaxed line-clamp-3 bg-gray-50 p-3 border border-black mt-2">{story.content}</p>}
+                                                </div>
+                                                <button onClick={() => handleDeleteStory(story.id)} className="text-red-500 hover:bg-red-100 p-2 border border-black rounded transition-colors shrink-0">
+                                                    <Trash2 size={16} />
+                                                </button>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    )}
+
+                    {/* My Awards Module */}
+                    {activeTab === 'awards' && (
+                        <div className="bg-white border-[4px] border-black p-8 shadow-[12px_12px_0_0_#9D00FF] space-y-8 animate-in fade-in zoom-in-95">
+                            <h2 className="text-3xl font-black uppercase border-b-4 border-black pb-4 text-[#9D00FF]">MY AWARDS & ACCOMPLISHMENTS</h2>
+                            
+                            {/* Add Award Form */}
+                            <div className="bg-[#9D00FF]/5 p-6 border-[3px] border-black space-y-4">
+                                <h3 className="text-sm font-black uppercase tracking-wider bg-black text-white px-3 py-1 w-fit">ADD NEW AWARD</h3>
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                    <div className="md:col-span-2">
+                                        <label className="block text-xs font-black text-gray-500 uppercase mb-1">Award / Honor Title *</label>
+                                        <input type="text" value={awardForm.title} onChange={(e) => setAwardForm({ ...awardForm, title: e.target.value })} className="w-full bg-white border-2 border-black p-3 font-bold text-sm outline-none focus:bg-[#9D00FF]/10" placeholder="e.g. Shakespeare Poetry Award Winner" />
+                                    </div>
+                                    <div>
+                                        <label className="block text-xs font-black text-gray-500 uppercase mb-1">Year</label>
+                                        <input type="text" value={awardForm.year} onChange={(e) => setAwardForm({ ...awardForm, year: e.target.value })} className="w-full bg-white border-2 border-black p-3 font-bold text-sm outline-none focus:bg-[#9D00FF]/10" placeholder="2026" />
+                                    </div>
+                                </div>
+                                <div>
+                                    <label className="block text-xs font-black text-gray-500 uppercase mb-1">Issuing Organization / Host</label>
+                                    <input type="text" value={awardForm.issuer} onChange={(e) => setAwardForm({ ...awardForm, issuer: e.target.value })} className="w-full bg-white border-2 border-black p-3 font-bold text-sm outline-none focus:bg-[#9D00FF]/10" placeholder="e.g. Inkfetish Publications" />
+                                </div>
+                                <div>
+                                    <label className="block text-xs font-black text-gray-500 uppercase mb-1">Description / Notes</label>
+                                    <textarea value={awardForm.description} onChange={(e) => setAwardForm({ ...awardForm, description: e.target.value })} className="w-full h-20 bg-white border-2 border-black p-3 font-medium text-sm outline-none resize-none focus:bg-[#9D00FF]/10" placeholder="Brief description of the award..." />
+                                </div>
+                                <button onClick={handleAddAward} className="bg-[#9D00FF] text-white font-black px-6 py-3 border-[3px] border-black hover:bg-black transition-colors shadow-[4px_4px_0_0_#000]">
+                                    + ADD AWARD
+                                </button>
+                            </div>
+
+                            {/* Awards List */}
+                            <div className="space-y-4">
+                                <h3 className="text-lg font-black uppercase border-b-2 border-black pb-2">AWARDS & HONORS ({(formData.awards || []).length})</h3>
+                                {(formData.awards || []).length === 0 ? (
+                                    <p className="text-sm font-bold text-gray-400 italic">No awards added yet. Add your achievements using the form above.</p>
+                                ) : (
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        {(formData.awards || []).map((award: any, idx: number) => (
+                                            <div key={award.id || idx} className="bg-white border-[3px] border-black p-4 shadow-[4px_4px_0_0_#000] flex justify-between items-start gap-4">
+                                                <div className="space-y-1">
+                                                    <div className="flex items-center gap-2">
+                                                        <span className="bg-[#9D00FF] text-white text-[10px] font-black px-2 py-0.5 uppercase border border-black">🏆 {award.year || 'Award'}</span>
+                                                        {award.issuer && <span className="font-bold text-xs text-gray-500">{award.issuer}</span>}
+                                                    </div>
+                                                    <h4 className="font-black text-lg uppercase leading-tight">{award.title}</h4>
+                                                    {award.description && <p className="text-xs text-gray-600 font-medium">{award.description}</p>}
+                                                </div>
+                                                <button onClick={() => handleDeleteAward(award.id)} className="text-red-500 hover:bg-red-100 p-2 border border-black rounded transition-colors shrink-0">
+                                                    <Trash2 size={16} />
+                                                </button>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Work in Progress (WIP Tracker) Module */}
+                    {activeTab === 'wip' && (
+                        <div className="bg-white border-[4px] border-black p-8 shadow-[12px_12px_0_0_#FF0055] space-y-8 animate-in fade-in zoom-in-95">
+                            <h2 className="text-3xl font-black uppercase border-b-4 border-black pb-4 text-[#FF0055]">WORK IN PROGRESS (WIP TRACKER)</h2>
+                            <p className="text-xs font-bold text-gray-600 uppercase">Show your readers what book or manuscript you are currently writing in real-time!</p>
+
+                            <div className="bg-[#FF0055]/5 p-6 border-[3px] border-black space-y-6">
+                                <div className="space-y-4">
+                                    <div>
+                                        <label className="block text-xs font-black text-gray-500 uppercase mb-1">Book / Manuscript Title</label>
+                                        <input type="text" name="wip_title" value={formData.wip_title || ""} onChange={handleChange} className="w-full bg-white border-2 border-black p-3 font-bold text-sm outline-none focus:bg-[#FF0055]/10" placeholder="e.g. Volume II: The Silent Tempest" />
+                                    </div>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                            <label className="block text-xs font-black text-gray-500 uppercase mb-1">Current Word Count Written</label>
+                                            <input type="number" name="wip_current" value={formData.wip_current || 0} onChange={handleChange} className="w-full bg-white border-2 border-black p-3 font-bold text-sm outline-none focus:bg-[#FF0055]/10" placeholder="32000" />
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs font-black text-gray-500 uppercase mb-1">Target Goal Word Count</label>
+                                            <input type="number" name="wip_target" value={formData.wip_target || 50000} onChange={handleChange} className="w-full bg-white border-2 border-black p-3 font-bold text-sm outline-none focus:bg-[#FF0055]/10" placeholder="50000" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Live Progress Preview */}
+                                {formData.wip_title && Number(formData.wip_target) > 0 && (
+                                    <div className="border-[3px] border-black bg-white p-6 shadow-[6px_6px_0_0_#000] space-y-3">
+                                        <div className="flex justify-between items-end">
+                                            <div>
+                                                <span className="text-[10px] font-black uppercase text-gray-500">LIVE PREVIEW ON PUBLIC PORTFOLIO</span>
+                                                <h4 className="font-black text-xl uppercase">{formData.wip_title}</h4>
+                                            </div>
+                                            <div className="text-right">
+                                                <span className="text-2xl font-black text-[#FF0055]">
+                                                    {Math.min(100, Math.round(((formData.wip_current || 0) / Number(formData.wip_target)) * 100))}%
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div className="w-full h-6 bg-gray-200 border-2 border-black relative overflow-hidden flex items-center">
+                                            <div
+                                                className="h-full bg-black transition-all duration-500"
+                                                style={{ width: `${Math.min(100, Math.max(0, ((formData.wip_current || 0) / Number(formData.wip_target)) * 100))}%` }}
+                                            />
+                                        </div>
+                                        <p className="text-xs font-bold text-gray-600 text-right">{Number(formData.wip_current || 0).toLocaleString()} / {Number(formData.wip_target).toLocaleString()} WORDS WRITTEN</p>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Socials & Collaborations Module */}
+                    {activeTab === 'socials' && (
+                        <div className="bg-white border-[4px] border-black p-8 shadow-[12px_12px_0_0_#00E5FF] space-y-8 animate-in fade-in zoom-in-95">
+                            <h2 className="text-3xl font-black uppercase border-b-4 border-black pb-4 text-[#00E5FF] bg-black px-4 -mx-8 -mt-8 mb-8">SOCIALS & COLLABORATIONS</h2>
+
+                            <div className="space-y-6">
+                                <div className="bg-[#00E5FF]/5 p-6 border-[3px] border-black space-y-4">
+                                    <h3 className="text-sm font-black uppercase tracking-wider bg-black text-white px-3 py-1 w-fit">SOCIAL MEDIA LINKS</h3>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                            <label className="block text-xs font-black text-gray-500 uppercase mb-1">Instagram URL</label>
+                                            <input type="text" name="instagram" value={formData.instagram || ""} onChange={handleChange} className="w-full bg-white border-2 border-black p-3 font-bold text-sm outline-none focus:bg-[#00E5FF]/10" placeholder="https://instagram.com/yourhandle" />
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs font-black text-gray-500 uppercase mb-1">Twitter / X URL</label>
+                                            <input type="text" name="twitter" value={formData.twitter || ""} onChange={handleChange} className="w-full bg-white border-2 border-black p-3 font-bold text-sm outline-none focus:bg-[#00E5FF]/10" placeholder="https://x.com/yourhandle" />
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs font-black text-gray-500 uppercase mb-1">Substack Newsletter URL</label>
+                                            <input type="text" name="substack" value={formData.substack || ""} onChange={handleChange} className="w-full bg-white border-2 border-black p-3 font-bold text-sm outline-none focus:bg-[#00E5FF]/10" placeholder="https://yourname.substack.com" />
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs font-black text-gray-500 uppercase mb-1">Personal Website URL</label>
+                                            <input type="text" name="website" value={formData.website || ""} onChange={handleChange} className="w-full bg-white border-2 border-black p-3 font-bold text-sm outline-none focus:bg-[#00E5FF]/10" placeholder="https://yourwebsite.com" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="bg-yellow-500/5 p-6 border-[3px] border-black space-y-4">
+                                    <h3 className="text-sm font-black uppercase tracking-wider bg-black text-white px-3 py-1 w-fit">OPEN FOR COLLABORATION</h3>
+                                    <div>
+                                        <label className="block text-xs font-black text-gray-500 uppercase mb-1">Collaboration Email / Booking Contact</label>
+                                        <input type="email" name="collab_email" value={formData.collab_email || ""} onChange={handleChange} className="w-full bg-white border-2 border-black p-3 font-bold text-sm outline-none focus:bg-yellow-500/10" placeholder="bookings@yourname.com" />
+                                    </div>
+                                    <div>
+                                        <label className="block text-xs font-black text-gray-500 uppercase mb-1">Inquiry / Booking Note</label>
+                                        <textarea name="collab_prompt" value={formData.collab_prompt || ""} onChange={handleChange} className="w-full h-24 bg-white border-2 border-black p-3 font-medium text-sm outline-none resize-none focus:bg-yellow-500/10" placeholder="Open for keynote speaking, poetry readings, writing workshops, and press interviews..." />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Reviews & Praise Module */}
+                    {activeTab === 'reviews' && (
+                        <div className="bg-white border-[4px] border-black p-8 shadow-[12px_12px_0_0_#FFD700] space-y-8 animate-in fade-in zoom-in-95">
+                            <h2 className="text-3xl font-black uppercase border-b-4 border-black pb-4 text-[#FFD700] bg-black px-4 -mx-8 -mt-8 mb-8">REVIEWS & PRAISE</h2>
+
+                            {/* Add Review Form */}
+                            <div className="bg-yellow-500/5 p-6 border-[3px] border-black space-y-4">
+                                <h3 className="text-sm font-black uppercase tracking-wider bg-black text-white px-3 py-1 w-fit">ADD EDITORIAL REVIEW OR PRAISE</h3>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label className="block text-xs font-black text-gray-500 uppercase mb-1">Reviewer Name / Publication *</label>
+                                        <input type="text" value={reviewForm.reviewer} onChange={(e) => setReviewForm({ ...reviewForm, reviewer: e.target.value })} className="w-full bg-white border-2 border-black p-3 font-bold text-sm outline-none focus:bg-yellow-500/10" placeholder="e.g. Times Literary Review / Dan Brown" />
+                                    </div>
+                                    <div>
+                                        <label className="block text-xs font-black text-gray-500 uppercase mb-1">Source Type</label>
+                                        <select value={reviewForm.source} onChange={(e) => setReviewForm({ ...reviewForm, source: e.target.value })} className="w-full bg-white border-2 border-black p-3 font-bold text-sm outline-none focus:bg-yellow-500/10">
+                                            <option value="Editorial Review">Editorial Review</option>
+                                            <option value="Author Praise">Author Endorsement</option>
+                                            <option value="Reader Review">Reader Review</option>
+                                            <option value="Press / Media">Press / Media</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label className="block text-xs font-black text-gray-500 uppercase mb-1">Quote Content *</label>
+                                    <textarea value={reviewForm.quote} onChange={(e) => setReviewForm({ ...reviewForm, quote: e.target.value })} className="w-full h-24 bg-white border-2 border-black p-3 font-medium text-sm outline-none resize-none focus:bg-yellow-500/10" placeholder="“One of the most striking literary debuts of 2026...”" />
+                                </div>
+                                <button onClick={handleAddReview} className="bg-[#FFD700] text-black font-black px-6 py-3 border-[3px] border-black hover:bg-black hover:text-white transition-colors shadow-[4px_4px_0_0_#000]">
+                                    + ADD REVIEW TO PORTFOLIO
+                                </button>
+                            </div>
+
+                            {/* Reviews List */}
+                            <div className="space-y-4">
+                                <h3 className="text-lg font-black uppercase border-b-2 border-black pb-2">REVIEWS ({(formData.reviews || []).length})</h3>
+                                {(formData.reviews || []).length === 0 ? (
+                                    <p className="text-sm font-bold text-gray-400 italic">No reviews added yet. Add press praise or reader quotes above.</p>
+                                ) : (
+                                    <div className="space-y-4">
+                                        {(formData.reviews || []).map((rev: any, idx: number) => (
+                                            <div key={rev.id || idx} className="bg-white border-[3px] border-black p-4 shadow-[4px_4px_0_0_#000] flex justify-between items-start gap-4">
+                                                <div className="space-y-1 w-full">
+                                                    <div className="flex items-center gap-2">
+                                                        <span className="bg-[#FFD700] text-black text-[10px] font-black px-2 py-0.5 uppercase border border-black">★ {rev.source || 'Review'}</span>
+                                                        <span className="font-black text-sm">{rev.reviewer}</span>
+                                                    </div>
+                                                    <p className="text-sm font-serif italic text-gray-800 bg-gray-50 p-3 border border-black mt-2">“{rev.quote}”</p>
+                                                </div>
+                                                <button onClick={() => handleDeleteReview(rev.id)} className="text-red-500 hover:bg-red-100 p-2 border border-black rounded transition-colors shrink-0">
+                                                    <Trash2 size={16} />
+                                                </button>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    )}
+
+
+
+
+
+                    {/* QR Code & Share Module */}
+                    {activeTab === 'share' && (
+                        <div className="bg-white border-[4px] border-black p-8 shadow-[12px_12px_0_0_#39FF14] space-y-8 animate-in fade-in zoom-in-95">
+                            <h2 className="text-3xl font-black uppercase border-b-4 border-black pb-4 text-black bg-[#39FF14] px-4 -mx-8 -mt-8 mb-8">QR CODE & SHARE TOOLS</h2>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                                <div className="space-y-6">
+                                    <div className="space-y-2">
+                                        <label className="block text-xs font-black text-gray-500 uppercase">Your Portfolio Shortlink</label>
+                                        <div className="flex items-center gap-2">
+                                            <input
+                                                type="text"
+                                                readOnly
+                                                value={typeof window !== 'undefined' ? `${window.location.origin}/author/${authorUsername || user?.uid}` : ''}
+                                                className="w-full bg-gray-100 border-2 border-black p-3 font-mono font-bold text-xs"
+                                            />
+                                            <button
+                                                onClick={() => {
+                                                    navigator.clipboard.writeText(`${window.location.origin}/author/${authorUsername || user?.uid}`);
+                                                    setCopied(true);
+                                                    toast({ title: "LINK COPIED! 📋" });
+                                                    setTimeout(() => setCopied(false), 2000);
+                                                }}
+                                                className="bg-black text-white font-black px-4 py-3 border-2 border-black hover:bg-[#39FF14] hover:text-black transition-colors shrink-0"
+                                            >
+                                                {copied ? <Check size={18} /> : <Copy size={18} />}
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div className="bg-[#39FF14]/10 p-6 border-[3px] border-black space-y-2">
+                                        <h4 className="font-black text-sm uppercase">💡 PRO-TIP FOR AUTHORS</h4>
+                                        <p className="text-xs font-medium text-gray-700 leading-relaxed">
+                                            Print your QR Code on the back cover of your paperback books, bookmarks, and business cards so readers can instantly scan and view your portfolio!
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div className="bg-gray-50 border-[4px] border-black p-8 flex flex-col items-center justify-center text-center space-y-4 shadow-[6px_6px_0_0_#000]">
+                                    <span className="text-xs font-black uppercase bg-black text-white px-3 py-1">SCAN TO VISIT PORTFOLIO</span>
+                                    <img
+                                        src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(typeof window !== 'undefined' ? `${window.location.origin}/author/${authorUsername || user?.uid}` : '')}`}
+                                        alt="Author QR Code"
+                                        className="w-48 h-48 border-4 border-black shadow-[4px_4px_0_0_#000] bg-white p-2"
+                                    />
+                                    <a
+                                        href={`https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=${encodeURIComponent(typeof window !== 'undefined' ? `${window.location.origin}/author/${authorUsername || user?.uid}` : '')}`}
+                                        target="_blank"
+                                        download="author-qr-code.png"
+                                        className="bg-[#39FF14] text-black font-black px-6 py-2.5 text-xs border-2 border-black hover:bg-black hover:text-white transition-colors shadow-[2px_2px_0_0_#000] flex items-center gap-2"
+                                    >
+                                        <Download size={16} /> DOWNLOAD QR CODE
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                     )}
                 </div>

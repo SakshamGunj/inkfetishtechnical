@@ -41,6 +41,9 @@ function SuccessContent() {
         if (data.order_status === "PAID") {
           setStatus("paid");
           setOrderData(data);
+          if (orderId) {
+            localStorage.setItem("daniya_last_order_id", orderId);
+          }
           setTimeout(() => setConfetti(true), 300);
         } else if (data.order_status === "ACTIVE") {
           setStatus("pending");
@@ -261,10 +264,13 @@ function SuccessContent() {
               {/* Share / back buttons */}
               <motion.div variants={fadeUp} className="flex flex-col sm:flex-row gap-3 justify-center">
                 <button
-                  onClick={() => router.push("/daniya-khan")}
-                  className="px-8 py-3 border-2 border-[#1A1A1A] rounded-full font-ui font-semibold text-sm hover:bg-[#1A1A1A] hover:text-[#F5F0E8] transition-all"
+                  onClick={() => {
+                    localStorage.removeItem("daniya_last_order_id");
+                    router.push("/daniya-khan");
+                  }}
+                  className="px-8 py-3.5 bg-[#A8D8C0] border-2 border-[#1A1A1A] rounded-full font-ui font-bold text-sm text-[#1A1A1A] hover:bg-[#1A1A1A] hover:text-[#F5F0E8] transition-all shadow-[3px_3px_0px_#1A1A1A]"
                 >
-                  ← Back to book page
+                  🛒 I want to order more copies →
                 </button>
                 <button
                   onClick={() => {
@@ -276,8 +282,7 @@ function SuccessContent() {
                       });
                     }
                   }}
-                  className="px-8 py-3 bg-[#F2A7B0] border-2 border-[#1A1A1A] rounded-full font-ui font-bold text-sm transition-all hover:opacity-90"
-                  style={{ boxShadow: "3px 3px 0px #1A1A1A" }}
+                  className="px-8 py-3.5 bg-[#F2A7B0] border-2 border-[#1A1A1A] rounded-full font-ui font-bold text-sm transition-all hover:opacity-90 shadow-[3px_3px_0px_#1A1A1A]"
                 >
                   📢 Tell a friend
                 </button>

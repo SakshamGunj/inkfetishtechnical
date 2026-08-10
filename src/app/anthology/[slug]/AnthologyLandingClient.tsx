@@ -80,7 +80,7 @@ const AnthologyLandingClient = ({ slug }: AnthologyLandingProps) => {
               </p>
               
               <div className="flex flex-col sm:flex-row gap-6">
-                 <Link href="/signup">
+                 <Link href="/author/signup">
                     <Button className="bg-ink-900 text-white hover:bg-[#39FF14] hover:text-ink-900 rounded-none px-12 py-10 text-sm font-sans uppercase tracking-[0.4em] transition-all font-black shadow-[12px_12px_0_0_#9D00FF] border-2 border-ink-900">
                       SUBMIT NOW <ArrowRight className="ml-4" />
                     </Button>

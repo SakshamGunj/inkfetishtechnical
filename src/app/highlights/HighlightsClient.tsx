@@ -190,7 +190,7 @@ const HighlightsClient = () => {
             Ready to <br/><span className="italic font-light not-italic text-gold">Highlight Yours?</span>
           </h2>
 
-          <Link href="/signup">
+          <Link href="/author/signup">
             <button className="bg-ink-900 text-white font-sans uppercase tracking-[0.4em] py-8 px-16 font-black hover:bg-[#39FF14] hover:text-ink-900 transition-all border-2 border-ink-900 shadow-[8px_8px_0_0_#9D00FF]">
               CLAIM YOUR SPACE
             </button>

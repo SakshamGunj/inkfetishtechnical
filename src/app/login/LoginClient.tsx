@@ -147,7 +147,7 @@ const LoginClient = () => {
 
                     <div className="mt-8 pt-8 border-t border-black/10 text-center">
                         <p className="text-xs font-bold uppercase text-gray-500 mb-4">New writer?</p>
-                        <Link href="/signup" className="text-sm font-black uppercase hover:text-[#9D00FF] transition-colors underline decoration-2 underline-offset-4">
+                        <Link href="/author/signup" className="text-sm font-black uppercase hover:text-[#9D00FF] transition-colors underline decoration-2 underline-offset-4">
                             Create Account →
                         </Link>
                     </div>

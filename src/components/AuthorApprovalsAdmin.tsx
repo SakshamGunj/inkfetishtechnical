@@ -24,6 +24,7 @@ export default function AuthorApprovalsAdmin() {
   const [portfolios, setPortfolios] = useState<AuthorPortfolio[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<'pending' | 'approved' | 'all'>('pending');
+  const [isApprovingAll, setIsApprovingAll] = useState(false);
   const { toast } = useToast();
 
   const fetchPortfolios = async () => {
@@ -134,6 +135,37 @@ export default function AuthorApprovalsAdmin() {
     }
   };
 
+  const handleApproveAll = async () => {
+    const pendingList = portfolios.filter((p) => p.status === 'pending' || p.approved === false);
+    if (pendingList.length === 0) {
+      return toast({ title: "NO PENDING REQUESTS", description: "All author portfolios are already approved!" });
+    }
+
+    if (!confirm(`Are you sure you want to approve all ${pendingList.length} pending author portfolios?`)) return;
+
+    setIsApprovingAll(true);
+    setPortfolios((prev) => prev.map((p) => ({ ...p, status: "approved", approved: true })));
+
+    for (const p of pendingList) {
+      try {
+        await fetch('/api/author/approve', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            id: p.id,
+            email: p.email,
+            auth_pass: p.auth_pass,
+            action: 'approve'
+          }),
+        });
+      } catch (e) {}
+    }
+
+    setIsApprovingAll(false);
+    toast({ title: "ALL PORTFOLIOS APPROVED! ✅", description: "Successfully approved all pending author accounts." });
+    fetchPortfolios();
+  };
+
   const pendingCount = portfolios.filter(
     (p) => p.status === "pending" || p.approved === false
   ).length;
@@ -234,6 +266,18 @@ export default function AuthorApprovalsAdmin() {
                 All ({portfolios.length})
               </button>
             </div>
+
+            {pendingCount > 0 && (
+              <Button
+                onClick={handleApproveAll}
+                disabled={isApprovingAll}
+                size="sm"
+                className="bg-green-600 hover:bg-green-500 text-white font-bold border border-green-400 shadow-md flex items-center gap-1.5"
+              >
+                <Check className="w-3.5 h-3.5" />
+                {isApprovingAll ? 'APPROVING...' : `APPROVE ALL (${pendingCount})`}
+              </Button>
+            )}
 
             <Button
               onClick={fetchPortfolios}

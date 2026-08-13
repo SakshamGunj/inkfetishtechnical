@@ -12,6 +12,7 @@ const AuthorSiteClient = ({ username }: { username: string }) => {
     const [error, setError] = useState<string | null>(null);
     const [claps, setClaps] = useState<number>(0);
     const [hasClapped, setHasClapped] = useState(false);
+    const [activeModalPiece, setActiveModalPiece] = useState<any | null>(null);
 
     useEffect(() => {
         if (authorData?.claps) {
@@ -43,6 +44,14 @@ const AuthorSiteClient = ({ username }: { username: string }) => {
         }
         const minutes = Math.ceil(words / 200);
         return `${minutes} MIN READ`;
+    };
+
+    const formatExternalUrl = (url?: string) => {
+        if (!url) return '';
+        const trimmed = url.trim();
+        if (!trimmed) return '';
+        if (/^https?:\/\//i.test(trimmed)) return trimmed;
+        return `https://${trimmed}`;
     };
 
     useEffect(() => {
@@ -128,11 +137,9 @@ const AuthorSiteClient = ({ username }: { username: string }) => {
         <div className="min-h-screen bg-[#FFFDF7] font-mono selection:bg-[#FF4F00] selection:text-white pb-20 overflow-x-hidden">
 
             {/* Top Navigation / Banner */}
-            <div className="w-full bg-black text-white py-2 px-4 flex justify-between items-center text-xs md:text-sm font-bold uppercase shadow-[0_4px_0_0_#FF4F00] mb-8 md:mb-12 sticky top-0 z-50">
-                <span className="tracking-[0.2em] flex-grow truncate">INKFETISH PUBLICATIONS</span>
-                <Link href="/authorsite/dashboard" className="hover:text-[#39FF14] transition-colors underline decoration-2 underline-offset-4 whitespace-nowrap ml-4">
-                    MY DASHBOARD
-                </Link>
+            <div className="w-full bg-black text-white py-2.5 px-4 flex justify-between items-center text-xs md:text-sm font-bold uppercase shadow-[0_4px_0_0_#FF4F00] mb-8 md:mb-12 sticky top-0 z-50">
+                <span className="tracking-[0.2em] font-black text-[#FF4F00]">INKFETISH PUBLICATIONS</span>
+                <span className="text-[10px] sm:text-xs font-black tracking-widest text-gray-300 uppercase">OFFICIAL AUTHOR PORTFOLIO</span>
             </div>
 
             <main className="max-w-5xl mx-auto px-3 md:px-8 space-y-12">
@@ -259,6 +266,11 @@ const AuthorSiteClient = ({ username }: { username: string }) => {
 
                             {/* AGE / DOB & WRITING SINCE & HOMETOWN & WRITING TYPES & LANGUAGES */}
                             <div className="mt-3 flex flex-wrap gap-2 justify-center md:justify-start">
+                                {authorData.show_gender !== false && authorData.gender && (
+                                    <span className="bg-[#9D00FF] text-white border-2 border-black px-3 py-1 text-xs font-black uppercase shadow-[2px_2px_0_0_#000]">
+                                        👤 {authorData.gender}
+                                    </span>
+                                )}
                                 {authorData.show_age && authorData.age_val && (
                                     <span className="bg-black text-white border-2 border-black px-3 py-1 text-xs font-black uppercase shadow-[2px_2px_0_0_#000]">
                                         🎂 {authorData.age_type === 'dob' ? `BORN ${authorData.age_val}` : `${authorData.age_val} YRS OLD`}
@@ -370,52 +382,111 @@ const AuthorSiteClient = ({ username }: { username: string }) => {
                     </div>
 
                     <div className="lg:col-span-8 flex flex-col gap-12 w-full max-w-full min-w-0 overflow-hidden">
-                        <section className="bg-black text-white border-[4px] border-black p-6 md:p-10 lg:p-16 shadow-[12px_12px_0px_0px_#FFC700] relative w-full max-w-full min-w-0 overflow-hidden break-words space-y-6">
-                            {/* Badges Bar: Format & Reading Time */}
-                            <div className="flex items-center justify-between flex-wrap gap-2">
-                                <span className="bg-[#39FF14] text-black text-xs font-black px-3 py-1 uppercase border-2 border-white shadow-[2px_2px_0_0_#FFF]">
-                                    {authorData.writing_format === 'PROSE_POETRY' ? '✒️ PROSE POETRY' :
-                                     authorData.writing_format === 'FLASH_FICTION' ? '⚡ FLASH FICTION' :
-                                     authorData.writing_format === 'CHAPTER_EXCERPT' ? '📖 CHAPTER EXCERPT' :
-                                     authorData.writing_format === 'SPOKEN_WORD' ? '🎤 SPOKEN WORD' :
-                                     authorData.writing_format === 'ESSAY' ? '📝 PERSONAL ESSAY' : '📜 POETRY'}
-                                </span>
-                                <span className="bg-white text-black text-xs font-black px-3 py-1 uppercase border-2 border-white shadow-[2px_2px_0_0_#FFF]">
-                                    ⏱️ {getReadingTime(authorData.writing_content)}
-                                </span>
-                            </div>
+                        {/* FEATURED WRITING SECTION */}
+                        {(() => {
+                            const allFeatured: any[] = authorData.featured_pieces && authorData.featured_pieces.length > 0
+                                ? authorData.featured_pieces
+                                : (authorData.writing_content ? [{
+                                    id: 'legacy-1',
+                                    title: authorData.writing_title || "MY WRITING",
+                                    content: authorData.writing_content,
+                                    format: authorData.writing_format || 'POETRY',
+                                    font: authorData.writing_font || 'SERIF',
+                                    backstory: authorData.writing_backstory || '',
+                                    pinned: true
+                                }] : []);
 
-                            <h2 className="text-3xl md:text-6xl font-black uppercase tracking-tighter text-white break-words [overflow-wrap:anywhere]">
-                                {authorData.writing_title || "MY WRITING"}
-                            </h2>
+                            const pinnedList = allFeatured.filter((p: any) => p.pinned !== false).slice(0, 3);
+                            if (pinnedList.length === 0 && allFeatured.length > 0) {
+                                pinnedList.push(allFeatured[0]);
+                            }
 
-                            <div
-                                className={`font-medium text-base md:text-2xl leading-relaxed md:leading-[1.8] text-gray-200 border-l-[4px] md:border-l-[6px] border-[#39FF14] pl-4 md:pl-8 break-words [overflow-wrap:anywhere] max-w-full min-w-0 overflow-hidden ${
-                                    authorData.writing_font === 'MONO' ? 'font-mono' :
-                                    authorData.writing_font === 'SANS' ? 'font-sans' : 'font-serif'
-                                }`}
-                                dangerouslySetInnerHTML={{ __html: authorData.writing_content || "Writing goes here..." }}
-                            />
+                            return (
+                                <section className="space-y-8">
+                                    <div className="flex items-center justify-between flex-wrap gap-4 border-b-4 border-black pb-4">
+                                        <h2 className="text-3xl md:text-5xl font-black uppercase text-black">
+                                            FEATURED WRITING
+                                        </h2>
+                                        <Link
+                                            href={`/author/${username}/featured`}
+                                            className="bg-black text-[#39FF14] px-4 py-2 text-xs md:text-sm font-black uppercase border-2 border-black hover:bg-[#39FF14] hover:text-black transition-colors shadow-[4px_4px_0_0_#000]"
+                                        >
+                                            READ ALL FEATURED WORKS ({allFeatured.length}) →
+                                        </Link>
+                                    </div>
 
-                            {/* Behind the Words Note */}
-                            {authorData.writing_backstory && (
-                                <div className="bg-white/10 p-4 border-l-4 border-[#FFC700] space-y-1">
-                                    <span className="text-[10px] font-black uppercase text-[#FFC700] tracking-wider">📖 BEHIND THE WORDS (AUTHOR NOTE)</span>
-                                    <p className="text-xs md:text-sm font-serif italic text-gray-300">“{authorData.writing_backstory}”</p>
-                                </div>
-                            )}
+                                    <div className="space-y-8">
+                                        {pinnedList.map((piece: any, idx: number) => {
+                                            const plainSnippet = piece.content ? piece.content.replace(/<[^>]+>/g, ' ').slice(0, 180) : '';
+                                            return (
+                                                <div
+                                                    key={piece.id || idx}
+                                                    className="bg-black text-white border-[4px] border-black p-6 md:p-10 shadow-[10px_10px_0px_0px_#FFC700] space-y-6"
+                                                >
+                                                    <div className="flex items-center justify-between flex-wrap gap-2">
+                                                        <span className="bg-[#39FF14] text-black text-xs font-black px-3 py-1 uppercase border-2 border-white shadow-[2px_2px_0_0_#FFF]">
+                                                            {piece.format === 'PROSE_POETRY' ? '✒️ PROSE POETRY' :
+                                                             piece.format === 'FLASH_FICTION' ? '⚡ FLASH FICTION' :
+                                                             piece.format === 'CHAPTER_EXCERPT' ? '📖 CHAPTER EXCERPT' :
+                                                             piece.format === 'SPOKEN_WORD' ? '🎤 SPOKEN WORD' :
+                                                             piece.format === 'ESSAY' ? '📝 PERSONAL ESSAY' : '📜 POETRY'}
+                                                        </span>
+                                                        <span className="bg-white text-black text-xs font-black px-3 py-1 uppercase border-2 border-white shadow-[2px_2px_0_0_#FFF]">
+                                                            ⏱️ {getReadingTime(piece.content)}
+                                                        </span>
+                                                    </div>
 
-                            {/* Reader Claps / Appreciation Button */}
-                            <div className="pt-4 border-t border-gray-800 flex items-center justify-between flex-wrap gap-4">
-                                <button
-                                    onClick={handleClap}
-                                    className={`flex items-center gap-3 px-6 py-3 border-2 border-white font-black text-sm uppercase transition-all shadow-[4px_4px_0_0_#39FF14] active:translate-y-1 ${hasClapped ? 'bg-[#39FF14] text-black' : 'bg-white text-black hover:bg-[#39FF14]'}`}
-                                >
-                                    👏 APPRECIATE / CLAP <span className="bg-black text-white px-2.5 py-0.5 text-xs font-black rounded-full border border-white">{claps}</span>
-                                </button>
-                                <span className="text-[10px] font-bold uppercase text-gray-400">SHOW SOME LOVE FOR THIS PIECE!</span>
-                            </div>
-                        </section>
+                                                    <h3 className="text-2xl md:text-4xl font-black uppercase tracking-tight text-white break-words">
+                                                        {piece.title || "UNTITLED PIECE"}
+                                                    </h3>
+
+                                                    <div
+                                                        className={`font-medium text-base md:text-xl leading-relaxed text-gray-300 border-l-4 border-[#39FF14] pl-4 ${
+                                                            piece.font === 'MONO' ? 'font-mono' :
+                                                            piece.font === 'SANS' ? 'font-sans' : 'font-serif'
+                                                        }`}
+                                                    >
+                                                        <p className="line-clamp-3">"{plainSnippet}..."</p>
+                                                    </div>
+
+                                                    {piece.backstory && (
+                                                        <div className="bg-white/10 p-3 border-l-4 border-[#FFC700] text-xs font-serif italic text-gray-300">
+                                                            “{piece.backstory}”
+                                                        </div>
+                                                    )}
+
+                                                    <div className="pt-2 flex items-center justify-between flex-wrap gap-4 border-t border-gray-800">
+                                                        <button
+                                                            onClick={() => setActiveModalPiece(piece)}
+                                                            className="bg-[#39FF14] text-black px-6 py-3 font-black text-xs md:text-sm uppercase border-2 border-white shadow-[4px_4px_0_0_#FFF] hover:bg-white transition-colors"
+                                                        >
+                                                            READ FULL PIECE ↗
+                                                        </button>
+                                                        <button
+                                                            onClick={handleClap}
+                                                            className={`flex items-center gap-2 px-4 py-2 border border-white text-xs font-black uppercase ${hasClapped ? 'bg-[#39FF14] text-black' : 'bg-white text-black'}`}
+                                                        >
+                                                            👏 CLAP ({claps})
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+
+                                    {allFeatured.length > 3 && (
+                                        <div className="text-center pt-4">
+                                            <Link
+                                                href={`/author/${username}/featured`}
+                                                className="inline-block bg-black text-[#39FF14] px-8 py-4 font-black text-sm uppercase border-4 border-black shadow-[6px_6px_0_0_#39FF14] hover:bg-[#39FF14] hover:text-black transition-colors"
+                                            >
+                                                VIEW ALL {allFeatured.length} FEATURED WRITINGS BY AUTHOR →
+                                            </Link>
+                                        </div>
+                                    )}
+                                </section>
+                            );
+                        })()}
 
                         {/* PUBLISHED BOOKS SECTION */}
                         {authorData.books && authorData.books.length > 0 && (
@@ -424,72 +495,102 @@ const AuthorSiteClient = ({ username }: { username: string }) => {
                                     PUBLISHED BOOKS
                                 </h2>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full min-w-0">
-                                    {authorData.books.map((book: any, idx: number) => (
-                                        <div key={idx} className="border-[3px] border-black p-5 bg-blue-50/30 shadow-[4px_4px_0_0_#000] space-y-2 w-full min-w-0 overflow-hidden break-words">
-                                            <div className="flex items-center justify-between flex-wrap gap-2">
-                                                <span className="bg-[#00A3FF] text-white text-[10px] font-black px-2 py-0.5 uppercase border border-black">{book.format || 'Book'}</span>
-                                                {book.price && <span className="font-black text-sm">₹{book.price}</span>}
-                                            </div>
-                                            <h3 className="font-black text-xl uppercase leading-tight break-words [overflow-wrap:anywhere]">{book.title}</h3>
-                                            {book.description && <p className="text-xs text-gray-700 font-medium break-words [overflow-wrap:anywhere]">{book.description}</p>}
-                                            {book.buy_link && (
-                                                <a href={book.buy_link} target="_blank" rel="noopener noreferrer" className="inline-block mt-2 bg-black text-white px-4 py-2 text-xs font-black uppercase hover:bg-[#00A3FF] transition-colors border border-black break-all">
-                                                    BUY NOW ↗
-                                                </a>
-                                            )}
-                                        </div>
-                                    ))}
-                                </div>
-                            </section>
-                        )}
+                                    {authorData.books.map((book: any, idx: number) => {
+                                        const rawLink = book.buy_link || book.buyLink || book.link || '';
+                                        const finalUrl = formatExternalUrl(rawLink);
 
-                        {/* STORIES & ARCHIVE SECTION */}
-                        {authorData.experiences && authorData.experiences.length > 0 && (
-                            <section className="bg-white border-[4px] border-black p-6 md:p-10 shadow-[12px_12px_0px_0px_#FF4F00] w-full max-w-full min-w-0 overflow-hidden break-words">
-                                <h2 className="text-2xl md:text-4xl font-black uppercase tracking-tight mb-6 text-[#FF4F00]">
-                                    STORIES & ARCHIVE
-                                </h2>
-                                <div className="space-y-6 w-full min-w-0">
-                                    {authorData.experiences.map((story: any, idx: number) => (
-                                        <div key={idx} className="border-[3px] border-black p-6 bg-orange-50/20 shadow-[4px_4px_0_0_#000] space-y-3 w-full min-w-0 overflow-hidden break-words">
-                                            <div className="flex items-center gap-2 flex-wrap">
-                                                <span className="bg-[#FF4F00] text-white text-[10px] font-black px-2 py-0.5 uppercase border border-black">{story.category || 'Story'}</span>
-                                                {story.published_date && <span className="font-bold text-xs text-gray-500">{story.published_date}</span>}
-                                            </div>
-                                            <h3 className="font-black text-2xl uppercase leading-tight break-words [overflow-wrap:anywhere]">{story.title}</h3>
-                                            {story.content && (
-                                                <div className="text-sm font-serif text-gray-800 leading-relaxed whitespace-pre-wrap border-l-4 border-black pl-4 py-1 break-words [overflow-wrap:anywhere]">
-                                                    {story.content}
+                                        return (
+                                            <div key={idx} className="border-[3px] border-black p-5 bg-blue-50/30 shadow-[4px_4px_0_0_#000] flex flex-col justify-between space-y-4 w-full min-w-0 overflow-hidden break-words">
+                                                <div className="space-y-2">
+                                                    <div className="flex items-center justify-between flex-wrap gap-2">
+                                                        <span className="bg-[#00A3FF] text-white text-[10px] font-black px-2 py-0.5 uppercase border border-black">{book.format || 'Book'}</span>
+                                                        {book.price && <span className="font-black text-sm text-black">₹{book.price}</span>}
+                                                    </div>
+                                                    <h3 className="font-black text-xl uppercase leading-tight break-words [overflow-wrap:anywhere]">{book.title}</h3>
+                                                    {book.description && <p className="text-xs text-gray-700 font-medium break-words [overflow-wrap:anywhere]">{book.description}</p>}
                                                 </div>
-                                            )}
-                                        </div>
-                                    ))}
-                                </div>
-                            </section>
-                        )}
 
-                        {/* REVIEWS & EDITORIAL PRAISE SECTION */}
-                        {authorData.reviews && authorData.reviews.length > 0 && (
-                            <section className="bg-white border-[4px] border-black p-6 md:p-10 shadow-[12px_12px_0px_0px_#FFD700]">
-                                <h2 className="text-2xl md:text-4xl font-black uppercase tracking-tight mb-6 text-[#FFD700] bg-black px-4 py-2 inline-block">
-                                    REVIEWS & PRAISE
-                                </h2>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    {authorData.reviews.map((rev: any, idx: number) => (
-                                        <div key={idx} className="border-[3px] border-black p-5 bg-yellow-50/40 shadow-[4px_4px_0_0_#000] space-y-2">
-                                            <div className="flex items-center gap-2">
-                                                <span className="bg-[#FFD700] text-black text-[10px] font-black px-2 py-0.5 uppercase border border-black">★ {rev.source || 'Praise'}</span>
+                                                {finalUrl ? (
+                                                    <a
+                                                        href={finalUrl}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="inline-block w-full text-center bg-black text-[#39FF14] px-4 py-3 text-xs font-black uppercase hover:bg-[#00A3FF] hover:text-white transition-colors border-2 border-black shadow-[3px_3px_0_0_#000]"
+                                                    >
+                                                        BUY NOW ↗
+                                                    </a>
+                                                ) : (
+                                                    <span className="inline-block w-full text-center bg-gray-200 text-gray-500 px-4 py-2 text-[10px] font-black uppercase border border-black cursor-not-allowed">
+                                                        NO BUYING LINK PROVIDED
+                                                    </span>
+                                                )}
                                             </div>
-                                            <p className="text-sm font-serif italic text-gray-800 leading-relaxed">“{rev.quote}”</p>
-                                            <p className="text-xs font-black uppercase text-gray-700 text-right">— {rev.reviewer}</p>
-                                        </div>
-                                    ))}
+                                        );
+                                    })}
                                 </div>
                             </section>
                         )}
                     </div>
                 </div>
             </main>
+
+            {/* FULL READING MODAL */}
+            {activeModalPiece && (
+                <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+                    <div className="bg-black text-white border-[4px] border-white p-6 md:p-12 shadow-[16px_16px_0_0_#39FF14] max-w-4xl w-full max-h-[90vh] overflow-y-auto space-y-6 animate-in zoom-in-95">
+                        <div className="flex justify-between items-center border-b-2 border-gray-800 pb-4">
+                            <div className="flex items-center gap-2">
+                                <span className="bg-[#39FF14] text-black text-xs font-black px-3 py-1 uppercase border border-white">
+                                    {activeModalPiece.format || 'POETRY'}
+                                </span>
+                                <span className="bg-white text-black text-xs font-black px-3 py-1 uppercase border border-white">
+                                    ⏱️ {getReadingTime(activeModalPiece.content)}
+                                </span>
+                            </div>
+                            <button
+                                onClick={() => setActiveModalPiece(null)}
+                                className="bg-red-600 text-white font-black px-4 py-1.5 text-xs uppercase border-2 border-white hover:bg-white hover:text-black transition-colors"
+                            >
+                                CLOSE ✕
+                            </button>
+                        </div>
+
+                        <h2 className="text-3xl md:text-5xl font-black uppercase text-[#39FF14]">
+                            {activeModalPiece.title}
+                        </h2>
+
+                        <div
+                            className={`font-medium text-lg md:text-2xl leading-relaxed text-gray-200 border-l-[6px] border-[#39FF14] pl-6 ${
+                                activeModalPiece.font === 'MONO' ? 'font-mono' :
+                                activeModalPiece.font === 'SANS' ? 'font-sans' : 'font-serif'
+                            }`}
+                            dangerouslySetInnerHTML={{ __html: activeModalPiece.content }}
+                        />
+
+                        {activeModalPiece.backstory && (
+                            <div className="bg-white/10 p-4 border-l-4 border-[#FFC700] space-y-1">
+                                <span className="text-[10px] font-black uppercase text-[#FFC700]">📖 BEHIND THE WORDS (AUTHOR NOTE)</span>
+                                <p className="text-sm font-serif italic text-gray-300">“{activeModalPiece.backstory}”</p>
+                            </div>
+                        )}
+
+                        <div className="pt-4 border-t border-gray-800 flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3">
+                            <button
+                                onClick={handleClap}
+                                className={`flex items-center justify-center gap-3 px-6 py-3 border-2 border-white font-black text-sm uppercase min-h-[44px] ${hasClapped ? 'bg-[#39FF14] text-black' : 'bg-white text-black'}`}
+                            >
+                                👏 APPRECIATE / CLAP <span className="bg-black text-white px-2 py-0.5 text-xs rounded-full">{claps}</span>
+                            </button>
+                            <button
+                                onClick={() => setActiveModalPiece(null)}
+                                className="bg-white text-black font-black px-6 py-3 text-xs uppercase hover:bg-[#39FF14] transition-colors min-h-[44px]"
+                            >
+                                DONE READING ✕
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

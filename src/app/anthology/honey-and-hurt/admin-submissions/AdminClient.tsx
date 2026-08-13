@@ -26,7 +26,7 @@ export default function AdminClient() {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (pin === '1234' || pin === 'Inkfetish2026') {
+    if (pin === 'ADMINPORTALINKFETISH12' || pin === '1234' || pin === 'Inkfetish2026') {
       setIsAuthenticated(true);
       toast.success("Access Granted");
     } else {

@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useEffect } from "react";
 import { collection, getDocs, query, orderBy, Timestamp } from "firebase/firestore";
 import { db } from "@/lib/firebase";
@@ -20,13 +22,32 @@ interface Registration {
 }
 
 const AdminDashboard = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return sessionStorage.getItem('admin_authenticated') === 'true';
+    }
+    return false;
+  });
+  const [password, setPassword] = useState('');
   const [registrations, setRegistrations] = useState<Registration[]>([]);
   const [loading, setLoading] = useState(true);
   const [totalCount, setTotalCount] = useState(0);
 
   useEffect(() => {
-    fetchRegistrations();
-  }, []);
+    if (isAuthenticated) {
+      fetchRegistrations();
+    }
+  }, [isAuthenticated]);
+
+  const handlePasswordSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (password === 'ADMINPORTALINKFETISH12') {
+      setIsAuthenticated(true);
+      sessionStorage.setItem('admin_authenticated', 'true');
+    } else {
+      alert('Incorrect admin password');
+    }
+  };
 
   const fetchRegistrations = async () => {
     setLoading(true);
@@ -75,6 +96,40 @@ const AdminDashboard = () => {
       return 'N/A';
     }
   };
+
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-[#FFFDF7] flex flex-col items-center justify-center p-6 font-mono text-black">
+        <div className="bg-white border-[4px] border-black p-8 shadow-[12px_12px_0_0_#000] max-w-md w-full space-y-6">
+          <div className="text-center space-y-2">
+            <h1 className="text-3xl font-black uppercase tracking-tight bg-black text-[#39FF14] px-4 py-2 inline-block">
+              🏛️ ADMIN PORTAL
+            </h1>
+            <p className="text-xs font-bold text-gray-500 uppercase">RESTRICTED ACCESS ONLY</p>
+          </div>
+          <form onSubmit={handlePasswordSubmit} className="space-y-4">
+            <div>
+              <label className="block text-xs font-black uppercase text-gray-700 mb-1">Enter Admin Password</label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••••••"
+                className="w-full bg-white border-2 border-black p-3 font-bold text-sm outline-none focus:bg-[#39FF14]/10"
+                autoFocus
+              />
+            </div>
+            <button
+              type="submit"
+              className="w-full bg-black text-white font-black py-3 text-sm uppercase border-2 border-black hover:bg-[#39FF14] hover:text-black transition-colors shadow-[4px_4px_0_0_#000]"
+            >
+              UNLOCK DASHBOARD →
+            </button>
+          </form>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="p-6 max-w-7xl mx-auto">

@@ -43,7 +43,7 @@ const IWLAdmin = () => {
     // --- Authentication ---
     const handleLogin = (e: React.FormEvent) => {
         e.preventDefault();
-        if (password === "Thisisthestart@123") {
+        if (password === "ADMINPORTALINKFETISH12" || password === "Thisisthestart@123") {
             setIsAuthenticated(true);
             fetchData();
         } else {

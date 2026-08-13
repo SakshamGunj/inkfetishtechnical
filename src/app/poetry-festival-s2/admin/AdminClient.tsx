@@ -221,7 +221,7 @@ export default function AdminClient() {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (password === 'admin123') {
+    if (password === 'ADMINPORTALINKFETISH12' || password === 'admin123') {
       setAuthenticated(true);
       fetchSubmissions();
     } else {

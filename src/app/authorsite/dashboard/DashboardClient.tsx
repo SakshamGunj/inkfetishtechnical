@@ -120,8 +120,8 @@ const DashboardClient = () => {
                 updated_at: new Date().toISOString()
             }, { merge: true });
             setIsSaved(true);
-            toast({ title: "PROFILE SAVED", description: "All changes are now live." });
-            setTimeout(() => setIsSaved(false), 3000);
+            toast({ title: "PROFILE SAVED!", description: "All changes are now live." });
+            setTimeout(() => setIsSaved(false), 4000);
         } catch (err: any) {
             console.error("Error saving portfolio:", err);
             toast({ title: "SAVE FAILED", description: err.message, variant: "destructive" });
@@ -297,6 +297,74 @@ const DashboardClient = () => {
         toast({ title: "REVIEW REMOVED" });
     };
 
+    // Multiple Featured Pieces State & Handlers
+    const [featuredForm, setFeaturedForm] = useState({
+        id: '',
+        title: '',
+        content: '',
+        format: 'POETRY',
+        font: 'SERIF',
+        backstory: '',
+        pinned: true
+    });
+    const [editingFeaturedId, setEditingFeaturedId] = useState<string | null>(null);
+
+    const handleSaveFeaturedPiece = () => {
+        if (!featuredForm.title.trim()) return toast({ title: "TITLE REQUIRED", variant: "destructive" });
+        if (!featuredForm.content.trim()) return toast({ title: "CONTENT REQUIRED", variant: "destructive" });
+
+        const existingList: any[] = formData.featured_pieces && formData.featured_pieces.length > 0 
+            ? formData.featured_pieces 
+            : (formData.writing_content ? [{
+                id: 'legacy-1',
+                title: formData.writing_title || 'Untitled',
+                content: formData.writing_content,
+                format: formData.writing_format || 'POETRY',
+                font: formData.writing_font || 'SERIF',
+                backstory: formData.writing_backstory || '',
+                pinned: true
+            }] : []);
+
+        const pinnedCount = existingList.filter((p) => p.pinned !== false && p.id !== editingFeaturedId).length;
+        let finalPinned = featuredForm.pinned;
+        if (finalPinned && pinnedCount >= 3) {
+            finalPinned = false;
+            toast({ title: "MAX 3 PINNED ON PROFILE", description: "This piece was saved as unpinned because you already have 3 pieces pinned to your main profile.", variant: "destructive" });
+        }
+
+        const pieceData = { ...featuredForm, pinned: finalPinned };
+
+        if (editingFeaturedId) {
+            const updated = existingList.map((item) => item.id === editingFeaturedId ? { ...item, ...pieceData } : item);
+            setFormData((prev: any) => ({ ...prev, featured_pieces: updated }));
+            toast({ title: "FEATURED PIECE UPDATED!", description: "Click SAVE PROFILE to publish changes." });
+        } else {
+            const newPiece = { id: Date.now().toString(), ...pieceData };
+            setFormData((prev: any) => ({ ...prev, featured_pieces: [...existingList, newPiece] }));
+            toast({ title: "FEATURED PIECE ADDED!", description: "Click SAVE PROFILE to publish changes." });
+        }
+
+        setFeaturedForm({ id: '', title: '', content: '', format: 'POETRY', font: 'SERIF', backstory: '', pinned: true });
+        setEditingFeaturedId(null);
+    };
+
+    const handleDeleteFeaturedPiece = (id: string) => {
+        const existingList: any[] = formData.featured_pieces || [];
+        setFormData((prev: any) => ({ ...prev, featured_pieces: existingList.filter((p) => p.id !== id) }));
+        toast({ title: "PIECE REMOVED" });
+    };
+
+    const handleTogglePinFeaturedPiece = (id: string) => {
+        const existingList: any[] = formData.featured_pieces || [];
+        const target = existingList.find((p) => p.id === id);
+        const pinnedCount = existingList.filter((p) => p.pinned !== false).length;
+        if (!target?.pinned && pinnedCount >= 3) {
+            return toast({ title: "MAX 3 PINNED PIECES", description: "You can pin up to 3 featured writings on your main profile.", variant: "destructive" });
+        }
+        const updated = existingList.map((p) => p.id === id ? { ...p, pinned: !p.pinned } : p);
+        setFormData((prev: any) => ({ ...prev, featured_pieces: updated }));
+    };
+
     const getReadingTime = (content: string) => {
         if (!content) return "0 MIN READ";
         const plainText = content.replace(/<[^>]+>/g, ' ').trim();
@@ -332,40 +400,56 @@ const DashboardClient = () => {
 
     return (
         <div className="min-h-screen bg-[#FFFDF7] p-2 lg:p-4 font-mono selection:bg-[#39FF14] selection:text-black">
+            {/* TOP RIGHT BRIGHT GREEN SAVED NOTIFICATION POPUP */}
+            {isSaved && (
+                <div className="fixed top-4 right-4 sm:top-6 sm:right-6 z-[9999] bg-[#39FF14] text-black border-[4px] border-black p-4 sm:p-5 font-black uppercase shadow-[6px_6px_0_0_#000] sm:shadow-[8px_8px_0_0_#000] flex items-center gap-3 animate-in slide-in-from-top-5 duration-300 max-w-sm">
+                    <span className="text-2xl shrink-0">✅</span>
+                    <div className="space-y-0.5">
+                        <h4 className="text-xs sm:text-sm font-black tracking-wider leading-none">PROFILE SAVED!</h4>
+                        <p className="text-[10px] sm:text-xs font-bold text-black/80">All changes are live on your public profile.</p>
+                    </div>
+                    <button
+                        type="button"
+                        onClick={() => setIsSaved(false)}
+                        className="ml-auto bg-black text-[#39FF14] hover:bg-white hover:text-black font-black px-2 py-0.5 text-xs border border-black transition-colors shrink-0"
+                    >
+                        ✕
+                    </button>
+                </div>
+            )}
+
             {/* Command Bar */}
-            <div className="max-w-7xl mx-auto w-full bg-black text-white py-3 px-6 flex items-center justify-between text-xs md:text-sm font-bold uppercase shadow-[6px_6px_0_0_#39FF14] mb-8 border-[3px] border-black sticky top-4 z-50">
-                <span className="tracking-widest text-[#39FF14] md:text-lg">YOUR DASHBOARD</span>
-                <div className="flex items-center gap-4">
-                    <button onClick={() => handleSave()} className="bg-[#39FF14] text-black font-black px-6 py-2 border-[3px] border-black hover:bg-white transition-all shadow-[4px_4px_0_0_#000] active:shadow-none translate-y-[-2px] active:translate-y-0">
+            <div className="max-w-7xl mx-auto w-full bg-black text-white p-4 sm:py-3 sm:px-6 flex flex-col sm:flex-row items-stretch sm:items-center justify-between text-xs md:text-sm font-bold uppercase shadow-[4px_4px_0_0_#39FF14] sm:shadow-[6px_6px_0_0_#39FF14] mb-4 sm:mb-8 border-[3px] border-black sticky top-2 sm:top-4 z-50 gap-3">
+                <span className="tracking-widest text-[#39FF14] text-base md:text-lg text-center sm:text-left font-black">YOUR DASHBOARD</span>
+                <div className="flex items-center gap-2 sm:gap-4 w-full sm:w-auto">
+                    <button onClick={() => handleSave()} className="flex-1 sm:flex-none bg-[#39FF14] text-black font-black px-4 sm:px-6 py-2.5 sm:py-2 border-[2px] sm:border-[3px] border-black hover:bg-white transition-all shadow-[2px_2px_0_0_#000] sm:shadow-[4px_4px_0_0_#000] active:shadow-none min-h-[44px] flex items-center justify-center">
                         SAVE PROFILE
                     </button>
-                    <Link href={authorUsername ? `/author/${authorUsername}` : `/author/${user?.uid}`} target="_blank" className="hover:text-[#FF4F00] transition-colors underline decoration-2 underline-offset-4 font-black">
-                        SEE LIVE PROFILE ↗
+                    <Link href={authorUsername ? `/author/${authorUsername}` : `/author/${user?.uid}`} target="_blank" className="flex-1 sm:flex-none text-center bg-white text-black hover:text-[#FF4F00] transition-colors font-black px-3 py-2.5 sm:py-2 border-[2px] border-black min-h-[44px] flex items-center justify-center text-xs">
+                        LIVE PROFILE ↗
                     </Link>
                 </div>
             </div>
 
-            <main className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 pb-32">
-                {/* Sidebar */}
-                <div className="lg:col-span-3 space-y-4">
+            <main className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 pb-32">
+                {/* Sidebar Navigation - Horizontal Scrollable on Mobile, Vertical Stack on Desktop */}
+                <div className="lg:col-span-3 flex overflow-x-auto pb-2 lg:pb-0 gap-2 lg:flex-col lg:space-y-4 lg:gap-0 scrollbar-thin scrollbar-thumb-black whitespace-nowrap -mx-2 px-2 lg:mx-0 lg:px-0">
                     {[
-                        { id: 'basic', label: 'My Info', icon: <UserCircle size={20} />, color: '#FFC700' },
-                        { id: 'hero', label: 'Featured Writing', icon: <Type size={20} />, color: '#39FF14' },
-                        { id: 'library', label: 'My Books', icon: <BookOpen size={20} />, color: '#00A3FF' },
-                        { id: 'archive', label: 'My Stories', icon: <FileText size={20} />, color: '#FF4F00' },
-                        { id: 'awards', label: 'My Awards', icon: <Award size={20} />, color: '#9D00FF' },
-                        { id: 'wip', label: 'WIP Tracker', icon: <TrendingUp size={20} />, color: '#FF0055' },
-                        { id: 'reviews', label: 'Reviews & Praise', icon: <MessageSquareQuote size={20} />, color: '#FFD700' },
-                        { id: 'socials', label: 'Socials & Collab', icon: <Globe size={20} />, color: '#00E5FF' },
-                        { id: 'share', label: 'QR Code & Share', icon: <QrCode size={20} />, color: '#39FF14' },
+                        { id: 'basic', label: 'My Info', icon: <UserCircle size={18} />, color: '#FFC700' },
+                        { id: 'hero', label: 'Featured Writing', icon: <Type size={18} />, color: '#39FF14' },
+                        { id: 'library', label: 'My Books', icon: <BookOpen size={18} />, color: '#00A3FF' },
+                        { id: 'awards', label: 'My Awards', icon: <Award size={18} />, color: '#9D00FF' },
+                        { id: 'wip', label: 'WIP Tracker', icon: <TrendingUp size={18} />, color: '#FF0055' },
+                        { id: 'socials', label: 'Socials & Collab', icon: <Globe size={18} />, color: '#00E5FF' },
+                        { id: 'share', label: 'QR Code & Share', icon: <QrCode size={18} />, color: '#39FF14' },
                     ].map((tab) => (
                         <button
                             key={tab.id}
                             onClick={() => setActiveTab(tab.id)}
-                            className={`w-full p-4 border-[3px] border-black font-black uppercase tracking-wider text-sm flex items-center gap-3 transition-all ${activeTab === tab.id ? `shadow-[6px_6px_0_0_#000] translate-x-1 -translate-y-1` : 'bg-white hover:bg-gray-50'}`}
+                            className={`p-3 lg:p-4 border-[2px] lg:border-[3px] border-black font-black uppercase tracking-wider text-xs lg:text-sm flex items-center gap-2 lg:gap-3 transition-all shrink-0 lg:w-full min-h-[44px] ${activeTab === tab.id ? `shadow-[3px_3px_0_0_#000] lg:shadow-[6px_6px_0_0_#000] lg:translate-x-1 lg:-translate-y-1` : 'bg-white hover:bg-gray-50'}`}
                             style={{ backgroundColor: activeTab === tab.id ? tab.color : 'white' }}
                         >
-                            {tab.icon} {tab.label}
+                            {tab.icon} <span>{tab.label}</span>
                         </button>
                     ))}
                 </div>
@@ -378,16 +462,54 @@ const DashboardClient = () => {
                             <div className="bg-[#39FF14]/5 p-6 border-[3px] border-black space-y-6">
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                     <div className="space-y-4">
-                                        <label className="block text-xs font-black bg-black text-white px-2 py-1 uppercase w-fit">Profile Photo</label>
-                                        <div className="w-32 h-32 border-4 border-black bg-gray-50 shadow-[4px_4px_0_0_#000] relative group">
-                                            {formData.profile_image ? (
-                                                <img src={formData.profile_image} className="w-full h-full object-cover" />
-                                            ) : (
-                                                <div className="h-full flex items-center justify-center text-gray-300 font-black">NO PHOTO</div>
-                                            )}
+                                        <label className="block text-xs font-black bg-black text-white px-2 py-1 uppercase w-fit">Profile Photo / Writer Avatar</label>
+                                        <div className="flex items-center gap-4 flex-wrap">
+                                            <div className="w-28 h-28 border-4 border-black bg-gray-50 shadow-[4px_4px_0_0_#000] relative group shrink-0">
+                                                {formData.profile_image ? (
+                                                    <img src={formData.profile_image} className="w-full h-full object-cover" />
+                                                ) : (
+                                                    <div className="h-full flex items-center justify-center text-gray-300 font-black text-xs text-center p-2">NO PHOTO</div>
+                                                )}
+                                            </div>
+                                            
+                                            <div className="space-y-2">
+                                                <input type="file" onChange={handleFileSelect} className="hidden" id="dash-avatar-up" />
+                                                <label htmlFor="dash-avatar-up" className="inline-block bg-[#FFC700] border-2 border-black px-3 py-1.5 text-xs font-black uppercase cursor-pointer hover:bg-black hover:text-[#FFC700] transition-all shadow-[2px_2px_0_0_#000]">
+                                                    📁 UPLOAD CUSTOM PHOTO
+                                                </label>
+                                                
+                                                <div className="pt-1">
+                                                    <span className="block text-[10px] font-black text-gray-500 uppercase mb-1">CHOOSE FROM 10 UNIQUE WRITER AVATARS:</span>
+                                                    <div className="grid grid-cols-5 gap-2 max-w-xs">
+                                                        {[
+                                                            { label: '🖋️ Classic Poet', bg: '#39FF14', fg: '%23000', icon: '🖋️' },
+                                                            { label: '📜 Vintage Author', bg: '#FFC700', fg: '%23000', icon: '📜' },
+                                                            { label: '📚 Modern Novelist', bg: '#00A3FF', fg: '%23000', icon: '📚' },
+                                                            { label: '🔮 Cosmic Wordsmith', bg: '#9D00FF', fg: '%23FFF', icon: '🔮' },
+                                                            { label: '⚡ Cyber Bard', bg: '#FF0055', fg: '%23FFF', icon: '⚡' },
+                                                            { label: '🌙 Midnight Solitary', bg: '#1A1A2E', fg: '%2339FF14', icon: '🌙' },
+                                                            { label: '☕ Coffee & Quill', bg: '#8B4513', fg: '%23FFC700', icon: '☕' },
+                                                            { label: '🌲 Haiku Nature', bg: '#059669', fg: '%23FFF', icon: '🌲' },
+                                                            { label: '🎭 Playwright', bg: '#DC2626', fg: '%23FFF', icon: '🎭' },
+                                                            { label: '🕯️ Gothic Romantic', bg: '#18181B', fg: '%23FFC700', icon: '🕯️' },
+                                                        ].map((av, idx) => {
+                                                            const svgData = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="${encodeURIComponent(av.bg)}"/><circle cx="50" cy="38" r="22" fill="${av.fg}" opacity="0.85"/><path d="M20 90 C20 62 80 62 80 90 Z" fill="${av.fg}" opacity="0.85"/><text x="50" y="44" font-size="22" text-anchor="middle">${av.icon}</text></svg>`;
+                                                            return (
+                                                                <button
+                                                                    key={idx}
+                                                                    type="button"
+                                                                    onClick={() => setFormData((prev: any) => ({ ...prev, profile_image: svgData }))}
+                                                                    className="w-10 h-10 border-2 border-black shadow-[2px_2px_0_0_#000] hover:scale-110 transition-transform overflow-hidden relative bg-white"
+                                                                    title={`Use ${av.label}`}
+                                                                >
+                                                                    <img src={svgData} className="w-full h-full object-cover" />
+                                                                </button>
+                                                            );
+                                                        })}
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <input type="file" onChange={handleFileSelect} className="hidden" id="dash-avatar-up" />
-                                        <label htmlFor="dash-avatar-up" className="inline-block bg-[#FFC700] border-2 border-black px-4 py-2 text-xs font-black uppercase cursor-pointer hover:bg-black hover:text-[#FFC700] transition-all">UPLOAD PHOTO</label>
                                     </div>
                                     <div className="space-y-4">
                                         <div>
@@ -397,6 +519,33 @@ const DashboardClient = () => {
                                         <div>
                                             <label className="block text-xs font-black text-gray-400 uppercase mb-1">Pen Name (Optional)</label>
                                             <input type="text" name="pen_name" value={formData.pen_name} onChange={handleChange} className="w-full bg-white border-2 border-black p-3 font-bold focus:bg-[#39FF14]/5 outline-none" />
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs font-black text-gray-400 uppercase mb-1">👤 Gender Identity</label>
+                                            <select
+                                                name="gender"
+                                                value={formData.gender || ""}
+                                                onChange={handleChange}
+                                                className="w-full bg-white border-2 border-black p-3 font-bold text-sm outline-none focus:bg-[#39FF14]/10"
+                                            >
+                                                <option value="">-- Select Gender --</option>
+                                                <option value="Male">Male 👨</option>
+                                                <option value="Female">Female 👩</option>
+                                                <option value="Non-Binary">Non-Binary 🧑</option>
+                                                <option value="Prefer not to say">Prefer not to say 👤</option>
+                                            </select>
+                                            <div className="flex items-center gap-2 mt-2">
+                                                <input
+                                                    type="checkbox"
+                                                    id="show_gender_cb"
+                                                    checked={formData.show_gender !== false}
+                                                    onChange={(e) => setFormData((prev: any) => ({ ...prev, show_gender: e.target.checked }))}
+                                                    className="w-4 h-4 border-2 border-black accent-black cursor-pointer"
+                                                />
+                                                <label htmlFor="show_gender_cb" className="text-xs font-bold uppercase cursor-pointer text-gray-700">
+                                                    Show Gender on Public Profile Page
+                                                </label>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -693,84 +842,197 @@ const DashboardClient = () => {
                     )}
 
                     {activeTab === 'hero' && (
-                        <div className="bg-white border-[4px] border-black p-8 shadow-[12px_12px_0_0_#39FF14] min-h-[600px] flex flex-col space-y-6">
+                        <div className="bg-white border-[4px] border-black p-8 shadow-[12px_12px_0_0_#39FF14] min-h-[600px] flex flex-col space-y-8">
                             <div className="flex justify-between items-center flex-wrap gap-4 border-b-4 border-black pb-4 text-[#39FF14] bg-black px-4 -mx-8 -mt-8">
-                                <h2 className="text-3xl font-black uppercase text-[#39FF14]">FEATURED WRITING</h2>
-                                <span className="bg-[#39FF14] text-black font-black text-xs px-3 py-1 border border-black uppercase">
-                                    ⏱️ {getReadingTime(formData.writing_content)}
-                                </span>
+                                <div>
+                                    <h2 className="text-3xl font-black uppercase text-[#39FF14]">FEATURED WRITING PORTFOLIO</h2>
+                                    <p className="text-xs font-bold text-gray-300">
+                                        Add unlimited poems & stories. Select up to <span className="text-[#39FF14] font-black underline">MAX 3</span> to show on your main profile!
+                                    </p>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                    <span className="bg-[#39FF14] text-black font-black text-xs px-3 py-1 border border-black uppercase">
+                                        📌 {(formData.featured_pieces || []).filter((p: any) => p.pinned !== false).length} / 3 PINNED TO PROFILE
+                                    </span>
+                                </div>
                             </div>
 
-                            {/* SUB-GENRE FORMAT & TYPOGRAPHY PICKER */}
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gray-50 p-6 border-[3px] border-black">
-                                <div>
-                                    <label className="block text-xs font-black text-gray-600 uppercase mb-2">🏷️ Writing Format / Sub-Genre</label>
-                                    <select
-                                        name="writing_format"
-                                        value={formData.writing_format || "POETRY"}
-                                        onChange={handleChange}
-                                        className="w-full bg-white border-2 border-black p-3 font-black text-xs uppercase outline-none focus:bg-[#39FF14]/10"
-                                    >
-                                        <option value="POETRY">📜 Poetry</option>
-                                        <option value="PROSE_POETRY">✒️ Prose Poetry</option>
-                                        <option value="FLASH_FICTION">⚡ Flash Fiction</option>
-                                        <option value="CHAPTER_EXCERPT">📖 Chapter Excerpt</option>
-                                        <option value="SPOKEN_WORD">🎤 Spoken Word</option>
-                                        <option value="ESSAY">📝 Personal Essay</option>
-                                    </select>
-                                </div>
+                            {/* LIST OF EXISTING FEATURED WRITINGS */}
+                            {(formData.featured_pieces || []).length > 0 && (
+                                <div className="space-y-4">
+                                    <h3 className="text-sm font-black uppercase tracking-wider bg-black text-white px-3 py-1 w-fit">
+                                        YOUR FEATURED WRITING ARCHIVE
+                                    </h3>
+                                    <div className="grid grid-cols-1 gap-4">
+                                        {(formData.featured_pieces || []).map((piece: any) => (
+                                            <div key={piece.id} className="border-2 border-black p-4 bg-gray-50 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 shadow-[4px_4px_0_0_#000]">
+                                                <div className="space-y-1 min-w-0 flex-1">
+                                                    <div className="flex items-center gap-2 flex-wrap">
+                                                        <span className="text-[10px] font-black bg-black text-white px-2 py-0.5 uppercase">
+                                                            {piece.format || 'POETRY'}
+                                                        </span>
+                                                        <span className="text-[10px] font-bold bg-gray-200 text-black px-2 py-0.5 uppercase border border-black">
+                                                            ⏱️ {getReadingTime(piece.content)}
+                                                        </span>
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => handleTogglePinFeaturedPiece(piece.id)}
+                                                            className={`text-[10px] font-black px-2 py-0.5 border border-black uppercase transition-all ${piece.pinned !== false ? 'bg-[#39FF14] text-black shadow-[2px_2px_0_0_#000]' : 'bg-white text-gray-400 hover:text-black'}`}
+                                                        >
+                                                            {piece.pinned !== false ? '📌 PINNED ON MAIN PROFILE' : '➕ PIN TO PROFILE'}
+                                                        </button>
+                                                    </div>
+                                                    <h4 className="font-black text-lg uppercase truncate">{piece.title}</h4>
+                                                    <p className="text-xs text-gray-600 line-clamp-1 italic font-serif">
+                                                        "{piece.content.replace(/<[^>]+>/g, ' ').slice(0, 100)}..."
+                                                    </p>
+                                                </div>
 
-                                <div>
-                                    <label className="block text-xs font-black text-gray-600 uppercase mb-2">🔤 Typography & Font Style</label>
-                                    <div className="grid grid-cols-3 gap-2">
-                                        {[
-                                            { id: 'SERIF', label: '📜 Serif', font: 'font-serif' },
-                                            { id: 'MONO', label: '⌨️ Mono', font: 'font-mono' },
-                                            { id: 'SANS', label: '✒️ Sans', font: 'font-sans' },
-                                        ].map((f) => (
-                                            <button
-                                                key={f.id}
-                                                type="button"
-                                                onClick={() => setFormData({ ...formData, writing_font: f.id })}
-                                                className={`p-2.5 border-2 border-black text-xs font-black uppercase transition-all ${formData.writing_font === f.id || (!formData.writing_font && f.id === 'SERIF') ? 'bg-black text-[#39FF14] shadow-[3px_3px_0_0_#39FF14]' : 'bg-white text-black hover:bg-gray-100'}`}
-                                            >
-                                                {f.label}
-                                            </button>
+                                                <div className="flex gap-2 w-full md:w-auto">
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => {
+                                                            setEditingFeaturedId(piece.id);
+                                                            setFeaturedForm({
+                                                                id: piece.id,
+                                                                title: piece.title,
+                                                                content: piece.content,
+                                                                format: piece.format || 'POETRY',
+                                                                font: piece.font || 'SERIF',
+                                                                backstory: piece.backstory || '',
+                                                                pinned: piece.pinned !== false
+                                                            });
+                                                        }}
+                                                        className="flex-1 md:flex-initial bg-black text-white px-3 py-1.5 text-xs font-black uppercase hover:bg-yellow-400 hover:text-black border border-black transition-colors"
+                                                    >
+                                                        EDIT
+                                                    </button>
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => handleDeleteFeaturedPiece(piece.id)}
+                                                        className="flex-1 md:flex-initial bg-red-600 text-white px-3 py-1.5 text-xs font-black uppercase hover:bg-black border border-black transition-colors"
+                                                    >
+                                                        DELETE
+                                                    </button>
+                                                </div>
+                                            </div>
                                         ))}
                                     </div>
                                 </div>
-                            </div>
+                            )}
 
-                            <div className="space-y-6 flex-grow flex flex-col">
-                                <div>
-                                    <label className="block text-xs font-black text-gray-500 uppercase mb-1">Featured Title</label>
-                                    <input
-                                        type="text" name="writing_title" value={formData.writing_title} onChange={handleChange}
-                                        className="text-3xl md:text-5xl font-black uppercase bg-transparent border-b-4 border-black border-dashed outline-none pb-2 w-full"
-                                        placeholder="YOUR FEATURED TITLE..."
-                                    />
+                            {/* ADD / EDIT FEATURED PIECE FORM */}
+                            <div className="bg-[#39FF14]/5 p-6 border-[3px] border-black space-y-6">
+                                <div className="flex justify-between items-center flex-wrap gap-2">
+                                    <h3 className="text-sm font-black uppercase tracking-wider bg-black text-[#39FF14] px-3 py-1 w-fit">
+                                        {editingFeaturedId ? '✏️ EDIT FEATURED WRITING' : '➕ ADD NEW FEATURED WRITING'}
+                                    </h3>
+                                    {editingFeaturedId && (
+                                        <button
+                                            type="button"
+                                            onClick={() => {
+                                                setEditingFeaturedId(null);
+                                                setFeaturedForm({ id: '', title: '', content: '', format: 'POETRY', font: 'SERIF', backstory: '', pinned: true });
+                                            }}
+                                            className="text-xs font-black uppercase text-red-600 underline"
+                                        >
+                                            CANCEL EDIT
+                                        </button>
+                                    )}
                                 </div>
 
-                                <div className="flex-grow border-2 border-black p-4 bg-gray-50/50">
-                                    <label className="block text-xs font-black text-gray-500 uppercase mb-2">Featured Text Content</label>
-                                    <BrutalistEditor
-                                        value={formData.writing_content}
-                                        onChange={(val) => setFormData({ ...formData, writing_content: val })}
-                                        placeholder="Write your story or poem here..."
-                                        maxWords={100}
-                                    />
+                                {/* SUB-GENRE FORMAT & TYPOGRAPHY PICKER */}
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white p-4 border-2 border-black">
+                                    <div>
+                                        <label className="block text-xs font-black text-gray-600 uppercase mb-2">🏷️ Writing Format / Sub-Genre</label>
+                                        <select
+                                            value={featuredForm.format}
+                                            onChange={(e) => setFeaturedForm({ ...featuredForm, format: e.target.value })}
+                                            className="w-full bg-white border-2 border-black p-3 font-black text-xs uppercase outline-none focus:bg-[#39FF14]/10"
+                                        >
+                                            <option value="POETRY">📜 Poetry</option>
+                                            <option value="PROSE_POETRY">✒️ Prose Poetry</option>
+                                            <option value="FLASH_FICTION">⚡ Flash Fiction</option>
+                                            <option value="CHAPTER_EXCERPT">📖 Chapter Excerpt</option>
+                                            <option value="SPOKEN_WORD">🎤 Spoken Word</option>
+                                            <option value="ESSAY">📝 Personal Essay</option>
+                                        </select>
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-xs font-black text-gray-600 uppercase mb-2">🔤 Typography & Font Style</label>
+                                        <div className="grid grid-cols-3 gap-2">
+                                            {[
+                                                { id: 'SERIF', label: '📜 Serif' },
+                                                { id: 'MONO', label: '⌨️ Mono' },
+                                                { id: 'SANS', label: '✒️ Sans' },
+                                            ].map((f) => (
+                                                <button
+                                                    key={f.id}
+                                                    type="button"
+                                                    onClick={() => setFeaturedForm({ ...featuredForm, font: f.id })}
+                                                    className={`p-2.5 border-2 border-black text-xs font-black uppercase transition-all ${featuredForm.font === f.id ? 'bg-black text-[#39FF14] shadow-[3px_3px_0_0_#39FF14]' : 'bg-white text-black hover:bg-gray-100'}`}
+                                                >
+                                                    {f.label}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
                                 </div>
 
-                                <div>
-                                    <label className="block text-xs font-black text-gray-500 uppercase mb-1">📖 "Behind the Words" (Author Backstory Note - Optional)</label>
-                                    <input
-                                        type="text"
-                                        name="writing_backstory"
-                                        value={formData.writing_backstory || ""}
-                                        onChange={handleChange}
-                                        className="w-full bg-white border-2 border-black p-3 font-medium text-xs outline-none focus:bg-[#39FF14]/10"
-                                        placeholder="e.g. Written on a rainy train from Kyoto... Inspired by loss and memory."
-                                    />
+                                <div className="space-y-4">
+                                    <div>
+                                        <label className="block text-xs font-black text-gray-500 uppercase mb-1">Title *</label>
+                                        <input
+                                            type="text"
+                                            value={featuredForm.title}
+                                            onChange={(e) => setFeaturedForm({ ...featuredForm, title: e.target.value })}
+                                            className="w-full text-xl font-black uppercase bg-white border-2 border-black p-3 outline-none focus:bg-[#39FF14]/10"
+                                            placeholder="e.g. Midnight Stanzas on Varanasi Ghats"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-xs font-black text-gray-500 uppercase mb-2">Writing Content *</label>
+                                        <BrutalistEditor
+                                            value={featuredForm.content}
+                                            onChange={(val) => setFeaturedForm({ ...featuredForm, content: val })}
+                                            placeholder="Write your story or poem here..."
+                                            maxWords={200}
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-xs font-black text-gray-500 uppercase mb-1">📖 "Behind the Words" (Author Backstory Note - Optional)</label>
+                                        <input
+                                            type="text"
+                                            value={featuredForm.backstory}
+                                            onChange={(e) => setFeaturedForm({ ...featuredForm, backstory: e.target.value })}
+                                            className="w-full bg-white border-2 border-black p-3 font-medium text-xs outline-none focus:bg-[#39FF14]/10"
+                                            placeholder="e.g. Written on a rainy train from Kyoto... Inspired by loss and memory."
+                                        />
+                                    </div>
+
+                                    <div className="flex items-center gap-3 pt-2">
+                                        <input
+                                            type="checkbox"
+                                            id="pin_cb"
+                                            checked={featuredForm.pinned}
+                                            onChange={(e) => setFeaturedForm({ ...featuredForm, pinned: e.target.checked })}
+                                            className="w-5 h-5 border-2 border-black accent-black cursor-pointer"
+                                        />
+                                        <label htmlFor="pin_cb" className="font-black text-xs uppercase cursor-pointer">
+                                            📌 Pin to Main Profile Page (Show as 1 of up to 3 main preview pieces)
+                                        </label>
+                                    </div>
+
+                                    <button
+                                        type="button"
+                                        onClick={handleSaveFeaturedPiece}
+                                        className="w-full bg-black text-[#39FF14] font-black py-4 text-sm uppercase border-2 border-black hover:bg-[#39FF14] hover:text-black transition-colors shadow-[4px_4px_0_0_#000]"
+                                    >
+                                        {editingFeaturedId ? 'SAVE FEATURED PIECE CHANGES →' : 'ADD TO FEATURED WRITING ARCHIVE →'}
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -844,66 +1106,7 @@ const DashboardClient = () => {
                         </div>
                     )}
 
-                    {/* My Stories Module */}
-                    {activeTab === 'archive' && (
-                        <div className="bg-white border-[4px] border-black p-8 shadow-[12px_12px_0_0_#FF4F00] space-y-8 animate-in fade-in zoom-in-95">
-                            <h2 className="text-3xl font-black uppercase border-b-4 border-black pb-4 text-[#FF4F00]">MY STORIES & PIECES</h2>
-                            
-                            {/* Add Story Form */}
-                            <div className="bg-[#FF4F00]/5 p-6 border-[3px] border-black space-y-4">
-                                <h3 className="text-sm font-black uppercase tracking-wider bg-black text-white px-3 py-1 w-fit">ADD NEW STORY</h3>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <div>
-                                        <label className="block text-xs font-black text-gray-500 uppercase mb-1">Story / Piece Title *</label>
-                                        <input type="text" value={storyForm.title} onChange={(e) => setStoryForm({ ...storyForm, title: e.target.value })} className="w-full bg-white border-2 border-black p-3 font-bold text-sm outline-none focus:bg-[#FF4F00]/10" placeholder="e.g. Midnight Whispers" />
-                                    </div>
-                                    <div>
-                                        <label className="block text-xs font-black text-gray-500 uppercase mb-1">Category</label>
-                                        <select value={storyForm.category} onChange={(e) => setStoryForm({ ...storyForm, category: e.target.value })} className="w-full bg-white border-2 border-black p-3 font-bold text-sm outline-none focus:bg-[#FF4F00]/10">
-                                            <option value="Short Story">Short Story</option>
-                                            <option value="Essay">Essay</option>
-                                            <option value="Poetry">Poetry</option>
-                                            <option value="Manuscript">Manuscript</option>
-                                            <option value="Article">Article</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div>
-                                    <label className="block text-xs font-black text-gray-500 uppercase mb-1">Story Content / Excerpt</label>
-                                    <textarea value={storyForm.content} onChange={(e) => setStoryForm({ ...storyForm, content: e.target.value })} className="w-full h-32 bg-white border-2 border-black p-3 font-medium text-sm outline-none resize-none focus:bg-[#FF4F00]/10" placeholder="Write your piece or excerpt here..." />
-                                </div>
-                                <button onClick={handleAddStory} className="bg-[#FF4F00] text-white font-black px-6 py-3 border-[3px] border-black hover:bg-black transition-colors shadow-[4px_4px_0_0_#000]">
-                                    + ADD STORY TO ARCHIVE
-                                </button>
-                            </div>
-
-                            {/* Stories List */}
-                            <div className="space-y-4">
-                                <h3 className="text-lg font-black uppercase border-b-2 border-black pb-2">PUBLISHED STORIES ({(formData.experiences || []).length})</h3>
-                                {(formData.experiences || []).length === 0 ? (
-                                    <p className="text-sm font-bold text-gray-400 italic">No stories added yet. Use the form above to publish a piece.</p>
-                                ) : (
-                                    <div className="space-y-4">
-                                        {(formData.experiences || []).map((story: any, idx: number) => (
-                                            <div key={story.id || idx} className="bg-white border-[3px] border-black p-4 shadow-[4px_4px_0_0_#000] flex justify-between items-start gap-4">
-                                                <div className="space-y-1 w-full">
-                                                    <div className="flex items-center gap-2">
-                                                        <span className="bg-[#FF4F00] text-white text-[10px] font-black px-2 py-0.5 uppercase border border-black">{story.category || 'Story'}</span>
-                                                        {story.published_date && <span className="font-bold text-xs text-gray-500">{story.published_date}</span>}
-                                                    </div>
-                                                    <h4 className="font-black text-lg uppercase leading-tight">{story.title}</h4>
-                                                    {story.content && <p className="text-xs text-gray-700 font-serif leading-relaxed line-clamp-3 bg-gray-50 p-3 border border-black mt-2">{story.content}</p>}
-                                                </div>
-                                                <button onClick={() => handleDeleteStory(story.id)} className="text-red-500 hover:bg-red-100 p-2 border border-black rounded transition-colors shrink-0">
-                                                    <Trash2 size={16} />
-                                                </button>
-                                            </div>
-                                        ))}
-                                    </div>
-                                )}
-                            </div>
-                        </div>
-                    )}
+                    {/* My Books Module */}
 
                     {/* My Awards Module */}
                     {activeTab === 'awards' && (

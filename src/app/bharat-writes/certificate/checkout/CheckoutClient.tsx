@@ -82,7 +82,7 @@ export default function CheckoutClient() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          amount: 1, // TEST PRICE
+          amount: 249,
           customerName: formData.name,
           customerEmail: formData.email,
           customerPhone: formData.phone,
@@ -312,7 +312,7 @@ export default function CheckoutClient() {
                 {loading ? (
                   <Loader2 className="w-6 h-6 animate-spin" />
                 ) : (
-                  <>Proceed to Secure Payment (₹1)</>
+                  <>Proceed to Secure Payment (₹249)</>
                 )}
               </button>
 
@@ -325,7 +325,7 @@ export default function CheckoutClient() {
           </div>
 
           {/* RIGHT: SUMMARY */}
-          <div className="flex-1 w-full sticky top-24">
+          <div className="flex-1 w-full lg:sticky lg:top-24">
             
             <div className="bg-white rounded-2xl shadow-xl shadow-black/5 border border-[#E2E8F0] overflow-hidden mb-6">
               <div className="bg-[#1A202C] p-6 text-white relative overflow-hidden">
@@ -343,7 +343,7 @@ export default function CheckoutClient() {
                     <h4 className="font-bold text-[#1A202C] leading-tight">Physical Bharat Pride Certificate + Premium Medal</h4>
                     <p className="text-xs font-bold text-[#FF9933] uppercase tracking-widest mt-1">Free Delivery</p>
                   </div>
-                  <div className="font-black text-xl text-[#1A202C]">₹1</div>
+                  <div className="font-black text-xl text-[#1A202C]">₹249</div>
                 </div>
 
                 <div className="space-y-3 mb-6">
@@ -353,7 +353,7 @@ export default function CheckoutClient() {
                   </div>
                   <div className="flex justify-between text-sm font-medium text-[#138808]">
                     <span>Special Discount</span>
-                    <span>- ₹798</span>
+                    <span>- ₹550</span>
                   </div>
                   <div className="flex justify-between text-sm font-medium text-[#4A5568]">
                     <span>Shipping</span>
@@ -363,7 +363,7 @@ export default function CheckoutClient() {
 
                 <div className="flex justify-between items-center pt-4 border-t border-dashed border-[#E2E8F0]">
                   <span className="font-bold text-[#1A202C] uppercase tracking-wider text-sm">Total To Pay</span>
-                  <span className="text-3xl font-black text-[#1A202C]">₹1</span>
+                  <span className="text-3xl font-black text-[#1A202C]">₹249</span>
                 </div>
               </div>
             </div>

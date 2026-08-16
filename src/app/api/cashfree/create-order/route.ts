@@ -60,8 +60,7 @@ export async function POST(request: Request) {
     } else if (source === 'bharat_writes_kit') {
       orderIdPrefix = 'bwkit_';
       returnUrlPath = 'bharat-writes/certificate/checkout/success';
-      // TEST OVERRIDE
-      finalAmount = 1;
+      // No test override anymore
     }
     
     const orderId = `${orderIdPrefix}${Date.now()}_${randomPart}`;

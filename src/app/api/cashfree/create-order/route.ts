@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { db } from '@/lib/firebase-admin';
 
 // Force Node.js runtime (not Edge) — needed for full fetch + crypto support on Vercel
 export const runtime = 'nodejs';
@@ -32,7 +33,8 @@ function getBaseUrl(): string {
 
 export async function POST(request: Request) {
   try {
-    const { amount, customerName, customerEmail, customerPhone, plan, source = 'poetry_festival_s2' } = await request.json();
+    const { amount, customerName, customerEmail, customerPhone, plan, address, city, state, pincode, source = 'poetry_festival_s2' } = await request.json();
+    let finalAmount = amount;
 
     const appId = process.env.CASHFREE_APP_ID;
     const secretKey = process.env.CASHFREE_SECRET_KEY;
@@ -55,6 +57,11 @@ export async function POST(request: Request) {
     if (source === 'bharat_writes') {
       orderIdPrefix = 'bw_';
       returnUrlPath = 'bharat-writes/submit';
+    } else if (source === 'bharat_writes_kit') {
+      orderIdPrefix = 'bwkit_';
+      returnUrlPath = 'bharat-writes/certificate/checkout/success';
+      // TEST OVERRIDE
+      finalAmount = 1;
     }
     
     const orderId = `${orderIdPrefix}${Date.now()}_${randomPart}`;
@@ -75,7 +82,7 @@ export async function POST(request: Request) {
       },
       body: JSON.stringify({
         order_id: orderId,
-        order_amount: amount,
+        order_amount: finalAmount,
         order_currency: 'INR',
         customer_details: {
           customer_id: customerIdRaw,
@@ -90,6 +97,10 @@ export async function POST(request: Request) {
           name: customerName,
           whatsapp: customerPhone,
           source: source,
+          address: address || '',
+          city: city || '',
+          state: state || '',
+          pincode: pincode || '',
         },
         order_meta: {
           return_url: `${siteUrl}/${returnUrlPath}?order_id={order_id}&plan=${plan}`,
@@ -97,6 +108,27 @@ export async function POST(request: Request) {
         },
       }),
     });
+
+    // Save PENDING order to Firebase before returning to client
+    if (source === 'bharat_writes_kit' && db) {
+      try {
+        await db.collection('bharat_writes_kit_orders').doc(orderId).set({
+          order_id: orderId,
+          email: customerEmail || '',
+          name: customerName || '',
+          whatsapp: customerPhone || '',
+          address: address || '',
+          city: city || '',
+          state: state || '',
+          pincode: pincode || '',
+          amount: finalAmount,
+          status: 'PENDING',
+          created_at: new Date().toISOString(),
+        });
+      } catch (err) {
+        console.error('Failed to save PENDING order to Firebase', err);
+      }
+    }
 
     const data = await response.json();
 

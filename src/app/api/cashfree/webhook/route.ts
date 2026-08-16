@@ -146,6 +146,32 @@ export async function POST(request: Request) {
           console.error('Firebase Admin DB is not initialized.');
         }
 
+      // 2e. BHARAT WRITES KIT ORDERS → Insert to Firebase
+      } else if (orderId.startsWith('bwkit_')) {
+        if (db) {
+          try {
+            await db.collection('bharat_writes_kit_orders').doc(orderId).set({
+              order_id: orderId,
+              cf_order_id: order.cf_order_id,
+              email: tags.email || '',
+              name: tags.name || '',
+              whatsapp: tags.whatsapp || '',
+              address: tags.address || '',
+              city: tags.city || '',
+              state: tags.state || '',
+              pincode: tags.pincode || '',
+              amount: order.order_amount,
+              status: 'PAID',
+              updated_at: new Date().toISOString(),
+            }, { merge: true });
+          } catch (firebaseErr: any) {
+            console.error('Webhook Firebase DB Error (bwkit):', firebaseErr.message);
+            return NextResponse.json({ error: 'Database update failed' }, { status: 500 });
+          }
+        } else {
+          console.error('Firebase Admin DB is not initialized.');
+        }
+
       // 2d. ORIGINAL POETRY FESTIVAL ORDERS → Update Supabase
       } else {
         const { error } = await supabase

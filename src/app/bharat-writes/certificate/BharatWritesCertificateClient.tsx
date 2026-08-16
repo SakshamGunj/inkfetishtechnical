@@ -288,7 +288,7 @@ export default function BharatWritesCertificateClient() {
                       <p className="text-[#4A5568]">Your registration has been verified. Choose your reward format below.</p>
                     </div>
 
-                    <div className="flex flex-col-reverse md:flex-row gap-6 items-stretch">
+                    <div className="flex flex-col md:flex-row gap-6 items-stretch">
                       
                       {/* OPTION 1: DIGITAL ONLY */}
                       <div className="flex-1 flex flex-col bg-[#F7FAFC] border border-[#E2E8F0] rounded-2xl p-6 relative overflow-hidden transition-transform hover:-translate-y-1">
@@ -306,14 +306,6 @@ export default function BharatWritesCertificateClient() {
                             <li className="flex items-start gap-3">
                               <CheckCircle2 className="w-5 h-5 text-[#A0AEC0] shrink-0" />
                               <span className="text-[#4A5568] text-sm font-medium">Instant Download</span>
-                            </li>
-                            <li className="flex items-start gap-3 opacity-50">
-                              <AlertCircle className="w-5 h-5 text-[#A0AEC0] shrink-0" />
-                              <span className="text-[#A0AEC0] text-sm font-medium line-through">Physical Premium Medal</span>
-                            </li>
-                            <li className="flex items-start gap-3 opacity-50">
-                              <AlertCircle className="w-5 h-5 text-[#A0AEC0] shrink-0" />
-                              <span className="text-[#A0AEC0] text-sm font-medium line-through">Free Entry to Next Contest (Worth ₹299)</span>
                             </li>
                           </ul>
                         </div>

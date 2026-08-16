@@ -369,32 +369,32 @@ export default function CheckoutClient() {
             </div>
 
             {/* TRUST BADGES */}
-            <div className="grid grid-cols-1 gap-3">
-              <div className="bg-[#F7FAFC] border border-[#E2E8F0] rounded-xl p-4 flex items-center gap-4">
-                <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm shrink-0">
-                  <Truck className="w-6 h-6 text-[#000080]" />
+            <div className="grid grid-cols-1 gap-2 md:gap-3">
+              <div className="bg-[#F7FAFC] border border-[#E2E8F0] rounded-xl p-3 md:p-4 flex items-center gap-3 md:gap-4">
+                <div className="w-10 h-10 md:w-12 md:h-12 bg-white rounded-full flex items-center justify-center shadow-sm shrink-0">
+                  <Truck className="w-5 h-5 md:w-6 md:h-6 text-[#000080]" />
                 </div>
                 <div>
-                  <h5 className="font-bold text-[#1A202C] text-sm">99% Delivery Accuracy</h5>
-                  <p className="text-xs text-[#718096]">We partner with top couriers across India.</p>
+                  <h5 className="font-bold text-[#1A202C] text-xs md:text-sm leading-tight">99% Delivery Accuracy</h5>
+                  <p className="text-[10px] md:text-xs text-[#718096] leading-snug mt-0.5">We partner with top couriers across India.</p>
                 </div>
               </div>
-              <div className="bg-[#F7FAFC] border border-[#E2E8F0] rounded-xl p-4 flex items-center gap-4">
-                <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm shrink-0">
-                  <Sparkles className="w-6 h-6 text-[#FF9933]" />
+              <div className="bg-[#F7FAFC] border border-[#E2E8F0] rounded-xl p-3 md:p-4 flex items-center gap-3 md:gap-4">
+                <div className="w-10 h-10 md:w-12 md:h-12 bg-white rounded-full flex items-center justify-center shadow-sm shrink-0">
+                  <Sparkles className="w-5 h-5 md:w-6 md:h-6 text-[#FF9933]" />
                 </div>
                 <div>
-                  <h5 className="font-bold text-[#1A202C] text-sm">Premium Quality Guaranteed</h5>
-                  <p className="text-xs text-[#718096]">High-grade prints and metallic medals.</p>
+                  <h5 className="font-bold text-[#1A202C] text-xs md:text-sm leading-tight">Premium Quality Guaranteed</h5>
+                  <p className="text-[10px] md:text-xs text-[#718096] leading-snug mt-0.5">High-grade prints and metallic medals.</p>
                 </div>
               </div>
-              <div className="bg-[#F7FAFC] border border-[#E2E8F0] rounded-xl p-4 flex items-center gap-4">
-                <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm shrink-0">
-                  <ShieldCheck className="w-6 h-6 text-[#138808]" />
+              <div className="bg-[#F7FAFC] border border-[#E2E8F0] rounded-xl p-3 md:p-4 flex items-center gap-3 md:gap-4">
+                <div className="w-10 h-10 md:w-12 md:h-12 bg-white rounded-full flex items-center justify-center shadow-sm shrink-0">
+                  <ShieldCheck className="w-5 h-5 md:w-6 md:h-6 text-[#138808]" />
                 </div>
                 <div>
-                  <h5 className="font-bold text-[#1A202C] text-sm">Safe & Secure Payment</h5>
-                  <p className="text-xs text-[#718096]">256-bit encryption for all transactions.</p>
+                  <h5 className="font-bold text-[#1A202C] text-xs md:text-sm leading-tight">Safe & Secure Payment</h5>
+                  <p className="text-[10px] md:text-xs text-[#718096] leading-snug mt-0.5">256-bit encryption for all transactions.</p>
                 </div>
               </div>
             </div>

@@ -6,6 +6,35 @@ import { Truck, ShieldCheck, MapPin, Loader2, Sparkles, Award, FileText, CheckCi
 import Link from 'next/link';
 import Image from 'next/image';
 
+const testimonials = [
+  "https://res.cloudinary.com/dde8ekuuu/image/upload/v1776100331/WhatsApp_Image_2026-04-13_at_9.06.50_PM-compressed_f54p62.webp",
+  "https://res.cloudinary.com/dde8ekuuu/image/upload/v1776100330/WhatsApp_Image_2026-04-13_at_9.06.50_PM_2_-compressed_nrkzf4.webp",
+  "https://res.cloudinary.com/dde8ekuuu/image/upload/v1776100329/WhatsApp_Image_2026-04-13_at_8.19.16_PM-compressed_pii87q.webp",
+  "https://res.cloudinary.com/dde8ekuuu/image/upload/v1776100330/WhatsApp_Image_2026-04-13_at_8.27.49_PM-compressed_hhn7yj.webp",
+  "https://res.cloudinary.com/dde8ekuuu/image/upload/v1776100330/WhatsApp_Image_2026-04-13_at_8.12.24_PM-compressed_skr10b.webp",
+  "https://res.cloudinary.com/dde8ekuuu/image/upload/v1775933367/WhatsApp_Image_2026-03-28_at_8.00.34_PM-compressed_yfhhz2.webp",
+  "https://res.cloudinary.com/dde8ekuuu/image/upload/v1775933368/WhatsApp_Image_2026-03-29_at_12.35.16_PM_2_-compressed_d12sxy.webp",
+  "https://res.cloudinary.com/dde8ekuuu/image/upload/v1775926450/WhatsApp_Image_2026-04-11_at_7.20.21_PM_1_-compressed_hgkckw.webp",
+  "https://res.cloudinary.com/dde8ekuuu/image/upload/v1775926445/WhatsApp_Image_2026-04-11_at_7.20.21_PM-compressed_fxtkcv.webp",
+  "https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897600/WhatsApp_Image_2026-04-09_at_2.59.25_PM-compressed_in2led.webp",
+  "https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897599/WhatsApp_Image_2026-04-09_at_2.53.04_PM-compressed_wsnhmu.webp",
+  "https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897599/WhatsApp_Image_2026-04-07_at_8.39.44_PM-compressed_ztxsge.webp",
+  "https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897598/WhatsApp_Image_2026-04-07_at_8.39.44_PM_1_-compressed_gjnlck.webp",
+  "https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897597/WhatsApp_Image_2026-04-04_at_12.20.06_PM_1_-compressed_lrqjv2.webp",
+  "https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897597/WhatsApp_Image_2026-04-03_at_10.52.05_AM_1_-compressed_uphqxg.webp",
+  "https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897594/WhatsApp_Image_2026-04-02_at_5.17.33_PM_2_-compressed_sz4wld.webp",
+  "https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897591/WhatsApp_Image_2026-03-23_at_7.03.31_PM_3_-compressed_ofwyil.webp",
+  "https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897590/WhatsApp_Image_2026-03-23_at_7.03.30_PM-compressed_fsgkug.webp"
+];
+
+const indianStates = [
+  "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh", "Goa", "Gujarat", "Haryana",
+  "Himachal Pradesh", "Jharkhand", "Karnataka", "Kerala", "Madhya Pradesh", "Maharashtra", "Manipur",
+  "Meghalaya", "Mizoram", "Nagaland", "Odisha", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana",
+  "Tripura", "Uttar Pradesh", "Uttarakhand", "West Bengal", "Andaman and Nicobar Islands", "Chandigarh",
+  "Dadra and Nagar Haveli and Daman and Diu", "Delhi", "Lakshadweep", "Puducherry"
+];
+
 export default function CheckoutClient() {
   const [formData, setFormData] = useState({
     name: '',
@@ -126,7 +155,31 @@ export default function CheckoutClient() {
           <p className="text-[#4A5568] mt-2 text-lg">Where should we deliver your Bharat Pride Honor Kit?</p>
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-start">
+        {/* TESTIMONIALS MARQUEE */}
+        <div className="mb-10 overflow-hidden bg-white rounded-2xl shadow-sm border border-[#E2E8F0] p-6">
+          <h3 className="text-center font-bold text-[#1A202C] uppercase tracking-widest text-sm mb-6 flex items-center justify-center gap-2">
+            <Sparkles className="w-4 h-4 text-[#FF9933]" /> Our Testimonials - Previously Delivered Orders <Sparkles className="w-4 h-4 text-[#FF9933]" />
+          </h3>
+          <div className="relative w-full overflow-hidden flex whitespace-nowrap mask-image-fade">
+            <div className="animate-marquee flex gap-4 items-center shrink-0">
+              {testimonials.map((url, i) => (
+                <div key={i} className="w-32 h-32 md:w-40 md:h-40 rounded-xl overflow-hidden shrink-0 border-2 border-[#E2E8F0] shadow-md relative group">
+                  <Image src={url} alt={`Testimonial ${i}`} fill className="object-cover group-hover:scale-110 transition-transform duration-500" />
+                </div>
+              ))}
+            </div>
+            {/* Duplicate for seamless looping */}
+            <div className="animate-marquee flex gap-4 items-center shrink-0 pl-4">
+              {testimonials.map((url, i) => (
+                <div key={`dup-${i}`} className="w-32 h-32 md:w-40 md:h-40 rounded-xl overflow-hidden shrink-0 border-2 border-[#E2E8F0] shadow-md relative group">
+                  <Image src={url} alt={`Testimonial ${i}`} fill className="object-cover group-hover:scale-110 transition-transform duration-500" />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="flex flex-col-reverse lg:flex-row gap-8 lg:gap-12 items-start">
           
           {/* LEFT: FORM */}
           <div className="flex-[1.5] w-full bg-white rounded-2xl shadow-xl shadow-black/5 border border-[#E2E8F0] p-6 md:p-8">
@@ -219,15 +272,18 @@ export default function CheckoutClient() {
                 </div>
                 <div>
                   <label className="block text-xs font-bold text-[#4A5568] uppercase tracking-wider mb-2">State</label>
-                  <input
-                    type="text"
+                  <select
                     name="state"
                     value={formData.state}
-                    onChange={handleChange}
+                    onChange={(e: any) => handleChange(e)}
                     required
-                    className="w-full px-4 py-3 bg-[#F7FAFC] border border-[#E2E8F0] rounded-xl text-[#1A202C] font-medium focus:outline-none focus:border-[#000080] focus:ring-1 focus:ring-[#000080] transition-all"
-                    placeholder="Maharashtra"
-                  />
+                    className="w-full px-4 py-3 bg-[#F7FAFC] border border-[#E2E8F0] rounded-xl text-[#1A202C] font-medium focus:outline-none focus:border-[#000080] focus:ring-1 focus:ring-[#000080] transition-all appearance-none"
+                  >
+                    <option value="" disabled>Select State</option>
+                    {indianStates.map((st) => (
+                      <option key={st} value={st}>{st}</option>
+                    ))}
+                  </select>
                 </div>
                 <div>
                   <label className="block text-xs font-bold text-[#4A5568] uppercase tracking-wider mb-2">Pincode</label>

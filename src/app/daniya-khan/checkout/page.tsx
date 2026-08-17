@@ -79,7 +79,7 @@ const INDIAN_STATES = [
 
 export default function CheckoutPage() {
   const router = useRouter();
-  const [selectedBundle, setSelectedBundle] = useState<"standard" | "signed" | "grand">("signed");
+  const [selectedBundle, setSelectedBundle] = useState<"standard" | "signed" | "grand">("standard");
   const [quantity, setQuantity] = useState(1);
   const [step, setStep] = useState<1 | 2>(1); // 1 = bundle select, 2 = form+pay
   const [loading, setLoading] = useState(false);

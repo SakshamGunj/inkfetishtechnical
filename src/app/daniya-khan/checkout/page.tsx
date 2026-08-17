@@ -26,7 +26,7 @@ const BUNDLES = [
   {
     id: "standard",
     label: "First Edition Paperback",
-    price: 299,
+    price: 229,
     strikePrice: 699,
     perks: [
       { icon: "✍️", text: "Officially Signed & Stamped Copy by Daniya" },

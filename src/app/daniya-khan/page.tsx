@@ -356,7 +356,7 @@ export default function DaniyaKhanPage() {
             >
               <div>
                 <p className="font-display italic text-base font-bold">Deserted Hearts</p>
-                <p className="font-ui text-xs text-[#777]">First edition poetry collection — Starts at ₹299</p>
+                <p className="font-ui text-xs text-[#777]">First edition poetry collection — Starts at ₹229</p>
               </div>
               <button className="pill-btn-pink text-sm px-5 py-3" onClick={() => router.push('/daniya-khan/checkout')}>Pre-Order ↗</button>
             </motion.div>
@@ -747,7 +747,7 @@ export default function DaniyaKhanPage() {
                 <div className="p-8 space-y-5">
                   {[
                     { icon: "✍️", title: "Signed & Stamped (All Options)", desc: "Every single copy in all 3 tiers is officially signed & stamped by Daniya Khan.", tag: "guaranteed" },
-                    { icon: "📕", title: "First Edition Paperback (₹299)", desc: "Signed & Stamped Paperback + Lost Chapter digital bonus + ₹30,000 lucky draw entry.", tag: "book only" },
+                    { icon: "📕", title: "First Edition Paperback (₹229)", desc: "Signed & Stamped Paperback + Lost Chapter digital bonus + ₹30,000 lucky draw entry.", tag: "book only" },
                     { icon: "🎁", title: "Elite Mystery Box (₹599)", desc: "Signed & Stamped Book + 2 Secret Mystery Items + ₹30,000 lucky draw entry.", tag: "most popular" },
                     { icon: "👑", title: "Platinum Mystery Box (₹999)", desc: "Signed & Stamped Book + 4 Secret Mystery Items + 2x Lucky Draw Entries.", tag: "platinum" },
                     { icon: "📦", title: "Free Pan-India Shipping", desc: "Delivered safely with tracked shipping straight to your doorstep.", tag: "free" },
@@ -779,7 +779,7 @@ export default function DaniyaKhanPage() {
                 <div className="p-8 flex flex-col sm:flex-row items-center justify-between gap-6">
                   <div>
                     <p className="font-ui text-xs text-[#888] line-through mb-1">Total value: ₹2,499</p>
-                    <p className="font-display italic text-4xl font-bold text-[#1A1A1A]">Starts at ₹299</p>
+                    <p className="font-display italic text-4xl font-bold text-[#1A1A1A]">Starts at ₹229</p>
                     <p className="font-ui text-xs text-[#888] mt-1">First edition paperback</p>
                   </div>
                   <div className="flex flex-col items-center gap-2">

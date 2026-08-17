@@ -50,9 +50,9 @@ export async function POST(request: Request) {
     const baseUrl = getCashfreeBaseUrl(appId);
     const siteUrl = getBaseUrl();
 
-    // ₹299 for standard (book only), ₹599 for Elite Mystery Box, ₹999 for Platinum Mystery Box
+    // ₹229 for standard (book only), ₹599 for Elite Mystery Box, ₹999 for Platinum Mystery Box
     const qty = Math.max(1, parseInt(quantity || 1, 10));
-    let unitPrice = 299;
+    let unitPrice = 229;
     if (bundleType === 'platinum' || bundleType === 'grand' || bundleType === 'grand_mystery') {
       unitPrice = 999;
     } else if (bundleType === 'elite' || bundleType === 'signed' || bundleType === 'mystery' || bundleType === 'mini_mystery') {

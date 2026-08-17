@@ -5,6 +5,7 @@ import { ConditionalFooter } from "@/components/ConditionalFooter";
 import { FloatingContact } from "@/components/FloatingContact";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://inkfetish.in"),
   title: "Inkfetish | The Writer's Community",
   description: "Join India's biggest community for writers. We provide tools, resources, and publishing opportunities to help you build a career with your words.",
   openGraph: {

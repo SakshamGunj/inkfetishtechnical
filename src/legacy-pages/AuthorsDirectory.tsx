@@ -22,6 +22,9 @@ const authors = [
   { name: 'Sunitha Sukumaran', slug: 'sunitha', role: 'IT Professional & Author', imageBg: 'bg-ink-900/10' },
   { name: 'Thalir', slug: 'thalir', role: 'Tamil & English Poet', imageBg: 'bg-ink-900/5' },
   { name: 'Niman', slug: 'niman', role: 'Medical Professional & Author', imageBg: 'bg-ink-900/10' },
+  { name: 'Rajesh Tiwari', slug: 'rajesh', role: 'Principal & Author', imageBg: 'bg-ink-900/5' },
+  { name: 'Chetna Choudhary', slug: 'chetna', role: 'Scholar & Artisan Writer', imageBg: 'bg-ink-900/10' },
+  { name: 'Haarleen Sethi', slug: 'haarleen', role: 'Model & Artist', imageBg: 'bg-ink-900/5' },
 ];
 
 const AuthorsDirectory = () => {

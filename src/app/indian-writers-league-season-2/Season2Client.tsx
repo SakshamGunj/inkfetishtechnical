@@ -259,11 +259,6 @@ const StepRegistrationAndPlan = ({ formData, setFormData, onPayment, showPlans, 
     );
 };
 
-// Old Step2Details and Step3Plan are removed/replaced by StepRegistrationAndPlan
-// Keeping placeholder Step3Plan? No, removing it.
-
-// const Step3Plan = ... (REMOVE)
-
 const Step4Dashboard = ({ formData, setStep, setSubmissionType, setSubmitStatus }: { formData: FormData, setStep: (s: number) => void, setSubmissionType: (type: 1 | 2) => void, setSubmitStatus: (s: 'idle' | 'submitting' | 'success' | 'error') => void }) => (
 
     <div className="max-w-4xl mx-auto px-4 py-20">
@@ -566,7 +561,7 @@ const Season2Client = () => {
     const [submissionType, setSubmissionType] = useState<1 | 2>(1);
 
     // --- Payment State ---
-    const [paymentStatus, setPaymentStatus] = useState<'pending' | 'verifying' | 'paid'>('pending');
+    const [paymentStatus, setPaymentStatus] = useState<'pending' | 'processing' | 'verifying' | 'paid'>('pending');
     const [cashfree, setCashfree] = useState<any>(null);
 
     // --- Load Cashfree SDK ---
@@ -657,8 +652,18 @@ const Season2Client = () => {
         if (!formData.plan) return alert("Please select a plan");
         if (!cashfree) return alert("Payment gateway is loading. Please wait a moment.");
 
-        setSubmitStatus('submitting');
+        setPaymentStatus('processing');
+
         try {
+            // ALWAYS generate a new order ID to prevent 'order with same id is already present' errors
+            // if the user failed a previous payment attempt.
+            const randomPart = Math.random().toString(36).slice(2, 7);
+            const currentOrderId = `iwl2_${Date.now()}_${randomPart}`;
+            
+            // Save immediately so it persists on reload
+            setFormData(prev => ({ ...prev, orderId: currentOrderId }));
+            localStorage.setItem('iwl_registration', JSON.stringify({ ...formData, orderId: currentOrderId }));
+            
             // 1. Create order on Next.js backend API
             const res = await fetch('/api/cashfree/create-order', {
                 method: 'POST',
@@ -670,7 +675,7 @@ const Season2Client = () => {
                     customerPhone: formData.whatsapp,
                     plan: formData.plan,
                     source: 'iwl_season_2',
-                    providedOrderId: formData.orderId
+                    providedOrderId: currentOrderId
                 }),
             });
 
@@ -696,6 +701,7 @@ const Season2Client = () => {
             console.error(err);
             alert(err.message || "Payment initialization failed. Please try again.");
             setSubmitStatus('idle');
+            setPaymentStatus('pending'); // FIX: Reset status so UI doesn't get stuck loading
         }
     };
 

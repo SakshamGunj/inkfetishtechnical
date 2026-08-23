@@ -15,7 +15,8 @@ export function ConditionalFooter() {
     pathname.startsWith('/open-mic') ||
     pathname.startsWith('/shakespeare-award-v2') ||
     pathname.startsWith('/bharat-writes') ||
-    pathname.startsWith('/daniya-khan')
+    pathname.startsWith('/daniya-khan') ||
+    pathname.startsWith('/indian-writers-league-season-2')
   ) {
     return null;
   }

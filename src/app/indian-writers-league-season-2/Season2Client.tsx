@@ -243,14 +243,28 @@ const StepRegistrationAndPlan = ({ formData, setFormData, onPayment, showPlans, 
                             </div>
                         </div>
 
-                        <div className="fixed bottom-0 left-0 right-0 p-4 md:static md:p-0 md:mt-10 max-w-md mx-auto z-50 bg-gradient-to-t from-black/80 via-black/50 to-transparent md:bg-none">
+                        {/* Static button always at the bottom of cards */}
+                        <div className="mt-8 max-w-md mx-auto relative z-10">
                             <button
                                 disabled={!formData.plan}
                                 onClick={() => formData.plan && onPayment()}
-                                className={`w-full py-4 md:py-4 font-bold rounded-xl md:rounded-lg shadow-2xl flex items-center justify-center gap-2 transition-all duration-300 ${formData.plan ? 'bg-[#FFD700] text-[#2A0A0A] hover:bg-[#FFE55C] hover:scale-[1.02] shadow-[0_0_20px_rgba(255,215,0,0.3)]' : 'bg-[#D7CCC8] text-[#4E342E]/70 cursor-not-allowed opacity-90'}`}
+                                className={`w-full py-4 font-bold rounded-xl shadow-2xl flex items-center justify-center gap-2 transition-all duration-300 ${formData.plan ? 'bg-[#FFD700] text-[#2A0A0A] hover:bg-[#FFE55C] hover:scale-[1.02] shadow-[0_0_20px_rgba(255,215,0,0.3)]' : 'bg-[#D7CCC8] text-[#4E342E]/70 cursor-not-allowed opacity-90'}`}
                             >
                                 Make Payment and SUBMIT <ChevronRight className="w-5 h-5" />
                             </button>
+                        </div>
+
+                        {/* Sticky button only for mobile for better UX */}
+                        <div className="fixed bottom-0 left-0 right-0 p-4 z-50 bg-gradient-to-t from-black/80 via-black/50 to-transparent md:hidden pointer-events-none">
+                            <div className="pointer-events-auto">
+                                <button
+                                    disabled={!formData.plan}
+                                    onClick={() => formData.plan && onPayment()}
+                                    className={`w-full py-4 font-bold rounded-xl shadow-2xl flex items-center justify-center gap-2 transition-all duration-300 ${formData.plan ? 'bg-[#FFD700] text-[#2A0A0A] hover:bg-[#FFE55C] shadow-[0_0_20px_rgba(255,215,0,0.3)]' : 'bg-[#D7CCC8] text-[#4E342E]/70 cursor-not-allowed opacity-90'}`}
+                                >
+                                    Make Payment and SUBMIT <ChevronRight className="w-5 h-5" />
+                                </button>
+                            </div>
                         </div>
                     </motion.div>
                 )}
@@ -465,7 +479,7 @@ const Step6Success = ({ formData, setStep }: { formData: FormData, setStep: (s: 
 );
 
 // --- Premium Loading Overlay ---
-const LoadingOverlay = ({ status }: { status: 'submitting' | 'verifying' | 'success' }) => (
+const LoadingOverlay = ({ status }: { status: 'submitting' | 'verifying' | 'success' | 'processing' }) => (
     <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -494,7 +508,8 @@ const LoadingOverlay = ({ status }: { status: 'submitting' | 'verifying' | 'succ
             animate={{ opacity: 1, y: 0 }}
             className="mt-8 text-2xl font-[Cinzel] text-[#FFD700] text-center"
         >
-            {status === 'submitting' && "Initializing Secure Gateway..."}
+            {status === 'submitting' && "Submitting Entry..."}
+            {status === 'processing' && "Initializing Secure Gateway..."}
             {status === 'verifying' && "Verifying Payment..."}
             {status === 'success' && "Registration Successful!"}
         </motion.h3>
@@ -984,16 +999,14 @@ const Season2Client = () => {
             </div>
 
             {/* Footer / Branding */}
-            {step > 1 && step !== 5 && (
-                <div className="text-center py-6 text-[#E0C097]/70 text-sm opacity-60">
-                    Organized by Inkfetish | 199K+ Writers Community
-                </div>
-            )}
+            <div className="text-center py-8 text-[#E0C097]/60 text-xs md:text-sm font-serif tracking-[0.2em] uppercase relative z-10 border-t border-[#FFD700]/10 mt-12 bg-black/40 backdrop-blur-sm">
+                Indian Writers League | An Inkfetish Publication
+            </div>
 
             {/* Global Loading Overlay */}
             <AnimatePresence>
-                {(submitStatus === 'submitting' || submitStatus === 'success' || paymentStatus === 'verifying') && (
-                    <LoadingOverlay status={submitStatus === 'success' ? 'success' : (paymentStatus === 'verifying' ? 'verifying' : 'submitting')} />
+                {(submitStatus === 'submitting' || submitStatus === 'success' || paymentStatus === 'verifying' || paymentStatus === 'processing') && (
+                    <LoadingOverlay status={submitStatus === 'success' ? 'success' : (paymentStatus === 'verifying' ? 'verifying' : (paymentStatus === 'processing' ? 'processing' : 'submitting'))} />
                 )}
             </AnimatePresence>
         </div>

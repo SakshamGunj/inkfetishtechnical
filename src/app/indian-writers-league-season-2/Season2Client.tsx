@@ -15,7 +15,7 @@ import html2pdf from 'html2pdf.js';
 
 // --- Types ---
 type Category = 'poetry' | 'short_story' | 'novel' | 'quote' | 'letter';
-type Plan = PROT_1 | PROT_2;
+type Plan = 399 | 599;
 
 interface FormData {
     name: string;
@@ -101,14 +101,14 @@ const StepRegistrationAndPlan = ({ formData, setFormData, onPayment, showPlans, 
                     </div>
                     <button 
                         onClick={() => {
-                            if (formData.editCount >= PROT_2) return;
+                            if (formData.editCount >= 599) return;
                             setShowPlans(false);
                             setFormData(prev => ({ ...prev, editCount: prev.editCount + 1 }));
                         }}
-                        disabled={formData.editCount >= PROT_2}
-                        className={`flex-shrink-0 text-[9px] md:text-xs font-bold uppercase tracking-widest border border-[#E0C097]/40 text-[#E5D4B3] px-3 py-1.5 md:px-4 md:py-2 rounded-lg transition-colors flex items-center justify-center gap-1 ${formData.editCount >= PROT_2 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-[#FFD700]/10'}`}
+                        disabled={formData.editCount >= 599}
+                        className={`flex-shrink-0 text-[9px] md:text-xs font-bold uppercase tracking-widest border border-[#E0C097]/40 text-[#E5D4B3] px-3 py-1.5 md:px-4 md:py-2 rounded-lg transition-colors flex items-center justify-center gap-1 ${formData.editCount >= 599 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-[#FFD700]/10'}`}
                     >
-                        {formData.editCount >= PROT_2 ? 'Locked' : `Edit (${2 - formData.editCount} left)`}
+                        {formData.editCount >= 599 ? 'Locked' : `Edit (${2 - formData.editCount} left)`}
                     </button>
                 </div>
             ) : (
@@ -198,12 +198,12 @@ const StepRegistrationAndPlan = ({ formData, setFormData, onPayment, showPlans, 
                         <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
                             {/* Basic Plan */}
                             <div
-                                className={`bg-white border text-center flex flex-col ${formData.plan === PROT_PROT_1 ? 'border-[#420C0C] ring-4 ring-[#420C0C]/10 shadow-2xl scale-105 z-10' : 'border-[#D7CCC8] shadow-md opacity-80 hover:opacity-100 hover:scale-[1.02]'} rounded-xl p-6 relative overflow-hidden cursor-pointer transition-all duration-300`}
-                                onClick={() => setFormData({ ...formData, plan: PROT_1 })}
+                                className={`bg-white border text-center flex flex-col ${formData.plan === 399 ? 'border-[#420C0C] ring-4 ring-[#420C0C]/10 shadow-2xl scale-105 z-10' : 'border-[#D7CCC8] shadow-md opacity-80 hover:opacity-100 hover:scale-[1.02]'} rounded-xl p-6 relative overflow-hidden cursor-pointer transition-all duration-300`}
+                                onClick={() => setFormData({ ...formData, plan: 399 })}
                             >
                                 <div className="mb-4">
                                     <h4 className="text-lg font-bold text-[#420C0C] uppercase tracking-wider mb-1">📝 BASIC PASS</h4>
-                                    <div className="text-4xl font-serif text-[#2A0A0A]">₹PROT_1</div>
+                                    <div className="text-4xl font-serif text-[#2A0A0A]">₹399</div>
                                 </div>
                                 
                                 <div className="text-[9px] md:text-[10px] font-bold text-[#420C0C] uppercase tracking-widest mb-4 bg-[#FFD700]/30 py-1.5 px-2 rounded-md border border-[#FFD700]/50 inline-block mx-auto">
@@ -220,15 +220,15 @@ const StepRegistrationAndPlan = ({ formData, setFormData, onPayment, showPlans, 
                                     <li className="flex items-start gap-3"><Check className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" /> <span>Eligible for Prizes</span></li>
                                 </ul>
                                 
-                                <div className={`w-6 h-6 rounded-full border border-[#5D4037] mx-auto flex items-center justify-center mt-auto ${formData.plan === PROT_PROT_1 ? 'bg-[#420C0C] border-transparent' : ''}`}>
-                                    {formData.plan === PROT_1 && <Check className="w-4 h-4 text-white" />}
+                                <div className={`w-6 h-6 rounded-full border border-[#5D4037] mx-auto flex items-center justify-center mt-auto ${formData.plan === 399 ? 'bg-[#420C0C] border-transparent' : ''}`}>
+                                    {formData.plan === 399 && <Check className="w-4 h-4 text-white" />}
                                 </div>
                             </div>
 
                             {/* Premium Plan */}
                             <div
-                                className={`bg-[#2A0A0A] border text-center flex flex-col ${formData.plan === PROT_PROT_2 ? 'border-[#FFD700] ring-4 ring-[#FFD700]/20 shadow-2xl scale-105 z-10' : 'border-[#420C0C] shadow-lg opacity-90 hover:opacity-100 hover:scale-[1.02]'} rounded-xl p-6 relative overflow-hidden cursor-pointer transition-all duration-300`}
-                                onClick={() => setFormData({ ...formData, plan: PROT_2 })}
+                                className={`bg-[#2A0A0A] border text-center flex flex-col ${formData.plan === 599 ? 'border-[#FFD700] ring-4 ring-[#FFD700]/20 shadow-2xl scale-105 z-10' : 'border-[#420C0C] shadow-lg opacity-90 hover:opacity-100 hover:scale-[1.02]'} rounded-xl p-6 relative overflow-hidden cursor-pointer transition-all duration-300`}
+                                onClick={() => setFormData({ ...formData, plan: 599 })}
                             >
                                 <div className="absolute top-0 right-0 bg-[#FFD700] text-[#2A0A0A] text-[10px] font-bold px-3 py-1.5 uppercase tracking-widest rounded-bl-lg shadow-md z-10">
                                     Best Value ⭐
@@ -236,7 +236,7 @@ const StepRegistrationAndPlan = ({ formData, setFormData, onPayment, showPlans, 
                                 
                                 <div className="mb-4 pt-2">
                                     <h4 className="text-lg font-bold text-[#FFD700] uppercase tracking-wider mb-1 drop-shadow-md">🏆 PREMIUM PASS</h4>
-                                    <div className="text-4xl font-serif text-white drop-shadow-lg">₹PROT_2</div>
+                                    <div className="text-4xl font-serif text-white drop-shadow-lg">₹599</div>
                                 </div>
                                 
                                 <div className="text-[9px] md:text-[10px] font-bold text-[#2A0A0A] uppercase tracking-widest mb-4 bg-[#FFD700] py-1.5 px-2 rounded-md shadow-[0_0_15px_rgba(255,215,0,0.4)] inline-block mx-auto border border-[#FFD700]">
@@ -255,8 +255,8 @@ const StepRegistrationAndPlan = ({ formData, setFormData, onPayment, showPlans, 
                                     <li className="flex items-start gap-3"><Check className="w-5 h-5 text-[#FFD700] mt-0.5 flex-shrink-0 drop-shadow-md" /> <span>Eligible for Prizes</span></li>
                                 </ul>
                                 
-                                <div className={`w-6 h-6 rounded-full border border-[#FFD700] mx-auto flex items-center justify-center mt-auto ${formData.plan === PROT_PROT_2 ? 'bg-[#FFD700] border-transparent' : ''}`}>
-                                    {formData.plan === PROT_2 && <Check className="w-4 h-4 text-[#2A0A0A]" />}
+                                <div className={`w-6 h-6 rounded-full border border-[#FFD700] mx-auto flex items-center justify-center mt-auto ${formData.plan === 599 ? 'bg-[#FFD700] border-transparent' : ''}`}>
+                                    {formData.plan === 599 && <Check className="w-4 h-4 text-[#2A0A0A]" />}
                                 </div>
                             </div>
                         </div>
@@ -292,7 +292,7 @@ const Step4Dashboard = ({ formData, setStep, setSubmissionType, setSubmitStatus 
                 <Check className="w-4 h-4" /> Payment Verified
             </div>
             
-            {((formData.plan === PROT_1 && formData.submission1.title) || (formData.plan === PROT_2 && formData.submission1.title && formData.submission2.title)) && (
+            {((formData.plan === 399 && formData.submission1.title) || (formData.plan === 599 && formData.submission1.title && formData.submission2.title)) && (
                 <div className="mt-8 p-6 bg-gradient-to-r from-[#FFD700]/20 to-[#E0C097]/20 border border-[#FFD700] rounded-xl max-w-2xl mx-auto">
                     <Trophy className="w-12 h-12 text-[#FFD700] mx-auto mb-3" />
                     <h4 className="text-2xl font-serif text-[#FFD700] mb-2">All Submissions Complete!</h4>
@@ -328,8 +328,8 @@ const Step4Dashboard = ({ formData, setStep, setSubmissionType, setSubmitStatus 
             </div>
 
             {/* Entry 2 Card */}
-            <div className={`bg-[#2A0A0A] border-2 ${formData.plan === PROT_PROT_2 ? 'border-[#FFD700]' : 'border-[#420C0C]'} rounded-xl p-8 shadow-lg relative overflow-hidden`}>
-                {formData.plan !== PROT_2 && (
+            <div className={`bg-[#2A0A0A] border-2 ${formData.plan === 599 ? 'border-[#FFD700]' : 'border-[#420C0C]'} rounded-xl p-8 shadow-lg relative overflow-hidden`}>
+                {formData.plan !== 599 && (
                     <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px] flex items-center justify-center text-center p-6 z-10">
                         <div>
                             <Lock className="w-8 h-8 text-[#FFD700] mx-auto mb-2" />
@@ -352,7 +352,7 @@ const Step4Dashboard = ({ formData, setStep, setSubmissionType, setSubmitStatus 
                         setSubmitStatus('idle');
                         setStep(4);
                     }}
-                    disabled={!!formData.submission2.title || formData.plan !== PROT_2}
+                    disabled={!!formData.submission2.title || formData.plan !== 599}
                     className="w-full py-3 bg-[#FFD700] text-[#2A0A0A] font-bold rounded-lg hover:bg-[#FFE55C] disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                     {formData.submission2.title ? 'Submitted' : 'Submit Entry 2'}
@@ -364,7 +364,7 @@ const Step4Dashboard = ({ formData, setStep, setSubmissionType, setSubmitStatus 
 
 const Step5Submission = ({ formData, setFormData, setStep, handleSubmit, submitStatus, errorMsg, submissionType }: { formData: FormData, setFormData: React.Dispatch<React.SetStateAction<FormData>>, setStep: (s: number) => void, handleSubmit: () => void, submitStatus: string, errorMsg: string, submissionType: 1 | 2 }) => {
     // Local state for the current editing submission to avoid deep nested complex updates directly in render
-    const currentSubmission = submissionType === PROT_1 ? formData.submission1 : formData.submission2;
+    const currentSubmission = submissionType === 399 ? formData.submission1 : formData.submission2;
 
     const updateField = (field: 'title' | 'content', value: string) => {
         if (submissionType === 1) {
@@ -640,7 +640,7 @@ const Season2Client = () => {
                 
                 // Determine Plan
                 const paidAmount = Number(verifyData.order_amount);
-                const verifiedPlan = paidAmount >= PROT_2 ? PROT_2 : PROT_1;
+                const verifiedPlan = paidAmount >= 599 ? 599 : 399;
 
                 // Update Local State & DB
                 setFormData(prev => {
@@ -674,7 +674,7 @@ const Season2Client = () => {
                 email: currentData.email,
                 whatsapp: currentData.whatsapp,
                 plan_amount: currentData.plan || 1,
-                submission_count: currentData.plan === PROT_PROT_1 ? 1 : 2,
+                submission_count: currentData.plan === 399 ? 1 : 2,
                 payment_status: 'PAID',
                 ...(currentData.category ? { category: currentData.category } : {})
             }, { merge: true });
@@ -791,7 +791,7 @@ const Season2Client = () => {
                 // Merge specific submission
                 if (submissionType === 1) {
                     firestoreData.submission1 = formData.submission1;
-                    if (formData.plan === PROT_1) firestoreData.status = "complete";
+                    if (formData.plan === 399) firestoreData.status = "complete";
                     else firestoreData.status = "partial_submission";
                 } else if (submissionType === 2) {
                     firestoreData.submission2 = formData.submission2;
@@ -811,7 +811,7 @@ const Season2Client = () => {
             setSubmitStatus('success');
 
             // Conditional Navigation
-            if (Number(formData.plan) >= PROT_2 && submissionType === 1) {
+            if (Number(formData.plan) >= 599 && submissionType === 1) {
                 // If Premium and first entry, go back to Dashboard for 2nd entry
                 setTimeout(() => setStep(3), 2000); // Wait for success animation
             } else {
@@ -834,7 +834,7 @@ const Season2Client = () => {
         <div className={`relative overflow-x-hidden min-h-screen font-sans selection:bg-[#420C0C] selection:text-[#FFD700] ${showCinematic ? 'bg-[#1A0505] text-[#FFD700]' : 'bg-[#F0EBE0]'}`}>
             <Helmet>
                 <title>Indian Writers League | Season 2</title>
-                <meta name="description" content="Join India's Biggest Writing Contest. Poetry, Story, Novel categories. ₹PROT_1.5L Prize Pool." />
+                <meta name="description" content="Join India's Biggest Writing Contest. Poetry, Story, Novel categories. ₹399.5L Prize Pool." />
                 <style>{`
                     @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
                 `}</style>

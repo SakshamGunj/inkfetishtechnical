@@ -45,28 +45,10 @@ const StepRegistrationAndPlan = ({ formData, setFormData, onPayment, showPlans, 
                 currentOrderId = `iwl2_${Date.now()}_${randomPart}`;
                 setFormData(prev => ({ ...prev, orderId: currentOrderId }));
                 
-                try {
-                    await setDoc(doc(db, 'iwl_registrations', currentOrderId), {
-                        order_id: currentOrderId,
-                        name: formData.name,
-                        email: formData.email,
-                        whatsapp: formData.whatsapp,
-                        age: formData.age,
-                        payment_status: 'PENDING',
-                        created_at: new Date().toISOString()
-                    }, { merge: true });
-                } catch(e) { console.error("Initial save error", e) }
+                // Removed redundant frontend save. Backend will handle this via Admin SDK securely.
             } else {
                 // If it exists (e.g. from a previous edit), just update the latest info
-                try {
-                    await setDoc(doc(db, 'iwl_registrations', currentOrderId), {
-                        name: formData.name,
-                        email: formData.email,
-                        whatsapp: formData.whatsapp,
-                        age: formData.age,
-                        updated_at: new Date().toISOString()
-                    }, { merge: true });
-                } catch(e) { console.error("Update save error", e) }
+                // Removed redundant frontend save. Backend will handle this via Admin SDK securely.
             }
 
             // Save to localStorage immediately
@@ -667,20 +649,7 @@ const Season2Client = () => {
 
     // Helper to create or update initial record
     const createInitialRecord = async (orderId: string, currentData: FormData) => {
-        try {
-            await setDoc(doc(db, 'iwl_registrations', orderId), {
-                order_id: orderId,
-                name: currentData.name,
-                email: currentData.email,
-                whatsapp: currentData.whatsapp,
-                plan_amount: currentData.plan || 1,
-                submission_count: currentData.plan === 399 ? 1 : 2,
-                payment_status: 'PAID',
-                ...(currentData.category ? { category: currentData.category } : {})
-            }, { merge: true });
-        } catch (e) {
-            console.error("Failed to update Firebase:", e);
-        }
+        // Handled securely by backend API and webhook.
     };
 
     // --- Payment Handler ---

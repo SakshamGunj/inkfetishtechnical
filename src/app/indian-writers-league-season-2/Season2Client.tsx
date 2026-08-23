@@ -52,7 +52,7 @@ const StepRegistrationAndPlan = ({ formData, setFormData, onPayment, showPlans, 
             }
 
             // Save to localStorage immediately
-            localStorage.setItem('iwl_registration', JSON.stringify({ ...formData, orderId: currentOrderId }));
+            localStorage.setItem('iwl2_registration_cache', JSON.stringify({ ...formData, orderId: currentOrderId }));
 
             setTimeout(() => {
                 document.getElementById('plan-section')?.scrollIntoView({ behavior: 'smooth' });
@@ -542,7 +542,7 @@ const Season2Client = () => {
 
     // --- Persistence ---
     useEffect(() => {
-        const saved = localStorage.getItem('iwl_registration');
+        const saved = localStorage.getItem('iwl2_registration_cache');
         if (saved) {
             try {
                 const parsed = JSON.parse(saved);
@@ -560,7 +560,7 @@ const Season2Client = () => {
                             if (data.order_status === 'PAID') {
                                 parsed.paymentStatus = 'paid';
                                 setFormData(parsed);
-                                localStorage.setItem('iwl_registration', JSON.stringify(parsed));
+                                localStorage.setItem('iwl2_registration_cache', JSON.stringify(parsed));
                                 setStep(3);
                             }
                         })
@@ -604,7 +604,7 @@ const Season2Client = () => {
     // --- Persist Form Data ---
     useEffect(() => {
         if (formData.name || formData.plan) {
-            localStorage.setItem('iwl_registration', JSON.stringify(formData));
+            localStorage.setItem('iwl2_registration_cache', JSON.stringify(formData));
         }
     }, [formData]);
 
@@ -637,7 +637,7 @@ const Season2Client = () => {
                 // Update Local State & DB
                 setFormData(prev => {
                     const newData = { ...prev, plan: verifiedPlan, orderId: orderId, paymentStatus: 'paid' as const };
-                    localStorage.setItem('iwl_registration', JSON.stringify(newData));
+                    localStorage.setItem('iwl2_registration_cache', JSON.stringify(newData));
                     createInitialRecord(orderId, newData);
                     return newData;
                 });
@@ -677,7 +677,7 @@ const Season2Client = () => {
             
             // Save immediately so it persists on reload
             setFormData(prev => ({ ...prev, orderId: currentOrderId }));
-            localStorage.setItem('iwl_registration', JSON.stringify({ ...formData, orderId: currentOrderId }));
+            localStorage.setItem('iwl2_registration_cache', JSON.stringify({ ...formData, orderId: currentOrderId }));
             
             // 1. Create order on Next.js backend API
             const res = await fetch('/api/cashfree/create-order', {
@@ -701,7 +701,7 @@ const Season2Client = () => {
             
             // Save pending order locally
             setFormData(prev => ({ ...prev, orderId: order_id }));
-            localStorage.setItem('iwl_registration', JSON.stringify({ ...formData, orderId: order_id }));
+            localStorage.setItem('iwl2_registration_cache', JSON.stringify({ ...formData, orderId: order_id }));
 
             // 2. Initiate checkout overlay modal
             await cashfree.checkout({
@@ -796,7 +796,7 @@ const Season2Client = () => {
 
 
             // Save to localStorage to persist the submission locally
-            localStorage.setItem('iwl_registration', JSON.stringify(formData));
+            localStorage.setItem('iwl2_registration_cache', JSON.stringify(formData));
 
             setSubmitStatus('success');
 
@@ -859,15 +859,15 @@ const Season2Client = () => {
             {/* Scrolling News Ticker */}
             <div className="absolute top-[80px] md:top-[90px] left-0 right-0 overflow-hidden z-40 bg-black/30 backdrop-blur-md border-y border-[#FFD700]/30 py-1.5">
                 <div className="whitespace-nowrap animate-[marquee_20s_linear_infinite] flex items-center gap-8 text-[#FFD700] text-xs md:text-sm font-semibold uppercase tracking-wider">
-                    <span>🔥 Results announced in live zoom meet</span>
+                    <span>🔥 The results will be announced live on a Zoom meeting.</span>
                     <span>•</span>
-                    <span>🔥 Results announced in live zoom meet</span>
+                    <span>🔥 The results will be announced live on a Zoom meeting.</span>
                     <span>•</span>
-                    <span>🔥 Results announced in live zoom meet</span>
+                    <span>🔥 The results will be announced live on a Zoom meeting.</span>
                     <span>•</span>
-                    <span>🔥 Results announced in live zoom meet</span>
+                    <span>🔥 The results will be announced live on a Zoom meeting.</span>
                     <span>•</span>
-                    <span>🔥 Results announced in live zoom meet</span>
+                    <span>🔥 The results will be announced live on a Zoom meeting.</span>
                 </div>
             </div>
 

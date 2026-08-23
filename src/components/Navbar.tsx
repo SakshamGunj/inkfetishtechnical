@@ -92,6 +92,7 @@ const Navbar = () => {
                         <div className="w-16 h-16 md:w-20 md:h-20 bg-white rounded-full border border-ink-900/10 flex items-center justify-center overflow-hidden transition-transform duration-500 group-hover:scale-105 shadow-[0_4px_20px_rgba(0,0,0,0.03)]">
                             <img src="/images/inkfetish_logo.png" alt="Inkfetish Publication" className="w-[85%] h-[85%] object-contain" />
                         </div>
+                        <span className="font-serif font-black text-xl text-ink-900 tracking-tight hidden sm:block">Inkfetish Publication</span>
                     </Link>
 
                     {/* Desktop Nav - Cleaned up */}

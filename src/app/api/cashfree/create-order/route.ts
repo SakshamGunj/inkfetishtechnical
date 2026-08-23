@@ -33,7 +33,7 @@ function getBaseUrl(): string {
 
 export async function POST(request: Request) {
   try {
-    const { amount, customerName, customerEmail, customerPhone, plan, address, city, state, pincode, source = 'poetry_festival_s2' } = await request.json();
+    const { amount, customerName, customerEmail, customerPhone, plan, address, city, state, pincode, source = 'poetry_festival_s2', providedOrderId } = await request.json();
     let finalAmount = amount;
 
     const appId = process.env.CASHFREE_APP_ID;
@@ -60,10 +60,12 @@ export async function POST(request: Request) {
     } else if (source === 'bharat_writes_kit') {
       orderIdPrefix = 'bwkit_';
       returnUrlPath = 'bharat-writes/certificate/checkout/success';
-      // No test override anymore
+    } else if (source === 'iwl_season_2') {
+      orderIdPrefix = 'iwl2_';
+      returnUrlPath = 'indian-writers-league-season-2';
     }
     
-    const orderId = `${orderIdPrefix}${Date.now()}_${randomPart}`;
+    const orderId = providedOrderId || `${orderIdPrefix}${Date.now()}_${randomPart}`;
 
     // Safe customer_id — no Buffer, works everywhere
     const customerIdRaw = `${orderIdPrefix}${toBase64(customerEmail).replace(/[^a-zA-Z0-9]/g, '').slice(0, 20)}`;
@@ -109,21 +111,34 @@ export async function POST(request: Request) {
     });
 
     // Save PENDING order to Firebase before returning to client
-    if (source === 'bharat_writes_kit' && db) {
+    if (db && (source === 'bharat_writes_kit' || source === 'iwl_season_2')) {
       try {
-        await db.collection('bharat_writes_kit_orders').doc(orderId).set({
-          order_id: orderId,
-          email: customerEmail || '',
-          name: customerName || '',
-          whatsapp: customerPhone || '',
-          address: address || '',
-          city: city || '',
-          state: state || '',
-          pincode: pincode || '',
-          amount: finalAmount,
-          status: 'PENDING',
-          created_at: new Date().toISOString(),
-        });
+        if (source === 'bharat_writes_kit') {
+          await db.collection('bharat_writes_kit_orders').doc(orderId).set({
+            order_id: orderId,
+            email: customerEmail || '',
+            name: customerName || '',
+            whatsapp: customerPhone || '',
+            address: address || '',
+            city: city || '',
+            state: state || '',
+            pincode: pincode || '',
+            amount: finalAmount,
+            status: 'PENDING',
+            created_at: new Date().toISOString(),
+          });
+        } else if (source === 'iwl_season_2') {
+          await db.collection('iwl_registrations').doc(orderId).set({
+            order_id: orderId,
+            email: customerEmail || '',
+            name: customerName || '',
+            whatsapp: customerPhone || '',
+            plan_amount: plan || finalAmount,
+            submission_count: plan === 399 ? 1 : 2,
+            payment_status: 'PENDING',
+            created_at: new Date().toISOString(),
+          });
+        }
       } catch (err) {
         console.error('Failed to save PENDING order to Firebase', err);
       }

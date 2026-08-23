@@ -1,8 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { doc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
-import { db } from "@/lib/firebase";
+import { supabase } from "@/lib/supabase";
 import { useParams } from "next/navigation";
 import {
   Table,
@@ -60,91 +59,76 @@ export default function AuthorDashboard() {
   useEffect(() => {
     const fetchDashboard = async () => {
       try {
-        // 1. Fetch Author Profile from Firestore
-        const authorDocRef = doc(db, "author_portfolios", authorId);
-        const authorSnap = await getDoc(authorDocRef);
+        // 1. Fetch Author Profile from Supabase
+        const { data: authorData, error: authorError } = await supabase
+          .from('author_profiles')
+          .select('*')
+          .eq('id', authorId)
+          .single();
 
-        if (authorSnap.exists()) {
-          const data = authorSnap.data();
+        if (authorData) {
           setAuthor({
-            id: authorSnap.id,
-            name: data.name || data.username || "Author",
-            email: data.email || "",
-            phone: data.phone || "",
+            id: authorData.id,
+            name: authorData.name || "Author",
+            email: authorData.email || "",
+            phone: authorData.phone || "",
           });
-        } else {
-          // Query by ID parameter if document ID differs
-          const q = query(collection(db, "author_portfolios"), where("uid", "==", authorId));
-          const qSnap = await getDocs(q);
-          if (!qSnap.empty) {
-            const first = qSnap.docs[0];
-            const data = first.data();
-            setAuthor({
-              id: first.id,
-              name: data.name || data.username || "Author",
-              email: data.email || "",
-              phone: data.phone || "",
-            });
-          }
         }
 
-        // 2. Fetch Books from Firestore
-        const booksQuery = query(collection(db, "author_books"), where("author_id", "==", authorId));
-        const booksSnap = await getDocs(booksQuery);
-        const booksList: BookType[] = [];
-        booksSnap.forEach((docSnap) => {
-          const b = docSnap.data();
-          booksList.push({
-            id: docSnap.id,
-            title: b.title || "Untitled Book",
-            price: Number(b.price) || 0,
-            custom_expenses: Array.isArray(b.custom_expenses) ? b.custom_expenses : [],
-            royalty_percentage: Number(b.royalty_percentage) || 0,
-            format: b.format || "Paperback",
-          });
-        });
+        // 2. Fetch Books from Supabase
+        const { data: booksData } = await supabase
+          .from('author_books')
+          .select('*')
+          .eq('author_id', authorId);
+          
+        const booksList: BookType[] = (booksData || []).map((b: any) => ({
+          id: b.id,
+          title: b.title || "Untitled Book",
+          price: Number(b.price) || 0,
+          custom_expenses: Array.isArray(b.custom_expenses) ? b.custom_expenses : (typeof b.custom_expenses === 'string' ? JSON.parse(b.custom_expenses) : []),
+          royalty_percentage: Number(b.royalty_percentage) || 0,
+          format: b.format || "Paperback",
+        }));
         setBooks(booksList);
 
-        // 3. Fetch Sales Reports from Firestore
-        const salesQuery = query(collection(db, "author_sales_reports"), where("author_id", "==", authorId));
-        const salesSnap = await getDocs(salesQuery);
-        const salesList: SaleReport[] = [];
-        salesSnap.forEach((docSnap) => {
-          const s = docSnap.data();
-          salesList.push({
-            id: docSnap.id,
-            book_id: s.book_id || "",
-            period_start: s.period_start || "",
-            period_end: s.period_end || "",
-            units_sold: Number(s.units_sold) || 0,
-            revenue_generated: Number(s.revenue_generated) || 0,
-            royalty_earned: Number(s.royalty_earned) || 0,
-            status: s.status || "pending",
-            created_at: s.created_at || new Date().toISOString(),
-          });
-        });
-        salesList.sort((a, b) => new Date(b.period_end).getTime() - new Date(a.period_end).getTime());
+        // 3. Fetch Sales Reports from Supabase
+        const { data: salesData } = await supabase
+          .from('author_sales_reports')
+          .select('*')
+          .eq('author_id', authorId)
+          .order('period_end', { ascending: false });
+
+        const salesList: SaleReport[] = (salesData || []).map((s: any) => ({
+          id: s.id,
+          book_id: s.book_id || "",
+          period_start: s.period_start || "",
+          period_end: s.period_end || "",
+          units_sold: Number(s.units_sold) || 0,
+          revenue_generated: Number(s.revenue_generated) || 0,
+          royalty_earned: Number(s.royalty_earned) || 0,
+          status: s.status || "pending",
+          created_at: s.created_at || new Date().toISOString(),
+        }));
         setSales(salesList);
 
-        // 4. Fetch Audit Logs from Firestore
-        const logsQuery = query(collection(db, "author_audit_logs"), where("author_id", "==", authorId));
-        const logsSnap = await getDocs(logsQuery);
-        const logsList: AuditLog[] = [];
-        logsSnap.forEach((docSnap) => {
-          const l = docSnap.data();
-          logsList.push({
-            id: docSnap.id,
-            book_id: l.book_id || null,
-            action_type: l.action_type || "log",
-            description: l.description || "",
-            created_at: l.created_at || new Date().toISOString(),
-          });
-        });
-        logsList.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+        // 4. Fetch Audit Logs from Supabase
+        const { data: logsData } = await supabase
+          .from('author_audit_logs')
+          .select('*')
+          .eq('author_id', authorId)
+          .order('created_at', { ascending: false });
+
+        const logsList: AuditLog[] = (logsData || []).map((l: any) => ({
+          id: l.id,
+          book_id: l.book_id || null,
+          action_type: l.action_type || "log",
+          description: l.description || "",
+          created_at: l.created_at || new Date().toISOString(),
+        }));
         setLogs(logsList);
 
       } catch (error) {
-        console.error("Dashboard Firestore error:", error);
+        console.error("Dashboard Supabase error:", error);
       } finally {
         setLoading(false);
       }

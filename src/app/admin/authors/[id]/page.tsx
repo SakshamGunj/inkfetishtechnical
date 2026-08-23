@@ -1,8 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { doc, getDoc, collection, query, where, getDocs, addDoc, updateDoc, deleteDoc } from "firebase/firestore";
-import { db } from "@/lib/firebase";
+import { supabase } from "@/lib/supabase";
 import { useParams, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -100,84 +99,77 @@ export default function ManageAuthorPage() {
   const fetchData = async () => {
     try {
       // 1. Author Profile
-      const authorDocRef = doc(db, "author_portfolios", authorId);
-      const authorSnap = await getDoc(authorDocRef);
-      if (authorSnap.exists()) {
-        const data = authorSnap.data();
+      const { data: authorData, error: authorError } = await supabase
+        .from('author_profiles')
+        .select('*')
+        .eq('id', authorId)
+        .single();
+        
+      if (authorError) {
+        console.error("Error fetching author", authorError);
+        toast.error("Author not found");
+        return;
+      }
+      
+      if (authorData) {
         setAuthor({
-          id: authorSnap.id,
-          name: data.name || data.username || "Author",
-          phone: data.phone || "N/A",
-          email: data.email || "N/A",
+          id: authorData.id,
+          name: authorData.name || "Author",
+          phone: authorData.phone || "N/A",
+          email: authorData.email || "N/A",
         });
-      } else {
-        const q = query(collection(db, "author_portfolios"), where("uid", "==", authorId));
-        const qSnap = await getDocs(q);
-        if (!qSnap.empty) {
-          const first = qSnap.docs[0];
-          const data = first.data();
-          setAuthor({
-            id: first.id,
-            name: data.name || data.username || "Author",
-            phone: data.phone || "N/A",
-            email: data.email || "N/A",
-          });
-        }
       }
 
       // 2. Books
-      const booksQuery = query(collection(db, "author_books"), where("author_id", "==", authorId));
-      const booksSnap = await getDocs(booksQuery);
-      const booksList: Book[] = [];
-      booksSnap.forEach((docSnap) => {
-        const b = docSnap.data();
-        booksList.push({
-          id: docSnap.id,
-          title: b.title || "Untitled Book",
-          price: Number(b.price) || 0,
-          custom_expenses: Array.isArray(b.custom_expenses) ? b.custom_expenses : [],
-          royalty_percentage: Number(b.royalty_percentage) || 0,
-          format: b.format || "Paperback",
-        });
-      });
+      const { data: booksData } = await supabase
+        .from('author_books')
+        .select('*')
+        .eq('author_id', authorId);
+        
+      const booksList: Book[] = (booksData || []).map((b: any) => ({
+        id: b.id,
+        title: b.title || "Untitled Book",
+        price: Number(b.price) || 0,
+        custom_expenses: Array.isArray(b.custom_expenses) ? b.custom_expenses : (typeof b.custom_expenses === 'string' ? JSON.parse(b.custom_expenses) : []),
+        royalty_percentage: Number(b.royalty_percentage) || 0,
+        format: b.format || "Paperback",
+      }));
       setBooks(booksList);
 
       // 3. Sales Reports
-      const salesQuery = query(collection(db, "author_sales_reports"), where("author_id", "==", authorId));
-      const salesSnap = await getDocs(salesQuery);
-      const salesList: SaleReport[] = [];
-      salesSnap.forEach((docSnap) => {
-        const s = docSnap.data();
-        salesList.push({
-          id: docSnap.id,
-          book_id: s.book_id || "",
-          period_start: s.period_start || "",
-          period_end: s.period_end || "",
-          units_sold: Number(s.units_sold) || 0,
-          revenue_generated: Number(s.revenue_generated) || 0,
-          royalty_earned: Number(s.royalty_earned) || 0,
-          status: s.status || "pending",
-          created_at: s.created_at || new Date().toISOString(),
-        });
-      });
-      salesList.sort((a, b) => new Date(b.period_end).getTime() - new Date(a.period_end).getTime());
+      const { data: salesData } = await supabase
+        .from('author_sales_reports')
+        .select('*')
+        .eq('author_id', authorId)
+        .order('period_end', { ascending: false });
+
+      const salesList: SaleReport[] = (salesData || []).map((s: any) => ({
+        id: s.id,
+        book_id: s.book_id || "",
+        period_start: s.period_start || "",
+        period_end: s.period_end || "",
+        units_sold: Number(s.units_sold) || 0,
+        revenue_generated: Number(s.revenue_generated) || 0,
+        royalty_earned: Number(s.royalty_earned) || 0,
+        status: s.status || "pending",
+        created_at: s.created_at || new Date().toISOString(),
+      }));
       setSales(salesList);
 
       // 4. Audit Logs
-      const logsQuery = query(collection(db, "author_audit_logs"), where("author_id", "==", authorId));
-      const logsSnap = await getDocs(logsQuery);
-      const logsList: AuditLog[] = [];
-      logsSnap.forEach((docSnap) => {
-        const l = docSnap.data();
-        logsList.push({
-          id: docSnap.id,
-          book_id: l.book_id || null,
-          action_type: l.action_type || "log",
-          description: l.description || "",
-          created_at: l.created_at || new Date().toISOString(),
-        });
-      });
-      logsList.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+      const { data: logsData } = await supabase
+        .from('author_audit_logs')
+        .select('*')
+        .eq('author_id', authorId)
+        .order('created_at', { ascending: false });
+
+      const logsList: AuditLog[] = (logsData || []).map((l: any) => ({
+        id: l.id,
+        book_id: l.book_id || null,
+        action_type: l.action_type || "log",
+        description: l.description || "",
+        created_at: l.created_at || new Date().toISOString(),
+      }));
       setLogs(logsList);
 
     } catch (error: any) {
@@ -214,24 +206,26 @@ export default function ManageAuthorPage() {
 
   const logAudit = async (bookId: string | null, actionType: string, description: string) => {
     try {
-      const now = new Date().toISOString();
-      const docRef = await addDoc(collection(db, "author_audit_logs"), {
-        author_id: authorId,
-        book_id: bookId,
-        action_type: actionType,
-        description: description,
-        created_at: now,
-      });
-
-      const newLog: AuditLog = {
-        id: docRef.id,
-        book_id: bookId,
-        action_type: actionType,
-        description: description,
-        created_at: now,
-      };
-
-      setLogs(prev => [newLog, ...prev]);
+      const { data, error } = await supabase
+        .from('author_audit_logs')
+        .insert([{
+          author_id: authorId,
+          book_id: bookId,
+          action_type: actionType,
+          description: description,
+        }])
+        .select()
+        .single();
+        
+      if (data) {
+        setLogs(prev => [{
+          id: data.id,
+          book_id: data.book_id,
+          action_type: data.action_type,
+          description: data.description,
+          created_at: data.created_at,
+        }, ...prev]);
+      }
     } catch (e: any) {
       console.error("Audit log failed", e);
     }
@@ -239,10 +233,15 @@ export default function ManageAuthorPage() {
 
   const updateSaleStatus = async (saleId: string, newStatus: string) => {
     try {
-      await updateDoc(doc(db, "author_sales_reports", saleId), {
-        status: newStatus,
-        updated_at: new Date().toISOString(),
-      });
+      const { error } = await supabase
+        .from('author_sales_reports')
+        .update({
+          status: newStatus,
+          updated_at: new Date().toISOString(),
+        })
+        .eq('id', saleId);
+        
+      if (error) throw error;
       
       setSales(sales.map(s => s.id === saleId ? { ...s, status: newStatus } : s));
       toast.success(`Payment marked as ${newStatus}`);
@@ -260,33 +259,35 @@ export default function ManageAuthorPage() {
   const handleAddBook = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const now = new Date().toISOString();
-      const newBookData = {
-        author_id: authorId,
-        title: newBook.title,
-        price: Number(newBook.price),
-        custom_expenses: newBook.custom_expenses,
-        royalty_percentage: Number(newBook.royalty_percentage),
-        format: newBook.format,
-        created_at: now,
-      };
-
-      const docRef = await addDoc(collection(db, "author_books"), newBookData);
+      const { data, error } = await supabase
+        .from('author_books')
+        .insert([{
+          author_id: authorId,
+          title: newBook.title,
+          price: Number(newBook.price),
+          custom_expenses: newBook.custom_expenses,
+          royalty_percentage: Number(newBook.royalty_percentage),
+          format: newBook.format,
+        }])
+        .select()
+        .single();
+        
+      if (error) throw error;
       
       const addedBook: Book = {
-        id: docRef.id,
-        title: newBook.title,
-        price: Number(newBook.price),
-        custom_expenses: newBook.custom_expenses,
-        royalty_percentage: Number(newBook.royalty_percentage),
-        format: newBook.format,
+        id: data.id,
+        title: data.title,
+        price: Number(data.price),
+        custom_expenses: Array.isArray(data.custom_expenses) ? data.custom_expenses : (typeof data.custom_expenses === 'string' ? JSON.parse(data.custom_expenses) : []),
+        royalty_percentage: Number(data.royalty_percentage),
+        format: data.format,
       };
 
       toast.success("Book added successfully!");
       setBooks([addedBook, ...books]);
       setIsBookDialogOpen(false);
       
-      await logAudit(docRef.id, 'book_created', `Added new book "${newBook.title}" with MRP ₹${newBook.price} and ${newBook.custom_expenses.length} expenses.`);
+      await logAudit(data.id, 'book_created', `Added new book "${newBook.title}" with MRP ₹${newBook.price} and ${newBook.custom_expenses.length} expenses.`);
 
       setNewBook({ title: "", price: "", custom_expenses: [], royalty_percentage: "", format: "Paperback" });
     } catch (error: any) {
@@ -299,12 +300,17 @@ export default function ManageAuthorPage() {
     if (!editBook || !originalEditBook) return;
     
     try {
-      await updateDoc(doc(db, "author_books", editBook.id), {
-        title: editBook.title,
-        price: Number(editBook.price),
-        custom_expenses: editBook.custom_expenses,
-        royalty_percentage: Number(editBook.royalty_percentage),
-      });
+      const { error } = await supabase
+        .from('author_books')
+        .update({
+          title: editBook.title,
+          price: Number(editBook.price),
+          custom_expenses: editBook.custom_expenses,
+          royalty_percentage: Number(editBook.royalty_percentage),
+        })
+        .eq('id', editBook.id);
+        
+      if (error) throw error;
 
       toast.success("Book updated successfully!");
       setBooks(books.map(b => b.id === editBook.id ? editBook : b));
@@ -348,29 +354,33 @@ export default function ManageAuthorPage() {
     const totalRoyalty = royaltyPerBook * units;
 
     try {
-      const now = new Date().toISOString();
-      const docRef = await addDoc(collection(db, "author_sales_reports"), {
-        author_id: authorId,
-        book_id: newSale.book_id,
-        period_start: start,
-        period_end: end,
-        units_sold: units,
-        revenue_generated: revenue,
-        royalty_earned: totalRoyalty,
-        status: newSale.status,
-        created_at: now,
-      });
+      const { data, error } = await supabase
+        .from('author_sales_reports')
+        .insert([{
+          author_id: authorId,
+          book_id: newSale.book_id,
+          period_start: start,
+          period_end: end,
+          units_sold: units,
+          revenue_generated: revenue,
+          royalty_earned: totalRoyalty,
+          status: newSale.status,
+        }])
+        .select()
+        .single();
+        
+      if (error) throw error;
 
       const addedSale: SaleReport = {
-        id: docRef.id,
-        book_id: newSale.book_id,
-        period_start: start,
-        period_end: end,
-        units_sold: units,
-        revenue_generated: revenue,
-        royalty_earned: totalRoyalty,
-        status: newSale.status,
-        created_at: now,
+        id: data.id,
+        book_id: data.book_id,
+        period_start: data.period_start,
+        period_end: data.period_end,
+        units_sold: Number(data.units_sold),
+        revenue_generated: Number(data.revenue_generated),
+        royalty_earned: Number(data.royalty_earned),
+        status: data.status,
+        created_at: data.created_at,
       };
 
       toast.success("Sale report logged!");
@@ -390,7 +400,9 @@ export default function ManageAuthorPage() {
   const deleteBook = async (id: string, title: string) => {
     if (!confirm("Delete this book? It will also delete related sales.")) return;
     try {
-      await deleteDoc(doc(db, "author_books", id));
+      const { error } = await supabase.from('author_books').delete().eq('id', id);
+      if (error) throw error;
+      
       setBooks(books.filter(b => b.id !== id));
       setSales(sales.filter(s => s.book_id !== id));
       toast.success("Book deleted");

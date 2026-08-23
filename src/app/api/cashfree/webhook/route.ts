@@ -118,8 +118,24 @@ export async function POST(request: Request) {
               updated_at: new Date().toISOString(),
             }, { merge: true });
             console.log(`Saved Daniya Khan pre-order ${orderId} to Firebase Firestore`);
-          } catch (fbErr: any) {
-            console.error('Webhook Firebase Firestore Error for Daniya Khan:', fbErr.message);
+          } catch (err) {
+            console.error('Failed to save Daniya Khan order to Firebase', err);
+          }
+        }
+        
+      // 2d. IWL SEASON 2 REGISTRATIONS → Update in Firebase Firestore
+      } else if (orderId.startsWith('iwl2_')) {
+        console.log(`IWL Season 2 Registration Confirmed: ${orderId}`);
+        if (db) {
+          try {
+            await db.collection('iwl_registrations').doc(orderId).set({
+              cf_order_id: order.cf_order_id || '',
+              payment_status: 'PAID',
+              updated_at: new Date().toISOString(),
+            }, { merge: true });
+            console.log(`Updated IWL Season 2 registration ${orderId} to PAID in Firebase`);
+          } catch (err) {
+            console.error('Failed to update IWL Season 2 order in Firebase', err);
           }
         }
 

@@ -261,7 +261,7 @@ const StepRegistrationAndPlan = ({ formData, setFormData, onPayment, showPlans, 
 
 const Step4Dashboard = ({ formData, setStep, setSubmissionType, setSubmitStatus }: { formData: FormData, setStep: (s: number) => void, setSubmissionType: (type: 1 | 2) => void, setSubmitStatus: (s: 'idle' | 'submitting' | 'success' | 'error') => void }) => (
 
-    <div className="max-w-4xl mx-auto px-4 py-20">
+    <div className="max-w-4xl mx-auto px-4 pt-32 md:pt-40 pb-20">
         <div className="text-center mb-12">
             <h3 className="text-3xl md:text-4xl font-serif text-white mb-4">Participant Dashboard</h3>
             <p className="text-[#E0C097] text-lg mb-4">Welcome, <strong>{formData.name}</strong></p>
@@ -281,16 +281,16 @@ const Step4Dashboard = ({ formData, setStep, setSubmissionType, setSubmitStatus 
         <div className="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
 
             {/* Entry 1 Card */}
-            <div className="bg-white border-2 border-[#D7CCC8] rounded-xl p-8 shadow-lg relative overflow-hidden">
+            <div className="bg-black/40 border border-[#E0C097]/30 backdrop-blur-md rounded-xl p-8 shadow-2xl relative overflow-hidden transition-all hover:border-[#FFD700]/50 hover:shadow-[0_0_30px_rgba(255,215,0,0.15)]">
                 <div className="flex items-center justify-between mb-4">
-                    <h4 className="text-xl font-bold text-[#E0C097]">Entry #1</h4>
+                    <h4 className="text-xl font-bold text-[#FFD700]">Entry #1</h4>
                     {formData.submission1.title ? (
                         <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded font-bold">SUBMITTED</span>
                     ) : (
                         <span className="text-xs bg-amber-100 text-amber-700 px-2 py-1 rounded font-bold">PENDING</span>
                     )}
                 </div>
-                <p className="text-[#E0C097]/70 text-sm mb-6">Standard submission included in your plan.</p>
+                <p className="text-[#E5D4B3] text-sm mb-6">Standard submission included in your plan.</p>
                 <button
                     onClick={() => {
                         setSubmissionType(1);
@@ -305,7 +305,7 @@ const Step4Dashboard = ({ formData, setStep, setSubmissionType, setSubmitStatus 
             </div>
 
             {/* Entry 2 Card */}
-            <div className={`bg-[#2A0A0A] border-2 ${formData.plan === 2 ? 'border-[#FFD700]' : 'border-[#420C0C]'} rounded-xl p-8 shadow-lg relative overflow-hidden`}>
+            <div className={`bg-black/60 border border-[#E0C097]/30 backdrop-blur-md rounded-xl p-8 shadow-2xl relative overflow-hidden transition-all hover:border-[#FFD700]/50 hover:shadow-[0_0_30px_rgba(255,215,0,0.15)] ${formData.plan === 2 ? 'border-[#FFD700]/60' : 'border-[#420C0C]'}`}>
                 {formData.plan !== 2 && (
                     <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px] flex items-center justify-center text-center p-6 z-10">
                         <div>
@@ -352,19 +352,19 @@ const Step5Submission = ({ formData, setFormData, setStep, handleSubmit, submitS
     };
 
     return (
-        <div className="max-w-4xl mx-auto px-4 py-20 pb-40">
+        <div className="max-w-4xl mx-auto px-4 pt-32 md:pt-40 pb-40">
             <h3 className="text-3xl text-center font-serif text-white mb-8">
                 Submit Entry #{submissionType}
             </h3>
 
-            <div className="bg-white p-6 md:p-8 rounded-xl shadow-lg border border-[#EFEBE9]">
+            <div className="bg-black/40 p-6 md:p-8 rounded-xl shadow-2xl border border-[#E0C097]/30 backdrop-blur-md">
                 {/* Category Selection (Moved here) */}
                 <div className="mb-6">
                     <label className="block text-[#E0C097] font-bold mb-2">Select Category</label>
                     <select
                         value={formData.category} // Assuming one category for now, or we could split it
                         onChange={e => setFormData(prev => ({ ...prev, category: e.target.value as Category }))}
-                        className="w-full bg-[#F5F5F5] border border-[#D7CCC8] p-4 rounded-lg focus:border-[#420C0C] outline-none font-serif text-lg"
+                        className="w-full bg-black/50 border border-[#E0C097]/30 text-white placeholder:text-[#E0C097]/50 focus:border-[#FFD700] focus:ring-1 focus:ring-[#FFD700] p-4 rounded-lg outline-none font-serif text-lg transition-all"
                     >
                         <option value="">-- Choose Category --</option>
                         <option value="poetry">Poetry (Max 40 Lines)</option>
@@ -376,14 +376,14 @@ const Step5Submission = ({ formData, setFormData, setStep, handleSubmit, submitS
                 </div>
 
                 <input
-                    className="w-full mb-4 p-4 bg-[#F5F5F5] border border-[#D7CCC8] rounded-lg focus:border-[#420C0C] outline-none font-serif text-lg"
+                    className="w-full mb-4 bg-black/50 border border-[#E0C097]/30 text-white placeholder:text-[#E0C097]/50 focus:border-[#FFD700] focus:ring-1 focus:ring-[#FFD700] p-4 rounded-lg outline-none font-serif text-lg transition-all"
                     placeholder="Title of your piece"
                     value={currentSubmission.title}
                     onChange={e => updateField('title', e.target.value)}
                 />
                 <TextareaAutosize
                     minRows={10}
-                    className="w-full p-5 bg-[#F5F5F5] border border-[#D7CCC8] rounded-lg focus:border-[#420C0C] outline-none font-serif text-lg leading-relaxed resize-none text-[#2A0A0A]"
+                    className="w-full bg-black/50 border border-[#E0C097]/30 text-white placeholder:text-[#E0C097]/50 focus:border-[#FFD700] focus:ring-1 focus:ring-[#FFD700] p-5 rounded-lg outline-none font-serif text-lg leading-relaxed resize-none transition-all"
                     placeholder="Paste your content here..."
                     value={currentSubmission.content}
                     onChange={e => updateField('content', e.target.value)}
@@ -806,7 +806,7 @@ const Season2Client = () => {
     const showCinematic = step === 1;
 
     return (
-        <div className={`relative overflow-x-hidden min-h-screen font-sans selection:bg-[#420C0C] selection:text-[#FFD700] ${showCinematic ? 'bg-[#1A0505] text-[#FFD700]' : 'bg-[#F0EBE0]'}`}>
+        <div className={`relative overflow-x-hidden min-h-screen font-sans selection:bg-[#420C0C] selection:text-[#FFD700] bg-[#1A0505] text-[#FFD700]`}>
             <Helmet>
                 <title>Indian Writers League | Season 2</title>
                 <meta name="description" content="Join India's Biggest Writing Contest. Poetry, Story, Novel categories. ₹1.5L Prize Pool." />

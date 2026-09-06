@@ -1,4 +1,6 @@
-{
+import admin from 'firebase-admin';
+
+const serviceAccount = {
   "type": "service_account",
   "project_id": "inkfetishofficial",
   "private_key_id": "781873c6ce3d8c841d191ce0aa545cd076bb15d3",
@@ -10,4 +12,44 @@
   "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
   "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-fbsvc%40inkfetishofficial.iam.gserviceaccount.com",
   "universe_domain": "googleapis.com"
+};
+
+/**
+ * Returns the initialized Firebase Admin app (singleton pattern safe for
+ * Next.js hot-reload and Turbopack module caching).
+ */
+function getAdminApp(): admin.app.App {
+  // If an app is already initialized in this dev session, delete it to clear out
+  // any old invalid credentials before re-initializing.
+  if (admin.apps.length > 0) {
+    // In production, we'd normally just return admin.apps[0], but to force a 
+    // credential refresh without restarting the dev server, we recreate it.
+    if (process.env.NODE_ENV !== 'production') {
+      admin.apps.forEach(app => app?.delete());
+    } else {
+      return admin.apps[0]!;
+    }
+  }
+
+  return admin.initializeApp({
+    credential: admin.credential.cert({
+      ...serviceAccount,
+      privateKey: serviceAccount.private_key,
+    }),
+  });
 }
+
+/**
+ * Returns the Firestore Admin instance (lazy singleton — safe to call from
+ * any server-side context including API routes and Server Actions).
+ */
+export function getAdminDb(): admin.firestore.Firestore {
+  return getAdminApp().firestore();
+}
+
+// Legacy named export kept for backward compat with existing imports
+export const db = {
+  collection: (name: string) => getAdminDb().collection(name),
+};
+
+export default admin;

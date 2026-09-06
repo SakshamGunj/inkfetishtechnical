@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>People's Choice Award - Registration</title>
+    <meta name="description" content="Register for the People's Choice Award. 200,000 people will decide the top 20 writers and poets!">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-container">
+            <img src="assets/inkfetish_logo.png" alt="Inkfetish Logo" class="navbar-logo">
+            <span class="navbar-title">Inkfetish Publication</span>
+        </div>
+    </nav>
+    <div class="background-elements">
+        <div class="glow-orb top-left"></div>
+        <div class="glow-orb bottom-right"></div>
+        <div class="particles"></div>
+    </div>
+
+    <main class="container">
+        <section class="hero">
+            <div class="award-icon">
+                <svg width="80" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z" fill="url(#gold-gradient)"/>
+                    <path d="M19 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V5C21 3.89543 20.1046 3 19 3ZM12 17C9.23858 17 7 14.7614 7 12C7 9.23858 9.23858 7 12 7C14.7614 7 17 9.23858 17 12C17 14.7614 14.7614 17 12 17Z" fill="url(#gold-gradient)"/>
+                    <defs>
+                        <linearGradient id="gold-gradient" x1="3" y1="3" x2="21" y2="21" gradientUnits="userSpaceOnUse">
+                            <stop stop-color="#BF953F"/>
+                            <stop offset="0.25" stop-color="#FCF6BA"/>
+                            <stop offset="0.5" stop-color="#B38728"/>
+                            <stop offset="0.75" stop-color="#FBF5B7"/>
+                            <stop offset="1" stop-color="#AA771C"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+            </div>
+            <div class="award-logo">
+                <h1 class="logo-top">PEOPLE CHOICE</h1>
+                <div class="logo-bottom">
+                    <span class="diamond">✦</span>
+                    <span class="logo-word">AWARD</span>
+                    <span class="diamond">✦</span>
+                </div>
+            </div>
+            <div class="award-divider"></div>
+            <h2 class="subtitle">WHAT IF</h2>
+            <h1 class="title">2 LAKH</h1>
+            <h3 class="tagline">PEOPLE HAD THE POWER TO CHOOSE THE TOP 20 WRITERS & POETS?</h3>
+        </section>
+
+        <section class="registration-form-wrapper">
+            <div class="form-container glass-panel">
+                <div class="form-header">
+                    <h2>Nominate Yourself</h2>
+                    <p>Enter your details below to register for the People's Choice Award.</p>
+                </div>
+                <form id="registrationForm" class="registration-form">
+                    <div class="input-group">
+                        <label for="fullName">Full Name</label>
+                        <input type="text" id="fullName" name="fullName" placeholder="Jane Doe" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" placeholder="jane@example.com" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="category">Category</label>
+                        <div class="select-wrapper">
+                            <select id="category" name="category" required>
+                                <option value="" disabled selected>Select your category</option>
+                                <option value="writer">Writer / Author</option>
+                                <option value="poet">Poet</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="portfolio">Portfolio / Social Link</label>
+                        <input type="url" id="portfolio" name="portfolio" placeholder="https://instagram.com/yourhandle" required>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">
+                        <span class="btn-text">Submit Registration</span>
+                        <span class="btn-icon">→</span>
+                    </button>
+                    
+                    <p class="form-footer">By registering, you agree to the Terms & Conditions of the People's Choice Award.</p>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- Shiny Banner Transition -->
+    <div class="shiny-banner full-width">
+        <p>Join the most prestigious writing and poetry award decided entirely by the readers. Register now to be part of the legacy.</p>
+    </div>
+
+    <!-- About the Award -->
+    <section class="about-award">
+        <div class="section-container glass-panel split-layout">
+            <div class="content-side">
+                <h2>What is the People's Choice Award?</h2>
+                <p>The People's Choice Award is a revolutionary platform where readers wield the power. Instead of a closed jury, 200,000 passionate readers will vote to crown the top 20 Writers and Poets. It is the ultimate test of audience connection and literary impact.</p>
+            </div>
+            <div class="image-side">
+                <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1788291545/ChatGPT_Image_Aug_25_2026_10_31_47_PM_1_ittzzw.png" alt="People's Choice Award Statuette" class="about-statuette">
+            </div>
+        </div>
+    </section>
+
+    <!-- Trust Indicators -->
+    <section class="trust-tags">
+        <div class="tags-container trust-row">
+            <div class="trust-card glass-panel">
+                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M16 11C18.2091 11 20 9.20914 20 7C20 4.79086 18.2091 3 16 3C13.7909 3 12 4.79086 12 7C12 9.20914 13.7909 11 16 11Z" fill="url(#gold-gradient)"/>
+                    <path d="M8 11C10.2091 11 12 9.20914 12 7C12 4.79086 10.2091 3 8 3C5.79086 3 4 4.79086 4 7C4 9.20914 5.79086 11 8 11Z" fill="url(#gold-gradient)"/>
+                    <path d="M16 14C11.5817 14 8 15.7909 8 18V21H24V18C24 15.7909 20.4183 14 16 14Z" fill="url(#gold-gradient)"/>
+                    <path d="M2.5 15C1 16 0 17 0 19V21H5V18C5 17 5.5 16 6.5 15.5C5.5 15 4 15 2.5 15Z" fill="url(#gold-gradient)"/>
+                </svg>
+                <span class="trust-text">200,000+ Voters</span>
+            </div>
+            <div class="trust-card glass-panel">
+                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 22C12 22 20 18 20 12V5L12 2L4 5V12C4 18 12 22 12 22ZM11 15L7.5 11.5L8.91 10.09L11 12.17L15.09 8.08L16.5 9.5L11 15Z" fill="url(#gold-gradient)"/>
+                </svg>
+                <span class="trust-text">100% Transparent</span>
+            </div>
+            <div class="trust-card glass-panel">
+                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM11 19.93C7.06 19.43 4 16.05 4 12C4 11.38 4.08 10.78 4.21 10.21L9 15V16C9 17.1 9.9 18 11 18V19.93ZM17.9 17.39C17.64 16.58 16.9 16 16 16H15V13C15 11.9 14.1 11 13 11H7V9H9C10.1 9 11 8.1 11 7V5H13C15.21 5 17 6.79 17 9V9.9L19.42 12.32C19.79 13.52 19.9 14.79 19.73 16.03L17.9 17.39Z" fill="url(#gold-gradient)"/>
+                </svg>
+                <span class="trust-text">Global Laureates</span>
+            </div>
+            <div class="trust-card glass-panel">
+                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2L1 7L12 12L23 7L12 2ZM12 14.27L3.25 10.29V17H4.5V11.83L12 15.24L19.5 11.83V17H20.75V10.29L12 14.27ZM12 4.25L19.14 7.5L12 10.75L4.86 7.5L12 4.25Z" fill="url(#gold-gradient)"/>
+                </svg>
+                <span class="trust-text">Unbiased Selection</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits & Rewards Section — PREMIUM -->
+    <section class="benefits-section">
+        <!-- Decorative background glow -->
+        <div class="benefits-bg-glow"></div>
+
+        <div class="benefits-container">
+
+            <!-- Section Header -->
+            <div class="benefits-header">
+                <div class="benefits-eyebrow">
+                    <span class="eyebrow-line"></span>
+                    <span class="eyebrow-text">Rewards &amp; Recognition</span>
+                    <span class="eyebrow-line"></span>
+                </div>
+                <h2>Top 20 Writers &amp; Poets<br><span class="header-accent">Win More Than Just an Award</span></h2>
+                <p class="benefits-sub">Recognition, legacy and extraordinary rewards await the chosen voices.</p>
+            </div>
+
+            <!-- Main Award — Hero Card (Top highlight) -->
+            <div class="benefit-hero-card">
+                <div class="hero-card-glow"></div>
+                <div class="hero-left">
+                    <div class="hero-badge">TOP 20</div>
+                    <div class="hero-icon">🏆</div>
+                    <h3>Prestigious Award + Home Delivery</h3>
+                    <p>Every one of the Top 20 receives a stunning physical award statuette and recognition kit — the ultimate mark of literary excellence, delivered straight to your doorstep across India.</p>
+                </div>
+                <div class="hero-center-img">
+                    <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1788291912/ChatGPT_Image_Sep_2_2026_01_13_09_AM_1_vb4vp2.png" alt="Official Award Kit" class="award-kit-img">
+                </div>
+                <div class="hero-divider"></div>
+                <div class="hero-right">
+                    <div class="value-pill">🎯 Top 20 Exclusive</div>
+                    <ul class="hero-checklist">
+                        <li><span class="check">✓</span> Physical Award Statuette</li>
+                        <li><span class="check">✓</span> Recognition Certificate</li>
+                        <li><span class="check">✓</span> Delivered to Your Home</li>
+                        <li><span class="check">✓</span> Featured on Heritage Wall</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Sub-cards Grid -->
+            <div class="benefits-grid-v2">
+
+                <!-- Book Publication -->
+                <div class="benefit-card-v2">
+                    <div class="card-rank">Top 3</div>
+                    <div class="benefit-icon-v2">📖</div>
+                    <div class="card-content">
+                        <h3>Free Solo Book Publication</h3>
+                        <p>The Top 3 winners receive full publication of their own solo book — design, print, and distribution handled entirely by Inkfetish.</p>
+                    </div>
+                    <div class="card-value-tag">🔥 High Value</div>
+                </div>
+
+                <!-- Goodies -->
+                <div class="benefit-card-v2 highlight-card">
+                    <div class="card-rank">Top 20</div>
+                    <div class="benefit-icon-v2">🎁</div>
+                    <div class="card-content">
+                        <h3>Exclusive Goodies</h3>
+                        <p>A curated hamper of exclusive literary merchandise and goodies crafted for the most celebrated writers &amp; poets.</p>
+                    </div>
+                    <div class="card-value-tag gold-tag">✦ Worth ₹25,000</div>
+                </div>
+
+                <!-- Heritage Wall -->
+                <div class="benefit-card-v2">
+                    <div class="card-rank">Top 20</div>
+                    <div class="benefit-icon-v2">🏛️</div>
+                    <div class="card-content">
+                        <h3>Heritage Wall Recognition</h3>
+                        <p>Your name, immortalised. All Top 20 are permanently enshrined on the <em>People's Choice Heritage Wall</em> — forever.</p>
+                    </div>
+                    <div class="card-value-tag">♾️ Lifetime Legacy</div>
+                </div>
+
+            </div>
+
+            <!-- Participation Banner — all participants -->
+            <div class="participation-banner-v2">
+                <div class="pb-icon">🎓</div>
+                <div class="pb-content">
+                    <span class="pb-label">FOR EVERY PARTICIPANT</span>
+                    <p>Receive a <strong>People's Choice Participation Certificate</strong> &amp; a personalised <strong>Appreciation Letter</strong> — because every voice matters.</p>
+                </div>
+                <div class="pb-shine"></div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Process / Journey Section -->
+
+    <section class="process-section">
+        <div class="process-container">
+            <div class="process-header">
+                <h2>Your Journey to the Top 20</h2>
+                <p class="process-sub">Five powerful stages. One defining moment.</p>
+            </div>
+            <div class="process-steps">
+                <div class="process-step">
+                    <div class="step-number">01</div>
+                    <div class="step-connector"></div>
+                    <div class="step-icon">📝</div>
+                    <h3>Register</h3>
+                    <p>Fill out the nomination form with your details and portfolio link.</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">02</div>
+                    <div class="step-connector"></div>
+                    <div class="step-icon">📤</div>
+                    <h3>Submit Your Entry</h3>
+                    <p>Submit your work before the deadline to be eligible for voting.</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">03</div>
+                    <div class="step-connector"></div>
+                    <div class="step-icon">🗳️</div>
+                    <h3>Voting Begins</h3>
+                    <p>200,000+ readers cast their votes for their favourite writers and poets.</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">04</div>
+                    <div class="step-connector"></div>
+                    <div class="step-icon">⚖️</div>
+                    <h3>Parallel Judging</h3>
+                    <p>An editorial panel evaluates entries in parallel to ensure merit and quality.</p>
+                </div>
+                <div class="process-step last-step">
+                    <div class="step-number">05</div>
+                    <div class="step-icon">🎬</div>
+                    <h3>Live Result Declaration</h3>
+                    <p>The Top 20 are revealed in a grand live Zoom ceremony — watch history being made.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Dates Section -->
+    <section class="dates-section">
+        <div class="dates-container">
+            <div class="dates-header">
+                <h2>Key Dates</h2>
+                <p class="dates-sub">Mark your calendar. Every second counts.</p>
+            </div>
+            <div class="dates-grid">
+                <div class="date-card glass-panel">
+                    <div class="date-icon">🔔</div>
+                    <div class="date-label">Registration Open</div>
+                    <div class="date-value">Now</div>
+                    <div class="date-badge live">Live</div>
+                </div>
+                <div class="date-card glass-panel deadline-card">
+                    <div class="date-icon">⏳</div>
+                    <div class="date-label">Submission Deadline</div>
+                    <div class="date-value">9th September 2026</div>
+                    <div class="date-badge urgent">Closing Soon</div>
+                </div>
+                <div class="date-card glass-panel">
+                    <div class="date-icon">🗳️</div>
+                    <div class="date-label">Voting Period</div>
+                    <div class="date-value">Mid September 2026</div>
+                    <div class="date-badge upcoming">Upcoming</div>
+                </div>
+                <div class="date-card glass-panel">
+                    <div class="date-icon">🏆</div>
+                    <div class="date-label">Result Declaration</div>
+                    <div class="date-value">30th September 2026</div>
+                    <div class="date-badge tentative">Tentative</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Participant Limit Section -->
+    <section class="limit-section">
+        <div class="limit-container glass-panel">
+            <div class="limit-left">
+                <span class="limit-icon">🔒</span>
+                <div>
+                    <h2>Strictly Limited to <span class="limit-number">250</span> Participants</h2>
+                    <p>This is an exclusive award. Only the first 250 registrations will be accepted. Once the slots are filled, registrations close permanently.</p>
+                </div>
+            </div>
+            <div class="limit-right">
+                <div class="urgency-badge">
+                    <span>⚡</span>
+                    <span>Don't Miss Your Spot</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Slider Section -->
+    <section class="testimonials-section">
+        <div class="testimonials-container">
+            <div class="testimonials-header">
+                <div class="benefits-eyebrow">
+                    <span class="eyebrow-line"></span>
+                    <span class="eyebrow-text">Real Voices. Real Results.</span>
+                    <span class="eyebrow-line"></span>
+                </div>
+                <h2>Writers Who Chose <span class="header-accent">Inkfetish</span></h2>
+                <p>Over 1,000+ writers have trusted us. Here's what they say.</p>
+            </div>
+
+            <!-- Slider Track 1 — auto scroll left -->
+            <div class="slider-wrapper">
+                <div class="slider-track track-1">
+                    <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897590/WhatsApp_Image_2026-03-23_at_7.03.30_PM-compressed_fsgkug.webp" alt="Testimonial" loading="lazy">
+                    <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897591/WhatsApp_Image_2026-03-23_at_7.03.31_PM_3_-compressed_ofwyil.webp" alt="Testimonial" loading="lazy">
+                    <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897591/WhatsApp_Image_2026-03-23_at_7.03.31_PM_4_-compressed_dnisid.webp" alt="Testimonial" loading="lazy">
+                    <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897592/WhatsApp_Image_2026-03-23_at_7.03.31_PM_5_-compressed_hgy6j1.webp" alt="Testimonial" loading="lazy">
+                    <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897592/WhatsApp_Image_2026-03-28_at_11.47.30_PM_1_-compressed_abkbxy.webp" alt="Testimonial" loading="lazy">
+                    <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897593/WhatsApp_Image_2026-03-31_at_11.00.31_PM-compressed_a58ono.webp" alt="Testimonial" loading="lazy">
+                    <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897593/WhatsApp_Image_2026-04-01_at_6.40.37_AM-compressed_eibjs4.webp" alt="Testimonial" loading="lazy">
+                    <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897594/WhatsApp_Image_2026-04-01_at_6.40.55_AM_1_-compressed_j51ngs.webp" alt="Testimonial" loading="lazy">
+                    <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897594/WhatsApp_Image_2026-04-02_at_5.17.33_PM_2_-compressed_sz4wld.webp" alt="Testimonial" loading="lazy">
+                    <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897595/WhatsApp_Image_2026-04-02_at_5.17.33_PM_3_-compressed_kosajj.webp" alt="Testimonial" loading="lazy">
+                    <!-- Duplicate for seamless loop -->
+                    <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897590/WhatsApp_Image_2026-03-23_at_7.03.30_PM-compressed_fsgkug.webp" alt="Testimonial" loading="lazy">
+                    <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897591/WhatsApp_Image_2026-03-23_at_7.03.31_PM_3_-compressed_ofwyil.webp" alt="Testimonial" loading="lazy">
+                    <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897591/WhatsApp_Image_2026-03-23_at_7.03.31_PM_4_-compressed_dnisid.webp" alt="Testimonial" loading="lazy">
+                    <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897592/WhatsApp_Image_2026-03-23_at_7.03.31_PM_5_-compressed_hgy6j1.webp" alt="Testimonial" loading="lazy">
+                    <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897592/WhatsApp_Image_2026-03-28_at_11.47.30_PM_1_-compressed_abkbxy.webp" alt="Testimonial" loading="lazy">
+                </div>
+            </div>
+
+            <!-- Slider Track 2 — auto scroll right (reverse) -->
+            <div class="slider-wrapper">
+                <div class="slider-track track-2">
+                    <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897595/WhatsApp_Image_2026-04-02_at_5.42.20_PM_1_-compressed_khfil0.webp" alt="Testimonial" loading="lazy">
+                    <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897596/WhatsApp_Image_2026-04-02_at_5.42.20_PM-compressed_sq3utn.webp" alt="Testimonial" loading="lazy">
+                    <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897596/WhatsApp_Image_2026-04-03_at_10.52.04_AM_1_-compressed_pp9tww.webp" alt="Testimonial" loading="lazy">
+                    <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897597/WhatsApp_Image_2026-04-03_at_10.52.05_AM_1_-compressed_uphqxg.webp" alt="Testimonial" loading="lazy">
+                    <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897597/WhatsApp_Image_2026-04-03_at_10.52.05_AM_2_-compressed_m2qlui.webp" alt="Testimonial" loading="lazy">
+                    <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897597/WhatsApp_Image_2026-04-04_at_12.20.06_PM_1_-compressed_lrqjv2.webp" alt="Testimonial" loading="lazy">
+                    <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897598/WhatsApp_Image_2026-04-07_at_8.39.44_PM_1_-compressed_gjnlck.webp" alt="Testimonial" loading="lazy">
+                    <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897598/WhatsApp_Image_2026-04-07_at_8.39.44_PM_2_-compressed_hfr0wv.webp" alt="Testimonial" loading="lazy">
+                    <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897599/WhatsApp_Image_2026-04-07_at_8.39.44_PM-compressed_ztxsge.webp" alt="Testimonial" loading="lazy">
+                    <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897599/WhatsApp_Image_2026-04-09_at_2.53.04_PM-compressed_wsnhmu.webp" alt="Testimonial" loading="lazy">
+                    <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897600/WhatsApp_Image_2026-04-09_at_2.59.25_PM-compressed_in2led.webp" alt="Testimonial" loading="lazy">
+                    <!-- Duplicate for seamless loop -->
+                    <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897595/WhatsApp_Image_2026-04-02_at_5.42.20_PM_1_-compressed_khfil0.webp" alt="Testimonial" loading="lazy">
+                    <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897596/WhatsApp_Image_2026-04-02_at_5.42.20_PM-compressed_sq3utn.webp" alt="Testimonial" loading="lazy">
+                    <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897596/WhatsApp_Image_2026-04-03_at_10.52.04_AM_1_-compressed_pp9tww.webp" alt="Testimonial" loading="lazy">
+                    <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897597/WhatsApp_Image_2026-04-03_at_10.52.05_AM_1_-compressed_uphqxg.webp" alt="Testimonial" loading="lazy">
+                </div>
+            </div>
+
+            <!-- Third row — newer images, left scroll -->
+            <div class="slider-wrapper">
+                <div class="slider-track track-1">
+                    <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897711/WhatsApp_Image_2026-04-01_at_1.54.05_PM_1_-compressed_eoiarj.webp" alt="Testimonial" loading="lazy">
+                    <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897712/WhatsApp_Image_2026-04-01_at_1.54.06_PM_2_-compressed_l5bsna.webp" alt="Testimonial" loading="lazy">
+                    <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897712/WhatsApp_Image_2026-04-01_at_1.54.06_PM_3_-compressed_czwtzu.webp" alt="Testimonial" loading="lazy">
+                    <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897713/WhatsApp_Image_2026-04-01_at_1.54.07_PM_1_-compressed_slt2mj.webp" alt="Testimonial" loading="lazy">
+                    <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897714/WhatsApp_Image_2026-04-01_at_1.54.07_PM_2_-compressed_j6w9sn.webp" alt="Testimonial" loading="lazy">
+                    <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897715/WhatsApp_Image_2026-04-01_at_1.54.07_PM_3_-compressed_moo9ra.webp" alt="Testimonial" loading="lazy">
+                    <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897715/WhatsApp_Image_2026-04-07_at_12.09.27_AM_1_-compressed_ugjy5e.webp" alt="Testimonial" loading="lazy">
+                    <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897716/WhatsApp_Image_2026-04-07_at_12.09.27_AM-compressed_bzgl8t.webp" alt="Testimonial" loading="lazy">
+                    <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/q_auto/f_auto/v1776802129/WhatsApp_Image_2026-04-22_at_1.37.09_AM_1_v2i3bu.jpg" alt="Testimonial" loading="lazy">
+                    <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/q_auto/f_auto/v1776802129/WhatsApp_Image_2026-04-22_at_1.37.09_AM_2_d7vvc7.jpg" alt="Testimonial" loading="lazy">
+                    <!-- Duplicate for seamless loop -->
+                    <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897711/WhatsApp_Image_2026-04-01_at_1.54.05_PM_1_-compressed_eoiarj.webp" alt="Testimonial" loading="lazy">
+                    <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897712/WhatsApp_Image_2026-04-01_at_1.54.06_PM_2_-compressed_l5bsna.webp" alt="Testimonial" loading="lazy">
+                    <img src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897712/WhatsApp_Image_2026-04-01_at_1.54.06_PM_3_-compressed_czwtzu.webp" alt="Testimonial" loading="lazy">
+                </div>
+            </div>
+
+            <!-- Social Proof Footer -->
+            <div class="testimonials-footer">
+                <span class="tf-item">⭐⭐⭐⭐⭐</span>
+                <span class="tf-divider">|</span>
+                <span class="tf-item">1,000+ Happy Participants</span>
+                <span class="tf-divider">|</span>
+                <span class="tf-item">95%+ Satisfaction Rate</span>
+                <span class="tf-divider">|</span>
+                <span class="tf-item">100% Prize Delivery Record</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Inkfetish Publication -->
+    <section class="about-inkfetish">
+        <div class="section-container glass-panel">
+            <h2>Backed by Inkfetish Publication</h2>
+            <p>Inkfetish Publication is a premier traditional publishing house dedicated to unearthing raw talent and bringing extraordinary voices to the forefront of global literature. Join a community of authors who are shaping the future of storytelling.</p>
+        </div>
+    </section>
+
+    <script>
+        document.getElementById('registrationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const btn = this.querySelector('.submit-btn');
+            const originalText = btn.innerHTML;
+            
+            // Loading state
+            btn.innerHTML = '<span class="btn-text">Processing...</span>';
+            btn.classList.add('loading');
+            
+            // Simulate API call
+            setTimeout(() => {
+                btn.classList.remove('loading');
+                btn.classList.add('success');
+                btn.innerHTML = '<span class="btn-text">Registration Successful!</span><span class="btn-icon">✓</span>';
+                
+                setTimeout(() => {
+                    this.reset();
+                    btn.classList.remove('success');
+                    btn.innerHTML = originalText;
+                }, 3000);
+            }, 1500);
+        });
+
+        // Add some floating particles for the background
+        const particlesContainer = document.querySelector('.particles');
+        for(let i=0; i<30; i++) {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            
+            // Random properties
+            const size = Math.random() * 4 + 1;
+            const x = Math.random() * 100;
+            const y = Math.random() * 100;
+            const duration = Math.random() * 20 + 10;
+            const delay = Math.random() * 5;
+            
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            particle.style.left = `${x}%`;
+            particle.style.top = `${y}%`;
+            particle.style.animation = `float ${duration}s linear ${delay}s infinite`;
+            
+            particlesContainer.appendChild(particle);
+        }
+    </script>
+</body>
+</html>

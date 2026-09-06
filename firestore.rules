@@ -136,5 +136,22 @@ service cloud.firestore {
       allow read, create: if true;
       allow update, delete: if false;
     }
+
+    // People's Choice Award Collections
+    match /people_choice_registrations/{document} {
+      allow read, create, update: if true;
+    }
+
+    // People's Choice Award Entry Submissions
+    match /people_choice_submissions/{document} {
+      allow read, create: if true;
+      allow update: if false;
+      allow delete: if false;
+    }
+
+    // September Writing Competition Collection
+    match /september_contest_registrations/{document} {
+      allow read, create, update: if true;
+    }
   }
 }

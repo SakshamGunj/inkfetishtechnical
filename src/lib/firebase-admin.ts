@@ -38,4 +38,16 @@ function initializeFirebase() {
 initializeFirebase();
 
 export const db = admin.apps.length ? admin.firestore() : null;
+
+/**
+ * Returns a live Firestore instance, always initializing first.
+ * Safe to call from any API route — never returns null.
+ */
+export function getAdminDb(): admin.firestore.Firestore {
+  if (!admin.apps.length) {
+    initializeFirebase();
+  }
+  return admin.firestore();
+}
+
 export default admin;

@@ -63,6 +63,9 @@ export async function POST(request: Request) {
     } else if (source === 'iwl_season_2') {
       orderIdPrefix = 'iwl2_';
       returnUrlPath = 'indian-writers-league-season-2';
+    } else if (source === 'people_choice') {
+      orderIdPrefix = 'pca_';
+      returnUrlPath = 'people-choice-award';
     }
     
     const orderId = providedOrderId || `${orderIdPrefix}${Date.now()}_${randomPart}`;
@@ -70,8 +73,9 @@ export async function POST(request: Request) {
     // Safe customer_id — no Buffer, works everywhere
     const customerIdRaw = `${orderIdPrefix}${toBase64(customerEmail).replace(/[^a-zA-Z0-9]/g, '').slice(0, 20)}`;
 
-    // Normalize phone: strip non-digits, take last 10 digits, prepend 91
-    const phone = `91${customerPhone.replace(/\D/g, '').slice(-10)}`;
+    // Normalize phone: strip non-digits, take last 10 digits, prepend 91 (fallback to 9999999999 if empty)
+    const rawPhone = customerPhone || '9999999999';
+    const phone = `91${rawPhone.replace(/\D/g, '').slice(-10) || '9999999999'}`;
 
     const response = await fetch(`${baseUrl}/pg/orders`, {
       method: 'POST',
@@ -96,7 +100,7 @@ export async function POST(request: Request) {
           plan: String(plan),
           email: String(customerEmail).substring(0, 50),
           name: String(customerName).substring(0, 50),
-          whatsapp: String(customerPhone),
+          whatsapp: String(customerPhone || ''),
           source: String(source),
           address: String(address || '').substring(0, 50),
           city: String(city || '').substring(0, 50),
@@ -111,7 +115,7 @@ export async function POST(request: Request) {
     });
 
     // Save PENDING order to Firebase before returning to client
-    if (db && (source === 'bharat_writes_kit' || source === 'iwl_season_2')) {
+    if (db && (source === 'bharat_writes_kit' || source === 'iwl_season_2' || source === 'people_choice')) {
       try {
         if (source === 'bharat_writes_kit') {
           await db.collection('bharat_writes_kit_orders').doc(orderId).set({
@@ -138,6 +142,16 @@ export async function POST(request: Request) {
             payment_status: 'PENDING',
             created_at: new Date().toISOString(),
           });
+        } else if (source === 'people_choice') {
+          await db.collection('people_choice_registrations').doc(orderId).set({
+            order_id: orderId,
+            email: customerEmail || '',
+            name: customerName || '',
+            whatsapp: customerPhone || '',
+            plan_amount: plan || finalAmount,
+            payment_status: 'PENDING',
+            updated_at: new Date().toISOString(),
+          }, { merge: true });
         }
       } catch (err) {
         console.error('Failed to save PENDING order to Firebase', err);

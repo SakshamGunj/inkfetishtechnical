@@ -96,7 +96,23 @@ export async function POST(request: Request) {
           return NextResponse.json({ error: 'Database update failed' }, { status: 500 });
         }
 
-      // 2c. DANIYA KHAN PRE-ORDERS → Insert to Firebase Firestore
+      // 2c. PEOPLE'S CHOICE AWARD → Update Firebase Firestore
+      } else if (orderId.startsWith('pca_')) {
+        console.log(`People's Choice Award payment confirmed: ${orderId}`);
+        if (db) {
+          try {
+            await db.collection('people_choice_registrations').doc(orderId).set({
+              cf_order_id: order.cf_order_id || '',
+              payment_status: 'PAID',
+              updated_at: new Date().toISOString(),
+            }, { merge: true });
+            console.log(`Updated PCA registration ${orderId} to PAID in Firebase`);
+          } catch (err) {
+            console.error('Failed to update PCA order in Firebase', err);
+          }
+        }
+
+      // 2d. DANIYA KHAN PRE-ORDERS → Insert to Firebase Firestore
       } else if (orderId.startsWith('dkbook_')) {
         console.log(`Daniya Khan Pre-order Payment Confirmed: ${orderId}`);
         if (db) {
@@ -122,8 +138,8 @@ export async function POST(request: Request) {
             console.error('Failed to save Daniya Khan order to Firebase', err);
           }
         }
-        
-      // 2d. IWL SEASON 2 REGISTRATIONS → Update in Firebase Firestore
+
+      // 2e. IWL SEASON 2 REGISTRATIONS → Update in Firebase Firestore
       } else if (orderId.startsWith('iwl2_')) {
         console.log(`IWL Season 2 Registration Confirmed: ${orderId}`);
         if (db) {

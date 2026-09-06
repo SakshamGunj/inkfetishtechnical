@@ -83,6 +83,7 @@ import LoveAtMinusOneCertificate from './pages/LoveAtMinusOneCertificate';
 import IWLCertificate from './pages/IWLCertificate';
 import ShakespeareAndWhatRemained from './pages/ShakespeareAndWhatRemained';
 import LuckyDraw from './pages/LuckyDraw';
+import SeptemberWritingContest from './legacy-pages/SeptemberWritingContest';
 
 createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
@@ -90,6 +91,8 @@ createRoot(document.getElementById("root")!).render(
       <App>
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/september-writing-contest" element={<SeptemberWritingContest />} />
+          <Route path="/september-contest" element={<SeptemberWritingContest />} />
           
           {/* Top-Tier Publisher Routes */}
           <Route path="/authors" element={<AuthorsDirectory />} />

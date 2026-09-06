@@ -63,7 +63,22 @@ export async function GET(request: Request) {
     if (orderStatus === 'PAID') {
       const tags = data.order_tags || {};
 
-      if (!orderId.startsWith('bw_')) {
+      if (orderId.startsWith('pca_') && db) {
+        try {
+          await db.collection('people_choice_registrations').doc(orderId).set({
+            order_id: orderId,
+            cf_order_id: data.cf_order_id || '',
+            email: tags.email || '',
+            name: tags.name || '',
+            whatsapp: tags.whatsapp || '',
+            plan_amount: tags.plan || data.order_amount,
+            payment_status: 'PAID',
+            updated_at: new Date().toISOString(),
+          }, { merge: true });
+        } catch (err) {
+          console.error('Firebase error updating paid people_choice order:', err);
+        }
+      } else if (!orderId.startsWith('bw_') && !orderId.startsWith('bwkit_') && !orderId.startsWith('iwl2_') && !orderId.startsWith('dkbook_')) {
         // Original Poetry Festival logic: Save to Supabase
         const { error: dbError } = await supabase
           .from('poetry_festival_s2_payments')

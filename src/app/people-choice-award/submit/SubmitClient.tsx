@@ -594,7 +594,7 @@ export default function SubmitClient() {
             </div>
 
             <div className="border border-white/15 rounded-xl overflow-hidden shadow-lg focus-within:border-[#d4af37]/60 focus-within:ring-1 focus-within:ring-[#d4af37]/30 transition-all">
-              <EditorToolbar editor={editor} />
+              <EditorToolbar editor={editor!} />
               <div className="bg-[#0c0904]">
                 <EditorContent editor={editor} />
               </div>

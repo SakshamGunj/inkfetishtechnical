@@ -84,7 +84,7 @@ export default function PeopleChoiceClient() {
   });
   const [activeNominationId, setActiveNominationId] = useState<string | null>(null);
   const [paidNomination, setPaidNomination] = useState<StoredNomination | null>(null);
-  const [selectedPlan] = useState<number>(1); // ₹1 for testing, change to 449 for production
+  const [selectedPlan] = useState<number>(449); // Production price
   const [isStep1Submitting, setIsStep1Submitting] = useState(false);
   const [isPaymentLoading, setIsPaymentLoading] = useState(false);
   const [paymentError, setPaymentError] = useState<string | null>(null);

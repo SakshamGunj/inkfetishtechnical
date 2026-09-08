@@ -32,7 +32,10 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { db } from '@/lib/firebase';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { auth } from '@/lib/firebase';
+import { collection, addDoc, serverTimestamp, updateDoc, query, where, getDocs } from 'firebase/firestore';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import { load } from '@cashfreepayments/cashfree-js';
 
 // Cloudinary images of previous writers receiving certificates, trophies & books
 const row1Images = [
@@ -71,6 +74,8 @@ export default function SeptemberWritingContest() {
     fullName: '',
     email: '',
     phone: '',
+    age: '',
+    password: '',
     genre: 'Poetry',
     entry1Title: '',
     entry1Text: '',
@@ -80,6 +85,23 @@ export default function SeptemberWritingContest() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [drawerMode, setDrawerMode] = useState<'register' | 'login'>('register');
+  const [authError, setAuthError] = useState('');
+  const [cashfree, setCashfree] = useState<any>(null);
+
+  useEffect(() => {
+    // Initialize Cashfree SDK
+    const initCashfree = async () => {
+      try {
+        const mode = process.env.NEXT_PUBLIC_CASHFREE_MODE || "sandbox";
+        const cf = await load({ mode });
+        setCashfree(cf);
+      } catch (err) {
+        console.error("Failed to load Cashfree SDK:", err);
+      }
+    };
+    initCashfree();
+  }, []);
 
   // Lock background scroll when drawer is open
   useEffect(() => {
@@ -133,40 +155,174 @@ export default function SeptemberWritingContest() {
     setIsDrawerOpen(true);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.fullName || !formData.email || !formData.phone || !formData.entry1Title) {
-      toast({
-        title: "Missing Required Fields",
-        description: "Please fill out your Name, Email, Phone, and Entry #1 Title before proceeding.",
-        variant: "destructive"
-      });
+    setAuthError('');
+
+    if (drawerMode === 'login') {
+      if (!formData.email || !formData.password) {
+        setAuthError('Please enter your email and password.');
+        return;
+      }
+      setIsSubmitting(true);
+      try {
+        const userCred = await signInWithEmailAndPassword(auth, formData.email, formData.password);
+        
+        // Fetch registration record
+        const q = query(collection(db, 'september_contest_registrations'), where('uid', '==', userCred.user.uid));
+        const snap = await getDocs(q);
+        
+        if (snap.empty) {
+          setAuthError('No registration found for this account.');
+          setIsSubmitting(false);
+          return;
+        }
+
+        const registrationDoc = snap.docs[0];
+        const regData = registrationDoc.data();
+
+        if (regData.payment_status === 'PAID') {
+          setIsDrawerOpen(false);
+          window.location.href = '/september-writing-contest/submit';
+        } else {
+          // Trigger payment for PENDING users
+          if (!cashfree) throw new Error("Cashfree SDK not loaded");
+
+          const res = await fetch('/api/september-contest/create-order', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              name: regData.fullName,
+              email: regData.email,
+              phone: regData.phone,
+              amount: regData.amount
+            })
+          });
+          
+          const orderData = await res.json();
+          if (!res.ok) throw new Error(orderData.error || 'Failed to create payment order');
+
+          const result = await cashfree.checkout({
+            paymentSessionId: orderData.payment_session_id,
+            redirectTarget: "_modal",
+          });
+
+          if (result.error) {
+            setAuthError("Payment was cancelled or failed. Please try again.");
+            setIsSubmitting(false);
+            return; 
+          }
+
+          const verifyRes = await fetch('/api/september-contest/verify-order', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ order_id: orderData.order_id })
+          });
+
+          const verifyData = await verifyRes.json();
+          
+          if (verifyData.status === 'PAID') {
+            await updateDoc(registrationDoc.ref, { payment_status: 'PAID' });
+            setIsDrawerOpen(false);
+            window.location.href = '/september-writing-contest/submit';
+          } else {
+            setAuthError("Payment was not successful. Please try again.");
+          }
+        }
+      } catch (err: any) {
+        setAuthError(err.message || 'Invalid email or password. Please try again.');
+        setIsSubmitting(false);
+      }
       return;
     }
 
-    if (selectedTier === '2_entries' && !formData.entry2Title) {
-      toast({
-        title: "Missing Entry #2 Title",
-        description: "You selected 2 Entries. Please provide the title for your second entry.",
-        variant: "destructive"
-      });
+    // Register mode
+    if (!formData.fullName || !formData.email || !formData.phone || !formData.age || !formData.password) {
+      setAuthError('Please fill in all fields.');
       return;
     }
-
+    if (formData.phone.length !== 10) {
+      setAuthError('Please enter a valid 10-digit WhatsApp number.');
+      return;
+    }
+    if (formData.password.length < 6) {
+      setAuthError('Password must be at least 6 characters.');
+      return;
+    }
     setIsSubmitting(true);
-    
-    // Simulate submission delay / checkout initialization
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setIsSubmitted(true);
-      toast({
-        title: "Registration Submitted! 🎉",
-        description: `Thank you, ${formData.fullName}! Your entry for the September Writing Competition has been received.`,
+    try {
+      if (!cashfree) throw new Error("Cashfree SDK not loaded");
+      
+      const amount = selectedTier === '1_entry' ? 1 : 2;
+      const userCred = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
+      
+      const docRef = await addDoc(collection(db, 'september_contest_registrations'), {
+        uid: userCred.user.uid,
+        fullName: formData.fullName,
+        email: formData.email,
+        phone: formData.phone,
+        age: formData.age,
+        tier: selectedTier,
+        amount: amount,
+        payment_status: 'PENDING',
+        registeredAt: serverTimestamp(),
       });
-    }, 1200);
+
+      // Create Order
+      const res = await fetch('/api/september-contest/create-order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.fullName,
+          email: formData.email,
+          phone: formData.phone,
+          amount: amount
+        })
+      });
+      
+      const orderData = await res.json();
+      if (!res.ok) throw new Error(orderData.error || 'Failed to create payment order');
+
+      // Cashfree Checkout
+      const result = await cashfree.checkout({
+        paymentSessionId: orderData.payment_session_id,
+        redirectTarget: "_modal",
+      });
+
+      if (result.error) {
+        setAuthError("Payment was cancelled. Please use Login to complete payment.");
+        setIsSubmitting(false);
+        return; 
+      }
+
+      // Verify Payment
+      const verifyRes = await fetch('/api/september-contest/verify-order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ order_id: orderData.order_id })
+      });
+
+      const verifyData = await verifyRes.json();
+      
+      if (verifyData.status === 'PAID') {
+        await updateDoc(docRef, { payment_status: 'PAID' });
+        setIsDrawerOpen(false);
+        window.location.href = `/september-writing-contest/submit`;
+      } else {
+        setAuthError("Payment was not successful. Please login to try again.");
+      }
+      
+    } catch (err: any) {
+      if (err.code === 'auth/email-already-in-use') {
+        setAuthError('This email is already registered. Please login to complete payment or submit.');
+      } else {
+        setAuthError(err.message || 'Something went wrong. Please try again.');
+      }
+      setIsSubmitting(false);
+    }
   };
 
-  const currentPrice = selectedTier === '1_entry' ? '₹249' : '₹299';
+  const currentPrice = selectedTier === '1_entry' ? '₹1' : '₹2';
 
   return (
     <div className="min-h-screen bg-[#F4EFE6] text-[#2C1C13] font-serif selection:bg-[#B91C1C] selection:text-white relative overflow-x-hidden">
@@ -409,27 +565,14 @@ export default function SeptemberWritingContest() {
                 {[...row1Images, ...row1Images].map((img, idx) => (
                   <div 
                     key={`row1-${idx}`} 
-                    className="w-56 sm:w-64 h-72 rounded-2xl bg-[#F4EFE6] border border-[#E3D8C4] p-3 shrink-0 shadow-md group relative overflow-hidden flex flex-col transition-all hover:border-[#B91C1C]"
+                    className="w-56 sm:w-64 h-64 rounded-2xl overflow-hidden shrink-0 shadow-md group"
                   >
-                    <div className="w-full h-52 rounded-xl overflow-hidden bg-[#E8DEC9] relative">
-                      <img 
-                        src={img.url} 
-                        alt={img.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                        loading="lazy"
-                      />
-                      <div className="absolute top-2 right-2 bg-black/60 backdrop-blur-xs text-white text-[9px] font-sans font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
-                        <Camera className="w-2.5 h-2.5 text-[#B91C1C]" /> Real Moment
-                      </div>
-                    </div>
-                    <div className="pt-2 px-1 text-left flex-1 flex flex-col justify-center">
-                      <span className="font-serif font-bold text-sm text-[#2C1C13] leading-tight block truncate">
-                        {img.title}
-                      </span>
-                      <span className="font-sans text-[10px] text-[#7A6B5D] font-medium block">
-                        📍 {img.location} · Verified Inkfetish Writer
-                      </span>
-                    </div>
+                    <img 
+                      src={img.url} 
+                      alt={img.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      loading="lazy"
+                    />
                   </div>
                 ))}
               </div>
@@ -439,27 +582,14 @@ export default function SeptemberWritingContest() {
                 {[...row2Images, ...row2Images].map((img, idx) => (
                   <div 
                     key={`row2-${idx}`} 
-                    className="w-56 sm:w-64 h-72 rounded-2xl bg-[#F4EFE6] border border-[#E3D8C4] p-3 shrink-0 shadow-md group relative overflow-hidden flex flex-col transition-all hover:border-[#B91C1C]"
+                    className="w-56 sm:w-64 h-64 rounded-2xl overflow-hidden shrink-0 shadow-md group"
                   >
-                    <div className="w-full h-52 rounded-xl overflow-hidden bg-[#E8DEC9] relative">
-                      <img 
-                        src={img.url} 
-                        alt={img.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                        loading="lazy"
-                      />
-                      <div className="absolute top-2 right-2 bg-black/60 backdrop-blur-xs text-white text-[9px] font-sans font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
-                        <Trophy className="w-2.5 h-2.5 text-amber-400" /> Winner
-                      </div>
-                    </div>
-                    <div className="pt-2 px-1 text-left flex-1 flex flex-col justify-center">
-                      <span className="font-serif font-bold text-sm text-[#2C1C13] leading-tight block truncate">
-                        {img.title}
-                      </span>
-                      <span className="font-sans text-[10px] text-[#7A6B5D] font-medium block">
-                        📍 {img.location} · Published Anthology Author
-                      </span>
-                    </div>
+                    <img 
+                      src={img.url} 
+                      alt={img.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      loading="lazy"
+                    />
                   </div>
                 ))}
               </div>
@@ -547,37 +677,84 @@ export default function SeptemberWritingContest() {
           </div>
 
           {/* ABOUT INKFETISH SECTION */}
-          <div className="my-16 pt-10 border-t border-[#E5DAC8] bg-[#EDE5D8]/50 border border-[#DDD2BF] rounded-3xl p-8 sm:p-12 text-center relative overflow-hidden">
-            <span className="font-sans font-bold text-xs tracking-[0.3em] text-[#B91C1C] uppercase block mb-2">
-              A B O U T &nbsp; U S
-            </span>
-            <h3 className="font-serif font-black text-3xl sm:text-5xl text-[#2C1C13] mb-4">
-              Inkfetish<span className="text-[#B91C1C]">™</span> Publication
-            </h3>
-            <p className="font-serif italic text-base sm:text-lg text-[#5C4D40] max-w-2xl mx-auto mb-6">
-              "Building a kinder, more creative internet for every storyteller, poet, and writer."
-            </p>
-            <p className="font-sans text-xs sm:text-sm text-[#6B5B4C] max-w-3xl mx-auto leading-relaxed mb-8">
-              Inkfetish is India’s premier writer collective and publishing house. Connecting over <strong>210,000+ writers & readers on Instagram</strong>, we bridge digital creativity with physical print craftsmanship. Having published over 150+ anthologies and shipped 50,000+ physical books nationwide, we give emerging writers a trusted national stage.
-            </p>
+          <div className="my-16 pt-10 border-t border-[#E5DAC8]">
+            <div className="bg-[#2C1C13] rounded-3xl p-8 sm:p-12 text-center relative overflow-hidden">
 
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-2xl mx-auto pt-4 border-t border-[#D9CDBC]">
-              <div>
-                <span className="font-serif font-black text-2xl sm:text-3xl text-[#B91C1C] block">210K+</span>
-                <span className="font-sans text-[11px] font-semibold text-[#7A6B5D] uppercase">Instagram Writers</span>
+              {/* Top label */}
+              <p className="font-sans font-bold text-[10px] tracking-[0.4em] text-[#7A6B5D] uppercase mb-6">
+                A B O U T &nbsp; U S
+              </p>
+
+              {/* Main heading: INKFETISH big, Publication small */}
+              <div className="mb-2">
+                <h3 className="font-serif font-black text-6xl sm:text-8xl md:text-9xl text-[#FAF6F0] uppercase leading-none tracking-tight">
+                  INKFETISH
+                </h3>
+                <p className="font-sans font-semibold text-sm sm:text-base tracking-[0.4em] text-[#B91C1C] uppercase mt-1">
+                  P U B L I C A T I O N
+                </p>
               </div>
-              <div>
-                <span className="font-serif font-black text-2xl sm:text-3xl text-[#2C1C13] block">150+</span>
-                <span className="font-sans text-[11px] font-semibold text-[#7A6B5D] uppercase">Books Published</span>
+
+              <p className="font-serif italic text-base sm:text-xl text-[#C9B99A] mt-5 mb-8">
+                Building India's Fastest<br />Growing Writing Community
+              </p>
+              <div className="flex items-center justify-center gap-6 sm:gap-10 mb-10">
+                {['Words.', 'Soul.', 'Legacy.'].map((word) => (
+                  <span key={word} className="font-serif font-black text-xl sm:text-3xl text-[#FAF6F0]">{word}</span>
+                ))}
               </div>
-              <div>
-                <span className="font-serif font-black text-2xl sm:text-3xl text-[#2C1C13] block">50,000+</span>
-                <span className="font-sans text-[11px] font-semibold text-[#7A6B5D] uppercase">Copies Shipped</span>
+              <div className="h-px bg-[#4A3B2F] mb-10" />
+              <p className="font-sans font-bold text-xs tracking-[0.3em] text-[#B91C1C] uppercase mb-6">
+                O U R &nbsp; J O U R N E Y &nbsp; S O &nbsp; F A R
+              </p>
+              <p className="font-sans font-semibold text-[11px] tracking-[0.2em] text-[#9A8574] uppercase mb-4">COMPETITIONS HOSTED</p>
+              <div className="space-y-2 max-w-sm mx-auto text-left mb-4">
+                {[
+                  ['Authorverse Summit', 'A Global Literary Conference'],
+                  ['Poetry Festival', 'Celebrating the Art of Poetry'],
+                  ['Shakespeare Poetry Award', 'Honoring Timeless Poetic Excellence'],
+                  ['Indian Writers League', 'Uniting Writers. Inspiring Stories.'],
+                  ['Bharat Writes', "Showcasing India's Writing Talent"],
+                  ['September Writing Competition', 'Where Words Begin Change'],
+                  ['Writers Mania', 'For the Passionate Storytellers'],
+                ].map(([title, sub]) => (
+                  <div key={title} className="flex items-start gap-3">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#B91C1C] mt-1.5 shrink-0" />
+                    <div>
+                      <span className="font-serif font-bold text-sm text-[#FAF6F0] block">{title}</span>
+                      <span className="font-sans text-[11px] text-[#9A8574]">{sub}</span>
+                    </div>
+                  </div>
+                ))}
               </div>
-              <div>
-                <span className="font-serif font-black text-2xl sm:text-3xl text-[#B91C1C] block">₹25L+</span>
-                <span className="font-sans text-[11px] font-semibold text-[#7A6B5D] uppercase">Prizes & Royalties</span>
+              <p className="font-serif italic text-sm text-[#7A6B5D] mb-8">And Many More...</p>
+              <div className="h-px bg-[#4A3B2F] mb-8" />
+              <p className="font-sans font-bold text-xs tracking-[0.3em] text-[#B91C1C] uppercase mb-6">
+                O U R &nbsp; A C H I E V E M E N T S
+              </p>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 max-w-xl mx-auto mb-8">
+                {[
+                  ['8+', 'Successful Competitions Hosted'],
+                  ['3900+', 'Writers Joined'],
+                  ['₹5,25,000+', 'Prize Money Awarded'],
+                  ['60+', 'Winners Rewarded'],
+                  ['Certificates', 'For Every Participant'],
+                ].map(([stat, label]) => (
+                  <div key={label} className="bg-[#1A100B] rounded-xl p-4 text-center">
+                    <span className="font-serif font-black text-xl sm:text-2xl text-[#B91C1C] block">{stat}</span>
+                    <span className="font-sans text-[10px] text-[#9A8574] uppercase font-semibold leading-tight block mt-0.5">{label}</span>
+                  </div>
+                ))}
               </div>
+              <div className="h-px bg-[#4A3B2F] mb-8" />
+              <p className="font-sans font-bold text-xs tracking-[0.3em] text-[#B91C1C] uppercase mb-4">
+                C L O S I N G &nbsp; S T A T E M E N T
+              </p>
+              <p className="font-serif font-black text-lg sm:text-2xl text-[#FAF6F0] uppercase leading-snug">
+                BUILDING OPPORTUNITIES.<br />
+                CELEBRATING TALENT.<br />
+                <span className="text-[#B91C1C]">EMPOWERING WRITERS ACROSS INDIA.</span>
+              </p>
             </div>
           </div>
 
@@ -767,15 +944,11 @@ export default function SeptemberWritingContest() {
             {/* Scrollable Form Body */}
             <div className="p-6 sm:p-8 overflow-y-auto max-h-[calc(92vh-80px)] space-y-6">
               
-              {/* Mini Banner poster quote */}
+              {/* Mini Banner */}
               <div className="bg-[#F4EFE6] border border-[#E3DAC8] rounded-xl p-4 text-center flex items-center justify-between">
                 <div className="text-left">
-                  <span className="font-serif font-black text-xl text-[#B91C1C] block">
-                    SEPTEMBER CONTEST
-                  </span>
-                  <span className="font-sans text-xs text-[#6B5B4C]">
-                    📅 Result: 30th September · 🎥 Live Zoom Ceremony
-                  </span>
+                  <span className="font-serif font-black text-xl text-[#B91C1C] block">SEPTEMBER CONTEST</span>
+                  <span className="font-sans text-xs text-[#6B5B4C]">📅 Result: 30th September · 🎥 Live Zoom Ceremony</span>
                 </div>
                 <div className="bg-[#B91C1C] text-white px-3 py-1.5 rounded-lg text-center">
                   <span className="font-serif font-bold text-base block">{currentPrice}</span>
@@ -783,191 +956,120 @@ export default function SeptemberWritingContest() {
                 </div>
               </div>
 
-              {isSubmitted ? (
-                <div className="bg-[#EFE8DC] border border-[#D8CCB8] rounded-2xl p-8 text-center animate-in fade-in zoom-in duration-300">
-                  <CheckCircle2 className="w-16 h-16 text-[#B91C1C] mx-auto mb-3" />
-                  <h4 className="font-serif font-bold text-2xl text-[#2C1C13] mb-2">Registration Confirmed!</h4>
-                  <p className="font-sans text-xs text-[#6B5B4C] mb-6 leading-relaxed">
-                    Thank you, <strong>{formData.fullName}</strong>! Your registration for <strong>{selectedTier === '1_entry' ? '1 Entry (₹249)' : '2 Entries (₹299)'}</strong> is complete. A confirmation receipt has been dispatched to <strong>{formData.email}</strong>.
-                  </p>
-                  <Button 
-                    onClick={() => {
-                      setIsSubmitted(false);
-                      setIsDrawerOpen(false);
-                    }}
-                    className="bg-[#B91C1C] hover:bg-[#991515] text-white font-sans text-xs uppercase tracking-wider font-bold px-8 py-3 rounded-full"
-                  >
-                    Done & Close
-                  </Button>
-                </div>
-              ) : (
-                <form onSubmit={handleSubmit} className="space-y-5 text-left font-sans">
-                  
-                  {/* Entry Tier Switcher inside Drawer */}
-                  <div>
-                    <label className="text-xs font-bold text-[#4A3B2F] uppercase tracking-wider mb-2 block">
-                      Select Entry Option
-                    </label>
-                    <div className="grid grid-cols-2 gap-3">
-                      <button
-                        type="button"
-                        onClick={() => setSelectedTier('1_entry')}
-                        className={`py-3 px-4 rounded-xl text-xs font-bold uppercase border transition-all ${
-                          selectedTier === '1_entry' 
-                            ? 'bg-[#B91C1C] text-white border-[#B91C1C]' 
-                            : 'bg-[#F4EFE6] text-[#4A3B2F] border-[#DCD3C3]'
-                        }`}
-                      >
-                        1 Entry (₹249)
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => setSelectedTier('2_entries')}
-                        className={`py-3 px-4 rounded-xl text-xs font-bold uppercase border transition-all ${
-                          selectedTier === '2_entries' 
-                            ? 'bg-[#B91C1C] text-white border-[#B91C1C]' 
-                            : 'bg-[#F4EFE6] text-[#4A3B2F] border-[#DCD3C3]'
-                        }`}
-                      >
-                        2 Entries (₹299)
-                      </button>
-                    </div>
-                  </div>
+              {/* Mode Toggle */}
 
-                  {/* Writer Info */}
-                  <div>
-                    <label className="text-xs font-bold text-[#4A3B2F] uppercase tracking-wider mb-1 block">
-                      Full Name *
-                    </label>
-                    <Input 
-                      placeholder="Enter your full name"
-                      value={formData.fullName}
-                      onChange={(e) => setFormData({...formData, fullName: e.target.value})}
-                      className="bg-[#F7F2EA] border-[#DCD3C3] focus:border-[#B91C1C] text-[#2C1C13] h-11 rounded-xl text-sm"
-                      required
-                    />
-                  </div>
+              <form onSubmit={handleSubmit} className="space-y-5 text-left font-sans">
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {drawerMode === 'login' ? (
+                  <>
                     <div>
-                      <label className="text-xs font-bold text-[#4A3B2F] uppercase tracking-wider mb-1 block">
-                        Email Address *
-                      </label>
-                      <Input 
-                        type="email"
-                        placeholder="name@example.com"
-                        value={formData.email}
+                      <label className="text-xs font-bold text-[#4A3B2F] uppercase tracking-wider mb-1 block">Email *</label>
+                      <Input type="email" placeholder="name@example.com" value={formData.email}
                         onChange={(e) => setFormData({...formData, email: e.target.value})}
-                        className="bg-[#F7F2EA] border-[#DCD3C3] focus:border-[#B91C1C] text-[#2C1C13] h-11 rounded-xl text-sm"
-                        required
-                      />
+                        className="bg-[#F7F2EA] border-[#DCD3C3] focus:border-[#B91C1C] text-[#2C1C13] h-11 rounded-xl text-sm" required />
                     </div>
                     <div>
-                      <label className="text-xs font-bold text-[#4A3B2F] uppercase tracking-wider mb-1 block">
-                        WhatsApp Number *
-                      </label>
-                      <Input 
-                        type="tel"
-                        placeholder="+91 98765 43210"
-                        value={formData.phone}
-                        onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                        className="bg-[#F7F2EA] border-[#DCD3C3] focus:border-[#B91C1C] text-[#2C1C13] h-11 rounded-xl text-sm"
-                        required
-                      />
+                      <label className="text-xs font-bold text-[#4A3B2F] uppercase tracking-wider mb-1 block">Password *</label>
+                      <Input type="password" placeholder="Your password" value={formData.password}
+                        onChange={(e) => setFormData({...formData, password: e.target.value})}
+                        className="bg-[#F7F2EA] border-[#DCD3C3] focus:border-[#B91C1C] text-[#2C1C13] h-11 rounded-xl text-sm" required />
                     </div>
-                  </div>
-
-                  <div>
-                    <label className="text-xs font-bold text-[#4A3B2F] uppercase tracking-wider mb-1 block">
-                      Primary Category / Genre *
-                    </label>
-                    <select 
-                      value={formData.genre}
-                      onChange={(e) => setFormData({...formData, genre: e.target.value})}
-                      className="w-full bg-[#F7F2EA] border border-[#DCD3C3] focus:border-[#B91C1C] text-[#2C1C13] h-11 px-3 rounded-xl text-sm outline-none"
-                    >
-                      <option value="Poetry">Poetry</option>
-                      <option value="Short Story">Short Story</option>
-                      <option value="Micro Fiction">Micro-Fiction</option>
-                      <option value="Essay">Essay</option>
-                    </select>
-                  </div>
-
-                  {/* Entry #1 */}
-                  <div className="bg-[#F4EFE6] border border-[#E3DAC8] rounded-xl p-4 space-y-3">
-                    <h5 className="font-serif font-bold text-sm text-[#2C1C13]">Entry #1 Details</h5>
+                    <button type="button" onClick={() => { setDrawerMode('register'); setAuthError(''); }}
+                      className="w-full text-center font-sans text-xs text-[#7A6B5D] font-semibold underline underline-offset-2 py-1">
+                      ← New here? Register instead
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    {/* Tier Switcher */}
                     <div>
-                      <label className="text-xs font-semibold text-[#6B5B4C] mb-1 block">Title of Entry #1 *</label>
-                      <Input 
-                        placeholder="e.g. Echoes of Autumn"
-                        value={formData.entry1Title}
-                        onChange={(e) => setFormData({...formData, entry1Title: e.target.value})}
-                        className="bg-[#FAF6F0] border-[#DCD3C3] focus:border-[#B91C1C] text-[#2C1C13] h-10 rounded-lg text-sm"
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label className="text-xs font-semibold text-[#6B5B4C] mb-1 block">Content / Manuscript #1 *</label>
-                      <Textarea 
-                        placeholder="Paste your poem or short story text here..."
-                        value={formData.entry1Text}
-                        onChange={(e) => setFormData({...formData, entry1Text: e.target.value})}
-                        className="bg-[#FAF6F0] border-[#DCD3C3] focus:border-[#B91C1C] text-[#2C1C13] min-h-[100px] rounded-lg text-sm p-3"
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  {/* Entry #2 (If 2 Entries selected) */}
-                  {selectedTier === '2_entries' && (
-                    <div className="bg-[#F4EFE6] border border-[#E3DAC8] rounded-xl p-4 space-y-3 animate-in fade-in duration-200">
-                      <h5 className="font-serif font-bold text-sm text-[#2C1C13]">Entry #2 Details</h5>
-                      <div>
-                        <label className="text-xs font-semibold text-[#6B5B4C] mb-1 block">Title of Entry #2 *</label>
-                        <Input 
-                          placeholder="e.g. Beyond the Horizon"
-                          value={formData.entry2Title}
-                          onChange={(e) => setFormData({...formData, entry2Title: e.target.value})}
-                          className="bg-[#FAF6F0] border-[#DCD3C3] focus:border-[#B91C1C] text-[#2C1C13] h-10 rounded-lg text-sm"
-                          required
-                        />
-                      </div>
-                      <div>
-                        <label className="text-xs font-semibold text-[#6B5B4C] mb-1 block">Content / Manuscript #2 *</label>
-                        <Textarea 
-                          placeholder="Paste your second poem or short story text here..."
-                          value={formData.entry2Text}
-                          onChange={(e) => setFormData({...formData, entry2Text: e.target.value})}
-                          className="bg-[#FAF6F0] border-[#DCD3C3] focus:border-[#B91C1C] text-[#2C1C13] min-h-[100px] rounded-lg text-sm p-3"
-                          required
-                        />
+                      <label className="text-xs font-bold text-[#4A3B2F] uppercase tracking-wider mb-2 block">Select Entry Option</label>
+                      <div className="grid grid-cols-2 gap-3">
+                        <button type="button" onClick={() => setSelectedTier('1_entry')}
+                          className={`py-3 px-4 rounded-xl text-xs font-bold uppercase border transition-all ${
+                            selectedTier === '1_entry' ? 'bg-[#B91C1C] text-white border-[#B91C1C]' : 'bg-[#F4EFE6] text-[#4A3B2F] border-[#DCD3C3]'
+                          }`}>
+                          1 Entry (₹1)
+                        </button>
+                        <button type="button" onClick={() => setSelectedTier('2_entries')}
+                          className={`py-3 px-4 rounded-xl text-xs font-bold uppercase border transition-all ${
+                            selectedTier === '2_entries' ? 'bg-[#B91C1C] text-white border-[#B91C1C]' : 'bg-[#F4EFE6] text-[#4A3B2F] border-[#DCD3C3]'
+                          }`}>
+                          2 Entries (₹2)
+                        </button>
                       </div>
                     </div>
-                  )}
+                    <div>
+                      <label className="text-xs font-bold text-[#4A3B2F] uppercase tracking-wider mb-1 block">Full Name *</label>
+                      <Input placeholder="Enter your full name" value={formData.fullName}
+                        onChange={(e) => setFormData({...formData, fullName: e.target.value})}
+                        className="bg-[#F7F2EA] border-[#DCD3C3] focus:border-[#B91C1C] text-[#2C1C13] h-11 rounded-xl text-sm" required />
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <label className="text-xs font-bold text-[#4A3B2F] uppercase tracking-wider mb-1 block">Email *</label>
+                        <Input type="email" placeholder="name@example.com" value={formData.email}
+                          onChange={(e) => setFormData({...formData, email: e.target.value})}
+                          className="bg-[#F7F2EA] border-[#DCD3C3] focus:border-[#B91C1C] text-[#2C1C13] h-11 rounded-xl text-sm" required />
+                      </div>
+                      <div>
+                        <label className="text-xs font-bold text-[#4A3B2F] uppercase tracking-wider mb-1 block">WhatsApp *</label>
+                        <Input type="tel" placeholder="10-digit number" value={formData.phone}
+                          onChange={(e) => {
+                            const val = e.target.value.replace(/\D/g, '').slice(0, 10);
+                            setFormData({...formData, phone: val});
+                          }}
+                          maxLength={10}
+                          className="bg-[#F7F2EA] border-[#DCD3C3] focus:border-[#B91C1C] text-[#2C1C13] h-11 rounded-xl text-sm" required />
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="text-xs font-bold text-[#4A3B2F] uppercase tracking-wider mb-1 block">Age *</label>
+                        <Input type="number" placeholder="e.g. 22" min="5" max="100" value={formData.age}
+                          onChange={(e) => setFormData({...formData, age: e.target.value})}
+                          className="bg-[#F7F2EA] border-[#DCD3C3] focus:border-[#B91C1C] text-[#2C1C13] h-11 rounded-xl text-sm" required />
+                      </div>
+                      <div>
+                        <label className="text-xs font-bold text-[#4A3B2F] uppercase tracking-wider mb-1 block">Password *</label>
+                        <Input type="password" placeholder="Min 6 characters" value={formData.password}
+                          onChange={(e) => setFormData({...formData, password: e.target.value})}
+                          className="bg-[#F7F2EA] border-[#DCD3C3] focus:border-[#B91C1C] text-[#2C1C13] h-11 rounded-xl text-sm" required />
+                      </div>
+                    </div>
+                    {/* Already Registered button */}
+                    <button type="button" onClick={() => { setDrawerMode('login'); setAuthError(''); }}
+                      className="w-full text-center font-sans text-xs text-[#B91C1C] font-bold underline underline-offset-2 py-1">
+                      Already Registered? Login & Submit Artwork →
+                    </button>
+                  </>
+                )}
 
-                  <div className="pt-2 text-center">
-                    <Button 
-                      type="submit"
-                      disabled={isSubmitting}
-                      className="w-full py-6 rounded-full bg-[#B91C1C] hover:bg-[#991515] text-white font-sans text-sm uppercase tracking-wider font-bold shadow-lg transition-all hover:scale-[1.02]"
-                    >
-                      {isSubmitting ? (
-                        <span className="flex items-center justify-center gap-2">
-                          <Clock className="w-4 h-4 animate-spin" /> Processing Entry...
-                        </span>
-                      ) : (
-                        <span className="flex items-center justify-center gap-2">
-                          Complete & Pay ({currentPrice}) <Send className="w-4 h-4" />
-                        </span>
-                      )}
-                    </Button>
-                    <p className="text-[11px] text-[#7A6B5D] mt-2.5">
-                      🔒 Secure Payment Gateway · All original rights remain with the author.
-                    </p>
-                  </div>
+                {authError && (
+                  <p className="font-sans text-xs text-[#B91C1C] bg-[#FEF2F2] border border-[#FECACA] rounded-xl px-4 py-3">
+                    {authError}
+                  </p>
+                )}
 
-                </form>
-              )}
+                <div className="pt-2 text-center">
+                  <Button type="submit" disabled={isSubmitting}
+                    className="w-full py-6 rounded-full bg-[#B91C1C] hover:bg-[#991515] text-white font-sans text-sm uppercase tracking-wider font-bold shadow-lg transition-all hover:scale-[1.02]">
+                    {isSubmitting ? (
+                      <span className="flex items-center justify-center gap-2">
+                        <Clock className="w-4 h-4 animate-spin" /> {drawerMode === 'login' ? 'Logging in...' : 'Saving...'}
+                      </span>
+                    ) : (
+                      <span className="flex items-center justify-center gap-2">
+                        {drawerMode === 'login' ? 'Login & Submit Artwork' : 'Continue to Submit Entry'} <Send className="w-4 h-4" />
+                      </span>
+                    )}
+                  </Button>
+                  <p className="text-[11px] text-[#7A6B5D] mt-2.5">
+                    {drawerMode === 'login' ? '🔒 Login to access your submission page' : '🔒 Your details are safe · Next step: paste your writing'}
+                  </p>
+                </div>
+
+              </form>
 
             </div>
           </div>

@@ -7,8 +7,12 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { db, auth } from '@/lib/firebase';
-import { collection, addDoc, query, where, getDocs, serverTimestamp } from 'firebase/firestore';
+import { collection, addDoc, query, where, getDocs, serverTimestamp, updateDoc } from 'firebase/firestore';
 import { onAuthStateChanged, User } from 'firebase/auth';
+import {
+  anySeptemberOrderPaid,
+  readRememberedSeptemberOrderIds,
+} from '@/lib/septemberContestVerifyClient';
 
 const WRITING_TYPES = [
   { value: 'Poetry', label: 'Poetry', icon: Pen, desc: 'Poems, verses, haiku, free verse' },
@@ -39,17 +43,39 @@ export default function SeptemberSubmitClient() {
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, async (u) => {
       setUser(u);
-      setAuthLoading(false);
       if (u) {
         try {
           const q = query(collection(db, 'september_contest_registrations'), where('uid', '==', u.uid));
           const snap = await getDocs(q);
           if (!snap.empty) {
-            const data = snap.docs[0].data();
+            const regDoc = snap.docs[0];
+            let data = regDoc.data();
+
             if (data.payment_status !== 'PAID') {
-              router.push('/september-writing-contest');
-              return;
+              // Recovery logic
+              const existingOrderIds = data.cashfree_order_ids || [];
+              const localOrderIds = readRememberedSeptemberOrderIds();
+              const allToVerify = Array.from(new Set([...existingOrderIds, ...localOrderIds]));
+              
+              if (allToVerify.length > 0) {
+                const paidOrderId = await anySeptemberOrderPaid(allToVerify);
+                if (paidOrderId) {
+                  await updateDoc(regDoc.ref, { 
+                    payment_status: 'PAID',
+                    cashfree_order_id: paidOrderId,
+                    updated_at: new Date().toISOString()
+                  });
+                  data.payment_status = 'PAID';
+                } else {
+                  router.push('/september-writing-contest');
+                  return;
+                }
+              } else {
+                router.push('/september-writing-contest');
+                return;
+              }
             }
+
             setPrefilled({
               fullName: data.fullName || '',
               email: data.email || '',
@@ -68,6 +94,7 @@ export default function SeptemberSubmitClient() {
           console.error(e);
         }
       }
+      setAuthLoading(false);
     });
     return () => unsub();
   }, []);

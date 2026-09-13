@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import crypto from 'crypto';
 import { db } from '@/lib/firebase-admin';
+import { markSeptemberContestPaid } from '@/lib/septemberContestPayment';
 
 // Force Node.js runtime for crypto support
 export const runtime = 'nodejs';
@@ -94,6 +95,25 @@ export async function POST(request: Request) {
         if (error) {
           console.error('Webhook Supabase Margins DB Error:', error.message);
           return NextResponse.json({ error: 'Database update failed' }, { status: 500 });
+        }
+
+      // 2b2. SEPTEMBER WRITING CONTEST → mark Firestore registration PAID
+      } else if (orderId.startsWith('sept_contest_')) {
+        try {
+          const marked = await markSeptemberContestPaid({
+            orderId,
+            cfOrderId: order.cf_order_id || '',
+            tags: {
+              registrationId: tags.registrationId || '',
+              uid: tags.uid || '',
+              email: tags.email || '',
+            },
+            email: tags.email || payload.data?.customer_details?.customer_email || '',
+            uid: tags.uid || '',
+          });
+          console.log(`September contest webhook ${orderId}: marked=${marked}`);
+        } catch (err) {
+          console.error('Failed to mark September contest paid from webhook', err);
         }
 
       // 2c. PEOPLE'S CHOICE AWARD → Update Firebase Firestore

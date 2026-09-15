@@ -366,7 +366,8 @@ export default function SeptemberWritingContest() {
     try {
       if (!cashfree) throw new Error("Cashfree SDK not loaded");
       
-      const amount = selectedTier === '1_entry' ? 1 : 2;
+      // Calculate Amount
+      const amount = selectedTier === '1_entry' ? 249 : 299;
       const userCred = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
       
       const docRef = await addDoc(collection(db, 'september_contest_registrations'), {
@@ -443,7 +444,7 @@ export default function SeptemberWritingContest() {
     }
   };
 
-  const currentPrice = selectedTier === '1_entry' ? '₹1' : '₹2';
+  const currentPrice = selectedTier === '1_entry' ? '₹249' : '₹299';
 
   return (
     <div className="min-h-screen bg-[#F4EFE6] text-[#2C1C13] font-serif selection:bg-[#B91C1C] selection:text-white relative overflow-x-hidden">
@@ -736,18 +737,14 @@ export default function SeptemberWritingContest() {
             </div>
 
             {/* Continuous Marquee Container */}
-            <div className="space-y-6 overflow-hidden relative py-4">
-              
-              {/* Fade Overlay Edges for Vignette Effect */}
-              <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-[#FAF6F0] to-transparent z-10 pointer-events-none" />
-              <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-[#FAF6F0] to-transparent z-10 pointer-events-none" />
+            <div className="space-y-4 sm:space-y-6 overflow-hidden relative py-4">
 
               {/* Row 1: Sliding Left */}
-              <div className="flex w-[200%] gap-4 animate-scroll-left hover:[animation-play-state:paused] transition-all">
+              <div className="flex w-max gap-3 sm:gap-4 animate-scroll-left hover:[animation-play-state:paused] transition-all [animation-duration:12s]">
                 {[...row1Images, ...row1Images].map((img, idx) => (
                   <div 
                     key={`row1-${idx}`} 
-                    className="w-56 sm:w-64 h-64 rounded-2xl overflow-hidden shrink-0 shadow-md group"
+                    className="w-44 sm:w-64 h-52 sm:h-64 rounded-xl sm:rounded-2xl overflow-hidden shrink-0 shadow-md group"
                   >
                     <img 
                       src={img.url} 
@@ -760,11 +757,11 @@ export default function SeptemberWritingContest() {
               </div>
 
               {/* Row 2: Sliding Right */}
-              <div className="flex w-[200%] gap-4 animate-scroll-right hover:[animation-play-state:paused] transition-all">
+              <div className="flex w-max gap-3 sm:gap-4 animate-scroll-right hover:[animation-play-state:paused] transition-all [animation-duration:12s]">
                 {[...row2Images, ...row2Images].map((img, idx) => (
                   <div 
                     key={`row2-${idx}`} 
-                    className="w-56 sm:w-64 h-64 rounded-2xl overflow-hidden shrink-0 shadow-md group"
+                    className="w-44 sm:w-64 h-52 sm:h-64 rounded-xl sm:rounded-2xl overflow-hidden shrink-0 shadow-md group"
                   >
                     <img 
                       src={img.url} 
@@ -780,95 +777,97 @@ export default function SeptemberWritingContest() {
           </div>
 
 
-          {/* ABOUT US SECTION */}
-          <div className="my-20 pt-16 pb-16 border-t border-[#E5DAC8] border-b bg-[#FAF6F0] -mx-4 sm:-mx-8 lg:-mx-12 px-4 sm:px-8 lg:px-12 relative overflow-hidden">
-             {/* Decorative Background element */}
-             <div className="absolute top-0 right-0 -mt-20 -mr-20 w-96 h-96 bg-[#E8DEC9]/50 rounded-full blur-3xl opacity-60"></div>
-             
-             <div className="text-center mb-16 relative z-10">
-               <span className="font-sans font-extrabold text-xs tracking-[0.3em] text-[#B91C1C] uppercase block mb-3">
-                 A B O U T &nbsp; U S
-               </span>
-               <h3 className="font-serif font-extrabold text-3xl sm:text-5xl text-[#2C1C13] leading-tight uppercase">
-                 INKFETISH <br className="sm:hidden" /> P U B L I C A T I O N
-               </h3>
-               <p className="font-sans text-lg text-[#6B5B4C] max-w-2xl mx-auto mt-6 leading-relaxed font-bold">
-                 Building India&apos;s Fastest Growing Writing Community
-               </p>
-               <div className="flex items-center justify-center gap-4 mt-6 text-[#D4AF37] font-serif italic text-lg">
-                 <span>Words.</span>
-                 <Sparkles className="w-4 h-4" />
-                 <span>Soul.</span>
-                 <Sparkles className="w-4 h-4" />
-                 <span>Legacy.</span>
-               </div>
-             </div>
+          {/* BENEFITS & REWARDS SECTION */}
+          <div className="my-16 pt-10 border-t border-[#E5DAC8]">
+            <div className="text-center mb-12">
+              <span className="font-sans font-extrabold text-xs tracking-[0.3em] text-[#B91C1C] uppercase block mb-3">
+                B E N E F I T S &nbsp; & &nbsp; R E W A R D S
+              </span>
+              <h3 className="font-serif font-extrabold text-3xl sm:text-4xl text-[#2C1C13] leading-tight">
+                What will participants receive?
+              </h3>
+            </div>
 
-             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 relative z-10 max-w-6xl mx-auto">
-               
-               {/* OUR JOURNEY */}
-               <div>
-                 <span className="font-sans font-extrabold text-xs tracking-[0.3em] text-[#B91C1C] uppercase block mb-8 border-b border-[#E3D8C4] pb-4">
-                   O U R &nbsp; J O U R N E Y
-                 </span>
-                 <div className="space-y-6">
-                   {[
-                     { title: "Authorverse Summit", desc: "Global Literary Conference" },
-                     { title: "Poetry Festival", desc: "Celebrating the Art of Poetry" },
-                     { title: "Shakespeare Poetry Award", desc: "Honoring Timeless Excellence" },
-                     { title: "Indian Writers League", desc: "Uniting Writers. Inspiring Stories." },
-                     { title: "Bharat Writes", desc: "Showcasing India's Writing Talent" },
-                     { title: "September Writing Competition", desc: "Where Words Begin Change" },
-                   ].map((item, idx) => (
-                     <div key={idx} className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between border-b border-[#E3D8C4] border-dashed pb-4">
-                       <span className="font-serif font-bold text-[#2C1C13] text-lg">{item.title}</span>
-                       <span className="font-sans text-sm text-[#7A6B5D] italic">{item.desc}</span>
-                     </div>
-                   ))}
-                   <div className="text-center font-serif italic text-[#B91C1C] pt-2">And Many More...</div>
-                 </div>
-               </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+              {/* TOP 3 WINNERS */}
+              <div className="bg-gradient-to-br from-[#FAF6F0] to-white border-2 border-[#D4AF37]/40 rounded-3xl p-8 sm:p-10 relative shadow-[0_12px_40px_rgba(212,175,55,0.1)] group hover:-translate-y-1 transition-all overflow-hidden flex flex-col justify-center">
+                <div className="absolute top-0 right-0 -mt-8 -mr-8 w-32 h-32 bg-[#D4AF37]/20 rounded-full blur-2xl group-hover:bg-[#D4AF37]/30 transition-all"></div>
+                <div className="flex items-center gap-3 mb-6 relative z-10 justify-center text-center flex-col sm:flex-row">
+                  <Trophy className="w-10 h-10 text-[#D4AF37]" />
+                  <h4 className="font-serif font-extrabold text-2xl sm:text-3xl text-[#2C1C13] uppercase tracking-wide">
+                    TOP 3 WINNERS <br className="hidden sm:block"/>WILL RECEIVE
+                  </h4>
+                </div>
+                <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 sm:p-8 border border-[#E3D8C4] shadow-sm relative z-10 text-center">
+                  <p className="font-serif font-bold text-[#B91C1C] text-lg sm:text-xl mb-6">
+                    September Writers&apos; Cup with:
+                  </p>
+                  <ul className="space-y-4 font-sans text-sm sm:text-base text-[#4A3B2F] font-semibold inline-flex flex-col text-left">
+                    <li className="flex items-center gap-3">
+                      <span className="text-2xl">🥇</span>
+                      <span>Gold-Plated Medal</span>
+                    </li>
+                    <li className="flex items-center gap-3">
+                      <span className="text-2xl">📜</span>
+                      <span>Winner&apos;s Certificate</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
 
-               {/* OUR IMPACT & MISSION */}
-               <div className="flex flex-col gap-12">
-                 <div>
-                   <span className="font-sans font-extrabold text-xs tracking-[0.3em] text-[#B91C1C] uppercase block mb-8 border-b border-[#E3D8C4] pb-4">
-                     O U R &nbsp; I M P A C T
-                   </span>
-                   <div className="grid grid-cols-2 gap-6">
-                     <div className="bg-white p-6 rounded-2xl border border-[#E3D8C4] text-center shadow-xs">
-                       <div className="font-serif font-extrabold text-3xl sm:text-4xl text-[#2C1C13]">8+</div>
-                       <div className="font-sans text-[10px] uppercase tracking-widest text-[#7A6B5D] mt-2 font-bold">Competitions Hosted</div>
-                     </div>
-                     <div className="bg-white p-6 rounded-2xl border border-[#E3D8C4] text-center shadow-xs">
-                       <div className="font-serif font-extrabold text-3xl sm:text-4xl text-[#2C1C13]">3900+</div>
-                       <div className="font-sans text-[10px] uppercase tracking-widest text-[#7A6B5D] mt-2 font-bold">Writers Joined</div>
-                     </div>
-                     <div className="bg-white p-6 rounded-2xl border border-[#E3D8C4] text-center shadow-xs">
-                       <div className="font-serif font-extrabold text-3xl sm:text-4xl text-[#2C1C13]">₹5.25L+</div>
-                       <div className="font-sans text-[10px] uppercase tracking-widest text-[#7A6B5D] mt-2 font-bold">Prize Money</div>
-                     </div>
-                     <div className="bg-white p-6 rounded-2xl border border-[#E3D8C4] text-center shadow-xs">
-                       <div className="font-serif font-extrabold text-3xl sm:text-4xl text-[#2C1C13]">100%</div>
-                       <div className="font-sans text-[10px] uppercase tracking-widest text-[#7A6B5D] mt-2 font-bold">Verified</div>
-                     </div>
-                   </div>
-                 </div>
+              {/* EVERY PARTICIPANT */}
+              <div className="bg-white border-2 border-[#E3D8C4] rounded-3xl p-8 sm:p-10 relative shadow-[0_8px_30px_rgba(0,0,0,0.04)] group hover:-translate-y-1 hover:border-[#B91C1C]/30 transition-all">
+                <div className="flex items-center gap-3 mb-8">
+                  <h4 className="font-serif font-extrabold text-xl sm:text-2xl text-[#2C1C13] uppercase tracking-wide flex items-center gap-2">
+                    <span className="text-2xl">✍️</span> EVERY PARTICIPANT WILL RECEIVE
+                  </h4>
+                </div>
+                
+                <div className="space-y-6">
+                  {/* Item 1 */}
+                  <div className="flex gap-4">
+                    <div className="w-10 h-10 rounded-full bg-[#FAF6F0] flex items-center justify-center shrink-0 border border-[#E3D8C4]">
+                      <span className="text-lg">📜</span>
+                    </div>
+                    <div>
+                      <h5 className="font-serif font-bold text-[#2C1C13] text-base mb-1">National-Level Certificate</h5>
+                      <p className="font-sans text-xs sm:text-sm text-[#6B5B4C] leading-relaxed">
+                        Every participant will receive a National Certificate, community-verified and signed by the competition judges.
+                      </p>
+                    </div>
+                  </div>
 
-                 <div className="bg-[#2C1C13] rounded-3xl p-8 sm:p-10 text-center relative overflow-hidden shadow-xl border-4 border-[#1A100B]">
-                   <div className="absolute top-0 right-0 -mt-10 -mr-10 w-32 h-32 bg-[#D4AF37]/20 rounded-full blur-2xl"></div>
-                   <span className="font-sans font-extrabold text-[10px] tracking-[0.4em] text-[#D4AF37] uppercase block mb-6">
-                     T H E &nbsp; M I S S I O N
-                   </span>
-                   <div className="font-serif font-bold text-xl sm:text-2xl text-[#FAF6F0] leading-loose">
-                     BUILDING OPPORTUNITIES. <br />
-                     CELEBRATING TALENT. <br />
-                     EMPOWERING WRITERS.
-                   </div>
-                 </div>
-               </div>
-             </div>
+                  {/* Item 2 */}
+                  <div className="flex gap-4">
+                    <div className="w-10 h-10 rounded-full bg-[#FAF6F0] flex items-center justify-center shrink-0 border border-[#E3D8C4]">
+                      <span className="text-lg">📖</span>
+                    </div>
+                    <div>
+                      <h5 className="font-serif font-bold text-[#2C1C13] text-base mb-1">Featured in the September Poetry Anthology</h5>
+                      <p className="font-sans text-xs sm:text-sm text-[#6B5B4C] leading-relaxed">
+                        Every participant will get the opportunity to have their name and selected write-up featured in our September Poetry Anthology/Book, giving their work a permanent place in a published collection.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Item 3 */}
+                  <div className="flex gap-4">
+                    <div className="w-10 h-10 rounded-full bg-[#FAF6F0] flex items-center justify-center shrink-0 border border-[#E3D8C4]">
+                      <span className="text-lg">📊</span>
+                    </div>
+                    <div>
+                      <h5 className="font-serif font-bold text-[#2C1C13] text-base mb-1">Personal Judging Report</h5>
+                      <p className="font-sans text-xs sm:text-sm text-[#6B5B4C] leading-relaxed">
+                        Every participant will receive a detailed judging report with their marks, helping them understand how their entry was evaluated by the judges.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
           </div>
+
 
           {/* JUDGING PANEL SECTION */}
           <div className="my-16 pt-10 border-t border-[#E5DAC8]">
@@ -1517,7 +1516,7 @@ export default function SeptemberWritingContest() {
             </div>
             <div className="flex items-center gap-2">
               <Trophy className="w-4 h-4 text-[#B91C1C]" />
-              <span>Entry Options: <strong className="font-bold">₹1 / ₹2</strong></span>
+              <span>Entry Options: <strong className="font-bold">₹249 / ₹299</strong></span>
             </div>
           </div>
           

@@ -25,6 +25,7 @@ const authors = [
   { name: 'Rajesh Tiwari', slug: 'rajesh', role: 'Principal & Author', imageBg: 'bg-ink-900/5' },
   { name: 'Chetna Choudhary', slug: 'chetna', role: 'Scholar & Artisan Writer', imageBg: 'bg-ink-900/10' },
   { name: 'Haarleen Sethi', slug: 'haarleen', role: 'Model & Artist', imageBg: 'bg-ink-900/5' },
+  { name: 'Sureshkalalayam', slug: 'sureshkalalayam', role: 'Poet & Writer', imageBg: 'bg-ink-900/10' },
 ];
 
 const AuthorsDirectory = () => {

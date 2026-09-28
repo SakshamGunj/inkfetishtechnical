@@ -29,6 +29,7 @@ const authors = [
   { name: 'Chetna Choudhary', slug: 'chetna', role: 'Scholar & Artisan Writer', imageBg: 'bg-ink-900/5' },
   { name: 'Haarleen Sethi', slug: 'haarleen', role: 'Model & Artist', imageBg: 'bg-ink-900/10' },
   { name: 'Jahnvi Sharma', slug: 'jahnvi', role: 'Writer & Educator', imageBg: 'bg-ink-900/5' },
+  { name: 'Sharmila Maitra', slug: 'sharmila', role: 'Marketing Pro & Author', imageBg: 'bg-ink-900/10' },
 ];
 
 export default function AuthorsPage() {

@@ -203,9 +203,10 @@ function getWordCount(html: string): number {
 
 export default function SubmitClient() {
   const searchParams = useSearchParams();
-  const nominationId = searchParams.get('nomination_id') || '';
-  const prefillName = searchParams.get('name') || '';
+  const nominationId = searchParams.get('nomination_id') || searchParams.get('order_id') || searchParams.get('nominationId') || searchParams.get('id') || '';
+  const initialAuthorName = searchParams.get('name') || searchParams.get('fullName') || searchParams.get('author_name') || '';
 
+  const [authorNameInput, setAuthorNameInput] = useState(initialAuthorName);
   const [title, setTitle] = useState('');
   const [contentType, setContentType] = useState<ContentType | null>(null);
   const [theme, setTheme] = useState('');
@@ -236,6 +237,10 @@ export default function SubmitClient() {
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (!authorNameInput.trim()) {
+      setErrorMsg('Please enter your Author Name / Pen Name.');
+      return;
+    }
     if (!contentType) {
       setErrorMsg('Please select a submission type (Poetry, Short Story, or Novel Excerpt).');
       return;
@@ -248,7 +253,9 @@ export default function SubmitClient() {
       setErrorMsg('Please select a theme for your work.');
       return;
     }
-    if (!editor || editor.isEmpty) {
+
+    const textContent = editor ? editor.getText().trim() : '';
+    if (!editor || textContent.length === 0) {
       setErrorMsg('Please write or paste your submission in the editor below.');
       return;
     }
@@ -259,7 +266,7 @@ export default function SubmitClient() {
     try {
       const body = {
         nominationId,
-        authorName: prefillName || 'Anonymous',
+        authorName: authorNameInput.trim(),
         title: title.trim(),
         contentType,
         theme,
@@ -282,10 +289,11 @@ export default function SubmitClient() {
 
       setStatus('success');
     } catch (err) {
+      console.error('Submission catch:', err);
       setStatus('error');
       setErrorMsg(err instanceof Error ? err.message : 'Unexpected error. Please try again.');
     }
-  }, [contentType, title, theme, editor, authorNote, nominationId, prefillName, wordCount]);
+  }, [authorNameInput, contentType, title, theme, editor, authorNote, nominationId, wordCount]);
 
   // ─── Success Screen ─────────────────────────────────────────────────────────
 

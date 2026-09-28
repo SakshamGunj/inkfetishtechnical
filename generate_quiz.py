@@ -1,137 +1,107 @@
 import re
 
 questions = [
-    {
-        "num": 1,
-        "category": "Point of View",
-        "question": "Which point of view uses the pronouns 'I', 'me', and 'my'?",
-        "options": ["First Person", "Second Person", "Third Person Limited", "Third Person Omniscient"],
-        "correct": "A"
-    },
-    {
-        "num": 2,
-        "category": "Literary Device",
-        "question": "What literary device is used when an object or action represents a deeper meaning?",
-        "options": ["Symbolism", "Hyperbole", "Irony", "Alliteration"],
-        "correct": "A"
-    },
-    {
-        "num": 3,
-        "category": "Show, Don't Tell",
-        "question": "Which sentence best follows the 'Show, Don't Tell' principle?",
-        "options": ["She was nervous.", "Her hands trembled as she folded the letter.", "She felt emotions.", "She was scared and nervous."],
-        "correct": "B"
-    },
-    {
-        "num": 4,
-        "category": "Character Development",
-        "question": "What is the term for the transformation a character undergoes during a story?",
-        "options": ["Character Arc", "Plot Twist", "Prologue", "Theme"],
-        "correct": "A"
-    },
-    {
-        "num": 5,
-        "category": "Publishing",
-        "question": "Before a manuscript is sent for printing, which stage usually comes last?",
-        "options": ["Proofreading", "Brainstorming", "Drafting", "Outlining"],
-        "correct": "A"
-    },
-    {
-        "num": 6,
-        "category": "Publishing",
-        "question": "Which professional is primarily responsible for correcting grammar, punctuation, and consistency in a manuscript?",
-        "options": ["Copy Editor", "Illustrator", "Literary Agent", "Book Reviewer"],
-        "correct": "A"
-    },
-    {
-        "num": 7,
-        "category": "Poetry",
-        "question": "What is a stanza in poetry?",
-        "options": ["A group of lines forming a unit", "The title of the poem", "The final line", "A rhyme scheme"],
-        "correct": "A"
-    },
-    {
-        "num": 8,
-        "category": "Writing",
-        "question": "Which of the following is NOT usually considered a stage of the writing process?",
-        "options": ["Revising", "Editing", "Publishing", "Laminating"],
-        "correct": "D"
-    },
-    {
-        "num": 9,
-        "category": "Publishing",
-        "question": "What is the primary purpose of a book's blurb?",
-        "options": ["To summarize the book and attract readers", "To list references", "To thank the publisher", "To display the ISBN"],
-        "correct": "A"
-    },
-    {
-        "num": 10,
-        "category": "Creative Writing",
-        "question": "Which element is considered the central message or underlying idea of a story?",
-        "options": ["Theme", "Setting", "Dialogue", "Genre"],
-        "correct": "A"
-    }
+    {"q": "Which Indian poet wrote Gitanjali?", "opts": {"A": "Sarojini Naidu", "B": "Rabindranath Tagore", "C": "Munshi Premchand", "D": "Harivansh Rai Bachchan"}, "ans": "B"},
+    {"q": "How many lines does a traditional sonnet usually have?", "opts": {"A": "10", "B": "12", "C": "14", "D": "16"}, "ans": "C"},
+    {"q": "Who wrote Godaan?", "opts": {"A": "Munshi Premchand", "B": "R. K. Narayan", "C": "Ruskin Bond", "D": "Vikram Seth"}, "ans": "A"},
+    {"q": "Haiku is a traditional form of poetry from which country?", "opts": {"A": "India", "B": "China", "C": "Japan", "D": "Korea"}, "ans": "C"},
+    {"q": "Which of these is a type of poem that tells a story?", "opts": {"A": "Ballad", "B": "Haiku", "C": "Sonnet", "D": "Limerick"}, "ans": "A"},
+    {"q": "Who wrote the famous epic Ramayana?", "opts": {"A": "Vyasa", "B": "Valmiki", "C": "Kalidasa", "D": "Tulsidas"}, "ans": "B"},
+    {"q": "Which Indian language has the famous ancient Sangam literary tradition?", "opts": {"A": "Bengali", "B": "Tamil", "C": "Hindi", "D": "Marathi"}, "ans": "B"},
+    {"q": "What do we call a story that is written mainly to teach a moral lesson?", "opts": {"A": "Fable", "B": "Biography", "C": "Memoir", "D": "Thriller"}, "ans": "A"},
+    {"q": "Who wrote Madhushala?", "opts": {"A": "Harivansh Rai Bachchan", "B": "Ramdhari Singh Dinkar", "C": "Premchand", "D": "Gulzar"}, "ans": "A"},
+    {"q": "Which famous English playwright wrote Romeo and Juliet?", "opts": {"A": "Charles Dickens", "B": "William Shakespeare", "C": "George Orwell", "D": "Oscar Wilde"}, "ans": "B"},
+    {"q": "What is an autobiography?", "opts": {"A": "A story about another person's life", "B": "A fictional story", "C": "A person's story written about their own life", "D": "A collection of poems"}, "ans": "C"},
+    {"q": "Which of these is NOT usually considered a genre of fiction?", "opts": {"A": "Mystery", "B": "Fantasy", "C": "Biography", "D": "Science Fiction"}, "ans": "C"},
+    {"q": "What is a metaphor?", "opts": {"A": "A direct comparison using \"like\" or \"as\"", "B": "A comparison made without using \"like\" or \"as\"", "C": "Repetition of the same word", "D": "A question with no answer"}, "ans": "B"},
+    {"q": "Who wrote The Jungle Book?", "opts": {"A": "Mark Twain", "B": "Rudyard Kipling", "C": "Ernest Hemingway", "D": "Lewis Carroll"}, "ans": "B"},
+    {"q": "Which of these is traditionally associated with a 5–7–5 pattern?", "opts": {"A": "Sonnet", "B": "Haiku", "C": "Ballad", "D": "Epic"}, "ans": "B"},
+    {"q": "Who was the first Indian to win the Nobel Prize in Literature?", "opts": {"A": "R. K. Narayan", "B": "Rabindranath Tagore", "C": "Sarojini Naidu", "D": "Vikram Seth"}, "ans": "B"}
 ]
 
-def generate_slide(q, is_answer):
-    letters = ['A', 'B', 'C', 'D']
-    correct_idx = letters.index(q['correct'])
-    
-    html = f"""
-        <!-- Q{q['num']}: {'Answer' if is_answer else 'Question'} -->
-        <section class="slide theme-quiz-{'a' if is_answer else 'q'}" style="background: var(--ivory);">
-            <div class="content" style="max-width: 900px; padding: 4rem 2rem; width: 100%; text-align: center;">
-                <p style="font-family: var(--font-sans); text-transform: uppercase; font-weight: 800; letter-spacing: 3px; font-size: 0.9rem; color: var(--gold-main); margin-bottom: 1rem;">{'Answer' if is_answer else 'Question'} {q['num']} • {q['category']}</p>
-                <h3 style="font-family: var(--font-heading); font-size: clamp(2rem, 3.5vw, 3rem); color: var(--obsidian); font-weight: 800; margin-bottom: 3rem; line-height: 1.2;">
-                    {q['question']}
-                </h3>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; text-align: left;">"""
+html_to_insert = """
+        <!-- Quiz Intro 1 -->
+        <div class="slide" style="justify-content: center; text-align: center;">
+            <div class="subtitle" style="font-size: 1.5rem; letter-spacing: 5px; margin-bottom: 20px; color: var(--text-accent);">AND NOW...</div>
+            <h1 class="title-huge" style="font-size: 4.5rem; margin-bottom: 40px; color: var(--text-dark);">FUN GAME TIME!</h1>
+            <p style="font-size: 2.5rem; font-weight: bold; font-family: 'Playfair Display', serif; color: #444;">Let's play some games.</p>
+        </div>
 
-    for i in range(4):
-        is_this_correct = (i == correct_idx)
-        letter = letters[i]
-        opt_text = q['options'][i]
-        
-        if is_answer and is_this_correct:
-            div_style = "background: #22c55e; border: 2px solid #16a34a; border-radius: 12px; padding: 1.5rem; font-family: var(--font-sans); font-size: clamp(1rem, 1.5vw, 1.2rem); font-weight: 800; color: white; box-shadow: 0 15px 30px rgba(34,197,94,0.3); transform: scale(1.05); z-index: 2;"
-            span_style = "color: rgba(255,255,255,0.7); font-weight: 800; margin-right: 10px;"
-        else:
-            div_style = f"background: white; border: 2px solid rgba(0,0,0,0.1); border-radius: 12px; padding: 1.5rem; font-family: var(--font-sans); font-size: clamp(1rem, 1.5vw, 1.2rem); font-weight: 600; color: var(--slate); box-shadow: 0 10px 20px rgba(0,0,0,0.05); {'opacity: 0.4;' if is_answer else ''}"
-            span_style = "color: var(--gold-main); font-weight: 800; margin-right: 10px;"
+        <!-- Quiz Intro 2 -->
+        <div class="slide" style="justify-content: center; text-align: center; background: rgba(255,255,255,0.95);">
+            <div class="subtitle" style="font-size: 1.5rem; letter-spacing: 5px; margin-bottom: 20px; color: var(--text-accent);">HOW TO PLAY</div>
+            <h1 class="title-huge" style="font-size: 3.5rem; margin-bottom: 30px; color: var(--text-dark);">THE MEGA QUIZ</h1>
             
-        html += f"""
-                    <div style="{div_style}">
-                        <span style="{span_style}">{letter}.</span> {opt_text}
-                    </div>"""
-                    
-    html += """
+            <div style="background: rgba(255,255,255,0.8); border: 2px solid var(--border-color); padding: 40px; border-radius: 20px; box-shadow: 0 15px 30px rgba(90, 50, 30, 0.1); max-width: 800px; margin: 0 auto 40px auto;">
+                <p style="font-size: 2rem; color: #333; margin-bottom: 25px; line-height: 1.6; font-family: 'Playfair Display', serif; font-weight: bold;">
+                    We will start by playing a 15-question quiz!
+                </p>
+                <div style="display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 20px;">
+                    <span style="font-size: 2.5rem;">⌨️</span>
+                    <p style="font-size: 1.8rem; color: #555; margin: 0; font-weight: 500;">You just have to type your answers in the chat box.</p>
                 </div>
             </div>
-        </section>"""
-    return html
+            
+            <p style="font-size: 3rem; font-family: 'Cinzel', serif; color: var(--text-accent); font-weight: bold; letter-spacing: 2px;">Let's begin!</p>
+        </div>
+"""
 
-full_html = ""
-for q in questions:
-    full_html += generate_slide(q, False)
-    full_html += generate_slide(q, True)
+def generate_options_html(opts, correct_ans=None):
+    opts_html = '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 900px; margin: 0 auto; text-align: left;">'
+    for letter, text in opts.items():
+        is_correct = correct_ans == letter
+        bg = 'rgba(46, 125, 50, 0.15)' if is_correct else 'rgba(255,255,255,0.8)'
+        border = '#2e7d32' if is_correct else 'var(--border-color)'
+        color = '#2e7d32' if is_correct else '#444'
+        weight = 'bold' if is_correct else '500'
+        shadow = '0 10px 20px rgba(46,125,50,0.2)' if is_correct else '0 5px 15px rgba(0,0,0,0.05)'
+        scale = 'transform: scale(1.05);' if is_correct else ''
+        check = '<span style="float: right;">✅</span>' if is_correct else ''
+        
+        opts_html += f'''
+            <div style="background: {bg}; border: 2px solid {border}; padding: 25px; border-radius: 12px; box-shadow: {shadow}; font-size: 1.6rem; font-family: 'Montserrat', sans-serif; color: {color}; font-weight: {weight}; transition: all 0.3s ease; {scale}">
+                <span style="font-family: 'Cinzel', serif; font-weight: bold; margin-right: 15px;">{letter}.</span> {text} {check}
+            </div>
+        '''
+    opts_html += '</div>'
+    return opts_html
 
-# Read the file and replace the 8 placeholder lines
-with open('public/honey-hurt-presentation/index.html', 'r') as f:
+for i, q in enumerate(questions):
+    title = f"QUESTION {i+1}"
+    if i == 14:
+        title = "🔥 FINAL QUESTION — Q15"
+    if i == 15:
+        title = "🎁 BONUS TIE-BREAKER"
+        
+    # Slide A: Question only
+    html_to_insert += f'''
+        <!-- {title} - Question -->
+        <div class="slide" style="justify-content: center; text-align: center;">
+            <div class="subtitle" style="font-size: 1.5rem; letter-spacing: 5px; margin-bottom: 30px; color: var(--text-accent);">{title}</div>
+            <h1 style="font-size: 2.8rem; margin-bottom: 50px; color: var(--text-dark); max-width: 1000px; margin-left: auto; margin-right: auto; line-height: 1.4; font-family: 'Playfair Display', serif;">{q['q']}</h1>
+            {generate_options_html(q['opts'])}
+        </div>
+    '''
+    
+    # Slide B: Question + Answer
+    html_to_insert += f'''
+        <!-- {title} - Answer -->
+        <div class="slide" style="justify-content: center; text-align: center; background: rgba(255,255,255,0.95);">
+            <div class="subtitle" style="font-size: 1.5rem; letter-spacing: 5px; margin-bottom: 30px; color: #2e7d32;">{title} — ANSWER</div>
+            <h1 style="font-size: 2.8rem; margin-bottom: 50px; color: var(--text-dark); max-width: 1000px; margin-left: auto; margin-right: auto; line-height: 1.4; font-family: 'Playfair Display', serif;">{q['q']}</h1>
+            {generate_options_html(q['opts'], q['ans'])}
+        </div>
+    '''
+
+with open("iwl_presentation.html", "r") as f:
     content = f.read()
 
-# The placeholder starts with '<!-- Slides 11-18: Reserved Blank Slides for Quiz -->'
-# and ends right before '<!-- Slide 19: The Reality of Publishing -->' (or whatever is next)
-# Actually, I can just use a regex to replace that specific block.
-pattern = re.compile(r'<!-- Slides 11-18: Reserved Blank Slides for Quiz -->.*?(?=<!-- Slide \d+: The Reality|<!-- Slide 19: The Reality)', re.DOTALL)
-match = pattern.search(content)
-
-if match:
-    new_content = content[:match.start()] + full_html + "\n\n        " + content[match.end():]
-    with open('public/honey-hurt-presentation/index.html', 'w') as f:
+# find the closing </div> of .slides-wrapper
+parts = content.split('    </div>\n\n    <div class="slide-counter">')
+if len(parts) == 2:
+    new_content = parts[0] + html_to_insert + '    </div>\n\n    <div class="slide-counter">' + parts[1]
+    with open("iwl_presentation.html", "w") as f:
         f.write(new_content)
-    print("Success: Replaced quiz slides.")
+    print("Success")
 else:
-    print("Error: Could not find the quiz placeholder block.")
-    # let's try a fallback
-    pattern = re.compile(r'<!-- Slides 11-18: Reserved Blank Slides for Quiz -->.*?(?=</body)', re.DOTALL)
-    # wait, the next slide might be "The Reality" (Slide 19) or "Slide 4" or something else depending on previous edits.
+    print("Failed to find insertion point.")

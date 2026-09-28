@@ -1,16 +1,14 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { load } from '@cashfreepayments/cashfree-js';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { 
   Trophy, Star, ShieldCheck, Clock, BookOpen, 
-  PenTool, CheckCircle2, ChevronRight, Award, Zap, 
-  Users, Globe, Scale, Gift, Landmark, GraduationCap,
-  Calendar, Lock, ArrowRight, Sparkles, Check
+  PenTool, CheckCircle2, Award, Users, Globe, 
+  Scale, Gift, Landmark, GraduationCap, Lock, 
+  ArrowRight, Sparkles, Check
 } from 'lucide-react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 
 const testimonialsRow1 = [
   'https://res.cloudinary.com/dde8ekuuu/image/upload/v1775897590/WhatsApp_Image_2026-03-23_at_7.03.30_PM-compressed_fsgkug.webp',
@@ -52,180 +50,9 @@ const testimonialsRow3 = [
   'https://res.cloudinary.com/dde8ekuuu/image/upload/q_auto/f_auto/v1776802129/WhatsApp_Image_2026-04-22_at_1.37.09_AM_2_d7vvc7.jpg',
 ];
 
-import { savePeopleChoiceNomination, updateNominationPlan } from '@/services/peopleChoiceService';
-
-interface VerifiedOrderData {
-  order_id: string;
-  order_status: string;
-  order_amount: number;
-  order_tags?: { email?: string; name?: string; plan?: string; };
-}
-
-const LS_KEY = 'pca_nomination_id';
-
-type PageState = 'loading' | 'form' | 'paid';
-
-interface StoredNomination {
-  nominationId: string;
-  name: string;
-  email: string;
-  age: string;
-}
-
 export default function PeopleChoiceClient() {
-  const router = useRouter();
-  const [pageState, setPageState] = useState<PageState>('loading');
-  const [step, setStep] = useState<1 | 2>(1);
-  const [formData, setFormData] = useState({
-    fullName: '',
-    email: '',
-    age: '',
-    whatsapp: ''
-  });
-  const [activeNominationId, setActiveNominationId] = useState<string | null>(null);
-  const [paidNomination, setPaidNomination] = useState<StoredNomination | null>(null);
-  const [selectedPlan] = useState<number>(449); // Production price
-  const [isStep1Submitting, setIsStep1Submitting] = useState(false);
-  const [isPaymentLoading, setIsPaymentLoading] = useState(false);
-  const [paymentError, setPaymentError] = useState<string | null>(null);
-
-  // On mount: check localStorage for existing nomination and its payment status
-  useEffect(() => {
-    const storedId = localStorage.getItem(LS_KEY);
-    if (!storedId) {
-      setPageState('form');
-      return;
-    }
-
-    fetch(`/api/people-choice/nominate?nomination_id=${storedId}`)
-      .then((r) => r.json())
-      .then((data) => {
-        if (!data.found) {
-          localStorage.removeItem(LS_KEY);
-          setPageState('form');
-          return;
-        }
-        if (data.payment_status === 'PAID') {
-          setPaidNomination({
-            nominationId: storedId,
-            name: data.name,
-            email: data.email,
-            age: data.age,
-          });
-          setPageState('paid');
-        } else {
-          setActiveNominationId(storedId);
-          setFormData((prev) => ({ ...prev, fullName: data.name, email: data.email, age: data.age }));
-          setStep(2);
-          setPageState('form');
-        }
-      })
-      .catch(() => setPageState('form'));
-  }, []);
-
-  // Check if Cashfree redirected back with order_id in URL (fallback for _self redirect)
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-    const urlParams = new URLSearchParams(window.location.search);
-    const orderId = urlParams.get('order_id');
-    if (!orderId || !orderId.startsWith('pca_')) return;
-
-    fetch(`/api/cashfree/verify-order?order_id=${orderId}`)
-      .then((r) => r.json())
-      .then((data: VerifiedOrderData) => {
-        if (data.order_status === 'PAID') {
-          localStorage.setItem(LS_KEY, orderId);
-          router.push(
-            `/people-choice-award/thank-you?name=${encodeURIComponent(data.order_tags?.name || '')}&email=${encodeURIComponent(data.order_tags?.email || '')}&category=${encodeURIComponent(data.order_tags?.plan || '')}&plan=${data.order_amount}&order_id=${orderId}`
-          );
-        }
-      })
-      .catch(() => {});
-  }, []);
-
-  const handleStep1Submit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!formData.fullName || !formData.email || !formData.age) return;
-
-    setIsStep1Submitting(true);
-    try {
-      const res = await savePeopleChoiceNomination(formData);
-      if (res.nominationId) {
-        setActiveNominationId(res.nominationId);
-        localStorage.setItem(LS_KEY, res.nominationId);
-      }
-    } catch (err) {
-      console.error('Non-blocking Firestore save warning:', err);
-    } finally {
-      setIsStep1Submitting(false);
-      setStep(2);
-      setTimeout(() => {
-        const formEl = document.getElementById('nominate-form');
-        if (formEl) formEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 50);
-    }
-  };
-
-  const handlePayment = async () => {
-    if (!activeNominationId) return;
-    setIsPaymentLoading(true);
-    setPaymentError(null);
-
-    try {
-      // 1. Update plan status to PENDING in Firestore
-      await updateNominationPlan(activeNominationId, selectedPlan);
-
-      // 2. Create Cashfree order on backend
-      const res = await fetch('/api/cashfree/create-order', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          amount: selectedPlan,
-          customerName: formData.fullName,
-          customerEmail: formData.email,
-          customerPhone: formData.whatsapp,
-          plan: selectedPlan,
-          source: 'people_choice',
-          providedOrderId: activeNominationId,
-        }),
-      });
-
-      const orderData = await res.json();
-      if (!res.ok) throw new Error(orderData.error || 'Failed to create payment order.');
-
-      // 3. Load Cashfree SDK and open modal
-      const cashfree = await load({
-        mode: (process.env.NEXT_PUBLIC_CASHFREE_MODE as 'production' | 'sandbox') || 'production',
-      });
-
-      await cashfree.checkout({
-        paymentSessionId: orderData.payment_session_id,
-        redirectTarget: '_modal',
-      });
-
-      // 4. Modal closed — verify payment
-      const verifyRes = await fetch(`/api/cashfree/verify-order?order_id=${activeNominationId}`);
-      const verifyData: VerifiedOrderData = await verifyRes.json();
-
-      if (verifyData.order_status === 'PAID') {
-        // Mark localStorage so returning users skip form
-        localStorage.setItem(LS_KEY, activeNominationId);
-        router.push(
-          `/people-choice-award/thank-you?name=${encodeURIComponent(formData.fullName)}&email=${encodeURIComponent(formData.email)}&category=${encodeURIComponent(formData.age)}&plan=${selectedPlan}&order_id=${activeNominationId}`
-        );
-      } else {
-        setPaymentError('Payment was not completed. Please try again.');
-        setIsPaymentLoading(false);
-      }
-    } catch (err: unknown) {
-      console.error('Payment error:', err);
-      setPaymentError(err instanceof Error ? err.message : 'An unexpected error occurred. Please try again.');
-      setIsPaymentLoading(false);
-    }
-  };
-
   return (
-    <div className="min-h-screen bg-[#070605] text-[#f5f0e1] font-sans selection:bg-[#d4af37] selection:text-black relative overflow-x-hidden pb-16 sm:pb-0">
+    <div className="min-h-screen bg-[#070605] text-[#f5f0e1] font-sans selection:bg-[#d4af37] selection:text-black relative overflow-x-hidden">
       
       {/* Background ambient lighting */}
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
@@ -234,29 +61,41 @@ export default function PeopleChoiceClient() {
       </div>
 
       {/* --- NAVBAR --- */}
-      <nav className="sticky top-0 z-50 bg-[#070605]/85 backdrop-blur-md border-b border-[#d4af37]/20 py-2 px-4 shadow-lg shadow-black/40">
-        <div className="max-w-6xl mx-auto flex items-center justify-center gap-3">
-          <img 
-            src="/images/inkfetish_logo.png" 
-            alt="Inkfetish Publication" 
-            className="w-8 h-8 rounded-full object-cover border border-[#d4af37]/30 shadow-[0_0_10px_rgba(212,175,55,0.3)]"
-          />
-          <span className="font-serif text-sm font-semibold tracking-wider text-[#f3e5ab]">
-            Inkfetish Publication
-          </span>
+      <nav className="sticky top-0 z-50 bg-[#070605]/85 backdrop-blur-md border-b border-[#d4af37]/20 py-2.5 px-4 shadow-lg shadow-black/40">
+        <div className="max-w-6xl mx-auto flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <img 
+              src="/images/inkfetish_logo.png" 
+              alt="Inkfetish Publication" 
+              className="w-8 h-8 rounded-full object-cover border border-[#d4af37]/30 shadow-[0_0_10px_rgba(212,175,55,0.3)]"
+            />
+            <span className="font-serif text-sm font-semibold tracking-wider text-[#f3e5ab]">
+              Inkfetish Publication
+            </span>
+          </div>
+
+          <Link
+            href="/people-choice-award/register"
+            className="inline-flex items-center gap-2 bg-gradient-to-r from-[#bf953f] to-[#aa771c] text-black font-bold text-xs uppercase tracking-wider py-2 px-4 rounded-xl hover:brightness-110 shadow-md transition-transform active:scale-95"
+          >
+            <span>Register Now</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
         </div>
       </nav>
 
       {/* --- TOP SCARCITY BAR --- */}
-      <div className="bg-gradient-to-r from-[#1c1408] via-[#2f220d] to-[#1c1408] border-b border-[#d4af37]/25 text-[#f3e5ab] py-2 px-3 text-center text-xs tracking-widest font-semibold flex items-center justify-center gap-2">
-        <span className="animate-ping inline-flex h-2 w-2 rounded-full bg-red-400 opacity-75" />
-        <span>Strictly Limited to <strong>250 Participants</strong> — Registrations Closing Soon</span>
-      </div>
+      <Link 
+        href="/people-choice-award/register"
+        className="block bg-gradient-to-r from-[#1c1408] via-[#2f220d] to-[#1c1408] border-b border-[#d4af37]/25 text-[#f3e5ab] py-2 px-3 text-center text-xs tracking-widest font-semibold hover:bg-[#2b1f0c] transition-colors"
+      >
+        <div className="flex items-center justify-center gap-2">
+          <span className="animate-ping inline-flex h-2 w-2 rounded-full bg-red-400 opacity-75" />
+          <span>Strictly Limited to <strong>250 Participants</strong> — Registrations Open! Click Here to Register →</span>
+        </div>
+      </Link>
 
-      {/* --- PAYMENT SUCCESS BANNER MODAL --- */}
-      {/* Removed: handled by redirect to thank-you page after verify */}
-
-      {/* --- HERO & NOMINATION SECTION --- */}
+      {/* --- HERO SECTION --- */}
       <main className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-12 pb-12 sm:pb-16">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           
@@ -316,309 +155,76 @@ export default function PeopleChoiceClient() {
             <p className="mt-4 text-sm sm:text-base text-gray-400 max-w-lg leading-relaxed font-light">
               Enter India's most democratic literary honor. Powered by 200,000+ voting readers and backed by traditional publishing powerhouse Inkfetish.
             </p>
+
+            <div className="mt-8 flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
+              <Link
+                href="/people-choice-award/register"
+                className="w-full sm:w-auto py-4 px-8 rounded-xl font-bold text-sm uppercase tracking-wider text-black bg-gradient-to-r from-[#bf953f] via-[#fcf6ba] to-[#aa771c] hover:brightness-110 active:scale-[0.98] transition-all shadow-[0_4px_25px_rgba(212,175,55,0.4)] flex items-center justify-center gap-2 group cursor-pointer"
+              >
+                <span>Apply Now</span>
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </div>
           </div>
 
-          {/* Right Column: Form / Paid State */}
+          {/* Right Column: Nomination Showcase Box with CTA */}
           <motion.div 
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.25 }}
-            className="lg:col-span-5 w-full scroll-mt-20"
-            id="nominate-form"
+            className="lg:col-span-5 w-full"
           >
-            <div className="bg-[#120f0a]/95 backdrop-blur-xl border border-[#d4af37]/40 rounded-2xl sm:rounded-3xl p-4 sm:p-7 shadow-[0_12px_45px_rgba(0,0,0,0.9)] relative overflow-hidden">
+            <div className="bg-[#120f0a]/95 backdrop-blur-xl border border-[#d4af37]/40 rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-[0_12px_45px_rgba(0,0,0,0.9)] relative overflow-hidden text-center space-y-6">
+              
               <div className="absolute -top-24 -left-24 w-48 h-48 bg-[#d4af37]/15 rounded-full blur-3xl pointer-events-none" />
 
-              {/* --- LOADING STATE --- */}
-              {pageState === 'loading' && (
-                <div className="flex flex-col items-center justify-center py-12 gap-4">
-                  <div className="w-8 h-8 border-2 border-[#d4af37]/30 border-t-[#d4af37] rounded-full animate-spin" />
-                  <p className="text-xs text-gray-500 uppercase tracking-widest">Checking your registration...</p>
+              <span className="inline-block bg-[#d4af37]/15 border border-[#d4af37]/40 text-[#f3e5ab] text-[10px] font-bold tracking-[0.25em] uppercase px-3.5 py-1 rounded-full">
+                OFFICIAL APPLICATION PORTAL 2026
+              </span>
+
+              <div className="relative p-2 rounded-2xl bg-gradient-to-b from-[#d4af37]/20 via-transparent to-[#d4af37]/10 border border-[#d4af37]/35 shadow-[0_0_35px_rgba(212,175,55,0.2)] max-w-[280px] mx-auto">
+                <img 
+                  src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1788291912/ChatGPT_Image_Sep_2_2026_01_13_09_AM_1_vb4vp2.png" 
+                  alt="People's Choice Official Award Kit" 
+                  className="rounded-xl object-contain w-full h-auto drop-shadow-[0_8px_20px_rgba(0,0,0,0.7)]"
+                />
+              </div>
+
+              <div className="space-y-2 text-left bg-black/40 border border-[#d4af37]/20 rounded-xl p-4 text-xs text-gray-200">
+                <div className="flex items-center gap-2 text-[#d4af37] font-semibold text-xs uppercase tracking-wider mb-1">
+                  <Sparkles className="w-4 h-4" />
+                  <span>Key Candidate Perks</span>
                 </div>
-              )}
-
-              {/* --- PAID STATE: Already registered & paid --- */}
-              {pageState === 'paid' && paidNomination && (
-                <div className="space-y-5 text-center">
-                  <div className="w-14 h-14 rounded-full bg-gradient-to-br from-[#bf953f] to-[#aa771c] p-0.5 mx-auto shadow-[0_0_25px_rgba(212,175,55,0.4)]">
-                    <div className="w-full h-full rounded-full bg-[#120f0a] flex items-center justify-center">
-                      <CheckCircle2 className="w-7 h-7 text-[#d4af37]" />
-                    </div>
-                  </div>
-                  <div>
-                    <h2 className="font-serif text-xl font-bold text-[#d4af37]">You're Registered!</h2>
-                    <p className="text-xs text-gray-400 mt-1">Welcome back, <strong className="text-white">{paidNomination.name}</strong></p>
-                  </div>
-                  <div className="bg-black/40 border border-[#d4af37]/25 rounded-xl px-4 py-3 text-left space-y-1">
-                    <div className="text-[9px] uppercase tracking-widest text-gray-500">Nomination ID</div>
-                    <div className="font-mono text-xs text-[#d4af37] truncate">{paidNomination.nominationId}</div>
-                  </div>
-                  <Link
-                    href={`/people-choice-award/submit?nomination_id=${paidNomination.nominationId}&name=${encodeURIComponent(paidNomination.name)}`}
-                    className="w-full flex items-center justify-center gap-2 py-3.5 px-5 rounded-xl font-bold text-sm uppercase tracking-wider text-black bg-gradient-to-r from-[#bf953f] via-[#fcf6ba] to-[#aa771c] hover:brightness-110 active:scale-[0.98] transition-all shadow-[0_4px_20px_rgba(212,175,55,0.3)] cursor-pointer"
-                  >
-                    <PenTool className="w-4 h-4" />
-                    <span>Submit My Entry →</span>
-                  </Link>
-                  <Link
-                    href={`/people-choice-award/thank-you?name=${encodeURIComponent(paidNomination.name)}&email=${encodeURIComponent(paidNomination.email)}&order_id=${paidNomination.nominationId}`}
-                    className="block text-xs text-gray-500 hover:text-[#d4af37] transition-colors"
-                  >
-                    View Registration Slip
-                  </Link>
-                  <button
-                    type="button"
-                    onClick={() => { localStorage.removeItem(LS_KEY); setPageState('form'); setStep(1); setPaidNomination(null); }}
-                    className="block w-full text-[10px] text-gray-600 hover:text-gray-400 transition-colors cursor-pointer"
-                  >
-                    Not you? Register with a different account
-                  </button>
-                </div>
-              )}
-
-              {/* --- FORM STATE --- */}
-              {pageState === 'form' && (
-                <>
-
-              <div className="flex items-center justify-between mb-5 pb-3 border-b border-white/10">
                 <div className="flex items-center gap-2">
-                  <span className={`w-6 h-6 sm:w-7 sm:h-7 rounded-full text-xs font-bold flex items-center justify-center transition-all ${step === 1 ? 'bg-gradient-to-r from-[#bf953f] to-[#aa771c] text-black shadow' : 'bg-green-500 text-black'}`}>
-                    {step === 1 ? '1' : '✓'}
-                  </span>
-                  <span className={`text-[11px] sm:text-xs font-serif font-bold uppercase tracking-wider ${step === 1 ? 'text-[#f3e5ab]' : 'text-gray-400'}`}>
-                    Your Details
-                  </span>
+                  <CheckCircle2 className="w-3.5 h-3.5 text-[#d4af37] shrink-0" />
+                  <span>200,000+ Verified Reader Voting</span>
                 </div>
-
-                <div className="h-px w-6 sm:w-8 bg-white/20" />
-
                 <div className="flex items-center gap-2">
-                  <span className={`w-6 h-6 sm:w-7 sm:h-7 rounded-full text-xs font-bold flex items-center justify-center transition-all ${step === 2 ? 'bg-gradient-to-r from-[#bf953f] to-[#aa771c] text-black shadow' : 'bg-white/10 text-gray-500'}`}>
-                    2
-                  </span>
-                  <span className={`text-[11px] sm:text-xs font-serif font-bold uppercase tracking-wider ${step === 2 ? 'text-[#f3e5ab]' : 'text-gray-500'}`}>
-                    Select Plan
-                  </span>
+                  <CheckCircle2 className="w-3.5 h-3.5 text-[#d4af37] shrink-0" />
+                  <span>Top 3: Free Solo Book Publication Contract</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-[#d4af37] shrink-0" />
+                  <span>Top 20: Golden Statuette + ₹25,000 Goodies</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-[#d4af37] shrink-0" />
+                  <span>EVERY Participant: Certificate + Appreciation Letter</span>
                 </div>
               </div>
 
-              {/* --- STEP 1: WRITER DETAILS --- */}
-              {step === 1 && (
-                <form onSubmit={handleStep1Submit} className="space-y-3.5">
-                  <div className="text-center mb-3">
-                    <h2 className="font-serif text-xl sm:text-2xl font-bold text-[#d4af37] tracking-wide">
-                      Register Yourself
-                    </h2>
-                    <p className="text-xs text-gray-400 mt-1">
-                      Fill in your details below to begin your registration.
-                    </p>
-                  </div>
+              {/* Main Button Opening Separate Registration Portal Page */}
+              <Link
+                href="/people-choice-award/register"
+                className="w-full py-4 px-6 rounded-xl font-bold text-sm sm:text-base uppercase tracking-wider text-black bg-gradient-to-r from-[#bf953f] via-[#fcf6ba] to-[#aa771c] hover:brightness-110 active:scale-[0.98] transition-all shadow-[0_4px_25px_rgba(212,175,55,0.4)] flex items-center justify-center gap-2 cursor-pointer group"
+              >
+                <span>Apply Now</span>
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </Link>
 
-                  <div>
-                    <label className="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-1">
-                      Full Name *
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      value={formData.fullName}
-                      onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                      placeholder="e.g. Jane Doe"
-                      className="w-full bg-black/60 border border-white/15 rounded-xl px-3.5 py-2.5 sm:py-3 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#d4af37] focus:ring-1 focus:ring-[#d4af37]/50 transition-all"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-1">
-                      Email Address *
-                    </label>
-                    <input
-                      type="email"
-                      required
-                      value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      placeholder="jane@example.com"
-                      className="w-full bg-black/60 border border-white/15 rounded-xl px-3.5 py-2.5 sm:py-3 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#d4af37] focus:ring-1 focus:ring-[#d4af37]/50 transition-all"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-1">
-                      WhatsApp / Phone Number *
-                    </label>
-                    <div className="flex items-center bg-black/60 border border-white/15 rounded-xl overflow-hidden focus-within:border-[#d4af37] focus-within:ring-1 focus-within:ring-[#d4af37]/50 transition-all">
-                      <div className="flex items-center gap-1.5 px-3 py-2.5 sm:py-3 border-r border-white/10 shrink-0">
-                        <span className="text-base leading-none">🇮🇳</span>
-                        <span className="text-sm text-gray-300 font-semibold">+91</span>
-                      </div>
-                      <input
-                        type="tel"
-                        required
-                        maxLength={10}
-                        value={formData.whatsapp}
-                        onChange={(e) => {
-                          const val = e.target.value.replace(/\D/g, '').slice(0, 10);
-                          setFormData({ ...formData, whatsapp: val });
-                        }}
-                        placeholder="9876543210"
-                        className="flex-1 bg-transparent px-3 py-2.5 sm:py-3 text-sm text-white placeholder-gray-600 focus:outline-none"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-1">
-                      Age *
-                    </label>
-                    <select
-                      required
-                      value={formData.age}
-                      onChange={(e) => setFormData({ ...formData, age: e.target.value })}
-                      className="w-full bg-[#16120b] border border-white/15 rounded-xl px-3.5 py-2.5 sm:py-3 text-sm text-white focus:outline-none focus:border-[#d4af37] focus:ring-1 focus:ring-[#d4af37]/50 transition-all"
-                    >
-                      <option value="" disabled>Select your age range</option>
-                      <option value="under_18">Under 18</option>
-                      <option value="18_25">18 – 25</option>
-                      <option value="26_35">26 – 35</option>
-                      <option value="36_45">36 – 45</option>
-                      <option value="46_60">46 – 60</option>
-                      <option value="above_60">Above 60</option>
-                    </select>
-                  </div>
-
-                  <button
-                    type="submit"
-                    disabled={isStep1Submitting}
-                    className="w-full mt-2 py-3 sm:py-3.5 px-5 rounded-xl font-bold text-xs sm:text-sm uppercase tracking-wider text-black bg-gradient-to-r from-[#bf953f] via-[#fcf6ba] to-[#aa771c] hover:brightness-110 active:scale-[0.98] transition-all shadow-[0_4px_20px_rgba(212,175,55,0.3)] flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60 min-h-[44px]"
-                  >
-                    {isStep1Submitting ? (
-                      <span>Saving Nomination...</span>
-                    ) : (
-                      <>
-                        <span>Proceed to Select Plan</span>
-                        <ArrowRight className="w-4 h-4" />
-                      </>
-                    )}
-                  </button>
-
-                  <p className="text-[10px] sm:text-[11px] text-gray-500 text-center pt-1">
-                    🔒 100% Secure &amp; Unbiased Reader-Driven Award System
-                  </p>
-                </form>
-              )}
-
-              {/* --- STEP 2: SELECT ENTRY PLAN --- */}
-              {step === 2 && (
-                <div className="space-y-3 sm:space-y-4">
-                  {/* Prominent Candidate Summary & Edit Details Bar */}
-                  <div className="flex items-center justify-between bg-black/50 border border-[#d4af37]/35 rounded-xl px-3.5 py-2.5 shadow-sm">
-                    <div className="flex items-center gap-2 min-w-0 pr-2">
-                      <span className="w-2 h-2 rounded-full bg-[#d4af37] animate-pulse flex-shrink-0" />
-                      <span className="text-xs font-medium text-white truncate max-w-[130px] sm:max-w-[180px]">
-                        {formData.fullName}
-                      </span>
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => setStep(1)}
-                      className="inline-flex items-center gap-1.5 bg-[#d4af37]/20 hover:bg-[#d4af37]/35 border border-[#d4af37]/70 text-[#f3e5ab] hover:text-white px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all active:scale-95 shadow-[0_0_15px_rgba(212,175,55,0.25)] cursor-pointer flex-shrink-0"
-                    >
-                      <PenTool className="w-3.5 h-3.5 text-[#d4af37]" />
-                      <span>Edit Details</span>
-                    </button>
-                  </div>
-
-                  <div className="text-center">
-                    <h2 className="font-serif text-xl sm:text-2xl font-bold text-[#d4af37] tracking-wide">
-                      Select Entry Plan
-                    </h2>
-                    <p className="text-xs text-gray-300 mt-1">
-                      Choose your entry fee package to activate your nomination.
-                    </p>
-                  </div>
-
-                  {/* Single Touch-optimized Plan Option */}
-                  <div className="space-y-3">
-                    
-                    {/* Plan Option: ₹449 Entry */}
-                    <div className="relative rounded-xl p-3.5 sm:p-4 border bg-[#1e170e] border-[#d4af37] shadow-[0_0_20px_rgba(212,175,55,0.25)] ring-1 ring-[#d4af37]/30 select-none">
-                      <div className="flex items-start justify-between gap-2">
-                        <div className="flex items-center gap-2.5">
-                          <div className="w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 mt-0.5 border-[#d4af37] bg-[#d4af37]">
-                            <div className="w-2 h-2 rounded-full bg-black" />
-                          </div>
-                          <div>
-                            <h3 className="font-serif font-bold text-white text-sm sm:text-base leading-tight">Official Entry Plan</h3>
-                            <span className="text-[10px] text-gray-400 uppercase tracking-wider block mt-0.5">Complete Nomination Package</span>
-                          </div>
-                        </div>
-                        <div className="text-right flex-shrink-0">
-                          <div className="font-serif font-bold text-lg sm:text-xl text-[#f3e5ab]">₹449</div>
-                          <span className="text-[9px] sm:text-[10px] text-gray-400 block">One-time Fee</span>
-                        </div>
-                      </div>
-
-                      <ul className="mt-2.5 space-y-1 text-xs text-gray-300 border-t border-[#d4af37]/20 pt-2.5">
-                        <li className="flex items-center gap-1.5">
-                          <Check className="w-3.5 h-3.5 text-[#d4af37] flex-shrink-0" />
-                          <span>Official Reader Voting Entry</span>
-                        </li>
-                        <li className="flex items-center gap-1.5">
-                          <Check className="w-3.5 h-3.5 text-[#d4af37] flex-shrink-0" />
-                          <span>Certificate of Participation</span>
-                        </li>
-                        <li className="flex items-center gap-1.5">
-                          <Check className="w-3.5 h-3.5 text-[#d4af37] flex-shrink-0" />
-                          <span>Hall of Fame Certificate</span>
-                        </li>
-                        <li className="flex items-center gap-1.5">
-                          <Check className="w-3.5 h-3.5 text-[#d4af37] flex-shrink-0" />
-                          <span>Your Write-up Published in a Book</span>
-                        </li>
-                        <li className="flex items-center gap-1.5">
-                          <Check className="w-3.5 h-3.5 text-[#d4af37] flex-shrink-0" />
-                          <span>Eligible for Top 20 National Awards</span>
-                        </li>
-                      </ul>
-                    </div>
-
-                  </div>
-
-                  {paymentError && (
-                    <div className="bg-red-950/80 border border-red-500/50 rounded-xl p-3 text-center text-xs text-red-200">
-                      {paymentError}
-                    </div>
-                  )}
-
-                  {/* Standard In-Card Button (Visible desktop & mobile) */}
-                  <button
-                    type="button"
-                    onClick={handlePayment}
-                    disabled={isPaymentLoading}
-                    className="w-full mt-2 py-3.5 px-5 rounded-xl font-bold text-xs sm:text-sm uppercase tracking-wider text-black bg-gradient-to-r from-[#bf953f] via-[#fcf6ba] to-[#aa771c] hover:brightness-110 active:scale-[0.98] transition-all shadow-[0_4px_20px_rgba(212,175,55,0.3)] flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60 min-h-[46px]"
-                  >
-                    {isPaymentLoading ? (
-                      <>
-                        <span className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full animate-spin" />
-                        <span>Opening Payment...</span>
-                      </>
-                    ) : (
-                      <>
-                        <span>Pay ₹{selectedPlan} &amp; Complete Registration</span>
-                        <ArrowRight className="w-4 h-4" />
-                      </>
-                    )}
-                  </button>
-
-                  <p className="text-[10px] sm:text-[11px] text-gray-400 text-center pt-0.5 flex items-center justify-center gap-1">
-                    <ShieldCheck className="w-3.5 h-3.5 text-[#d4af37]" />
-                    <span>Instant Payment via UPI, Cards, NetBanking &amp; Wallets</span>
-                  </p>
-                </div>
-              )}
-
-              </>
-              )}
+              <p className="text-[11px] text-gray-500">
+                🔒 1-Min Quick Portal • Strictly Limited to 250 Spots
+              </p>
 
             </div>
           </motion.div>
@@ -626,46 +232,15 @@ export default function PeopleChoiceClient() {
         </div>
       </main>
 
-      {/* --- MOBILE STICKY BOTTOM PAYMENT BAR (Step 2 Only) --- */}
-      {pageState === 'form' && step === 2 && (
-        <div className="fixed bottom-0 left-0 right-0 z-40 bg-[#0c0906]/95 border-t border-[#d4af37]/40 p-3 backdrop-blur-xl block sm:hidden shadow-[0_-10px_30px_rgba(0,0,0,0.9)]">
-          <div className="flex items-center justify-between gap-3 max-w-md mx-auto">
-            <div>
-              <div className="text-[10px] uppercase text-gray-400 font-semibold tracking-wider">
-                Official Entry Plan
-              </div>
-              <div className="font-serif font-bold text-lg text-[#fcf6ba]">
-                ₹{selectedPlan}
-              </div>
-            </div>
-            <button
-              type="button"
-              onClick={handlePayment}
-              disabled={isPaymentLoading}
-              className="flex-1 py-3 px-4 rounded-xl font-bold text-xs uppercase tracking-wider text-black bg-gradient-to-r from-[#bf953f] via-[#fcf6ba] to-[#aa771c] active:scale-95 shadow-md flex items-center justify-center gap-1.5 disabled:opacity-60"
-            >
-              {isPaymentLoading ? (
-                <>
-                  <span className="w-3.5 h-3.5 border-2 border-black/30 border-t-black rounded-full animate-spin" />
-                  <span>Opening...</span>
-                </>
-              ) : (
-                <>
-                  <span>Pay ₹{selectedPlan} Now</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </>
-              )}
-            </button>
-          </div>
-        </div>
-      )}
-
       {/* --- SHINY TRANSITION BANNER --- */}
-      <section className="relative z-10 w-full bg-gradient-to-r from-[#bf953f] via-[#fcf6ba] to-[#aa771c] py-4 px-4 text-center shadow-lg shadow-[#d4af37]/20 overflow-hidden">
+      <Link 
+        href="/people-choice-award/register"
+        className="block relative z-10 w-full bg-gradient-to-r from-[#bf953f] via-[#fcf6ba] to-[#aa771c] py-4 px-4 text-center shadow-lg shadow-[#d4af37]/20 overflow-hidden hover:brightness-105 transition-all cursor-pointer"
+      >
         <p className="text-black font-bold text-sm sm:text-base md:text-lg tracking-wide max-w-4xl mx-auto leading-snug">
-          ✦ Join the most prestigious writing and poetry award decided entirely by the readers. Register now to be part of the legacy. ✦
+          ✦ Join the most prestigious writing and poetry award decided entirely by the readers. Click here to Apply Now → ✦
         </p>
-      </section>
+      </Link>
 
       {/* --- ABOUT THE AWARD (Split Layout) --- */}
       <section className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
@@ -686,6 +261,16 @@ export default function PeopleChoiceClient() {
               <p className="text-gray-400 leading-relaxed text-sm sm:text-base font-light">
                 It is the truest, most unbiased test of reader connection, literary resonance, and audience love.
               </p>
+              
+              <div className="pt-2">
+                <Link
+                  href="/people-choice-award/register"
+                  className="inline-flex items-center gap-2 text-xs sm:text-sm font-bold uppercase tracking-wider text-[#d4af37] hover:text-[#fcf6ba] transition-colors"
+                >
+                  <span>Click to Apply Now</span>
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              </div>
             </div>
 
             <div className="lg:col-span-5 flex justify-center">
@@ -735,7 +320,7 @@ export default function PeopleChoiceClient() {
         </div>
       </section>
 
-      {/* --- BENEFITS & REWARDS SECTION (Redesigned Premium) --- */}
+      {/* --- BENEFITS & REWARDS SECTION --- */}
       <section className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
         
         <div className="text-center mb-14">
@@ -871,94 +456,25 @@ export default function PeopleChoiceClient() {
 
         </div>
 
-        {/* 2 Extra Benefit Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6 mb-8">
-
-          <div className="bg-gradient-to-br from-[#1a140b] to-[#120f0a] border border-[#d4af37]/40 rounded-2xl p-6 flex flex-col justify-between hover:-translate-y-1.5 transition-transform shadow-[0_0_25px_rgba(212,175,55,0.1)]">
+        {/* Every Participant Banner */}
+        <div className="bg-gradient-to-r from-[#bf953f] via-[#fcf6ba] to-[#aa771c] rounded-2xl p-6 text-black flex flex-col sm:flex-row items-center justify-between gap-4 shadow-xl">
+          <div className="flex items-center gap-4">
+            <GraduationCap className="w-12 h-12 flex-shrink-0 text-black/80" />
             <div>
-              <span className="text-[10px] font-serif uppercase tracking-widest text-[#d4af37] bg-[#d4af37]/10 border border-[#d4af37]/30 px-2.5 py-1 rounded-full">
-                ALL TOP 20
-              </span>
-              <div className="text-3xl mt-4 mb-3">🎤</div>
-              <h4 className="font-serif text-lg font-bold text-[#f3e5ab] mb-2">
-                Exclusive Online Interview
-              </h4>
-              <p className="text-xs sm:text-sm text-gray-400 leading-relaxed">
-                Every Top 20 writer will be featured in an exclusive online interview published on the Inkfetish page — reaching 2,10,000+ followers.
-              </p>
-            </div>
-            <div className="mt-4 pt-4 border-t border-[#d4af37]/20 text-xs font-bold text-[#d4af37]">
-              📣 2,10,000+ Audience Reach
-            </div>
-          </div>
-
-          <div className="bg-gradient-to-br from-[#1a140b] to-[#120f0a] border border-[#d4af37]/40 rounded-2xl p-6 flex flex-col justify-between hover:-translate-y-1.5 transition-transform shadow-[0_0_25px_rgba(212,175,55,0.1)]">
-            <div>
-              <span className="text-[10px] font-serif uppercase tracking-widest text-[#d4af37] bg-[#d4af37]/10 border border-[#d4af37]/30 px-2.5 py-1 rounded-full">
-                ALL TOP 20
-              </span>
-              <div className="text-3xl mt-4 mb-3">✍️</div>
-              <h4 className="font-serif text-lg font-bold text-[#f3e5ab] mb-2">
-                Writer Ambassador Opportunity
-              </h4>
-              <p className="text-xs sm:text-sm text-gray-400 leading-relaxed">
-                Top 20 winners get the opportunity to become Inkfetish Writer Ambassadors — with chances to work as judges and earn through writer-related activities.
-              </p>
-            </div>
-            <div className="mt-4 pt-4 border-t border-[#d4af37]/20 text-xs font-bold text-[#d4af37]">
-              💼 Earn &amp; Grow with Inkfetish
-            </div>
-          </div>
-
-        </div>
-
-        {/* Every Participant Banner (Updated with 3 specific benefits) */}
-        <div className="bg-gradient-to-br from-[#1c160c] via-[#120f0a] to-[#1c160c] border border-[#d4af37]/40 rounded-3xl p-6 sm:p-10 shadow-[0_0_50px_rgba(212,175,55,0.15)] mt-12 relative overflow-hidden">
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.25em] text-[#d4af37] font-serif font-bold mb-3">
-              <Star className="w-4 h-4 fill-[#d4af37]" />
-              Benefits For Every Participant
-              <Star className="w-4 h-4 fill-[#d4af37]" />
-            </div>
-            <h3 className="font-serif text-2xl sm:text-3xl font-bold text-white">
-              Guaranteed Inclusion
-            </h3>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10">
-            {/* Benefit 1 */}
-            <div className="bg-[#0a0805]/80 border border-white/5 rounded-2xl p-5 hover:-translate-y-1 transition-transform">
-              <div className="w-10 h-10 rounded-full bg-[#d4af37]/10 flex items-center justify-center mb-3">
-                <span className="font-serif font-bold text-[#d4af37]">1</span>
+              <div className="text-[10px] font-black uppercase tracking-[0.25em] text-black/70">
+                GUARANTEED FOR EVERY PARTICIPANT
               </div>
-              <h4 className="font-serif text-base font-bold text-[#fcf6ba] mb-1.5">Certificate of Participation</h4>
-              <p className="text-xs text-gray-400 leading-relaxed">
-                Every participant will receive an official People’s Choice Award Certificate of Participation.
-              </p>
-            </div>
-
-            {/* Benefit 2 */}
-            <div className="bg-[#0a0805]/80 border border-white/5 rounded-2xl p-5 hover:-translate-y-1 transition-transform">
-              <div className="w-10 h-10 rounded-full bg-[#d4af37]/10 flex items-center justify-center mb-3">
-                <span className="font-serif font-bold text-[#d4af37]">2</span>
+              <div className="font-serif text-base sm:text-lg font-bold text-black leading-tight">
+                Every participant receives an official People's Choice Participation Certificate + Personalized Appreciation Letter.
               </div>
-              <h4 className="font-serif text-base font-bold text-[#fcf6ba] mb-1.5">Hall of Fame Certificate</h4>
-              <p className="text-xs text-gray-400 leading-relaxed">
-                Every participant will also receive a special Hall of Fame Certificate as a recognition of their participation and contribution.
-              </p>
-            </div>
-
-            {/* Benefit 3 */}
-            <div className="bg-[#0a0805]/80 border border-white/5 rounded-2xl p-5 hover:-translate-y-1 transition-transform">
-              <div className="w-10 h-10 rounded-full bg-[#d4af37]/10 flex items-center justify-center mb-3">
-                <span className="font-serif font-bold text-[#d4af37]">3</span>
-              </div>
-              <h4 className="font-serif text-base font-bold text-[#fcf6ba] mb-1.5">Published in a Book</h4>
-              <p className="text-xs text-gray-400 leading-relaxed">
-                Most importantly, every participant’s write-up will be published in a special book dedicated to the People’s Choice Award.
-              </p>
             </div>
           </div>
+          <Link
+            href="/people-choice-award/register"
+            className="shrink-0 bg-black text-[#fcf6ba] font-bold text-xs uppercase tracking-wider py-3 px-5 rounded-xl hover:bg-black/80 transition-colors"
+          >
+            Register Now →
+          </Link>
         </div>
 
       </section>
@@ -987,10 +503,8 @@ export default function PeopleChoiceClient() {
 
           {/* Desktop Progress Bar Line (Horizontal) */}
           <div className="hidden lg:block relative mb-12">
-            {/* Glowing Track Line */}
             <div className="absolute top-1/2 left-8 right-8 -translate-y-1/2 h-1 bg-gradient-to-r from-[#bf953f] via-[#fcf6ba] to-[#aa771c] shadow-[0_0_15px_rgba(212,175,55,0.4)] z-0 rounded-full" />
             
-            {/* 5 Milestone Checkpoint Nodes */}
             <div className="grid grid-cols-5 relative z-10">
               
               <div className="flex flex-col items-center">
@@ -1049,7 +563,7 @@ export default function PeopleChoiceClient() {
                 </p>
               </div>
               <div className="mt-4 pt-3 border-t border-white/5 text-[11px] font-semibold text-[#d4af37]/80 flex items-center gap-1">
-                <span>⚡ Quick 1-Min Form</span>
+                <span>⚡ Quick 1-Min Portal</span>
               </div>
             </div>
 
@@ -1083,7 +597,7 @@ export default function PeopleChoiceClient() {
                 </div>
                 <h3 className="font-serif text-lg font-bold text-[#f3e5ab] mb-2">Voting Starts</h3>
                 <p className="text-xs text-gray-400 leading-relaxed">
-                  Over 2,10,000+ passionate readers cast verified votes from 5th–8th October to champion their favorite authors.
+                  Over 200,000 passionate readers cast verified votes to champion their favorite authors.
                 </p>
               </div>
               <div className="mt-4 pt-3 border-t border-white/5 text-[11px] font-semibold text-[#d4af37]/80 flex items-center gap-1">
@@ -1196,17 +710,13 @@ export default function PeopleChoiceClient() {
           </div>
 
           <div className="flex-shrink-0">
-            <a
-              href="#top"
-              onClick={(e) => {
-                e.preventDefault();
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-              }}
+            <Link
+              href="/people-choice-award/register"
               className="inline-flex items-center gap-2 bg-gradient-to-r from-[#bf953f] to-[#aa771c] text-black font-bold text-xs sm:text-sm uppercase tracking-wider py-3.5 px-6 rounded-xl hover:brightness-110 shadow-lg cursor-pointer"
             >
-              <span>Reserve Your Slot</span>
+              <span>Apply Now</span>
               <ArrowRight className="w-4 h-4" />
-            </a>
+            </Link>
           </div>
         </div>
       </section>

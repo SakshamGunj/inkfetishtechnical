@@ -66,6 +66,9 @@ export async function POST(request: Request) {
     } else if (source === 'people_choice') {
       orderIdPrefix = 'pca_';
       returnUrlPath = 'people-choice-award';
+    } else if (source === 'tiger_homeward') {
+      orderIdPrefix = 'tiger_';
+      returnUrlPath = 'book/tiger-homeward';
     }
     
     const orderId = providedOrderId || `${orderIdPrefix}${Date.now()}_${randomPart}`;
@@ -115,7 +118,7 @@ export async function POST(request: Request) {
     });
 
     // Save PENDING order to Firebase before returning to client
-    if (db && (source === 'bharat_writes_kit' || source === 'iwl_season_2' || source === 'people_choice')) {
+    if (db && (source === 'bharat_writes_kit' || source === 'iwl_season_2' || source === 'people_choice' || source === 'tiger_homeward')) {
       try {
         if (source === 'bharat_writes_kit') {
           await db.collection('bharat_writes_kit_orders').doc(orderId).set({
@@ -152,6 +155,20 @@ export async function POST(request: Request) {
             payment_status: 'PENDING',
             updated_at: new Date().toISOString(),
           }, { merge: true });
+        } else if (source === 'tiger_homeward') {
+          await db.collection('tiger_homeward_orders').doc(orderId).set({
+            order_id: orderId,
+            email: customerEmail || '',
+            name: customerName || '',
+            whatsapp: customerPhone || '',
+            address: address || '',
+            city: city || '',
+            state: state || '',
+            pincode: pincode || '',
+            amount: finalAmount,
+            status: 'PENDING',
+            created_at: new Date().toISOString(),
+          });
         }
       } catch (err) {
         console.error('Failed to save PENDING order to Firebase', err);

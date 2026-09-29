@@ -4,21 +4,29 @@ import React from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import {
     BookOpen,
+    Calendar,
     Feather,
+    Globe,
     Heart,
+    Instagram,
+    Mail,
+    MapPin,
+    PenTool,
+    Sparkles,
     Star,
     Quote,
-    Compass,
+    Eye,
+    Coffee,
+    Palette,
+    Briefcase,
     GraduationCap,
     Clock,
-    PenTool,
-    Briefcase
+    Scroll
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { Helmet } from "react-helmet-async";
-import Image from "next/image";
 
 const authorData = {
     name: "Shashank Tripathi",
@@ -27,274 +35,339 @@ const authorData = {
     bio: "Shashank Tripathi is a 21-year-old engineering student navigating the vibrant intersection of science and art. His journey into poetry began as a wandering thought during his travels, opening his eyes to a hidden world of emotions. He paints vivid pictures not with a brush, but through the delicate art of words.",
     longBio: "In 2024, while testing the bounds of his own thoughts during a journey, Shashank discovered a realm visible only to a few—a space of profound introspection that defies simple definition. Encouraged by a dear friend and his physics teacher (whom he reverently calls 'Ustaad'), he realized that his words could bloom into beautiful landscapes. Currently expanding his first volume of ghazals and planning a novelette, his ultimate quest is simple yet profound: to know who he truly is without looking into a mirror.",
     location: "India",
+    email: "contact@shashanktripathi.com", // Placeholder
+    instagram: "shashank_tripathi", // Placeholder
     stats: {
-        books: 1,
-        awards: 0,
-        years: 1,
-        readers: "Growing"
+        age: 21,
+        role: "Student & Writer",
+        education: "B.Tech",
+        status: "Active Writer",
+        genre: "Ghazals & Prose"
     },
-    vision: "To be able to identify and answer 'who am I' without any external sources and without looking into a mirror.",
-    quote: "Never underestimate your art, it is one of the easiest things one can do to meet himself. Practice, preach, pursue but don't abandon your art. It is something which makes life a little colorful.",
-    social: {
-        instagram: "#"
-    },
-    timeline: [
-        {
-            year: "2024",
-            title: "The Awakening",
-            description: "A simple travel journey turned into a profound exploration of thoughts, revealing a hidden world of poetry."
-        },
-        {
-            year: "Present",
-            title: "Engineering & Poetry",
-            description: "Balancing his B.Tech studies with the delicate art of writing ghazals, finding harmony between logic and emotion."
-        },
-        {
-            year: "Future",
-            title: "Literary Horizons",
-            description: "Working on a complete volume of ghazals and plotting the narrative for his upcoming novelette."
-        }
-    ],
-    features: [
-        {
-            icon: <Compass className="w-6 h-6" />,
-            title: "The Seeker",
-            description: "On a quest to discover the self through introspection, rejecting mirrors for words."
-        },
-        {
-            icon: <PenTool className="w-6 h-6" />,
-            title: "The Word Painter",
-            description: "Translating abstract thoughts into colorful landscapes of prose and poetry."
-        },
-        {
-            icon: <GraduationCap className="w-6 h-6" />,
-            title: "The Student",
-            description: "A B.Tech scholar proving that science and art can coexist beautifully in a single mind."
-        }
-    ]
+    journey: {
+        start: "It all started in 2024 when a boy was just testing his thoughts to see where they lead him to and while travelling he figured out that they lead him into a world which is only visible to very few people and it cannot be described by any single definition.",
+        motivation: "My physics teacher who is a shayar too and whom I call 'ustaad' in honour, and one friend of mine who kept on encouraging that I can paint beautiful pictures not by paints but by my words and who eventually became the seed from which flowers of my thoughts got shaped.",
+        vision: "To be able to identify and answer who am I without any external sources and without looking into a mirror.",
+        message: `"Never underestimate your art, it is one of the easiest things one can do to meet himself. Practice, preach, pursue but don't abandon your art. It is something which makes life a little colorful."`
+    }
 };
 
 const ShashankTripathiAuthor = () => {
-    const { scrollYProgress } = useScroll();
-    const headerY = useTransform(scrollYProgress, [0, 0.2], [0, -50]);
-    const opacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
+    const { scrollY } = useScroll();
+    const y1 = useTransform(scrollY, [0, 500], [0, -100]);
+    const opacity = useTransform(scrollY, [0, 300], [1, 0]);
 
     return (
-        <div className="min-h-screen bg-ink-950 text-parchment font-serif selection:bg-indigo-500/30 selection:text-indigo-200 overflow-x-hidden">
+        <div className="min-h-screen bg-ink-black text-parchment font-serif selection:bg-gold selection:text-ink-black overflow-x-hidden">
             <Helmet>
-                <title>{authorData.name} | {authorData.title}</title>
-                <meta name="description" content={authorData.bio} />
+                <title>Shashank Tripathi | Inkfetish Author</title>
+                <meta name="description" content="Poet, Student, and Seeker. Discover the works of Shashank Tripathi." />
+                <meta property="og:title" content="Shashank Tripathi | Inkfetish" />
+                <meta property="og:description" content="Painting with words. Explore the poetry and journey of Shashank Tripathi." />
+                <meta property="og:image" content="/authors/placeholder.jpg" />
+                <meta property="og:type" content="profile" />
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:title" content="Shashank Tripathi | Inkfetish" />
+                <meta name="twitter:image" content="/authors/placeholder.jpg" />
             </Helmet>
 
-            {/* Navigation Placeholder */}
-            <nav className="fixed top-0 left-0 right-0 z-50 bg-ink-950/80 backdrop-blur-md border-b border-indigo-900/30">
+            {/* Navigation */}
+            <nav className="fixed top-0 left-0 right-0 z-50 bg-ink-black/80 backdrop-blur-md border-b border-white/5">
                 <div className="container mx-auto px-6 py-4 flex justify-between items-center">
-                    <div className="text-xl font-bold text-parchment tracking-widest uppercase flex items-center gap-2">
-                        <Feather className="w-5 h-5 text-indigo-400" />
-                        {authorData.name}
+                    <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 bg-gold/10 rounded-lg flex items-center justify-center border border-gold/20">
+                            <Feather className="w-5 h-5 text-gold" />
+                        </div>
+                        <div>
+                            <h1 className="text-sm font-bold text-parchment tracking-widest uppercase">Inkfetish</h1>
+                            <p className="text-xs text-parchment/50">x Shashank Tripathi</p>
+                        </div>
                     </div>
-                    <Button
-                        variant="outline"
-                        className="border-indigo-500/30 text-indigo-400 hover:bg-indigo-500/10 font-sans tracking-widest uppercase text-xs"
-                        onClick={() => window.location.href = '/'}
-                    >
-                        Back to Directory
-                    </Button>
+                    <div className="hidden md:flex gap-8 text-xs tracking-[0.2em] uppercase text-parchment/60">
+                        <a href="#about" className="hover:text-gold transition-colors">About</a>
+                        <a href="#journey" className="hover:text-gold transition-colors">Journey</a>
+                        <a href="#work" className="hover:text-gold transition-colors">Works</a>
+                    </div>
                 </div>
             </nav>
 
             {/* Hero Section */}
-            <section className="relative min-h-[90vh] flex items-center pt-20 overflow-hidden">
-                <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-10 pointer-events-none" />
-                <div className="absolute top-1/4 right-0 w-[500px] h-[500px] bg-indigo-900/20 rounded-full blur-[120px] pointer-events-none" />
-                <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-violet-900/10 rounded-full blur-[150px] pointer-events-none" />
+            <section className="relative min-h-screen flex items-center pt-20 overflow-hidden">
+                {/* Animated Background Elements */}
+                <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/black-paper.png')] opacity-30 pointer-events-none" />
+                <div className="absolute top-1/4 right-0 w-[600px] h-[600px] bg-gold/5 rounded-full blur-[150px] pointer-events-none" />
+                <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-indigo-900/10 rounded-full blur-[100px] pointer-events-none" />
 
-                <div className="container mx-auto px-6 relative z-10">
-                    <div className="grid lg:grid-cols-2 gap-16 items-center">
-                        <motion.div
-                            initial={{ opacity: 0, x: -50 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ duration: 1, ease: "easeOut" }}
-                            className="space-y-8"
-                        >
-                            <Badge variant="outline" className="border-indigo-500/30 text-indigo-300 bg-indigo-500/10 px-4 py-1 font-sans tracking-widest">
-                                {authorData.title}
-                            </Badge>
-                            
-                            <h1 className="text-5xl md:text-7xl font-light leading-tight text-white">
-                                {authorData.name.split(' ')[0]} <br />
-                                <span className="text-indigo-400 italic">{authorData.name.split(' ')[1]}</span>
-                            </h1>
-                            
-                            <p className="text-2xl text-parchment/80 font-light italic">
-                                "{authorData.subtitle}"
-                            </p>
-                            
-                            <p className="text-lg text-parchment/60 leading-relaxed max-w-lg font-light">
-                                {authorData.bio}
-                            </p>
+                <div className="container mx-auto px-6 grid lg:grid-cols-2 gap-12 lg:gap-20 items-center relative z-10">
+                    <motion.div
+                        initial={{ opacity: 0, x: -30 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 1, ease: "easeOut" }}
+                        className="space-y-8 text-center lg:text-left order-2 lg:order-1"
+                    >
 
-                            <div className="pt-4">
-                                <Button 
-                                    className="bg-indigo-600/80 text-white hover:bg-indigo-500 px-8 py-6 rounded-none font-sans tracking-widest uppercase text-xs"
-                                    onClick={() => document.getElementById('works')?.scrollIntoView({ behavior: 'smooth' })}
+                        <h1 className="text-5xl md:text-7xl lg:text-8xl font-light leading-tight">
+                            Shashank <br />
+                            <span className="text-gold italic font-normal font-display">Tripathi</span>
+                        </h1>
+
+                        <p className="text-xl text-parchment/70 font-light max-w-lg leading-relaxed mx-auto lg:mx-0">
+                            {authorData.subtitle}
+                        </p>
+
+                        <div className="flex flex-col gap-6 pt-4 justify-center lg:justify-start">
+                            <div className="flex items-center gap-6">
+                                <Button
+                                    onClick={() => toast.success("Feature coming soon!")}
+                                    className="bg-gold text-ink-black hover:bg-gold/90 font-sans tracking-wide px-8 py-6 text-lg rounded-sm"
                                 >
-                                    Explore Works
+                                    Join Reader List
                                 </Button>
+
+                                <div className="flex gap-4 text-parchment/40">
+                                    <Instagram className="w-6 h-6 hover:text-gold cursor-pointer transition-colors hover:scale-110 duration-300" />
+                                    <Mail className="w-6 h-6 hover:text-gold cursor-pointer transition-colors hover:scale-110 duration-300" />
+                                    <Globe className="w-6 h-6 hover:text-gold cursor-pointer transition-colors hover:scale-110 duration-300" />
+                                </div>
                             </div>
-                        </motion.div>
+                        </div>
+                    </motion.div>
+
+                    {/* Author Image Frame */}
+                    <motion.div
+                        style={{ y: y1 }}
+                        className="relative order-1 lg:order-2"
+                    >
+                        <div className="absolute inset-0 border border-gold/10 rounded-t-[100px] rounded-b-lg transform rotate-6 translate-x-4 scale-105" />
+                        <div className="absolute inset-0 border border-white/5 rounded-t-[100px] rounded-b-lg transform -rotate-3 -translate-x-2 scale-105" />
 
                         <motion.div
                             initial={{ opacity: 0, scale: 0.9 }}
                             animate={{ opacity: 1, scale: 1 }}
-                            transition={{ duration: 1.2, delay: 0.2 }}
-                            className="relative lg:ml-auto w-full max-w-md aspect-[3/4]"
+                            transition={{ duration: 1.2 }}
+                            className="w-full max-w-[450px] mx-auto aspect-[3/4] bg-zinc-900 rounded-t-[100px] rounded-b-lg overflow-hidden relative grayscale hover:grayscale-0 transition-all duration-1000 group shadow-[0_0_50px_rgba(0,0,0,0.5)]"
                         >
-                            <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 rounded-t-full rounded-b-xl shadow-2xl border border-white/10 overflow-hidden flex items-center justify-center p-8">
-                                <div className="text-center space-y-6">
-                                    <Compass className="w-16 h-16 text-indigo-300 mx-auto opacity-50" />
-                                    <h3 className="text-2xl font-light text-white uppercase tracking-widest">{authorData.name}</h3>
-                                    <div className="w-12 h-px bg-indigo-500/50 mx-auto" />
-                                    <p className="text-sm tracking-[0.3em] uppercase text-indigo-200">Volume I • Ghazals</p>
-                                </div>
-                            </div>
-                        </motion.div>
-                    </div>
-                </div>
-            </section>
+                            <img
+                                src="/authors/placeholder.jpg"
+                                alt="Shashank Tripathi"
+                                className="w-full h-full object-cover opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-1000"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-ink-black via-transparent to-transparent opacity-60" />
 
-            {/* Philosophy / Quote Section */}
-            <section className="py-24 bg-ink-950 relative border-y border-white/5">
-                <div className="absolute inset-0 bg-indigo-900/5" />
-                <div className="container mx-auto px-6 relative z-10 text-center max-w-4xl">
-                    <Quote className="w-12 h-12 text-indigo-500/40 mx-auto mb-8" />
-                    <h2 className="text-2xl md:text-4xl font-light leading-relaxed text-parchment/90 italic">
-                        "{authorData.quote}"
-                    </h2>
-                </div>
-            </section>
-
-            {/* Biography & Vision */}
-            <section className="py-32 relative">
-                <div className="container mx-auto px-6 max-w-6xl">
-                    <div className="grid md:grid-cols-2 gap-16 items-center">
-                        <div className="space-y-8">
-                            <div className="flex items-center gap-4">
-                                <div className="h-px bg-indigo-500/50 flex-1" />
-                                <span className="text-indigo-400 font-sans tracking-[0.3em] uppercase text-sm">The Journey</span>
-                            </div>
-                            <h2 className="text-4xl font-light text-white">From Thoughts to Canvas</h2>
-                            <p className="text-lg text-parchment/70 leading-relaxed font-light">
-                                {authorData.longBio}
-                            </p>
-                            
-                            <div className="p-6 bg-indigo-900/10 border border-indigo-500/20 rounded-2xl backdrop-blur-sm mt-8">
-                                <h3 className="text-xl text-indigo-300 mb-2 flex items-center gap-2">
-                                    <Star className="w-5 h-5" /> The Ultimate Vision
-                                </h3>
-                                <p className="text-parchment/80 italic">
-                                    "{authorData.vision}"
-                                </p>
-                            </div>
-                        </div>
-
-                        <div className="grid sm:grid-cols-2 gap-6">
-                            {authorData.features.map((feature, idx) => (
-                                <motion.div
-                                    key={idx}
-                                    initial={{ opacity: 0, y: 20 }}
-                                    whileInView={{ opacity: 1, y: 0 }}
-                                    viewport={{ once: true }}
-                                    transition={{ delay: idx * 0.1 }}
-                                    className={`p-6 bg-white/5 border border-white/5 rounded-2xl hover:bg-white/10 transition-colors ${idx === 2 ? 'sm:col-span-2' : ''}`}
-                                >
-                                    <div className="w-12 h-12 bg-indigo-500/10 rounded-full flex items-center justify-center text-indigo-400 mb-4 border border-indigo-500/20">
-                                        {feature.icon}
-                                    </div>
-                                    <h3 className="text-lg text-white mb-2 font-medium">{feature.title}</h3>
-                                    <p className="text-sm text-parchment/60 leading-relaxed">
-                                        {feature.description}
-                                    </p>
-                                </motion.div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* Timeline */}
-            <section className="py-24 bg-ink-900 relative">
-                <div className="container mx-auto px-6 max-w-4xl">
-                    <div className="text-center mb-16">
-                        <h2 className="text-3xl md:text-4xl font-light text-white mb-4">The Evolution</h2>
-                        <p className="text-parchment/60 font-sans tracking-widest uppercase text-sm">Milestones of a young poet</p>
-                    </div>
-
-                    <div className="space-y-12">
-                        {authorData.timeline.map((item, index) => (
-                            <motion.div 
-                                key={index}
-                                initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
-                                whileInView={{ opacity: 1, x: 0 }}
-                                viewport={{ once: true }}
-                                className="relative pl-8 md:pl-0"
+                            {/* Floating Element */}
+                            <motion.div
+                                animate={{ y: [0, -10, 0] }}
+                                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                                className="absolute bottom-8 right-8 bg-black/60 backdrop-blur-md p-4 rounded-xl border border-white/10 hidden sm:block"
                             >
-                                <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-px bg-indigo-500/20 -translate-x-1/2" />
-                                
-                                <div className={`md:flex items-center justify-between ${index % 2 === 0 ? 'flex-row-reverse' : ''}`}>
-                                    <div className="hidden md:block w-5/12" />
-                                    
-                                    <div className="absolute left-0 md:left-1/2 w-4 h-4 bg-indigo-500 rounded-full -translate-x-1/2 mt-1.5 md:mt-0 shadow-[0_0_15px_rgba(99,102,241,0.5)] border-4 border-ink-900" />
-                                    
-                                    <div className={`md:w-5/12 ${index % 2 === 0 ? 'md:text-right' : 'md:text-left'}`}>
-                                        <div className="inline-block px-3 py-1 bg-indigo-500/10 text-indigo-400 text-xs font-sans tracking-widest rounded-full mb-3 border border-indigo-500/20">
-                                            {item.year}
-                                        </div>
-                                        <h3 className="text-xl font-bold text-white mb-2">{item.title}</h3>
-                                        <p className="text-parchment/70 font-light">{item.description}</p>
-                                    </div>
-                                </div>
+                                <Feather className="w-6 h-6 text-gold mb-2" />
+                                <p className="text-xs text-parchment/60 uppercase tracking-wider">Poet at Heart</p>
+                                <p className="text-sm text-white font-serif">Author by Passion</p>
+                            </motion.div>
+                        </motion.div>
+                    </motion.div>
+                </div>
+            </section>
+
+            {/* Featured Quote */}
+            <section className="py-24 bg-ink-900/50 border-y border-white/5 relative overflow-hidden">
+                <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-gold/30 to-transparent" />
+                <div className="container mx-auto px-6 text-center relative z-10">
+                    <Quote className="w-12 h-12 text-gold/20 mx-auto mb-8" />
+                    <motion.h2
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        className="text-3xl md:text-5xl font-light leading-relaxed max-w-4xl mx-auto mb-10 font-display"
+                    >
+                        "सिर्फ हंगामा खड़ा करना मेरा मक़सद नहीं, <br />
+                        <span className="text-gold/80 italic">मेरी कोशिश है कि ये सूरत बदलनी चाहिए।"</span>
+                    </motion.h2>
+                    <div className="flex items-center justify-center gap-4">
+                        <div className="h-[1px] w-12 bg-white/20" />
+                        <p className="text-parchment/50 font-sans text-sm tracking-[0.2em] uppercase">Dushyant Kumar</p>
+                        <div className="h-[1px] w-12 bg-white/20" />
+                    </div>
+                </div>
+            </section>
+
+            {/* Stats Grid */}
+            <section className="py-20 bg-ink-black/50">
+                <div className="container mx-auto px-6">
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                        {[
+                            { label: "Age", value: authorData.stats.age, icon: Calendar },
+                            { label: "Role", value: "Author & Poet", icon: Briefcase },
+                            { label: "Education", value: "B.Tech, MA, MBA", icon: GraduationCap },
+                            { label: "Location", value: "Maharashtra", icon: MapPin },
+                            { label: "Genre", value: "Hindi Poetry", icon: Scroll },
+                            { label: "Status", value: "Active", icon: PenTool }
+                        ].map((stat, idx) => (
+                            <motion.div
+                                key={idx}
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                transition={{ delay: idx * 0.1 }}
+                                viewport={{ once: true }}
+                                className="bg-white/5 border border-white/5 rounded-xl p-4 text-center hover:bg-white/10 hover:border-gold/20 transition-all group"
+                            >
+                                <stat.icon className="w-5 h-5 text-gold/50 mx-auto mb-3 group-hover:text-gold transition-colors" />
+                                <h3 className="text-lg font-bold text-parchment group-hover:text-white mb-1">{stat.value}</h3>
+                                <p className="text-xs text-parchment/40 uppercase tracking-wider">{stat.label}</p>
                             </motion.div>
                         ))}
                     </div>
                 </div>
             </section>
 
-            {/* Current Works */}
-            <section id="works" className="py-32 relative border-t border-white/5">
-                <div className="container mx-auto px-6 max-w-5xl text-center">
-                    <BookOpen className="w-12 h-12 text-indigo-500/40 mx-auto mb-8" />
-                    <h2 className="text-4xl font-light text-white mb-6">Current Projects</h2>
-                    <p className="text-xl text-parchment/60 font-light max-w-2xl mx-auto mb-16">
-                        Currently expanding his first volume of ghazals and laying the groundwork for a novelette.
-                    </p>
+            {/* Bio & Journey */}
+            <section id="about" className="py-32 relative">
+                <div className="container mx-auto px-6 max-w-7xl">
+                    <div className="grid lg:grid-cols-12 gap-16">
 
-                    <div className="grid md:grid-cols-2 gap-8">
-                        <div className="p-8 border border-white/10 rounded-2xl bg-gradient-to-br from-white/5 to-transparent hover:border-indigo-500/50 transition-colors text-left group">
-                            <Feather className="w-8 h-8 text-indigo-400 mb-6 opacity-50 group-hover:opacity-100 transition-opacity" />
-                            <h3 className="text-2xl text-white mb-3 font-light">Volume of Ghazals</h3>
-                            <p className="text-parchment/60 mb-6">A collection of deeply introspective poems exploring the nuances of self-discovery and unseen worlds.</p>
-                            <Badge className="bg-indigo-500/20 text-indigo-300 hover:bg-indigo-500/30">In Progress</Badge>
+                        {/* Main Content */}
+                        <div className="lg:col-span-7 space-y-16">
+                            <motion.div
+                                initial={{ opacity: 0, x: -20 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                viewport={{ once: true }}
+                            >
+                                <h2 className="text-4xl font-light mb-8 flex items-center gap-4">
+                                    <span className="w-12 h-[1px] bg-gold" />
+                                    About The Author
+                                </h2>
+                                <p className="text-xl text-parchment/80 leading-relaxed font-light mb-6">
+                                    {authorData.longBio}
+                                </p>
+                                <p className="text-parchment/60 leading-relaxed">
+                                    His work reflects a unique synthesis of discipline and artistic chaos, creating poetry that is both structured in form and boundless in emotion.
+                                </p>
+                            </motion.div>
+
+                            {/* Journey Timeline */}
+                            <div className="space-y-8">
+                                <h3 className="text-2xl font-serif text-white">The Path Traveled</h3>
+
+                                {[
+                                    { title: "The Awakening", year: "School Days", desc: "First encounter with the greats: Bachchan, Pant, Gupt.", icon: Sparkles },
+                                    { title: "The Foundation", year: "Engineering Era", desc: "B.Tech in Electronics. The pen became a permanent companion.", icon: BookOpen },
+                                    { title: "A New Chapter", year: "Present Day", desc: "Exploring new narrative horizons and continuing to write profound poetry.", icon: Briefcase }
+                                ].map((item, i) => (
+                                    <motion.div
+                                        key={i}
+                                        initial={{ opacity: 0, x: -20 }}
+                                        whileInView={{ opacity: 1, x: 0 }}
+                                        viewport={{ once: true }}
+                                        transition={{ delay: i * 0.2 }}
+                                        className="flex gap-6 group"
+                                    >
+                                        <div className="flex flex-col items-center">
+                                            <div className="w-12 h-12 rounded-full border border-gold/30 bg-ink-900 flex items-center justify-center group-hover:bg-gold group-hover:text-ink-black transition-all">
+                                                <item.icon className="w-5 h-5" />
+                                            </div>
+                                            {i !== 2 && <div className="w-[1px] h-full bg-white/10 my-2 group-hover:bg-gold/30 transition-colors" />}
+                                        </div>
+                                        <div className="pb-10">
+                                            <span className="text-xs text-gold uppercase tracking-widest">{item.year}</span>
+                                            <h4 className="text-xl font-bold text-parchment mb-2">{item.title}</h4>
+                                            <p className="text-parchment/60 leading-relaxed">{item.desc}</p>
+                                        </div>
+                                    </motion.div>
+                                ))}
+                            </div>
                         </div>
-                        <div className="p-8 border border-white/10 rounded-2xl bg-gradient-to-br from-white/5 to-transparent hover:border-purple-500/50 transition-colors text-left group">
-                            <BookOpen className="w-8 h-8 text-purple-400 mb-6 opacity-50 group-hover:opacity-100 transition-opacity" />
-                            <h3 className="text-2xl text-white mb-3 font-light">Upcoming Novelette</h3>
-                            <p className="text-parchment/60 mb-6">A foray into narrative prose, weaving thoughts and philosophies into a compelling storyline.</p>
-                            <Badge className="bg-purple-500/20 text-purple-300 hover:bg-purple-500/30">Planning Phase</Badge>
+
+                        {/* Sidebar Cards */}
+                        <div className="lg:col-span-5 space-y-6">
+                            <div className="sticky top-24 space-y-6">
+                                {/* Vision Card */}
+                                <motion.div
+                                    initial={{ opacity: 0, y: 20 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true }}
+                                    className="p-8 bg-zinc-900/40 rounded-2xl border border-white/5 backdrop-blur-sm relative overflow-hidden group hover:border-gold/30 transition-colors"
+                                >
+                                    <div className="absolute top-0 right-0 p-32 bg-gold/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+                                    <Eye className="w-8 h-8 text-gold mb-6 relative z-10" />
+                                    <h3 className="text-xl font-bold mb-4 relative z-10 font-serif">Vision & Goals</h3>
+                                    <p className="text-parchment/70 leading-relaxed relative z-10">{authorData.journey.vision}</p>
+                                </motion.div>
+
+                                {/* Motivation Card */}
+                                <motion.div
+                                    initial={{ opacity: 0, y: 20 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ delay: 0.1 }}
+                                    className="p-8 bg-zinc-900/40 rounded-2xl border border-white/5 backdrop-blur-sm relative overflow-hidden group hover:border-gold/30 transition-colors"
+                                >
+                                    <Heart className="w-8 h-8 text-gold mb-6 relative z-10" />
+                                    <h3 className="text-xl font-bold mb-4 relative z-10 font-serif">Inner Motivation</h3>
+                                    <p className="text-parchment/70 leading-relaxed relative z-10">{authorData.journey.motivation}</p>
+                                </motion.div>
+
+                                {/* Previous Books Card */}
+                                <div className="p-8 bg-gradient-to-br from-gold/10 to-transparent rounded-2xl border border-gold/20 relative overflow-hidden">
+                                    <div className="flex items-start justify-between mb-6">
+                                        <BookOpen className="w-8 h-8 text-gold" />
+                                        <Badge className="bg-gold text-ink-black hover:bg-gold/90">Published Works</Badge>
+                                    </div>
+                                    <h3 className="text-2xl font-serif text-white mb-2">Previous Books</h3>
+                                    <p className="text-parchment/60 text-sm mb-6">Author of two profound books that explore the depths of human emotion and societal realities, weaving silence into impactful words.</p>
+                                </div>
+                            </div>
                         </div>
+
                     </div>
                 </div>
             </section>
 
-            {/* Footer */}
-            <footer className="py-12 border-t border-white/5 text-center px-6 bg-ink-950">
-                <div className="flex justify-center items-center gap-2 mb-6">
-                    <Feather className="w-5 h-5 text-indigo-500/50" />
+            {/* Behind the Ink */}
+            <section className="py-24 bg-ink-charcoal/30 border-t border-white/5">
+                <div className="container mx-auto px-6 max-w-6xl">
+                    <h2 className="text-3xl font-light mb-12 text-center">Behind The Ink</h2>
+                    <div className="grid md:grid-cols-3 gap-8">
+                        {[
+                            { title: "The Inspiration", desc: "Found in the silence between thoughts and the chaos of the world.", icon: Sparkles },
+                            { title: "The Routine", desc: "Writing is not a task, but a return to the self. A daily ritual of clarity.", icon: Clock },
+                            { title: "The Form", desc: "Exploring the fluid boundaries between poetry and prose, fiction and truth.", icon: Palette }
+                        ].map((item, idx) => (
+                            <motion.div
+                                key={idx}
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                transition={{ delay: idx * 0.1 }}
+                                viewport={{ once: true }}
+                                className="text-center p-8 border border-white/5 rounded-2xl hover:bg-white/5 transition-colors"
+                            >
+                                <div className="w-16 h-16 mx-auto bg-ink-black rounded-full flex items-center justify-center border border-white/10 mb-6 shadow-lg">
+                                    <item.icon className="w-6 h-6 text-gold" />
+                                </div>
+                                <h3 className="text-xl font-serif text-white mb-3">{item.title}</h3>
+                                <p className="text-parchment/60 leading-relaxed">{item.desc}</p>
+                            </motion.div>
+                        ))}
+                    </div>
                 </div>
-                <p className="text-xs font-sans tracking-[0.2em] text-parchment/40 uppercase">
-                    © {new Date().getFullYear()} {authorData.name}. All Rights Reserved.
-                </p>
-            </footer>
+            </section>
+
+            {/* Footer Message */}
+            <section className="py-32 text-center px-6 relative overflow-hidden">
+                <div className="absolute inset-0 bg-gold/5 blur-[100px] pointer-events-none" />
+                <div className="max-w-4xl mx-auto relative z-10">
+                    <Quote className="w-12 h-12 text-gold/20 mx-auto mb-8" />
+                    <p className="text-2xl md:text-4xl font-light italic text-parchment/90 leading-relaxed mb-12 font-display">
+                        "{authorData.journey.message}"
+                    </p>
+                    <div className="h-[1px] w-24 bg-gold/30 mx-auto mb-8" />
+                    <div className="flex justify-center gap-8 text-xs tracking-widest uppercase text-parchment/40">
+                        <span className="hover:text-gold cursor-pointer transition-colors">Instagram</span>
+                        <span className="hover:text-gold cursor-pointer transition-colors">Email</span>
+                        <span className="hover:text-gold cursor-pointer transition-colors">Twitter</span>
+                    </div>
+                    <p className="text-xs text-parchment/20 mt-8 tracking-widest">© {new Date().getFullYear()} Vijay Pratap 'Tadashi'. All rights reserved.</p>
+                </div>
+            </section>
         </div>
     );
 };

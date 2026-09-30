@@ -22,9 +22,9 @@ export const metadata: Metadata = {
     siteName: 'Inkfetish Publication',
     images: [
       {
-        url: 'https://res.cloudinary.com/dde8ekuuu/image/upload/q_auto/f_auto/v1775897600/WhatsApp_Image_2026-04-09_at_2.59.25_PM-compressed_in2led.webp',
-        width: 1200,
-        height: 630,
+        url: 'https://www.inkfetish.in/september-contest-preview.jpg',
+        width: 1024,
+        height: 1024,
         alt: 'September Writing Competition by Inkfetish Publication',
       },
     ],
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'September Writing Competition | Inkfetish',
     description: 'Submit your poem or short story to get evaluated by our expert jury and become a published author.',
-    images: ['https://res.cloudinary.com/dde8ekuuu/image/upload/q_auto/f_auto/v1775897600/WhatsApp_Image_2026-04-09_at_2.59.25_PM-compressed_in2led.webp'],
+    images: ['https://www.inkfetish.in/september-contest-preview.jpg'],
   },
   robots: {
     index: true,

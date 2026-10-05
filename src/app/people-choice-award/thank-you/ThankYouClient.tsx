@@ -14,11 +14,31 @@ import jsPDF from 'jspdf';
 
 export default function ThankYouClient() {
   const searchParams = useSearchParams();
-  const rawName = searchParams.get('name') || 'Honored Nominee';
-  const email = searchParams.get('email') || 'registered@email.com';
-  const category = searchParams.get('category') || 'Writer / Poet';
-  const plan = searchParams.get('plan') || '699';
+  const rawNameParam = searchParams.get('name');
+  const emailParam = searchParams.get('email');
+  const categoryParam = searchParams.get('category');
+  const planParam = searchParams.get('plan');
   const orderId = searchParams.get('order_id') || `pca_${Date.now().toString(36)}`;
+
+  const [orderDetails, setOrderDetails] = useState<any>(null);
+
+  useEffect(() => {
+    if (orderId && orderId.startsWith('pca_')) {
+      fetch(`/api/cashfree/verify-order?order_id=${orderId}`)
+        .then((res) => res.json())
+        .then((data) => {
+          if (data && data.order_tags) {
+            setOrderDetails(data);
+          }
+        })
+        .catch((err) => console.error('Error verifying order on thank-you page:', err));
+    }
+  }, [orderId]);
+
+  const rawName = rawNameParam || orderDetails?.order_tags?.name || 'Honored Nominee';
+  const email = emailParam || orderDetails?.order_tags?.email || 'registered@email.com';
+  const category = categoryParam || orderDetails?.order_tags?.category || 'Writer / Poet';
+  const plan = planParam || orderDetails?.order_tags?.plan || '449';
 
   const [isDownloading, setIsDownloading] = useState(false);
   const slipRef = useRef<HTMLDivElement>(null);

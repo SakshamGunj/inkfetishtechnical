@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { 
@@ -9,6 +9,7 @@ import {
   Feather, BookOpen, Star, AlertCircle, Check, ArrowLeft
 } from 'lucide-react';
 import Link from 'next/link';
+import { load } from '@cashfreepayments/cashfree-js';
 
 const INDIAN_STATES = [
   'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh',
@@ -34,6 +35,20 @@ export default function RegisterClient() {
   });
 
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success'>('idle');
+  const [cashfree, setCashfree] = useState<any>(null);
+
+  useEffect(() => {
+    const initCashfree = async () => {
+      try {
+        const mode = process.env.NEXT_PUBLIC_CASHFREE_MODE || 'production';
+        const cf = await load({ mode: mode as 'sandbox' | 'production' });
+        setCashfree(cf);
+      } catch (err) {
+        console.error('Failed to load Cashfree SDK', err);
+      }
+    };
+    initCashfree();
+  }, []);
 
   const cleanPhone = formData.phone.trim().replace(/\D/g, '');
   const isEmailValid = formData.email.trim().length > 3 && formData.email.includes('@');
@@ -50,7 +65,7 @@ export default function RegisterClient() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (cleanPhone.length !== 10) {
@@ -58,22 +73,49 @@ export default function RegisterClient() {
       return;
     }
 
-    setStatus('submitting');
-    setTimeout(() => {
-      setStatus('success');
-      
-      const query = new URLSearchParams({
-        name: formData.fullName.trim(),
-        email: formData.email.trim(),
-        phone: cleanPhone,
-        category: formData.category || 'writer',
-        city: formData.state
-      }).toString();
+    if (!cashfree) {
+      alert("Payment gateway is initializing. Please wait a moment and try again.");
+      return;
+    }
 
-      setTimeout(() => {
-        router.push(`/people-choice-award/submit?${query}`);
-      }, 1000);
-    }, 1200);
+    setStatus('submitting');
+
+    try {
+      const res = await fetch('/api/cashfree/create-order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          amount: 449,
+          customerName: formData.fullName.trim(),
+          customerEmail: formData.email.trim(),
+          customerPhone: cleanPhone,
+          state: formData.state,
+          category: formData.category,
+          plan: '449',
+          source: 'people_choice',
+        }),
+      });
+
+      const orderData = await res.json();
+      if (!res.ok) {
+        throw new Error(orderData.error || 'Failed to initialize payment gateway.');
+      }
+
+      const { payment_session_id } = orderData;
+
+      setStatus('success');
+
+      // Launch Cashfree Checkout
+      await cashfree.checkout({
+        paymentSessionId: payment_session_id,
+        redirectTarget: '_self',
+      });
+
+    } catch (err: any) {
+      console.error('Payment initialization error:', err);
+      alert(err.message || 'Payment initialization failed. Please try again.');
+      setStatus('idle');
+    }
   };
 
   return (

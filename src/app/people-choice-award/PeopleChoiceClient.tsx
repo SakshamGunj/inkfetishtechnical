@@ -114,7 +114,7 @@ export default function PeopleChoiceClient() {
               className="mb-4"
             >
               <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold tracking-wider leading-none text-transparent bg-clip-text bg-gradient-to-r from-[#bf953f] via-[#fcf6ba] to-[#aa771c] drop-shadow-[0_4px_15px_rgba(212,175,55,0.2)]">
-                PEOPLE CHOICE
+                PEOPLE'S CHOICE
               </h1>
               <div className="flex items-center justify-center lg:justify-start gap-3 mt-1.5 text-xs sm:text-sm font-serif tracking-[0.45em] text-[#e8d595] uppercase">
                 <span>✦</span>

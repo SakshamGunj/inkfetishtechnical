@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import admin from '@/lib/firebase-admin';
+import { getAdminDb } from '@/lib/firebase-admin';
 
 // Force Node.js runtime for full Firebase Admin & crypto support
 export const runtime = 'nodejs';
@@ -13,10 +13,10 @@ export async function GET(request: Request) {
   }
 
   try {
-    if (!admin.apps.length) {
-      return NextResponse.json({ error: 'Firebase Admin not initialized' }, { status: 500 });
+    const db = getAdminDb();
+    if (!db) {
+      return NextResponse.json({ found: false, error: 'Database service unavailable' }, { status: 200 });
     }
-    const db = admin.firestore();
     const doc = await db.collection('people_choice_registrations').doc(nominationId).get();
 
     if (!doc.exists) {
@@ -44,10 +44,10 @@ export async function POST(request: Request) {
     const body = await request.json();
     const { action, nominationId, fullName, email, whatsapp, age, plan } = body;
 
-    if (!admin.apps.length) {
-      return NextResponse.json({ error: 'Firebase Admin not initialized' }, { status: 500 });
+    const db = getAdminDb();
+    if (!db) {
+      console.warn('Firebase Admin DB is unavailable in nominate POST');
     }
-    const db = admin.firestore();
 
 
     if (action === 'CREATE_NOMINATION') {

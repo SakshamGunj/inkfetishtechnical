@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
-import { db } from '@/lib/firebase-admin';
+import { getAdminDb } from '@/lib/firebase-admin';
 
 // Force Node.js runtime — consistent with create-order
 export const runtime = 'nodejs';
@@ -63,6 +63,7 @@ export async function GET(request: Request) {
     if (orderStatus === 'PAID') {
       const tags = data.order_tags || {};
 
+      const db = getAdminDb();
       if (orderId.startsWith('pca_') && db) {
         try {
           await db.collection('people_choice_registrations').doc(orderId).set({

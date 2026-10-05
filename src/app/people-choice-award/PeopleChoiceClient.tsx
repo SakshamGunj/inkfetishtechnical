@@ -76,10 +76,10 @@ export default function PeopleChoiceClient() {
 
           <Link
             href="/people-choice-award/register"
-            className="inline-flex items-center gap-2 bg-gradient-to-r from-[#bf953f] to-[#aa771c] text-black font-bold text-xs uppercase tracking-wider py-2 px-4 rounded-xl hover:brightness-110 shadow-md transition-transform active:scale-95"
+            className="inline-flex items-center gap-2.5 bg-gradient-to-r from-[#bf953f] via-[#fcf6ba] to-[#aa771c] text-black font-extrabold text-sm sm:text-base uppercase tracking-wider py-2.5 sm:py-3 px-5 sm:px-7 rounded-xl hover:brightness-110 shadow-[0_0_20px_rgba(212,175,55,0.45)] transition-all active:scale-95 cursor-pointer"
           >
-            <span>Register Now</span>
-            <ArrowRight className="w-3.5 h-3.5" />
+            <span>Apply Now</span>
+            <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
           </Link>
         </div>
       </nav>
@@ -91,7 +91,7 @@ export default function PeopleChoiceClient() {
       >
         <div className="flex items-center justify-center gap-2">
           <span className="animate-ping inline-flex h-2 w-2 rounded-full bg-red-400 opacity-75" />
-          <span>Strictly Limited to <strong>250 Participants</strong> — Registrations Open! Click Here to Register →</span>
+          <span>Strictly Limited to <strong>250 Participants</strong> — Registrations Open! Click Here to Apply →</span>
         </div>
       </Link>
 
@@ -167,7 +167,7 @@ export default function PeopleChoiceClient() {
             </div>
           </div>
 
-          {/* Right Column: Nomination Showcase Box with CTA */}
+          {/* Right Column: Award Kit Image Showcase with Apply Now CTA */}
           <motion.div 
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -178,42 +178,16 @@ export default function PeopleChoiceClient() {
               
               <div className="absolute -top-24 -left-24 w-48 h-48 bg-[#d4af37]/15 rounded-full blur-3xl pointer-events-none" />
 
-              <span className="inline-block bg-[#d4af37]/15 border border-[#d4af37]/40 text-[#f3e5ab] text-[10px] font-bold tracking-[0.25em] uppercase px-3.5 py-1 rounded-full">
-                OFFICIAL APPLICATION PORTAL 2026
-              </span>
-
-              <div className="relative p-2 rounded-2xl bg-gradient-to-b from-[#d4af37]/20 via-transparent to-[#d4af37]/10 border border-[#d4af37]/35 shadow-[0_0_35px_rgba(212,175,55,0.2)] max-w-[280px] mx-auto">
+              {/* High-res Award Kit Image Frame */}
+              <div className="relative p-2.5 rounded-2xl bg-gradient-to-b from-[#d4af37]/25 via-[#1c160c] to-[#d4af37]/15 border border-[#d4af37]/45 shadow-[0_0_40px_rgba(212,175,55,0.25)] mx-auto overflow-hidden">
                 <img 
                   src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1788291912/ChatGPT_Image_Sep_2_2026_01_13_09_AM_1_vb4vp2.png" 
                   alt="People's Choice Official Award Kit" 
-                  className="rounded-xl object-contain w-full h-auto drop-shadow-[0_8px_20px_rgba(0,0,0,0.7)]"
+                  className="rounded-xl object-contain w-full h-auto drop-shadow-[0_10px_25px_rgba(0,0,0,0.8)]"
                 />
               </div>
 
-              <div className="space-y-2 text-left bg-black/40 border border-[#d4af37]/20 rounded-xl p-4 text-xs text-gray-200">
-                <div className="flex items-center gap-2 text-[#d4af37] font-semibold text-xs uppercase tracking-wider mb-1">
-                  <Sparkles className="w-4 h-4" />
-                  <span>Key Candidate Perks</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-[#d4af37] shrink-0" />
-                  <span>200,000+ Verified Reader Voting</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-[#d4af37] shrink-0" />
-                  <span>Top 3: Free Solo Book Publication Contract</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-[#d4af37] shrink-0" />
-                  <span>Top 20: Golden Statuette + ₹25,000 Goodies</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-[#d4af37] shrink-0" />
-                  <span>EVERY Participant: Certificate + Appreciation Letter</span>
-                </div>
-              </div>
-
-              {/* Main Button Opening Separate Registration Portal Page */}
+              {/* Prominent Apply Now Button */}
               <Link
                 href="/people-choice-award/register"
                 className="w-full py-4 px-6 rounded-xl font-bold text-sm sm:text-base uppercase tracking-wider text-black bg-gradient-to-r from-[#bf953f] via-[#fcf6ba] to-[#aa771c] hover:brightness-110 active:scale-[0.98] transition-all shadow-[0_4px_25px_rgba(212,175,55,0.4)] flex items-center justify-center gap-2 cursor-pointer group"
@@ -221,10 +195,6 @@ export default function PeopleChoiceClient() {
                 <span>Apply Now</span>
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Link>
-
-              <p className="text-[11px] text-gray-500">
-                🔒 1-Min Quick Portal • Strictly Limited to 250 Spots
-              </p>
 
             </div>
           </motion.div>
@@ -578,11 +548,11 @@ export default function PeopleChoiceClient() {
                 </div>
                 <h3 className="font-serif text-lg font-bold text-[#f3e5ab] mb-2">Submit Entry</h3>
                 <p className="text-xs text-gray-400 leading-relaxed">
-                  Submit your masterpiece (poem, story, or article) before the 1st October deadline.
+                  Submit your masterpiece (poem, story, or article) within 1.5 weeks from now.
                 </p>
               </div>
               <div className="mt-4 pt-3 border-t border-white/5 text-[11px] font-semibold text-red-400/90 flex items-center gap-1">
-                <span>⏳ Closes 1st Oct</span>
+                <span>⏳ Closes in 1.5 weeks</span>
               </div>
             </div>
 
@@ -595,13 +565,13 @@ export default function PeopleChoiceClient() {
                   </span>
                   <span className="text-2xl group-hover:scale-110 transition-transform">🗳️</span>
                 </div>
-                <h3 className="font-serif text-lg font-bold text-[#f3e5ab] mb-2">Voting Starts</h3>
+                <h3 className="font-serif text-lg font-bold text-[#f3e5ab] mb-2">Live Voting</h3>
                 <p className="text-xs text-gray-400 leading-relaxed">
-                  Over 200,000 passionate readers cast verified votes to champion their favorite authors.
+                  Voting will be done through Ink.fetish (Instagram page with 210K+ followers), our writing community, and 40+ WhatsApp groups, with a target reach of over 2 lakh people.
                 </p>
               </div>
-              <div className="mt-4 pt-3 border-t border-white/5 text-[11px] font-semibold text-[#d4af37]/80 flex items-center gap-1">
-                <span>👥 200k+ Reader Power</span>
+              <div className="mt-4 pt-3 border-t border-white/5 text-[11px] font-semibold text-[#d4af37]/90 flex items-center gap-1">
+                <span>🗓️ 28th–30th October</span>
               </div>
             </div>
 
@@ -635,11 +605,11 @@ export default function PeopleChoiceClient() {
                 </div>
                 <h3 className="font-serif text-lg font-bold text-[#fcf6ba] mb-2">Live Zoom Gala</h3>
                 <p className="text-xs text-gray-300 leading-relaxed">
-                  The Top 20 are crowned in a live virtual ceremony where national winners and book deals are declared.
+                  The Top 20 writers will be announced during a live Zoom session.
                 </p>
               </div>
               <div className="mt-4 pt-3 border-t border-[#d4af37]/30 text-[11px] font-bold text-[#fcf6ba] flex items-center gap-1">
-                <span>🏆 Live Coronation</span>
+                <span>🏆 Result: 1st November</span>
               </div>
             </div>
 
@@ -672,15 +642,15 @@ export default function PeopleChoiceClient() {
               CLOSING SOON
             </span>
             <div className="text-xs text-gray-400 uppercase tracking-wider mt-4">Submission Deadline</div>
-            <div className="font-serif text-lg font-bold text-[#f3e5ab] mt-1">1st October 2026</div>
+            <div className="font-serif text-lg font-bold text-[#f3e5ab] mt-1">1.5 Week from Now</div>
           </div>
 
           <div className="bg-[#120f0a] border border-indigo-500/30 rounded-2xl p-6 text-center">
             <span className="text-[10px] uppercase font-bold tracking-widest text-indigo-400 bg-indigo-950/60 border border-indigo-500/40 px-2.5 py-0.5 rounded-full">
               UPCOMING
             </span>
-            <div className="text-xs text-gray-400 uppercase tracking-wider mt-4">Voting Period</div>
-            <div className="font-serif text-lg font-bold text-white mt-1">5th–8th October 2026</div>
+            <div className="text-xs text-gray-400 uppercase tracking-wider mt-4">Live Voting</div>
+            <div className="font-serif text-lg font-bold text-white mt-1">28th–30th October 2026</div>
           </div>
 
           <div className="bg-[#120f0a] border border-[#d4af37]/30 rounded-2xl p-6 text-center">
@@ -688,7 +658,7 @@ export default function PeopleChoiceClient() {
               CONFIRMED
             </span>
             <div className="text-xs text-gray-400 uppercase tracking-wider mt-4">Result Declaration</div>
-            <div className="font-serif text-lg font-bold text-white mt-1">10th October 2026</div>
+            <div className="font-serif text-lg font-bold text-[#fcf6ba] mt-1">1st November 2026</div>
           </div>
 
         </div>

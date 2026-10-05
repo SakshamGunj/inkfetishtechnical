@@ -399,8 +399,8 @@ export default function SubmitClient() {
               <div className="space-y-2.5">
                 {[
                   { step: '01', text: 'Our editorial team reviews your entry within 48 hours.' },
-                  { step: '02', text: 'Your work goes live for 2,10,000+ readers to vote on from 5th–8th October.' },
-                  { step: '03', text: 'Top 20 winners are announced at the Live Zoom Gala on 10th October 2026.' },
+                  { step: '02', text: 'Live voting takes place 28th–30th October via Ink.fetish Instagram (210K+ followers), writing community & 40+ WhatsApp groups.' },
+                  { step: '03', text: 'The Top 20 writers will be announced during a live Zoom session on 1st November 2026.' },
                 ].map((item) => (
                   <div key={item.step} className="flex items-start gap-3 bg-black/30 rounded-xl px-4 py-3">
                     <span className="font-serif font-black text-[#d4af37] text-xs shrink-0 mt-0.5">{item.step}</span>
@@ -419,7 +419,7 @@ export default function SubmitClient() {
             className="flex flex-col sm:flex-row gap-3"
           >
             <a
-              href={`https://api.whatsapp.com/send?text=${encodeURIComponent(`🏆 I just submitted my entry for the People's Choice Award 2026 by Inkfetish Publication! 2,10,000+ readers will vote from 5th–8th October. Join me → https://www.inkfetish.in/people-choice-award`)}`}
+              href={`https://api.whatsapp.com/send?text=${encodeURIComponent(`🏆 I just submitted my entry for the People's Choice Award 2026 by Inkfetish Publication! Live voting takes place 28th–30th October. Join me → https://www.inkfetish.in/people-choice-award`)}`}
               target="_blank"
               rel="noopener noreferrer"
               className="flex-1 py-3.5 px-5 rounded-xl font-bold text-sm uppercase tracking-wider text-white bg-green-700 hover:bg-green-600 active:scale-95 transition-all flex items-center justify-center gap-2 shadow-md"

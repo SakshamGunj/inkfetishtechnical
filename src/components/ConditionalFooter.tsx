@@ -2,10 +2,15 @@
 
 import { usePathname } from 'next/navigation';
 import Footer from './Footer';
+import PeopleChoiceFooter from './PeopleChoiceFooter';
 
 export function ConditionalFooter() {
   const pathname = usePathname() || '';
   
+  if (pathname.startsWith('/people-choice-award')) {
+    return <PeopleChoiceFooter />;
+  }
+
   // Hide the global footer on focused anthology funnel pages and poetry festival subpages
   if (
     pathname.startsWith('/anthology/syaahi') || 

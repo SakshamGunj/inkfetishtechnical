@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import crypto from 'crypto';
-import { db } from '@/lib/firebase-admin';
+import { getAdminDb } from '@/lib/firebase-admin';
 import { markSeptemberContestPaid } from '@/lib/septemberContestPayment';
 
 // Force Node.js runtime for crypto support
@@ -119,6 +119,7 @@ export async function POST(request: Request) {
       // 2c. PEOPLE'S CHOICE AWARD → Update Firebase Firestore
       } else if (orderId.startsWith('pca_')) {
         console.log(`People's Choice Award payment confirmed: ${orderId}`);
+        const db = getAdminDb();
         if (db) {
           try {
             await db.collection('people_choice_registrations').doc(orderId).set({

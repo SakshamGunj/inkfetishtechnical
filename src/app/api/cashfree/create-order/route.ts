@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { db } from '@/lib/firebase-admin';
+import { getAdminDb } from '@/lib/firebase-admin';
 
 // Force Node.js runtime (not Edge) — needed for full fetch + crypto support on Vercel
 export const runtime = 'nodejs';
@@ -118,6 +118,7 @@ export async function POST(request: Request) {
     });
 
     // Save PENDING order to Firebase before returning to client
+    const db = getAdminDb();
     if (db && (source === 'bharat_writes_kit' || source === 'iwl_season_2' || source === 'people_choice' || source === 'tiger_homeward')) {
       try {
         if (source === 'bharat_writes_kit') {

@@ -6,9 +6,19 @@ import { motion } from 'framer-motion';
 import { 
   Trophy, ShieldCheck, CheckCircle2, ArrowRight, 
   Sparkles, Lock, User, Mail, Phone, MapPin, 
-  Globe, Feather, BookOpen, Star, AlertCircle, Check
+  Feather, BookOpen, Star, AlertCircle, Check, ArrowLeft
 } from 'lucide-react';
 import Link from 'next/link';
+
+const INDIAN_STATES = [
+  'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh',
+  'Goa', 'Gujarat', 'Haryana', 'Himachal Pradesh', 'Jharkhand', 'Karnataka',
+  'Kerala', 'Madhya Pradesh', 'Maharashtra', 'Manipur', 'Meghalaya', 'Mizoram',
+  'Nagaland', 'Odisha', 'Punjab', 'Rajasthan', 'Sikkim', 'Tamil Nadu',
+  'Telangana', 'Tripura', 'Uttar Pradesh', 'Uttarakhand', 'West Bengal',
+  'Andaman and Nicobar Islands', 'Chandigarh', 'Dadra and Nagar Haveli and Daman and Diu',
+  'Delhi (NCT)', 'Jammu and Kashmir', 'Ladakh', 'Lakshadweep', 'Puducherry', 'Outside India'
+];
 
 export default function RegisterClient() {
   const router = useRouter();
@@ -17,14 +27,24 @@ export default function RegisterClient() {
     fullName: '',
     email: '',
     phone: '',
-    cityState: '',
+    state: '',
     category: '',
     writingLanguage: 'English',
-    portfolio: '',
     bio: ''
   });
 
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success'>('idle');
+
+  const cleanPhone = formData.phone.trim().replace(/\D/g, '');
+  const isEmailValid = formData.email.trim().length > 3 && formData.email.includes('@');
+  
+  const isFormValid = Boolean(
+    formData.fullName.trim() &&
+    isEmailValid &&
+    cleanPhone.length === 10 &&
+    formData.state &&
+    formData.category
+  );
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -33,7 +53,7 @@ export default function RegisterClient() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (formData.phone.length !== 10) {
+    if (cleanPhone.length !== 10) {
       alert("Please enter a valid 10-digit WhatsApp phone number.");
       return;
     }
@@ -42,92 +62,116 @@ export default function RegisterClient() {
     setTimeout(() => {
       setStatus('success');
       
-      // Construct URL query for seamless transition to submission portal or thank-you
       const query = new URLSearchParams({
-        name: formData.fullName,
-        email: formData.email,
-        phone: formData.phone,
+        name: formData.fullName.trim(),
+        email: formData.email.trim(),
+        phone: cleanPhone,
         category: formData.category || 'writer',
-        city: formData.cityState
+        city: formData.state
       }).toString();
 
       setTimeout(() => {
         router.push(`/people-choice-award/submit?${query}`);
-      }, 1200);
-    }, 1500);
+      }, 1000);
+    }, 1200);
   };
 
   return (
-    <div className="min-h-screen bg-[#070605] text-[#f5f0e1] font-sans selection:bg-[#d4af37] selection:text-black relative overflow-x-hidden">
+    <div className="min-h-screen bg-[#070605] text-[#f5f0e1] font-sans selection:bg-[#d4af37] selection:text-black relative overflow-x-hidden pb-24 sm:pb-12">
       
       {/* Ambient background lighting */}
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-        <div className="absolute -top-[15%] -left-[10%] w-[50vw] h-[50vw] rounded-full bg-[radial-gradient(circle,#aa771c_0%,transparent_70%)] opacity-20 blur-[100px] animate-pulse" />
-        <div className="absolute -bottom-[20%] -right-[10%] w-[60vw] h-[60vw] rounded-full bg-[radial-gradient(circle,#d4af37_0%,transparent_70%)] opacity-15 blur-[120px] animate-pulse" />
+        <div className="absolute -top-[15%] -left-[10%] w-[70vw] sm:w-[50vw] h-[70vw] sm:h-[50vw] rounded-full bg-[radial-gradient(circle,#aa771c_0%,transparent_70%)] opacity-20 blur-[90px] animate-pulse" />
+        <div className="absolute -bottom-[20%] -right-[10%] w-[80vw] sm:w-[60vw] h-[80vw] sm:h-[60vw] rounded-full bg-[radial-gradient(circle,#d4af37_0%,transparent_70%)] opacity-15 blur-[100px] animate-pulse" />
       </div>
 
       {/* --- NAVBAR --- */}
-      <nav className="sticky top-0 z-50 bg-[#070605]/85 backdrop-blur-md border-b border-[#d4af37]/20 py-2.5 px-4 shadow-lg shadow-black/40">
+      <nav className="sticky top-0 z-50 bg-[#070605]/90 backdrop-blur-lg border-b border-[#d4af37]/20 py-2.5 px-3 sm:px-6 shadow-lg shadow-black/50">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
-          <Link href="/people-choice-award" className="flex items-center gap-3 group">
+          <Link href="/people-choice-award" className="flex items-center gap-2 sm:gap-3 group">
             <img 
               src="/images/inkfetish_logo.png" 
               alt="Inkfetish Publication" 
-              className="w-8 h-8 rounded-full object-cover border border-[#d4af37]/30 shadow-[0_0_10px_rgba(212,175,55,0.3)] group-hover:scale-105 transition-transform"
+              className="w-7 h-7 sm:w-8 sm:h-8 rounded-full object-cover border border-[#d4af37]/30 shadow-[0_0_10px_rgba(212,175,55,0.3)] group-hover:scale-105 transition-transform"
             />
-            <span className="font-serif text-sm font-semibold tracking-wider text-[#f3e5ab]">
-              Inkfetish Publication
+            <span className="font-serif text-xs sm:text-sm font-semibold tracking-wider text-[#f3e5ab]">
+              Inkfetish <span className="hidden xs:inline">Publication</span>
             </span>
           </Link>
 
           <Link 
             href="/people-choice-award"
-            className="text-xs font-serif uppercase tracking-widest text-[#d4af37] hover:text-[#fcf6ba] transition-colors"
+            className="inline-flex items-center gap-1.5 text-[11px] sm:text-xs font-serif uppercase tracking-widest text-[#d4af37] hover:text-[#fcf6ba] transition-colors py-1 px-2 rounded-lg bg-black/40 border border-[#d4af37]/20"
           >
-            ← Back to Award Details
+            <ArrowLeft className="w-3 h-3" />
+            <span>Back <span className="hidden sm:inline">to Award Details</span></span>
           </Link>
         </div>
       </nav>
 
       {/* --- TOP SCARCITY & PORTAL BANNER --- */}
-      <div className="bg-gradient-to-r from-[#1c1408] via-[#2f220d] to-[#1c1408] border-b border-[#d4af37]/25 text-[#f3e5ab] py-2 px-3 text-center text-xs tracking-widest font-semibold flex items-center justify-center gap-2">
-        <span className="animate-ping inline-flex h-2 w-2 rounded-full bg-red-400 opacity-75" />
-        <span>Official Application Portal — Strictly 250 Total Participant Seats</span>
+      <div className="bg-gradient-to-r from-[#1c1408] via-[#2f220d] to-[#1c1408] border-b border-[#d4af37]/25 text-[#f3e5ab] py-2 px-3 text-center text-[11px] sm:text-xs tracking-wider font-semibold flex items-center justify-center gap-2">
+        <span className="animate-ping inline-flex h-2 w-2 rounded-full bg-red-400 opacity-75 shrink-0" />
+        <span>Official Application Portal — Strictly 250 Total Seats</span>
       </div>
 
-      <main className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-20">
+      <main className="relative z-10 max-w-5xl mx-auto px-3 sm:px-6 lg:px-8 pt-6 sm:pt-10 pb-12">
         
         {/* Header Title */}
-        <div className="text-center max-w-2xl mx-auto mb-10">
+        <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-10">
+          
+          {/* Key Dates Banner */}
           <motion.div 
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-2 bg-[#17140e] border border-[#d4af37]/40 px-4 py-1 rounded-full shadow-[0_0_20px_rgba(212,175,55,0.15)] mb-3"
+            className="grid grid-cols-2 gap-3 max-w-lg mx-auto mb-6"
+          >
+            <div className="bg-[#120f0a]/90 border border-indigo-500/30 rounded-xl p-3 text-center shadow-md">
+              <span className="text-[9px] uppercase font-bold tracking-widest text-indigo-400 bg-indigo-950/60 border border-indigo-500/40 px-2 py-0.5 rounded-full inline-block mb-1">
+                UPCOMING
+              </span>
+              <div className="text-[11px] text-gray-400 uppercase tracking-wider font-semibold">Live Voting</div>
+              <div className="font-serif text-xs sm:text-sm font-bold text-white mt-0.5">28th–30th October 2026</div>
+            </div>
+
+            <div className="bg-[#120f0a]/90 border border-[#d4af37]/30 rounded-xl p-3 text-center shadow-md">
+              <span className="text-[9px] uppercase font-bold tracking-widest text-[#d4af37] bg-[#d4af37]/10 border border-[#d4af37]/30 px-2 py-0.5 rounded-full inline-block mb-1">
+                CONFIRMED
+              </span>
+              <div className="text-[11px] text-gray-400 uppercase tracking-wider font-semibold">Result Declaration</div>
+              <div className="font-serif text-xs sm:text-sm font-bold text-[#fcf6ba] mt-0.5">1st November 2026</div>
+            </div>
+          </motion.div>
+
+          <motion.div 
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="inline-flex items-center gap-2 bg-[#17140e] border border-[#d4af37]/40 px-3.5 py-1 rounded-full shadow-[0_0_20px_rgba(212,175,55,0.15)] mb-3"
           >
             <Trophy className="w-3.5 h-3.5 text-[#d4af37]" />
-            <span className="text-[10px] font-serif uppercase tracking-[0.25em] text-[#f3e5ab] font-bold">
+            <span className="text-[10px] font-serif uppercase tracking-[0.2em] sm:tracking-[0.25em] text-[#f3e5ab] font-bold">
               People's Choice Award 2026
             </span>
           </motion.div>
 
-          <h1 className="font-serif text-3xl sm:text-5xl font-bold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-[#bf953f] via-[#fcf6ba] to-[#aa771c] mb-3">
+          <h1 className="font-serif text-3xl sm:text-5xl font-bold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-[#bf953f] via-[#fcf6ba] to-[#aa771c] mb-2 sm:mb-3">
             Apply Now
           </h1>
-          <p className="text-xs sm:text-sm text-gray-400 font-light leading-relaxed">
+          <p className="text-xs sm:text-sm text-gray-400 font-light leading-relaxed max-w-md mx-auto px-2">
             Enter your details below to submit your official application. Decided by 200,000+ passionate readers.
           </p>
         </div>
 
         {/* Step Progress Bar */}
-        <div className="max-w-xl mx-auto mb-10">
-          <div className="flex items-center justify-between text-xs font-serif font-bold uppercase tracking-wider text-[#d4af37] mb-2">
+        <div className="max-w-xl mx-auto mb-8 sm:mb-10 px-1">
+          <div className="flex items-center justify-between text-[11px] sm:text-xs font-serif font-bold uppercase tracking-wider text-[#d4af37] mb-2">
             <span className="flex items-center gap-1.5">
-              <span className="w-6 h-6 rounded-full bg-[#d4af37] text-black flex items-center justify-center text-[11px] font-black">1</span>
-              <span>Application Details</span>
+              <span className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-[#d4af37] text-black flex items-center justify-center text-[10px] sm:text-[11px] font-black">1</span>
+              <span>Application <span className="hidden sm:inline">Details</span></span>
             </span>
             <span className="text-gray-500 flex items-center gap-1.5">
-              <span className="w-6 h-6 rounded-full bg-white/10 text-gray-400 flex items-center justify-center text-[11px]">2</span>
-              <span>Manuscript Submission</span>
+              <span className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-white/10 text-gray-400 flex items-center justify-center text-[10px] sm:text-[11px]">2</span>
+              <span>Submission <span className="hidden sm:inline">Portal</span></span>
             </span>
           </div>
           <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
@@ -135,16 +179,16 @@ export default function RegisterClient() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-start">
           
           {/* Main Registration Form */}
           <div className="lg:col-span-7">
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-[#120f0a]/90 backdrop-blur-xl border border-[#d4af37]/35 rounded-3xl p-6 sm:p-8 shadow-[0_12px_40px_rgba(0,0,0,0.8)] relative"
+              className="bg-[#120f0a]/95 backdrop-blur-xl border border-[#d4af37]/35 rounded-2xl sm:rounded-3xl p-4 sm:p-8 shadow-[0_12px_40px_rgba(0,0,0,0.8)] relative"
             >
-              <form onSubmit={handleSubmit} className="space-y-5">
+              <form id="registration-form" onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
                 
                 <div>
                   <label className="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-1.5 flex items-center gap-1.5">
@@ -158,7 +202,7 @@ export default function RegisterClient() {
                     value={formData.fullName}
                     onChange={handleChange}
                     placeholder="e.g. Jane Doe"
-                    className="w-full bg-black/60 border border-white/15 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#d4af37] focus:ring-1 focus:ring-[#d4af37]/50 transition-all"
+                    className="w-full bg-black/60 border border-white/15 rounded-xl px-3.5 py-3 sm:px-4 text-base sm:text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#d4af37] focus:ring-1 focus:ring-[#d4af37]/50 transition-all touch-manipulation"
                   />
                 </div>
 
@@ -175,7 +219,7 @@ export default function RegisterClient() {
                       value={formData.email}
                       onChange={handleChange}
                       placeholder="jane@example.com"
-                      className="w-full bg-black/60 border border-white/15 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#d4af37] focus:ring-1 focus:ring-[#d4af37]/50 transition-all"
+                      className="w-full bg-black/60 border border-white/15 rounded-xl px-3.5 py-3 sm:px-4 text-base sm:text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#d4af37] focus:ring-1 focus:ring-[#d4af37]/50 transition-all touch-manipulation"
                     />
                   </div>
 
@@ -192,7 +236,7 @@ export default function RegisterClient() {
                       value={formData.phone}
                       onChange={handleChange}
                       placeholder="10-digit number"
-                      className="w-full bg-black/60 border border-white/15 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#d4af37] focus:ring-1 focus:ring-[#d4af37]/50 transition-all"
+                      className="w-full bg-black/60 border border-white/15 rounded-xl px-3.5 py-3 sm:px-4 text-base sm:text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#d4af37] focus:ring-1 focus:ring-[#d4af37]/50 transition-all touch-manipulation"
                     />
                   </div>
                 </div>
@@ -201,17 +245,22 @@ export default function RegisterClient() {
                   <div>
                     <label className="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-1.5 flex items-center gap-1.5">
                       <MapPin className="w-3.5 h-3.5 text-[#d4af37]" />
-                      <span>City &amp; State *</span>
+                      <span>State *</span>
                     </label>
-                    <input
-                      type="text"
-                      name="cityState"
+                    <select
+                      name="state"
                       required
-                      value={formData.cityState}
+                      value={formData.state}
                       onChange={handleChange}
-                      placeholder="e.g. Mumbai, Maharashtra"
-                      className="w-full bg-black/60 border border-white/15 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#d4af37] focus:ring-1 focus:ring-[#d4af37]/50 transition-all"
-                    />
+                      className="w-full bg-[#16120b] border border-white/15 rounded-xl px-3.5 py-3 sm:px-4 text-base sm:text-sm text-white focus:outline-none focus:border-[#d4af37] focus:ring-1 focus:ring-[#d4af37]/50 transition-all touch-manipulation cursor-pointer"
+                    >
+                      <option value="" disabled className="bg-[#16120b] text-gray-400">Select state</option>
+                      {INDIAN_STATES.map((st) => (
+                        <option key={st} value={st} className="bg-[#16120b] text-white">
+                          {st}
+                        </option>
+                      ))}
+                    </select>
                   </div>
 
                   <div>
@@ -224,30 +273,14 @@ export default function RegisterClient() {
                       required
                       value={formData.category}
                       onChange={handleChange}
-                      className="w-full bg-[#16120b] border border-white/15 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-[#d4af37] focus:ring-1 focus:ring-[#d4af37]/50 transition-all"
+                      className="w-full bg-[#16120b] border border-white/15 rounded-xl px-3.5 py-3 sm:px-4 text-base sm:text-sm text-white focus:outline-none focus:border-[#d4af37] focus:ring-1 focus:ring-[#d4af37]/50 transition-all touch-manipulation cursor-pointer"
                     >
-                      <option value="" disabled>Select category</option>
-                      <option value="poet">Poet / Shayar</option>
-                      <option value="writer">Writer / Author</option>
-                      <option value="both">Both (Writer &amp; Poet)</option>
+                      <option value="" disabled className="bg-[#16120b] text-gray-400">Select category</option>
+                      <option value="poet" className="bg-[#16120b] text-white">Poet / Shayar</option>
+                      <option value="writer" className="bg-[#16120b] text-white">Writer / Author</option>
+                      <option value="both" className="bg-[#16120b] text-white">Both (Writer &amp; Poet)</option>
                     </select>
                   </div>
-                </div>
-
-                <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-1.5 flex items-center gap-1.5">
-                    <Globe className="w-3.5 h-3.5 text-[#d4af37]" />
-                    <span>Portfolio / Social Link *</span>
-                  </label>
-                  <input
-                    type="url"
-                    name="portfolio"
-                    required
-                    value={formData.portfolio}
-                    onChange={handleChange}
-                    placeholder="https://instagram.com/yourhandle or blog/website"
-                    className="w-full bg-black/60 border border-white/15 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#d4af37] focus:ring-1 focus:ring-[#d4af37]/50 transition-all"
-                  />
                 </div>
 
                 <div>
@@ -261,25 +294,30 @@ export default function RegisterClient() {
                     value={formData.bio}
                     onChange={handleChange}
                     placeholder="Briefly describe your writing journey or themes..."
-                    className="w-full bg-black/60 border border-white/15 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#d4af37] focus:ring-1 focus:ring-[#d4af37]/50 transition-all resize-none"
+                    className="w-full bg-black/60 border border-white/15 rounded-xl px-3.5 py-3 sm:px-4 text-base sm:text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#d4af37] focus:ring-1 focus:ring-[#d4af37]/50 transition-all resize-none touch-manipulation"
                   />
                 </div>
 
+                {/* Main Inline Form Submit Button */}
                 <button
                   type="submit"
                   disabled={status === 'submitting'}
-                  className="w-full py-4 px-6 rounded-xl font-bold text-sm uppercase tracking-wider text-black bg-gradient-to-r from-[#bf953f] via-[#fcf6ba] to-[#aa771c] hover:brightness-110 active:scale-[0.98] transition-all shadow-[0_4px_25px_rgba(212,175,55,0.35)] flex items-center justify-center gap-2 cursor-pointer disabled:opacity-70 mt-4"
+                  className={`w-full min-h-[48px] sm:min-h-[52px] py-3.5 sm:py-4 px-6 rounded-xl font-bold text-sm sm:text-base uppercase tracking-wider transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-70 mt-4 touch-manipulation ${
+                    isFormValid
+                      ? 'bg-gradient-to-r from-[#bf953f] via-[#fcf6ba] to-[#aa771c] text-black shadow-[0_4px_25px_rgba(212,175,55,0.45)] hover:brightness-110 active:scale-[0.98]'
+                      : 'bg-white/10 text-gray-400 border border-white/15 hover:bg-white/15'
+                  }`}
                 >
                   {status === 'submitting' && <span>Submitting Application...</span>}
                   {status === 'success' && (
                     <span className="flex items-center gap-1.5 text-green-950 font-black">
-                      <Check className="w-5 h-5" /> Application Submitted! Proceeding to Submission...
+                      <Check className="w-5 h-5" /> Application Submitted! Proceeding...
                     </span>
                   )}
                   {status === 'idle' && (
                     <>
-                      <span>Apply Now &amp; Proceed</span>
-                      <ArrowRight className="w-4 h-4" />
+                      <span>{isFormValid ? 'Apply Now & Proceed' : 'Fill Details & Proceed'}</span>
+                      <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
                     </>
                   )}
                 </button>
@@ -293,11 +331,11 @@ export default function RegisterClient() {
           </div>
 
           {/* Right Sidebar: Perks & Inclusions */}
-          <div className="lg:col-span-5 space-y-6">
+          <div className="lg:col-span-5 space-y-5 sm:space-y-6">
             
             {/* Award Kit Highlight Box */}
-            <div className="bg-gradient-to-br from-[#1c160c] via-[#120f0a] to-[#1c160c] border border-[#d4af37]/40 rounded-3xl p-6 shadow-xl relative overflow-hidden">
-              <div className="text-center mb-4">
+            <div className="bg-gradient-to-br from-[#1c160c] via-[#120f0a] to-[#1c160c] border border-[#d4af37]/40 rounded-2xl sm:rounded-3xl p-5 sm:p-6 shadow-xl relative overflow-hidden">
+              <div className="text-center mb-3 sm:mb-4">
                 <span className="text-[10px] font-bold uppercase tracking-widest text-[#d4af37] bg-[#d4af37]/10 border border-[#d4af37]/30 px-3 py-1 rounded-full">
                   OFFICIAL APPLICATION INCLUSIONS
                 </span>
@@ -307,35 +345,35 @@ export default function RegisterClient() {
                 <img 
                   src="https://res.cloudinary.com/dde8ekuuu/image/upload/v1788291912/ChatGPT_Image_Sep_2_2026_01_13_09_AM_1_vb4vp2.png" 
                   alt="People's Choice Award Kit" 
-                  className="rounded-xl object-contain w-full max-w-[220px] h-auto border border-[#d4af37]/30 shadow-lg"
+                  className="rounded-xl object-contain w-full max-w-[180px] sm:max-w-[220px] h-auto border border-[#d4af37]/30 shadow-lg"
                 />
               </div>
 
-              <ul className="space-y-3 text-xs text-gray-200">
-                <li className="flex items-center gap-2.5">
-                  <CheckCircle2 className="w-4 h-4 text-[#d4af37] flex-shrink-0" />
+              <ul className="space-y-2.5 sm:space-y-3 text-xs text-gray-200">
+                <li className="flex items-start gap-2.5">
+                  <CheckCircle2 className="w-4 h-4 text-[#d4af37] shrink-0 mt-0.5" />
                   <span><strong>Top 20 Winners:</strong> Physical Golden Statuette + Home Delivery</span>
                 </li>
-                <li className="flex items-center gap-2.5">
-                  <CheckCircle2 className="w-4 h-4 text-[#d4af37] flex-shrink-0" />
+                <li className="flex items-start gap-2.5">
+                  <CheckCircle2 className="w-4 h-4 text-[#d4af37] shrink-0 mt-0.5" />
                   <span><strong>Top 3 Winners:</strong> Free Solo Book Publication Contract</span>
                 </li>
-                <li className="flex items-center gap-2.5">
-                  <CheckCircle2 className="w-4 h-4 text-[#d4af37] flex-shrink-0" />
+                <li className="flex items-start gap-2.5">
+                  <CheckCircle2 className="w-4 h-4 text-[#d4af37] shrink-0 mt-0.5" />
                   <span><strong>Top 20 Winners:</strong> ₹25,000 Exclusive Author Goodies</span>
                 </li>
-                <li className="flex items-center gap-2.5">
-                  <CheckCircle2 className="w-4 h-4 text-[#d4af37] flex-shrink-0" />
-                  <span><strong>EVERY Participant:</strong> Participation Certificate + Appreciation Letter</span>
+                <li className="flex items-start gap-2.5">
+                  <CheckCircle2 className="w-4 h-4 text-[#d4af37] shrink-0 mt-0.5" />
+                  <span><strong>EVERY Participant:</strong> Certificate + Appreciation Letter</span>
                 </li>
               </ul>
             </div>
 
             {/* Trust badge */}
-            <div className="bg-[#120f0a]/90 border border-[#d4af37]/25 rounded-2xl p-5 text-center space-y-2">
-              <ShieldCheck className="w-8 h-8 text-[#d4af37] mx-auto" />
-              <h4 className="font-serif font-bold text-sm text-[#f3e5ab]">200,000+ Verified Readers</h4>
-              <p className="text-xs text-gray-400">
+            <div className="bg-[#120f0a]/90 border border-[#d4af37]/25 rounded-2xl p-4 sm:p-5 text-center space-y-2">
+              <ShieldCheck className="w-7 h-7 sm:w-8 sm:h-8 text-[#d4af37] mx-auto" />
+              <h4 className="font-serif font-bold text-xs sm:text-sm text-[#f3e5ab]">200,000+ Verified Readers</h4>
+              <p className="text-[11px] sm:text-xs text-gray-400 font-light leading-relaxed">
                 No biased panels. Voting is conducted through transparent, reader-driven voting links.
               </p>
             </div>
@@ -346,9 +384,44 @@ export default function RegisterClient() {
 
       </main>
 
-      <footer className="border-t border-white/10 bg-[#050403] py-6 text-center text-xs text-gray-500">
-        <p>© {new Date().getFullYear()} Inkfetish Publication. All rights reserved. People's Choice Award.</p>
-      </footer>
+      {/* --- STICKY BOTTOM BAR ON MOBILE DEVICES --- */}
+      <div className="fixed bottom-0 left-0 right-0 z-50 bg-[#0c0a07]/95 backdrop-blur-xl border-t border-[#d4af37]/35 p-3 shadow-[0_-8px_30px_rgba(0,0,0,0.95)] sm:hidden flex items-center justify-between gap-3">
+        <div className="flex flex-col pl-1">
+          <span className="text-[10px] uppercase tracking-wider font-semibold text-[#d4af37]">
+            {isFormValid ? '⚡ Form Completed' : '📝 Step 1 of 2'}
+          </span>
+          <span className="text-xs font-bold text-white">
+            {isFormValid ? 'Ready to Proceed' : 'Fill Form Details'}
+          </span>
+        </div>
+
+        <button
+          type="button"
+          onClick={() => {
+            const form = document.getElementById('registration-form') as HTMLFormElement;
+            if (form) form.requestSubmit();
+          }}
+          disabled={status === 'submitting'}
+          className={`py-3 px-5 rounded-xl font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 shadow-md shrink-0 touch-manipulation ${
+            isFormValid
+              ? 'bg-gradient-to-r from-[#bf953f] via-[#fcf6ba] to-[#aa771c] text-black shadow-[0_0_22px_rgba(212,175,55,0.65)] animate-pulse'
+              : 'bg-white/10 text-gray-400 border border-white/15 hover:bg-white/15'
+          }`}
+        >
+          {status === 'submitting' ? (
+            <span>Submitting...</span>
+          ) : status === 'success' ? (
+            <span className="flex items-center gap-1 text-green-950 font-black">
+              <Check className="w-4 h-4" /> Submitted!
+            </span>
+          ) : (
+            <>
+              <span>{isFormValid ? 'Apply & Proceed' : 'Fill Details'}</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </>
+          )}
+        </button>
+      </div>
 
     </div>
   );

@@ -170,7 +170,7 @@ export default function ThankYouClient() {
                   Submit Your Entry Now
                 </h2>
                 <p className="mt-3 text-sm sm:text-base text-gray-300 max-w-xl mx-auto font-light leading-relaxed">
-                  Your registration is confirmed! Submit your poem, short story, or novel excerpt to enter the reader voting stage. Deadline: <strong className="text-[#f3e5ab]">1st October 2026</strong>.
+                  Your registration is confirmed! Submit your poem, short story, or novel excerpt to enter the reader voting stage. Deadline: <strong className="text-[#f3e5ab]">1.5 weeks from now</strong>.
                 </p>
               </div>
 
@@ -313,13 +313,13 @@ export default function ThankYouClient() {
                 </div>
                 <ul className="space-y-1.5 text-[11px] text-gray-300 leading-snug list-disc pl-4 font-light">
                   <li>
-                    <strong>Manuscript Submission:</strong> Please submit your poem or story before the deadline on <strong>1st October 2026</strong>.
+                    <strong>Manuscript Submission:</strong> Please submit your poem or story within <strong>1.5 weeks from now</strong>.
                   </li>
                   <li>
-                    <strong>Reader Voting:</strong> Voting takes place 5th–8th October across 2,10,000+ verified readers.
+                    <strong>Live Reader Voting:</strong> Voting takes place <strong>28th–30th October</strong> via Ink.fetish Instagram (210K+ followers), writing community, and 40+ WhatsApp groups.
                   </li>
                   <li>
-                    <strong>Laureate Awards:</strong> Top 20 winners will be honored with physical trophies, certificates, and traditional publication deals.
+                    <strong>Result Declaration:</strong> Top 20 winners will be announced during a <strong>Live Zoom session on 1st November</strong>.
                   </li>
                 </ul>
               </div>

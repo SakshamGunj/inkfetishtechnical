@@ -52,7 +52,7 @@ const testimonialsRow3 = [
 
 export default function PeopleChoiceClient() {
   return (
-    <div className="min-h-screen bg-[#070605] text-[#f5f0e1] font-sans selection:bg-[#d4af37] selection:text-black relative overflow-x-hidden">
+    <div className="min-h-screen bg-[#070605] text-[#f5f0e1] font-sans selection:bg-[#d4af37] selection:text-black relative overflow-x-hidden pb-20 sm:pb-24">
       
       {/* Background ambient lighting */}
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
@@ -783,6 +783,40 @@ export default function PeopleChoiceClient() {
       <footer className="relative z-10 border-t border-white/10 bg-[#050403] py-8 text-center text-xs text-gray-500">
         <p>© {new Date().getFullYear()} Inkfetish Publication. All rights reserved. People's Choice Award.</p>
       </footer>
+
+      {/* --- STICKY ALWAYS-ON CONVERSION BOTTOM BAR --- */}
+      <div className="fixed bottom-0 left-0 right-0 z-50 bg-[#0a0805]/95 backdrop-blur-xl border-t border-[#d4af37]/40 shadow-[0_-10px_40px_rgba(0,0,0,0.95)] py-2.5 px-3 sm:px-6">
+        <div className="max-w-6xl mx-auto flex items-center justify-between gap-3">
+          
+          <div className="flex items-center gap-2.5 sm:gap-4">
+            <div className="hidden sm:flex w-10 h-10 rounded-full bg-[#d4af37]/10 border border-[#d4af37]/35 items-center justify-center shrink-0">
+              <Trophy className="w-5 h-5 text-[#d4af37]" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-[#d4af37] bg-[#d4af37]/10 border border-[#d4af37]/30 px-2 py-0.5 rounded-full">
+                  STRICTLY 250 SEATS TOTAL
+                </span>
+                <span className="hidden md:inline text-xs text-gray-400">
+                  ✦ Decided by 200,000+ Readers
+                </span>
+              </div>
+              <div className="text-xs sm:text-sm font-bold text-white mt-0.5 font-serif">
+                People's Choice Award 2026
+              </div>
+            </div>
+          </div>
+
+          <Link
+            href="/people-choice-award/register"
+            className="inline-flex items-center gap-2 bg-gradient-to-r from-[#bf953f] via-[#fcf6ba] to-[#aa771c] text-black font-extrabold text-xs sm:text-sm uppercase tracking-wider py-2.5 sm:py-3 px-4 sm:px-7 rounded-xl hover:brightness-110 shadow-[0_0_25px_rgba(212,175,55,0.6)] transition-all active:scale-95 shrink-0 touch-manipulation animate-pulse"
+          >
+            <span>Apply Now</span>
+            <ArrowRight className="w-4 h-4" />
+          </Link>
+
+        </div>
+      </div>
 
     </div>
   );

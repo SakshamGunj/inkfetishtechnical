@@ -50,6 +50,23 @@ export default function RegisterClient() {
     initCashfree();
   }, []);
 
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const orderId = params.get('order_id');
+      if (orderId && orderId.startsWith('pca_')) {
+        fetch(`/api/cashfree/verify-order?order_id=${orderId}`)
+          .then((res) => res.json())
+          .then((data) => {
+            if (data && data.order_status === 'PAID') {
+              router.push(`/people-choice-award/thank-you?order_id=${orderId}`);
+            }
+          })
+          .catch((err) => console.error('Verification error on register page:', err));
+      }
+    }
+  }, [router]);
+
   const cleanPhone = formData.phone.trim().replace(/\D/g, '');
   const isEmailValid = formData.email.trim().length > 3 && formData.email.includes('@');
   

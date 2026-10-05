@@ -18,17 +18,23 @@ function toBase64(str: string): string {
 }
 
 // Resolve the base URL correctly for local, Vercel preview, and Vercel production
-function getBaseUrl(): string {
+function getBaseUrl(request?: Request): string {
   // Explicitly set → always use this (production domain)
   if (process.env.NEXT_PUBLIC_BASE_URL && !process.env.NEXT_PUBLIC_BASE_URL.includes('localhost')) {
     return process.env.NEXT_PUBLIC_BASE_URL;
   }
-  // Vercel auto-injects VERCEL_URL for preview/production deployments
-  if (process.env.VERCEL_URL) {
+  if (request) {
+    const origin = request.headers.get('origin');
+    if (origin && !origin.includes('localhost') && !origin.includes('vercel.app')) {
+      return origin;
+    }
+  }
+  // Vercel auto-injects VERCEL_URL — use only if not a protected preview URL
+  if (process.env.VERCEL_URL && !process.env.VERCEL_URL.includes('vercel.app')) {
     return `https://${process.env.VERCEL_URL}`;
   }
-  // Local development fallback
-  return process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+  // Official production domain fallback
+  return 'https://www.inkfetish.in';
 }
 
 export async function POST(request: Request) {
@@ -45,7 +51,7 @@ export async function POST(request: Request) {
     }
 
     const baseUrl = getCashfreeBaseUrl(appId);
-    const siteUrl = getBaseUrl();
+    const siteUrl = getBaseUrl(request);
 
     // Generate a unique order ID
     const randomPart = Math.random().toString(36).slice(2, 7);
@@ -65,7 +71,7 @@ export async function POST(request: Request) {
       returnUrlPath = 'indian-writers-league-season-2';
     } else if (source === 'people_choice') {
       orderIdPrefix = 'pca_';
-      returnUrlPath = 'people-choice-award';
+      returnUrlPath = 'people-choice-award/register';
     } else if (source === 'tiger_homeward') {
       orderIdPrefix = 'tiger_';
       returnUrlPath = 'book/tiger-homeward';

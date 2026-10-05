@@ -73,14 +73,6 @@ export default function PeopleChoiceClient() {
               Inkfetish Publication
             </span>
           </div>
-
-          <Link
-            href="/people-choice-award/register"
-            className="inline-flex items-center gap-2.5 bg-gradient-to-r from-[#bf953f] via-[#fcf6ba] to-[#aa771c] text-black font-extrabold text-sm sm:text-base uppercase tracking-wider py-2.5 sm:py-3 px-5 sm:px-7 rounded-xl hover:brightness-110 shadow-[0_0_20px_rgba(212,175,55,0.45)] transition-all active:scale-95 cursor-pointer"
-          >
-            <span>Apply Now</span>
-            <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
-          </Link>
         </div>
       </nav>
 

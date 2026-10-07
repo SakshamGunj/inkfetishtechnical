@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React from "react";
+import { motion } from "framer-motion";
 import {
     BookOpen,
     Dog,
@@ -9,9 +9,7 @@ import {
     Star,
     ArrowRight,
     ShoppingBag,
-    FileText,
-    X,
-    Loader2
+    FileText
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
@@ -19,113 +17,6 @@ import { Helmet } from "react-helmet-async";
 import Image from "next/image";
 
 const TigerHomewardClient = () => {
-    const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
-    const [cashfree, setCashfree] = useState<any>(null);
-    const [isProcessing, setIsProcessing] = useState(false);
-
-    const [formData, setFormData] = useState({
-        name: '',
-        email: '',
-        phone: '',
-        address: '',
-        city: '',
-        state: '',
-        pincode: ''
-    });
-
-    // Load Cashfree SDK
-    useEffect(() => {
-        const script = document.createElement('script');
-        script.src = 'https://sdk.cashfree.com/js/v3/cashfree.js';
-        script.async = true;
-        script.onload = () => {
-            if (window.Cashfree) {
-                setCashfree(new window.Cashfree({ mode: 'production' })); // Change to production since it's going live
-            }
-        };
-        document.body.appendChild(script);
-
-        return () => {
-            document.body.removeChild(script);
-        };
-    }, []);
-
-    // Also check for order_id in URL to verify successful payment
-    useEffect(() => {
-        const params = new URLSearchParams(window.location.search);
-        const orderId = params.get('order_id');
-        if (orderId) {
-            // They just returned from payment
-            toast.success("Payment successful! Your pre-order is confirmed.", { duration: 5000 });
-            // Clean up URL
-            window.history.replaceState({}, document.title, window.location.pathname);
-        }
-    }, []);
-
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-    };
-
-    const handleCheckout = async (e: React.FormEvent) => {
-        e.preventDefault();
-        
-        if (!cashfree) {
-            toast.error("Payment gateway is still loading. Please try again in a few seconds.");
-            return;
-        }
-
-        if (!formData.name || !formData.email || !formData.phone || !formData.address || !formData.city || !formData.state || !formData.pincode) {
-            toast.error("Please fill in all fields for shipping.");
-            return;
-        }
-
-        if (formData.phone.length < 10) {
-            toast.error("Please enter a valid 10-digit phone number.");
-            return;
-        }
-
-        setIsProcessing(true);
-        toast.loading("Initiating secure checkout...", { id: 'checkout' });
-
-        try {
-            const res = await fetch('/api/cashfree/create-order', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    amount: 399, // Pre-order price
-                    customerName: formData.name,
-                    customerEmail: formData.email,
-                    customerPhone: formData.phone,
-                    address: formData.address,
-                    city: formData.city,
-                    state: formData.state,
-                    pincode: formData.pincode,
-                    plan: 'book_preorder',
-                    source: 'tiger_homeward'
-                })
-            });
-
-            const data = await res.json();
-
-            if (!res.ok) {
-                throw new Error(data.error || 'Failed to create order');
-            }
-
-            toast.dismiss('checkout');
-
-            await cashfree.checkout({
-                paymentSessionId: data.payment_session_id,
-                redirectTarget: "_self"
-            });
-            
-        } catch (error: any) {
-            console.error("Checkout error:", error);
-            toast.error(error.message || "Failed to initiate checkout. Please try again.");
-            toast.dismiss('checkout');
-            setIsProcessing(false);
-        }
-    };
-
     return (
         <div className="min-h-screen bg-ink-black text-parchment font-serif selection:bg-orange-500/30 selection:text-white overflow-x-hidden">
             <Helmet>
@@ -191,11 +82,11 @@ const TigerHomewardClient = () => {
 
                             <div className="flex flex-col sm:flex-row items-center gap-4 pt-4">
                                 <Button
-                                    onClick={() => setIsCheckoutOpen(true)}
+                                    onClick={() => toast.success("We will launch the pre-order soon!")}
                                     className="w-full sm:w-auto bg-orange-600/80 text-white hover:bg-orange-500 font-sans tracking-wide px-8 py-6 text-lg rounded-sm"
                                 >
                                     <ShoppingBag className="w-5 h-5 mr-2" />
-                                    Pre-Order Now (₹399)
+                                    Pre-Order Now (<span className="line-through opacity-70 mr-2 text-sm">₹345</span> ₹295)
                                 </Button>
                                 <Button
                                     variant="outline"
@@ -216,16 +107,13 @@ const TigerHomewardClient = () => {
                             transition={{ duration: 1.2 }}
                             className="relative lg:ml-auto w-full max-w-md"
                         >
-                            <div className="aspect-[2/3] bg-gradient-to-br from-zinc-800 to-ink-charcoal rounded-sm shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10 relative overflow-hidden flex items-center justify-center">
-                                <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/black-paper.png')] opacity-20" />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-                                <div className="text-center p-8 relative z-10 space-y-6">
-                                    <Dog className="w-20 h-20 text-orange-400/80 mx-auto" />
-                                    <h3 className="text-3xl font-display font-light text-white uppercase tracking-wider">Tiger Homeward</h3>
-                                    <p className="text-sm text-parchment/60 uppercase tracking-[0.2em]">A Journey to Belonging</p>
-                                    <div className="w-12 h-[1px] bg-orange-500/50 mx-auto my-4" />
-                                    <p className="text-sm font-sans tracking-widest text-parchment/80">SHARMILA MAITRA</p>
-                                </div>
+                            <div className="aspect-[2/3] rounded-sm shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10 relative overflow-hidden">
+                                <Image
+                                    src="/books/tiger-homeward.jpg"
+                                    alt="Tiger Homeward Book Cover"
+                                    fill
+                                    className="object-cover"
+                                />
                             </div>
                         </motion.div>
                     </div>
@@ -321,149 +209,7 @@ const TigerHomewardClient = () => {
                 </p>
             </footer>
 
-            {/* Checkout Modal */}
-            <AnimatePresence>
-                {isCheckoutOpen && (
-                    <>
-                        <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            onClick={() => !isProcessing && setIsCheckoutOpen(false)}
-                            className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100]"
-                        />
-                        <motion.div
-                            initial={{ opacity: 0, scale: 0.95, y: 20 }}
-                            animate={{ opacity: 1, scale: 1, y: 0 }}
-                            exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                            className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg bg-zinc-900 border border-white/10 rounded-2xl p-6 md:p-8 z-[101] shadow-2xl max-h-[90vh] overflow-y-auto"
-                        >
-                            <button
-                                onClick={() => !isProcessing && setIsCheckoutOpen(false)}
-                                disabled={isProcessing}
-                                className="absolute top-4 right-4 text-parchment/50 hover:text-white transition-colors disabled:opacity-50"
-                            >
-                                <X className="w-6 h-6" />
-                            </button>
 
-                            <h3 className="text-2xl font-serif text-white mb-2">Pre-Order Form</h3>
-                            <p className="text-sm text-parchment/60 mb-6">Fill in your shipping details to reserve your copy.</p>
-
-                            <form onSubmit={handleCheckout} className="space-y-4 font-sans">
-                                <div>
-                                    <label className="block text-xs uppercase tracking-wider text-parchment/60 mb-1">Full Name</label>
-                                    <input
-                                        type="text"
-                                        name="name"
-                                        required
-                                        value={formData.name}
-                                        onChange={handleInputChange}
-                                        className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-orange-500/50"
-                                        placeholder="Enter your name"
-                                    />
-                                </div>
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div>
-                                        <label className="block text-xs uppercase tracking-wider text-parchment/60 mb-1">Email</label>
-                                        <input
-                                            type="email"
-                                            name="email"
-                                            required
-                                            value={formData.email}
-                                            onChange={handleInputChange}
-                                            className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-orange-500/50"
-                                            placeholder="your@email.com"
-                                        />
-                                    </div>
-                                    <div>
-                                        <label className="block text-xs uppercase tracking-wider text-parchment/60 mb-1">Phone Number</label>
-                                        <input
-                                            type="tel"
-                                            name="phone"
-                                            required
-                                            value={formData.phone}
-                                            onChange={handleInputChange}
-                                            className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-orange-500/50"
-                                            placeholder="10-digit number"
-                                        />
-                                    </div>
-                                </div>
-                                <div>
-                                    <label className="block text-xs uppercase tracking-wider text-parchment/60 mb-1">Delivery Address</label>
-                                    <textarea
-                                        name="address"
-                                        required
-                                        rows={2}
-                                        value={formData.address}
-                                        onChange={handleInputChange}
-                                        className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-orange-500/50 resize-none"
-                                        placeholder="Full street address"
-                                    />
-                                </div>
-                                <div className="grid grid-cols-3 gap-4">
-                                    <div>
-                                        <label className="block text-xs uppercase tracking-wider text-parchment/60 mb-1">City</label>
-                                        <input
-                                            type="text"
-                                            name="city"
-                                            required
-                                            value={formData.city}
-                                            onChange={handleInputChange}
-                                            className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-orange-500/50"
-                                        />
-                                    </div>
-                                    <div>
-                                        <label className="block text-xs uppercase tracking-wider text-parchment/60 mb-1">State</label>
-                                        <input
-                                            type="text"
-                                            name="state"
-                                            required
-                                            value={formData.state}
-                                            onChange={handleInputChange}
-                                            className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-orange-500/50"
-                                        />
-                                    </div>
-                                    <div>
-                                        <label className="block text-xs uppercase tracking-wider text-parchment/60 mb-1">PIN Code</label>
-                                        <input
-                                            type="text"
-                                            name="pincode"
-                                            required
-                                            value={formData.pincode}
-                                            onChange={handleInputChange}
-                                            className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-orange-500/50"
-                                        />
-                                    </div>
-                                </div>
-
-                                <div className="pt-4 border-t border-white/5 mt-6">
-                                    <div className="flex justify-between items-center mb-6">
-                                        <span className="text-parchment/80">Total Amount:</span>
-                                        <span className="text-2xl font-bold text-white font-serif">₹399</span>
-                                    </div>
-                                    <Button
-                                        type="submit"
-                                        disabled={isProcessing}
-                                        className="w-full bg-orange-600/90 text-white hover:bg-orange-500 py-6 text-lg rounded-lg"
-                                    >
-                                        {isProcessing ? (
-                                            <>
-                                                <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                                                Processing Secure Checkout...
-                                            </>
-                                        ) : (
-                                            "Proceed to Payment"
-                                        )}
-                                    </Button>
-                                    <p className="text-center text-xs text-parchment/40 mt-4 flex items-center justify-center gap-2">
-                                        Payments secured by Cashfree
-                                    </p>
-                                </div>
-                            </form>
-                        </motion.div>
-                    </>
-                )}
-            </AnimatePresence>
         </div>
     );
 };

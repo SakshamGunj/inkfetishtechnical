@@ -23,7 +23,8 @@ export function ConditionalFooter() {
     pathname.startsWith('/daniya-khan') ||
     pathname.startsWith('/indian-writers-league-season-2') ||
     pathname.startsWith('/september-writing-contest') ||
-    pathname.startsWith('/september-contest')
+    pathname.startsWith('/september-contest') ||
+    pathname.startsWith('/autumn-poetry-hunt')
   ) {
     return null;
   }

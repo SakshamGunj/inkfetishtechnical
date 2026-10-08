@@ -82,7 +82,7 @@ const TigerHomewardClient = () => {
 
                             <div className="flex flex-col sm:flex-row items-center gap-4 pt-4">
                                 <Button
-                                    onClick={() => toast.success("We will launch the pre-order soon!")}
+                                    onClick={() => toast.success("Pre-booking will start from Saturday 9 AM!")}
                                     className="w-full sm:w-auto bg-orange-600/80 text-white hover:bg-orange-500 font-sans tracking-wide px-8 py-6 text-lg rounded-sm"
                                 >
                                     <ShoppingBag className="w-5 h-5 mr-2" />

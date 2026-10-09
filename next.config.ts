@@ -1,6 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  outputFileTracingIncludes: {
+    '/api/iwl-certificates/download': ['./public/letters-of-honour/**/*'],
+  },
   images: {
     remotePatterns: [
       {

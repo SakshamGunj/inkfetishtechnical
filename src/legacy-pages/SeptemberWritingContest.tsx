@@ -463,10 +463,17 @@ export default function SeptemberWritingContest() {
           </div>
         </div>
 
-        <div className="flex items-center gap-4">
-          <div className="hidden md:flex items-center gap-2 text-xs font-sans font-semibold text-[#8C7A6B]">
+        <div className="flex items-center gap-3">
+          <a
+            href="/september-writing-contest/certificate"
+            className="hidden sm:inline-flex items-center gap-1.5 text-xs font-sans font-bold text-[#B91C1C] hover:text-[#7A1A1A] px-3.5 py-1.5 rounded-full border border-[#B91C1C]/30 bg-[#B91C1C]/5 transition-colors"
+          >
+            <Award className="w-3.5 h-3.5 text-[#D4AF37]" />
+            <span>Participation Certificates</span>
+          </a>
+          <div className="hidden lg:flex items-center gap-2 text-xs font-sans font-semibold text-[#8C7A6B]">
             <Instagram className="w-4 h-4 text-[#B91C1C]" />
-            <span>210,000+ Writers on Instagram</span>
+            <span>210,000+ Writers</span>
           </div>
           <Button 
             onClick={() => {
@@ -578,17 +585,28 @@ export default function SeptemberWritingContest() {
             {/* Outer Glow */}
             <div className="absolute -inset-0.5 bg-gradient-to-r from-[#D4AF37] via-[#B91C1C] to-[#D4AF37] rounded-2xl blur opacity-30 group-hover:opacity-50 transition duration-1000 group-hover:duration-200 animate-pulse"></div>
             {/* Banner Content */}
-            <div className="relative bg-[#FAF6F0] border border-[#E3DAC8] rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-center gap-4 text-center sm:text-left shadow-sm">
-              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-[#B91C1C] to-[#801313] shadow-md flex items-center justify-center shrink-0">
-                <ShieldCheck className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+            <div className="relative bg-[#FAF6F0] border border-[#E3DAC8] rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left shadow-sm">
+              <div className="flex flex-col sm:flex-row items-center gap-4">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-[#B91C1C] to-[#801313] shadow-md flex items-center justify-center shrink-0">
+                  <ShieldCheck className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+                </div>
+                <div>
+                  <h4 className="font-serif font-extrabold text-sm sm:text-base text-[#2C1C13] uppercase tracking-wide mb-1">
+                    The Inkfetish Guarantee
+                  </h4>
+                  <p className="font-sans text-xs sm:text-sm text-[#4A3B2F] leading-relaxed">
+                    Every single participant receives a <strong className="font-bold text-[#B91C1C] underline decoration-[#D4AF37] underline-offset-2">Lifetime Valid, QR-Verified National Certificate</strong> for their literary portfolio.
+                  </p>
+                </div>
               </div>
-              <div>
-                <h4 className="font-serif font-extrabold text-sm sm:text-base text-[#2C1C13] uppercase tracking-wide mb-1">
-                  The Inkfetish Guarantee
-                </h4>
-                <p className="font-sans text-xs sm:text-sm text-[#4A3B2F] leading-relaxed">
-                  Every single participant receives a <strong className="font-bold text-[#B91C1C] underline decoration-[#D4AF37] underline-offset-2">Lifetime Valid, QR-Verified National Certificate</strong> for their literary portfolio.
-                </p>
+              <div className="shrink-0">
+                <a
+                  href="/september-writing-contest/certificate"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#B91C1C] hover:bg-[#801313] text-white text-xs font-sans font-bold tracking-wide shadow-md transition-all hover:scale-105"
+                >
+                  <Award className="w-3.5 h-3.5 text-[#D4AF37]" />
+                  <span>Download Certificate</span>
+                </a>
               </div>
             </div>
           </div>

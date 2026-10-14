@@ -153,5 +153,8 @@ service cloud.firestore {
     match /september_contest_registrations/{document} {
       allow read, create, update: if true;
     }
+    match /september_contest_submissions/{document} {
+      allow read, create, update: if true;
+    }
   }
 }

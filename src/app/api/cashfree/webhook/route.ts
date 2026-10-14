@@ -160,6 +160,31 @@ export async function POST(request: Request) {
           }
         }
 
+      // 2d2. DANIYA KHAN PDF E-BOOK ORDERS → Insert to Firebase Firestore
+      } else if (orderId.startsWith('dkpdf_')) {
+        console.log(`Daniya Khan PDF Order Payment Confirmed: ${orderId}`);
+        if (db) {
+          try {
+            await db.collection('daniya_khan_pdf_orders').doc(orderId).set({
+              order_id: orderId,
+              cf_order_id: order.cf_order_id || '',
+              customer_email: tags.email || '',
+              customer_name: tags.name || '',
+              customer_phone: tags.phone || tags.whatsapp || '',
+              bundle: tags.bundle || 'pdf_only',
+              quantity: parseInt(tags.quantity || '1', 10),
+              amount: order.order_amount,
+              currency: 'INR',
+              order_status: 'PAID',
+              download_unlocked: true,
+              updated_at: new Date().toISOString(),
+            }, { merge: true });
+            console.log(`Saved Daniya Khan PDF order ${orderId} to Firebase Firestore`);
+          } catch (err) {
+            console.error('Failed to save Daniya Khan PDF order to Firebase', err);
+          }
+        }
+
       // 2e. IWL SEASON 2 REGISTRATIONS → Update in Firebase Firestore
       } else if (orderId.startsWith('iwl2_')) {
         console.log(`IWL Season 2 Registration Confirmed: ${orderId}`);

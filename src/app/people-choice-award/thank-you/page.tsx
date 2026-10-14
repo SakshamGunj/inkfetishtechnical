@@ -8,7 +8,13 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Nomination Confirmed | People's Choice Award 2026",
     description: "Proud Participant of People's Choice Award 2026 by Inkfetish Publication.",
-    images: ["https://res.cloudinary.com/dde8ekuuu/image/upload/q_auto/f_auto/v1776802129/WhatsApp_Image_2026-04-22_at_1.37.09_AM_1_v2i3bu.jpg"],
+    images: ["https://res.cloudinary.com/dde8ekuuu/image/upload/v1788291912/ChatGPT_Image_Sep_2_2026_01_13_09_AM_1_vb4vp2.png"],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Nomination Confirmed | People's Choice Award 2026",
+    description: "Proud Participant of People's Choice Award 2026 by Inkfetish Publication.",
+    images: ["https://res.cloudinary.com/dde8ekuuu/image/upload/v1788291912/ChatGPT_Image_Sep_2_2026_01_13_09_AM_1_vb4vp2.png"],
   }
 };
 

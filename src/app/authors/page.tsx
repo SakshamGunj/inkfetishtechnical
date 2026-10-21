@@ -34,6 +34,7 @@ const authors = [
   { name: 'Diya Chotai', slug: 'diya', role: 'Writer & Poet', imageBg: 'bg-ink-900/5' },
   { name: 'Dr. Neil Shah', slug: 'neil', role: 'Psychiatrist & Author', imageBg: 'bg-ink-900/10' },
   { name: 'Mamata Mohapatra', slug: 'mamata', role: 'Senior Educator & Poet', imageBg: 'bg-ink-900/5' },
+  { name: 'Monika Kalra', slug: 'monika', role: 'Kindergarten Educator & Author', imageBg: 'bg-ink-900/10' },
 ];
 
 export default function AuthorsPage() {

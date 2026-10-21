@@ -31,6 +31,9 @@ const authors = [
   { name: 'Jahnvi Sharma', slug: 'jahnvi', role: 'Writer & Educator', imageBg: 'bg-ink-900/5' },
   { name: 'Sharmila Maitra', slug: 'sharmila', role: 'Marketing Pro & Author', imageBg: 'bg-ink-900/10' },
   { name: 'Shashank Tripathi', slug: 'shashank', role: 'Poet & Student', imageBg: 'bg-ink-900/10' },
+  { name: 'Diya Chotai', slug: 'diya', role: 'Writer & Poet', imageBg: 'bg-ink-900/5' },
+  { name: 'Dr. Neil Shah', slug: 'neil', role: 'Psychiatrist & Author', imageBg: 'bg-ink-900/10' },
+  { name: 'Mamata Mohapatra', slug: 'mamata', role: 'Senior Educator & Poet', imageBg: 'bg-ink-900/5' },
 ];
 
 export default function AuthorsPage() {

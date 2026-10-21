@@ -23,6 +23,9 @@ const nameMap: Record<string, string> = {
   jahnvi: "Jahnvi Sharma",
   sharmila: "Sharmila Maitra",
   shashank: "Shashank Tripathi",
+  diya: "Diya Chotai",
+  neil: "Dr. Neil Shah",
+  mamata: "Mamata Mohapatra",
 };
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {

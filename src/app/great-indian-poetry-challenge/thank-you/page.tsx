@@ -70,14 +70,14 @@ export default function GreatIndianPoetryChallengeThankYouPage() {
         }
       `}</style>
 
-      <main className="relative royal-poster-bg flex-grow pt-7 pb-16 sm:py-14 px-3.5 sm:px-6 overflow-hidden">
+      <main className="relative royal-poster-bg flex-grow py-10 sm:py-16 px-5 sm:px-6 overflow-hidden">
         <div className="pointer-events-none absolute inset-0 canvas-grain" />
-        <div className="pointer-events-none absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] sm:w-[550px] h-[300px] sm:h-[550px] rounded-full bg-blue-500/25 blur-[100px]" />
+        <div className="pointer-events-none absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[280px] sm:w-[550px] h-[280px] sm:h-[550px] rounded-full bg-blue-500/20 blur-[100px]" />
 
-        <div className="relative z-10 max-w-2xl mx-auto flex flex-col items-center text-center">
+        <div className="relative z-10 max-w-xl mx-auto flex flex-col items-center text-center space-y-6">
           {/* Top Brand */}
-          <div className="mb-1.5">
-            <p className="text-[10px] sm:text-xs tracking-[0.28em] uppercase font-medium text-white/90 mb-0.5">
+          <div>
+            <p className="text-[10px] tracking-[0.28em] uppercase font-medium text-white/85 mb-0.5">
               INITIATIVE BY
             </p>
             <div className="text-2xl sm:text-3xl font-extrabold tracking-[-0.04em] text-white leading-none">
@@ -85,50 +85,41 @@ export default function GreatIndianPoetryChallengeThankYouPage() {
             </div>
           </div>
 
-          {/* Compact Book & Quill Emblem */}
-          <div className="w-full max-w-[190px] sm:max-w-[250px] my-0.5">
-            <BookQuillEmblem className="w-full" />
-          </div>
-
           {/* Thank You Card */}
-          <div className="w-full mt-3 rounded-3xl bg-[#020E3B]/95 backdrop-blur-xl border-2 border-white/25 shadow-[0_25px_70px_rgba(0,4,24,0.85)] p-4 xs:p-6 sm:p-9 text-center space-y-6">
+          <div className="w-full rounded-3xl bg-[#020E3B]/90 border border-white/20 shadow-2xl p-6 sm:p-9 text-center space-y-6">
             {/* Green Check Badge */}
-            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-emerald-500/20 border-2 border-emerald-400 flex items-center justify-center mx-auto shadow-[0_0_35px_rgba(52,211,153,0.4)]">
-              <CheckCircle2 className="w-9 h-9 sm:w-11 sm:h-11 text-emerald-300" />
+            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-emerald-500/20 border border-emerald-400 flex items-center justify-center mx-auto">
+              <CheckCircle2 className="w-8 h-8 sm:w-9 sm:h-9 text-emerald-300" />
             </div>
 
             {/* Main Heading */}
             <div className="space-y-2">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-400/15 border border-emerald-400/40 px-3.5 py-1 text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] text-emerald-300">
-                <Sparkles className="w-3.5 h-3.5" />
-                SUBMISSION RECEIVED
-              </span>
-
-              <h1 className="text-2xl xs:text-3xl sm:text-4xl font-black text-white leading-tight pt-1">
+              <h1 className="text-2xl sm:text-3xl font-extrabold text-white leading-tight">
                 Thanks for Taking Part
                 {data?.fullName ? `, ${data.fullName.split(' ')[0]}!` : '!'}
               </h1>
 
-              <p className="text-xs sm:text-sm text-blue-100/85 max-w-md mx-auto leading-relaxed">
-                Thank you for participating in{' '}
-                <strong className="text-white">The Great Indian Free Poetry Challenge</strong> by{' '}
-                <strong className="text-white">ink.fetish</strong>. Your poem has been safely recorded in our database.
+              <p className="text-xs sm:text-sm text-blue-100/80 max-w-md mx-auto leading-relaxed">
+                Your poem has been submitted for{' '}
+                <strong className="text-white">The Great Indian Free Poetry Challenge</strong>.
               </p>
             </div>
 
             {/* ── BIG HIGHLIGHTED WHATSAPP GROUP CALLOUT ── */}
-            <div className="rounded-2xl sm:rounded-3xl bg-gradient-to-br from-[#064E3B] via-[#047857] to-[#065F46] border-2 border-emerald-300 p-5 sm:p-7 text-center shadow-[0_0_45px_rgba(16,185,129,0.4)] space-y-4">
-              <div className="inline-flex items-center gap-2 rounded-full bg-white/15 border border-white/30 px-3.5 py-1 text-[10px] sm:text-xs font-extrabold uppercase tracking-[0.18em] text-emerald-100">
-                <span className="w-2 h-2 rounded-full bg-emerald-300 animate-ping" />
-                IMPORTANT STEP FOR ALL PARTICIPANTS
-              </div>
+            <div className="rounded-2xl bg-[#046C4E] border border-emerald-300/60 p-5 sm:p-7 text-center space-y-4">
+              <span className="inline-block text-[10px] font-extrabold uppercase tracking-[0.18em] text-emerald-100 bg-white/15 px-3 py-1 rounded-full">
+                IMPORTANT NEXT STEP
+              </span>
 
-              <h2 className="text-xl xs:text-2xl sm:text-3xl font-black text-white leading-snug">
-                Join the Official WhatsApp Group Now!
+              <h2 className="text-xl sm:text-2xl font-extrabold text-white leading-snug">
+                Join the Official WhatsApp Group
               </h2>
 
-              <p className="text-sm sm:text-base font-medium text-emerald-50 leading-relaxed max-w-lg mx-auto">
-                Join this WhatsApp group to get your <strong className="text-white underline decoration-emerald-200 underline-offset-2">Appreciation Letter Announcement</strong>, <strong className="text-white underline decoration-emerald-200 underline-offset-2">Result Announcement</strong>, <strong className="text-white underline decoration-emerald-200 underline-offset-2">Rewards</strong>, and all official updates related to <strong className="text-white">The Great Indian Free Poetry Challenge</strong>.
+              <p className="text-xs sm:text-sm text-emerald-50/95 leading-relaxed">
+                Join this WhatsApp group to receive your{' '}
+                <strong className="text-white">Appreciation Letter</strong>,{' '}
+                <strong className="text-white">Result Announcement</strong>,{' '}
+                <strong className="text-white">Rewards</strong>, and all updates related to The Great Indian Free Poetry Challenge.
               </p>
 
               <div className="pt-1">
@@ -136,31 +127,31 @@ export default function GreatIndianPoetryChallengeThankYouPage() {
                   href={WHATSAPP_GROUP_LINK}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full inline-flex items-center justify-center gap-2.5 rounded-2xl bg-white hover:bg-emerald-50 text-[#064E3B] font-black text-base sm:text-lg py-4 px-6 shadow-[0_10px_30px_rgba(0,0,0,0.3)] hover:scale-[1.02] active:scale-[0.99] transition-all"
+                  className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-white hover:bg-emerald-50 text-[#064E3B] font-extrabold text-sm sm:text-base py-4 px-5 shadow-lg active:scale-[0.99] transition-all"
                 >
-                  <MessageCircle className="w-6 h-6 fill-[#25D366] text-[#25D366] shrink-0" />
-                  <span>JOIN WHATSAPP GROUP NOW</span>
-                  <ArrowRight className="w-5 h-5 shrink-0" />
+                  <MessageCircle className="w-5 h-5 fill-[#25D366] text-[#25D366] shrink-0" />
+                  <span>Join WhatsApp Group Now</span>
+                  <ArrowRight className="w-4 h-4 shrink-0" />
                 </a>
               </div>
             </div>
 
             {/* Submission Receipt Box */}
             {data && (
-              <div className="rounded-2xl bg-white text-[#010B2E] p-4 sm:p-6 text-left shadow-lg space-y-3">
-                <div className="flex items-center justify-between border-b border-slate-200 pb-2.5">
+              <div className="rounded-2xl bg-white text-[#010B2E] p-4 sm:p-5 text-left space-y-3">
+                <div className="flex items-center justify-between border-b border-slate-100 pb-2.5">
                   <div>
-                    <span className="text-[10px] uppercase tracking-wider font-bold text-slate-500 block">
-                      OFFICIAL REGISTRATION ID
+                    <span className="text-[10px] uppercase tracking-wider font-semibold text-slate-400 block">
+                      Registration ID
                     </span>
-                    <span className="text-base sm:text-lg font-black text-[#052691] tracking-wide">
+                    <span className="text-sm sm:text-base font-extrabold text-[#052691]">
                       {data.registrationId}
                     </span>
                   </div>
                   <button
                     type="button"
                     onClick={handleCopyId}
-                    className="inline-flex items-center gap-1 rounded-lg bg-blue-50 hover:bg-blue-100 text-[#052691] px-3 py-1.5 text-xs font-bold transition-colors"
+                    className="inline-flex items-center gap-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-[#052691] px-2.5 py-1 text-xs font-semibold transition-colors"
                   >
                     {copied ? (
                       <>
@@ -168,38 +159,29 @@ export default function GreatIndianPoetryChallengeThankYouPage() {
                         <span>Copied</span>
                       </>
                     ) : (
-                      <span>Copy ID</span>
+                      <span>Copy</span>
                     )}
                   </button>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs sm:text-sm">
+                <div className="grid grid-cols-2 gap-3 text-xs">
                   <div>
-                    <span className="text-[10px] uppercase font-bold text-slate-400 block">
-                      Poet Name
+                    <span className="text-[10px] uppercase font-semibold text-slate-400 block">
+                      Poet
                     </span>
                     <span className="font-bold text-slate-900">{data.fullName}</span>
                   </div>
 
                   <div>
-                    <span className="text-[10px] uppercase font-bold text-slate-400 block">
-                      WhatsApp / Email
-                    </span>
-                    <span className="font-semibold text-slate-700 truncate block">
-                      +91 {data.whatsapp} · {data.email}
-                    </span>
-                  </div>
-
-                  <div>
-                    <span className="text-[10px] uppercase font-bold text-slate-400 block">
-                      Poetry Theme
+                    <span className="text-[10px] uppercase font-semibold text-slate-400 block">
+                      Theme
                     </span>
                     <span className="font-bold text-[#052691]">{data.poetryTheme}</span>
                   </div>
 
-                  <div>
-                    <span className="text-[10px] uppercase font-bold text-slate-400 block">
-                      Poetry Title
+                  <div className="col-span-2">
+                    <span className="text-[10px] uppercase font-semibold text-slate-400 block">
+                      Poem Title
                     </span>
                     <span className="font-bold text-slate-900">&ldquo;{data.poetryTitle}&rdquo;</span>
                   </div>
@@ -208,12 +190,12 @@ export default function GreatIndianPoetryChallengeThankYouPage() {
             )}
 
             {/* Follow @ink.fetish CTA */}
-            <div className="pt-1 space-y-3">
+            <div>
               <a
                 href="https://www.instagram.com/ink.fetish/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-white/10 hover:bg-white/20 border border-white/25 text-white font-bold text-xs sm:text-sm py-3.5 px-6 transition-all"
+                className="inline-flex items-center justify-center gap-2 text-xs sm:text-sm text-blue-200 hover:text-white font-medium transition-colors"
               >
                 <Instagram className="w-4 h-4 text-pink-300" />
                 <span>Follow @ink.fetish on Instagram</span>
@@ -226,7 +208,7 @@ export default function GreatIndianPoetryChallengeThankYouPage() {
       {/* Footer */}
       <footer className="bg-[#010720] border-t border-white/10 py-6 px-4 text-center">
         <p className="text-[11px] text-blue-200/50">
-          © {new Date().getFullYear()} Inkfetish Publication · The Great Indian Free Poetry Challenge
+          © {new Date().getFullYear()} Inkfetish Publication
         </p>
       </footer>
     </div>

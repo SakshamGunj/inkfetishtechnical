@@ -447,7 +447,7 @@ export default function GreatIndianPoetryChallengeClient({
           1. HERO SECTION — MOBILE-OPTIMIZED POSTER REPLICA
          ══════════════════════════════════════════════════════════════════════ */}
       {!standaloneRegister && (
-        <section className="relative royal-poster-bg pt-7 pb-10 sm:pt-14 sm:pb-16 px-3.5 sm:px-6 overflow-hidden">
+        <section className="relative royal-poster-bg pt-9 pb-12 sm:pt-14 sm:pb-16 px-5 sm:px-6 overflow-hidden">
           <div className="pointer-events-none absolute inset-0 canvas-grain" />
 
           <div className="pointer-events-none absolute top-[32%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[280px] sm:w-[600px] h-[280px] sm:h-[600px] rounded-full bg-blue-500/25 blur-[90px] sm:blur-[110px]" />
@@ -455,8 +455,8 @@ export default function GreatIndianPoetryChallengeClient({
 
           <div className="relative z-10 max-w-4xl mx-auto flex flex-col items-center text-center">
             {/* INITIATIVE BY ink.fetish */}
-            <div className="mb-1.5 sm:mb-4">
-              <p className="text-[10px] sm:text-sm tracking-[0.28em] uppercase font-medium text-white/95 mb-0.5">
+            <div className="mb-2 sm:mb-4">
+              <p className="text-[10px] sm:text-sm tracking-[0.28em] uppercase font-medium text-white/90 mb-0.5">
                 INITIATIVE BY
               </p>
               <div className="text-2xl sm:text-4xl font-extrabold tracking-[-0.04em] text-white leading-none">
@@ -465,37 +465,37 @@ export default function GreatIndianPoetryChallengeClient({
             </div>
 
             {/* OPEN BOOK & QUILL ARTWORK */}
-            <div className="w-full my-0.5 sm:my-2">
+            <div className="w-full my-1 sm:my-2">
               <BookQuillEmblem />
             </div>
 
             {/* STACKED TITLE TYPOGRAPHY */}
-            <div className="mt-0.5 sm:mt-2 flex flex-col items-center select-none">
+            <div className="mt-1 sm:mt-2 flex flex-col items-center select-none">
               <span className="text-[1.75rem] xs:text-[2rem] sm:text-5xl md:text-[3.5rem] font-extrabold tracking-[-0.03em] text-white leading-[1.02] drop-shadow-[0_4px_20px_rgba(0,10,50,0.5)]">
                 The Great
               </span>
 
               <h1 className="flex flex-col items-center">
-                <span className="text-[3.6rem] xs:text-[4.1rem] sm:text-[6.5rem] md:text-[7.75rem] font-black lowercase tracking-[-0.045em] text-white leading-[0.85] drop-shadow-[0_6px_25px_rgba(0,10,50,0.55)]">
+                <span className="text-[3.5rem] xs:text-[4rem] sm:text-[6.5rem] md:text-[7.75rem] font-black lowercase tracking-[-0.045em] text-white leading-[0.86] drop-shadow-[0_6px_25px_rgba(0,10,50,0.55)]">
                   indian
                 </span>
 
-                <span className="font-poetry-script text-[3.1rem] xs:text-[3.55rem] sm:text-[5.6rem] md:text-[6.8rem] text-white leading-[0.82] -mt-1.5 sm:-mt-3 -mb-1 sm:-mb-2 px-3 drop-shadow-[0_6px_24px_rgba(0,12,60,0.75)]">
+                <span className="font-poetry-script text-[3rem] xs:text-[3.45rem] sm:text-[5.6rem] md:text-[6.8rem] text-white leading-[0.84] -mt-1 sm:-mt-3 -mb-0.5 sm:-mb-2 px-3 drop-shadow-[0_6px_24px_rgba(0,12,60,0.75)]">
                   free poetry
                 </span>
 
-                <span className="text-[3.05rem] xs:text-[3.45rem] sm:text-[5.6rem] md:text-[6.8rem] font-black lowercase tracking-[-0.045em] text-white leading-[0.92] drop-shadow-[0_6px_25px_rgba(0,10,50,0.55)]">
+                <span className="text-[2.95rem] xs:text-[3.35rem] sm:text-[5.6rem] md:text-[6.8rem] font-black lowercase tracking-[-0.045em] text-white leading-[0.94] drop-shadow-[0_6px_25px_rgba(0,10,50,0.55)]">
                   challenge
                 </span>
               </h1>
             </div>
 
             {/* 4-COLUMN FEATURE STRIP */}
-            <div className="w-full max-w-4xl mt-7 sm:mt-12 grid grid-cols-4 divide-x divide-white/35">
+            <div className="w-full max-w-3xl mt-9 sm:mt-12 grid grid-cols-4 divide-x divide-white/30">
               {/* Item 1 */}
               <div className="px-1.5 sm:px-5 flex flex-col items-center justify-start text-center">
                 <ThemeSubjectIcon />
-                <span className="text-[7.5px] xs:text-[8.5px] sm:text-xs uppercase tracking-[0.08em] sm:tracking-[0.15em] text-white/90 font-medium leading-tight mb-1">
+                <span className="text-[7.5px] xs:text-[8.5px] sm:text-xs uppercase tracking-[0.06em] sm:tracking-[0.15em] text-white/85 font-medium leading-tight mb-1">
                   THEME / SUBJECT
                 </span>
                 <span className="text-xs xs:text-sm sm:text-2xl font-extrabold text-white tracking-tight leading-tight">
@@ -506,7 +506,7 @@ export default function GreatIndianPoetryChallengeClient({
               {/* Item 2 */}
               <div className="px-1.5 sm:px-5 flex flex-col items-center justify-start text-center">
                 <WordLimitIcon />
-                <span className="text-[7.5px] xs:text-[8.5px] sm:text-xs uppercase tracking-[0.06em] sm:tracking-[0.14em] text-white/90 font-medium leading-tight mb-1">
+                <span className="text-[7.5px] xs:text-[8.5px] sm:text-xs uppercase tracking-[0.06em] sm:tracking-[0.14em] text-white/85 font-medium leading-tight mb-1">
                   POETRY WORD LIMIT
                 </span>
                 <span className="text-xs xs:text-sm sm:text-2xl font-extrabold text-white tracking-tight leading-tight">
@@ -519,7 +519,7 @@ export default function GreatIndianPoetryChallengeClient({
               {/* Item 3 */}
               <div className="px-1.5 sm:px-5 flex flex-col items-center justify-start text-center">
                 <TrophyPrizeIcon />
-                <span className="text-[7.5px] xs:text-[8.5px] sm:text-xs uppercase tracking-[0.06em] sm:tracking-[0.14em] text-white/90 font-medium leading-tight mb-1">
+                <span className="text-[7.5px] xs:text-[8.5px] sm:text-xs uppercase tracking-[0.06em] sm:tracking-[0.14em] text-white/85 font-medium leading-tight mb-1">
                   TROPHY OR
                   <br />
                   CASH PRIZES
@@ -532,7 +532,7 @@ export default function GreatIndianPoetryChallengeClient({
               {/* Item 4 */}
               <div className="px-1.5 sm:px-5 flex flex-col items-center justify-start text-center">
                 <AppreciationLetterIcon />
-                <span className="text-[7.5px] xs:text-[8.5px] sm:text-xs uppercase tracking-[0.06em] sm:tracking-[0.14em] text-white/90 font-medium leading-tight mb-1">
+                <span className="text-[7.5px] xs:text-[8.5px] sm:text-xs uppercase tracking-[0.06em] sm:tracking-[0.14em] text-white/85 font-medium leading-tight mb-1">
                   APPRECIATION
                   <br className="sm:hidden" /> LETTER
                 </span>
@@ -542,433 +542,366 @@ export default function GreatIndianPoetryChallengeClient({
               </div>
             </div>
 
-            {/* POSTER PILL + REGISTER CTA */}
-            <div className="mt-7 sm:mt-12 flex flex-col items-center gap-3.5 sm:gap-4 w-full max-w-md px-1">
+            {/* POSTER PILL CTA */}
+            <div className="mt-9 sm:mt-12 flex flex-col items-center w-full max-w-sm">
               <button
                 type="button"
                 onClick={scrollToRegister}
-                className="w-full rounded-full border-[1.5px] border-white/90 bg-[#010929]/90 hover:bg-white hover:text-[#010B2E] text-white py-3 sm:py-4 px-5 text-[11px] xs:text-xs sm:text-base font-semibold uppercase tracking-[0.22em] sm:tracking-[0.26em] shadow-[0_8px_30px_rgba(0,5,30,0.7)] transition-all duration-300"
+                className="w-full rounded-full bg-white hover:bg-blue-50 text-[#010B2E] py-3.5 sm:py-4 px-6 text-xs sm:text-base font-extrabold uppercase tracking-[0.2em] sm:tracking-[0.24em] shadow-[0_8px_30px_rgba(255,255,255,0.28)] active:scale-[0.99] transition-all duration-300"
               >
-                FREE CHALLENGE / CONTEST
+                REGISTER &amp; SUBMIT POETRY
               </button>
-
-              <button
-                type="button"
-                onClick={scrollToRegister}
-                className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-white via-blue-50 to-pink-100 text-[#021042] font-extrabold text-sm sm:text-base px-6 py-3.5 sm:py-4 shadow-[0_0_30px_rgba(255,255,255,0.35)] active:scale-[0.99] hover:scale-[1.02] transition-all"
-              >
-                <span>Register & Submit Poem Now (₹0)</span>
-                <ArrowRight className="w-4 h-4 shrink-0" />
-              </button>
-
-              <p className="text-[11px] sm:text-xs text-blue-200/85 tracking-wide leading-relaxed">
-                ✨ Zero Registration Fee · Instant Confirmation · Appreciation Letter for All
-              </p>
             </div>
           </div>
         </section>
       )}
 
       {/* ══════════════════════════════════════════════════════════════════════
-          2. HIGH-ATTENTION INLINE REGISTRATION & POEM SUBMISSION FORM
-             (Directly after Hero section, with crisp WHITE input fields!)
+          2. COMPACT, CALM REGISTRATION & POEM SUBMISSION FORM
+             (Fits comfortably on mobile screens with crisp white fields)
          ══════════════════════════════════════════════════════════════════════ */}
       <section
         id="register-section"
-        className="relative royal-section-bg pt-6 pb-14 sm:py-20 px-3 sm:px-6 border-t border-white/20"
+        className="relative royal-section-bg py-8 sm:py-16 px-4 sm:px-6"
       >
         <div className="pointer-events-none absolute inset-0 canvas-grain" />
 
-        <div className="relative z-10 max-w-2xl mx-auto">
-          {/* Outer Glowing Attention Frame */}
-          <div className="relative rounded-[1.75rem] sm:rounded-[2.25rem] p-[2px] bg-gradient-to-b from-white via-pink-300 to-blue-400 shadow-[0_0_55px_rgba(59,130,246,0.45)]">
-            <div className="rounded-[1.65rem] sm:rounded-[2.15rem] bg-[#031554] overflow-hidden">
-              {/* Bold Attention Top Banner */}
-              <div className="bg-gradient-to-r from-white via-blue-50 to-pink-100 text-[#010B2E] px-4 py-3.5 sm:px-8 sm:py-4 text-center border-b-2 border-blue-200">
-                <h2 className="text-lg xs:text-xl sm:text-2xl font-black tracking-tight text-[#010B2E]">
-                  Fill Details & Submit Your Poem Below (₹0 Free)
-                </h2>
+        <div className="relative z-10 max-w-lg mx-auto">
+          <div className="rounded-2xl sm:rounded-3xl bg-[#04185E]/90 border border-white/20 shadow-[0_16px_48px_rgba(0,6,32,0.65)] p-4 xs:p-5 sm:p-7">
+            {/* Simple, Calm Header */}
+            <div className="text-center pb-4 mb-4 border-b border-white/15">
+              <span className="inline-block text-[10px] font-bold uppercase tracking-[0.2em] text-pink-200 mb-1">
+                100% FREE ENTRY
+              </span>
+              <h2 className="text-lg sm:text-xl font-extrabold text-white">
+                Submit Your Poem
+              </h2>
+            </div>
+
+            {/* Compact Form Body */}
+            <form
+              onSubmit={handleRegisterSubmit}
+              className="space-y-3 sm:space-y-4"
+            >
+              {/* Row 1: Full Name */}
+              <div>
+                <label className="block text-[11px] font-medium text-blue-100/90 mb-1">
+                  Full Name *
+                </label>
+                <input
+                  type="text"
+                  required
+                  autoComplete="name"
+                  placeholder="Your full name"
+                  value={formData.fullName}
+                  onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
+                  className="w-full rounded-lg bg-white text-[#010B2E] font-medium px-3 py-2.5 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-pink-300"
+                />
               </div>
 
-              {/* Form Body */}
-              <form
-                onSubmit={handleRegisterSubmit}
-                className="p-4 xs:p-5 sm:p-8 space-y-6"
-              >
-                {/* PART 1: POET REGISTRATION DETAILS */}
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between bg-white/10 border border-white/20 rounded-xl px-3.5 py-2.5">
-                    <div className="flex items-center gap-2">
-                      <span className="w-6 h-6 rounded-full bg-white text-[#021042] font-black text-xs flex items-center justify-center shrink-0">
-                        1
-                      </span>
-                      <span className="text-xs sm:text-sm font-extrabold uppercase tracking-wider text-white">
-                        Poet Registration Details
-                      </span>
-                    </div>
-                    <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider bg-emerald-400/20 text-emerald-300 border border-emerald-400/40 px-2.5 py-0.5 rounded-full">
-                      FREE ENTRY
+              {/* Row 2: WhatsApp (2/3) + Age (1/3) side-by-side on mobile */}
+              <div className="grid grid-cols-3 gap-2.5 sm:gap-3">
+                <div className="col-span-2">
+                  <label className="block text-[11px] font-medium text-blue-100/90 mb-1">
+                    WhatsApp Number *
+                  </label>
+                  <div className="flex rounded-lg overflow-hidden bg-white focus-within:ring-2 focus-within:ring-pink-300">
+                    <span className="inline-flex items-center px-2.5 bg-slate-100 border-r border-slate-200 text-xs font-bold text-[#052691]">
+                      +91
                     </span>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
-                    {/* Full Name */}
-                    <div>
-                      <label className="block text-xs font-bold text-white mb-1.5 tracking-wide">
-                        Full Name <span className="text-pink-300">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        required
-                        autoComplete="name"
-                        placeholder="Enter your full name"
-                        value={formData.fullName}
-                        onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                        className="w-full rounded-xl bg-white text-[#010B2E] font-semibold border-2 border-white focus:border-pink-400 focus:ring-4 focus:ring-pink-400/25 px-3.5 py-3 text-base sm:text-sm placeholder:text-slate-400 placeholder:font-normal focus:outline-none shadow-sm transition-all"
-                      />
-                    </div>
-
-                    {/* WhatsApp Number */}
-                    <div>
-                      <label className="block text-xs font-bold text-white mb-1.5 tracking-wide">
-                        WhatsApp Number <span className="text-pink-300">*</span>
-                      </label>
-                      <div className="flex rounded-xl overflow-hidden bg-white border-2 border-white focus-within:border-pink-400 focus-within:ring-4 focus-within:ring-pink-400/25 shadow-sm transition-all">
-                        <span className="inline-flex items-center px-3 bg-slate-100 border-r border-slate-200 text-xs font-extrabold text-[#052691]">
-                          +91
-                        </span>
-                        <input
-                          type="tel"
-                          inputMode="numeric"
-                          required
-                          maxLength={10}
-                          autoComplete="tel"
-                          placeholder="10-digit WhatsApp number"
-                          value={formData.whatsapp}
-                          onChange={(e) =>
-                            setFormData({
-                              ...formData,
-                              whatsapp: e.target.value.replace(/\D/g, '').slice(0, 10),
-                            })
-                          }
-                          className="w-full bg-white text-[#010B2E] font-semibold px-3.5 py-3 text-base sm:text-sm placeholder:text-slate-400 placeholder:font-normal focus:outline-none"
-                        />
-                      </div>
-                    </div>
-
-                    {/* Email Address */}
-                    <div>
-                      <label className="block text-xs font-bold text-white mb-1.5 tracking-wide">
-                        Email Address <span className="text-pink-300">*</span>
-                      </label>
-                      <input
-                        type="email"
-                        required
-                        autoComplete="email"
-                        placeholder="you@example.com"
-                        value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        className="w-full rounded-xl bg-white text-[#010B2E] font-semibold border-2 border-white focus:border-pink-400 focus:ring-4 focus:ring-pink-400/25 px-3.5 py-3 text-base sm:text-sm placeholder:text-slate-400 placeholder:font-normal focus:outline-none shadow-sm transition-all"
-                      />
-                    </div>
-
-                    {/* Your Age & Language */}
-                    <div className="grid grid-cols-2 gap-3">
-                      <div>
-                        <label className="block text-xs font-bold text-white mb-1.5 tracking-wide">
-                          Your Age <span className="text-pink-300">*</span>
-                        </label>
-                        <input
-                          type="number"
-                          inputMode="numeric"
-                          required
-                          min={8}
-                          max={99}
-                          placeholder="e.g. 21"
-                          value={formData.age}
-                          onChange={(e) => setFormData({ ...formData, age: e.target.value })}
-                          className="w-full rounded-xl bg-white text-[#010B2E] font-semibold border-2 border-white focus:border-pink-400 focus:ring-4 focus:ring-pink-400/25 px-3.5 py-3 text-base sm:text-sm placeholder:text-slate-400 placeholder:font-normal focus:outline-none shadow-sm transition-all"
-                        />
-                      </div>
-
-                      <div>
-                        <label className="block text-xs font-bold text-white mb-1.5 tracking-wide">
-                          Language <span className="text-pink-300">*</span>
-                        </label>
-                        <select
-                          value={formData.language}
-                          onChange={(e) => setFormData({ ...formData, language: e.target.value })}
-                          className="w-full rounded-xl bg-white text-[#010B2E] font-semibold border-2 border-white focus:border-pink-400 focus:ring-4 focus:ring-pink-400/25 px-3 py-3 text-base sm:text-sm focus:outline-none shadow-sm transition-all"
-                        >
-                          <option value="English">English</option>
-                          <option value="Hinglish">Hinglish</option>
-                          <option value="Hindi">Hindi</option>
-                          <option value="Punjabi">Punjabi</option>
-                          <option value="Urdu">Urdu</option>
-                          <option value="Marathi">Marathi</option>
-                          <option value="Bengali">Bengali</option>
-                          <option value="Gujarati">Gujarati</option>
-                          <option value="Tamil">Tamil</option>
-                          <option value="Telugu">Telugu</option>
-                          <option value="Malayalam">Malayalam</option>
-                          <option value="Kannada">Kannada</option>
-                          <option value="Odia">Odia</option>
-                          <option value="Assamese">Assamese</option>
-                          <option value="Kashmiri">Kashmiri</option>
-                          <option value="Sanskrit">Sanskrit</option>
-                          <option value="Other Indian Language">Other Indian Language</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* PART 2: POETRY THEME, POETRY TITLE & POETRY CONTENT */}
-                <div className="space-y-4 pt-2">
-                  <div className="flex items-center justify-between bg-white/10 border border-white/20 rounded-xl px-3.5 py-2.5">
-                    <div className="flex items-center gap-2">
-                      <span className="w-6 h-6 rounded-full bg-white text-[#021042] font-black text-xs flex items-center justify-center shrink-0">
-                        2
-                      </span>
-                      <span className="text-xs sm:text-sm font-extrabold uppercase tracking-wider text-white">
-                        Your Poetry Submission
-                      </span>
-                    </div>
-                    <span
-                      className={`text-[10px] sm:text-xs font-extrabold px-2.5 py-0.5 rounded-full border ${
-                        currentLineCount > 40
-                          ? 'bg-red-500 text-white border-red-300'
-                          : 'bg-white text-[#052691] border-white'
-                      }`}
-                    >
-                      {currentLineCount} / 40 Lines Max
-                    </span>
-                  </div>
-
-                  {/* Poetry Theme & Poetry Title */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
-                    <div>
-                      <label className="block text-xs font-bold text-white mb-1.5 tracking-wide">
-                        Poetry Theme <span className="text-pink-300">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        required
-                        placeholder="e.g. Love, Life, Hope, Heartbreak, Open..."
-                        value={formData.poetryTheme}
-                        onChange={(e) => setFormData({ ...formData, poetryTheme: e.target.value })}
-                        className="w-full rounded-xl bg-white text-[#010B2E] font-semibold border-2 border-white focus:border-pink-400 focus:ring-4 focus:ring-pink-400/25 px-3.5 py-3 text-base sm:text-sm placeholder:text-slate-400 placeholder:font-normal focus:outline-none shadow-sm transition-all"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-bold text-white mb-1.5 tracking-wide">
-                        Poetry Title <span className="text-pink-300">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        required
-                        placeholder="Enter the title of your poem"
-                        value={formData.poetryTitle}
-                        onChange={(e) => setFormData({ ...formData, poetryTitle: e.target.value })}
-                        className="w-full rounded-xl bg-white text-[#010B2E] font-semibold border-2 border-white focus:border-pink-400 focus:ring-4 focus:ring-pink-400/25 px-3.5 py-3 text-base sm:text-sm placeholder:text-slate-400 placeholder:font-normal focus:outline-none shadow-sm transition-all"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Poetry Content */}
-                  <div>
-                    <div className="flex items-center justify-between mb-1.5">
-                      <label className="block text-xs font-bold text-white tracking-wide">
-                        Poetry Content (Maximum 40 Lines) <span className="text-pink-300">*</span>
-                      </label>
-                      <span className="text-[11px] text-blue-200 font-medium">
-                        Theme: Open
-                      </span>
-                    </div>
-                    <textarea
-                      rows={8}
+                    <input
+                      type="tel"
+                      inputMode="numeric"
                       required
-                      placeholder="Write or paste your poem here (up to 40 lines maximum)..."
-                      value={formData.poetryContent}
-                      onChange={(e) => setFormData({ ...formData, poetryContent: e.target.value })}
-                      className="w-full rounded-2xl bg-white text-[#010B2E] font-medium border-2 border-white focus:border-pink-400 focus:ring-4 focus:ring-pink-400/25 p-3.5 sm:p-4 text-base sm:text-sm placeholder:text-slate-400 placeholder:font-normal focus:outline-none shadow-sm transition-all leading-relaxed"
+                      maxLength={10}
+                      autoComplete="tel"
+                      placeholder="10-digit number"
+                      value={formData.whatsapp}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          whatsapp: e.target.value.replace(/\D/g, '').slice(0, 10),
+                        })
+                      }
+                      className="w-full bg-white text-[#010B2E] font-medium px-2.5 py-2.5 text-sm placeholder:text-slate-400 focus:outline-none"
                     />
                   </div>
                 </div>
 
-                {errorMessage && (
-                  <div className="rounded-xl bg-red-500/25 border-2 border-red-400 px-4 py-3 text-xs sm:text-sm font-semibold text-white">
-                    ⚠️ {errorMessage}
-                  </div>
-                )}
+                <div>
+                  <label className="block text-[11px] font-medium text-blue-100/90 mb-1">
+                    Age *
+                  </label>
+                  <input
+                    type="number"
+                    inputMode="numeric"
+                    required
+                    min={8}
+                    max={99}
+                    placeholder="21"
+                    value={formData.age}
+                    onChange={(e) => setFormData({ ...formData, age: e.target.value })}
+                    className="w-full rounded-lg bg-white text-[#010B2E] font-medium px-3 py-2.5 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-pink-300"
+                  />
+                </div>
+              </div>
 
-                {/* Submit Button */}
+              {/* Row 3: Email Address */}
+              <div>
+                <label className="block text-[11px] font-medium text-blue-100/90 mb-1">
+                  Email Address *
+                </label>
+                <input
+                  type="email"
+                  required
+                  autoComplete="email"
+                  placeholder="you@example.com"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  className="w-full rounded-lg bg-white text-[#010B2E] font-medium px-3 py-2.5 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-pink-300"
+                />
+              </div>
+
+              {/* Row 4: Language + Poetry Theme side-by-side on mobile */}
+              <div className="grid grid-cols-2 gap-2.5 sm:gap-3">
+                <div>
+                  <label className="block text-[11px] font-medium text-blue-100/90 mb-1">
+                    Language *
+                  </label>
+                  <select
+                    value={formData.language}
+                    onChange={(e) => setFormData({ ...formData, language: e.target.value })}
+                    className="w-full rounded-lg bg-white text-[#010B2E] font-medium px-2.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-pink-300"
+                  >
+                    <option value="English">English</option>
+                    <option value="Hinglish">Hinglish</option>
+                    <option value="Hindi">Hindi</option>
+                    <option value="Punjabi">Punjabi</option>
+                    <option value="Urdu">Urdu</option>
+                    <option value="Marathi">Marathi</option>
+                    <option value="Bengali">Bengali</option>
+                    <option value="Gujarati">Gujarati</option>
+                    <option value="Tamil">Tamil</option>
+                    <option value="Telugu">Telugu</option>
+                    <option value="Malayalam">Malayalam</option>
+                    <option value="Kannada">Kannada</option>
+                    <option value="Odia">Odia</option>
+                    <option value="Assamese">Assamese</option>
+                    <option value="Kashmiri">Kashmiri</option>
+                    <option value="Sanskrit">Sanskrit</option>
+                    <option value="Other Indian Language">Other</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-medium text-blue-100/90 mb-1">
+                    Poetry Theme *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="Love, Life, Open..."
+                    value={formData.poetryTheme}
+                    onChange={(e) => setFormData({ ...formData, poetryTheme: e.target.value })}
+                    className="w-full rounded-lg bg-white text-[#010B2E] font-medium px-3 py-2.5 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-pink-300"
+                  />
+                </div>
+              </div>
+
+              {/* Row 5: Poetry Title */}
+              <div>
+                <label className="block text-[11px] font-medium text-blue-100/90 mb-1">
+                  Poetry Title *
+                </label>
+                <input
+                  type="text"
+                  required
+                  placeholder="Title of your poem"
+                  value={formData.poetryTitle}
+                  onChange={(e) => setFormData({ ...formData, poetryTitle: e.target.value })}
+                  className="w-full rounded-lg bg-white text-[#010B2E] font-medium px-3 py-2.5 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-pink-300"
+                />
+              </div>
+
+              {/* Row 6: Poetry Content (Compact 4 rows) */}
+              <div>
+                <div className="flex items-center justify-between mb-1">
+                  <label className="block text-[11px] font-medium text-blue-100/90">
+                    Your Poem (Max 40 lines) *
+                  </label>
+                  <span
+                    className={`text-[10px] font-semibold ${
+                      currentLineCount > 40 ? 'text-red-300' : 'text-blue-200/80'
+                    }`}
+                  >
+                    {currentLineCount}/40 lines
+                  </span>
+                </div>
+                <textarea
+                  rows={8}
+                  required
+                  placeholder="Paste or write your poem here..."
+                  value={formData.poetryContent}
+                  onChange={(e) => setFormData({ ...formData, poetryContent: e.target.value })}
+                  className="w-full rounded-lg bg-white text-[#010B2E] font-medium p-3.5 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-pink-300 leading-relaxed min-h-[180px]"
+                />
+              </div>
+
+              {errorMessage && (
+                <div className="rounded-lg bg-red-500/25 border border-red-400 px-3 py-2 text-xs font-medium text-white">
+                  ⚠️ {errorMessage}
+                </div>
+              )}
+
+              {/* Submit Button */}
+              <div className="pt-1">
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full rounded-2xl bg-gradient-to-r from-amber-300 via-yellow-200 to-pink-200 hover:brightness-105 text-[#010B2E] font-black text-base sm:text-lg py-4 px-6 shadow-[0_10px_35px_rgba(251,191,36,0.35)] active:scale-[0.99] transition-all flex items-center justify-center gap-2.5 disabled:opacity-60 border-2 border-white"
+                  className="w-full rounded-xl bg-gradient-to-r from-amber-300 via-yellow-200 to-pink-200 hover:brightness-105 text-[#010B2E] font-extrabold text-sm py-3.5 px-5 shadow-md active:scale-[0.99] transition-all flex items-center justify-center gap-2 disabled:opacity-60"
                 >
                   {isSubmitting ? (
                     <>
-                      <Clock className="w-5 h-5 animate-spin text-[#010B2E]" />
-                      <span>Submitting Your Poem...</span>
+                      <Clock className="w-4 h-4 animate-spin text-[#010B2E]" />
+                      <span>Submitting...</span>
                     </>
                   ) : (
                     <>
-                      <span>SUBMIT REGISTRATION & POEM (FREE)</span>
-                      <Send className="w-5 h-5" />
+                      <span>Submit Poem (Free)</span>
+                      <Send className="w-4 h-4" />
                     </>
                   )}
                 </button>
-
-                <p className="text-center text-[11px] text-blue-100/80 leading-relaxed">
-                  🔒 100% Free Challenge · Appreciation Letter for All · Instant Confirmation
-                </p>
-              </form>
-            </div>
+              </div>
+            </form>
           </div>
         </div>
       </section>
 
       {/* ══════════════════════════════════════════════════════════════════════
-          3. CONCISE INFORMATION, REWARDS & RULES SECTION
+          3. SPACIOUS REWARDS, RULES, HOW IT WORKS & FAQ
          ══════════════════════════════════════════════════════════════════════ */}
       {!standaloneRegister && (
-        <section className="relative royal-poster-bg py-12 sm:py-20 px-3.5 sm:px-6 border-t border-white/10">
+        <section className="relative royal-poster-bg py-16 sm:py-24 px-5 sm:px-6 border-t border-white/10">
           <div className="pointer-events-none absolute inset-0 canvas-grain" />
 
-          <div className="relative z-10 max-w-4xl mx-auto space-y-10 sm:space-y-14">
-            <div className="text-center max-w-2xl mx-auto">
-              <span className="inline-block text-[10px] sm:text-[11px] uppercase tracking-[0.25em] text-pink-200 font-semibold bg-white/10 border border-white/15 px-3.5 py-1 rounded-full mb-3">
-                CHALLENGE HIGHLIGHTS
-              </span>
-              <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-white">
-                REWARDS AND BENEFITS FOR POETS
-              </h2>
-              <p className="text-xs sm:text-sm text-blue-100/85 mt-2 leading-relaxed">
-                Organized by <strong className="text-white">ink.fetish</strong> (India&apos;s 210,000+ writers community) to discover and honor poetic talent across the nation with zero entry barriers.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-              {/* Top 10 Winners */}
-              <div className="rounded-2xl sm:rounded-3xl bg-[#020E3B]/90 border border-white/20 p-5 sm:p-7 shadow-xl">
-                <div className="inline-flex items-center gap-2 bg-pink-400/15 border border-pink-300/30 rounded-full px-3 py-1 text-[10px] uppercase tracking-[0.18em] text-pink-200 font-bold mb-3">
-                  <Trophy className="w-3.5 h-3.5 text-pink-300" />
-                  TOP 10 WINNERS
-                </div>
-                <h3 className="text-lg sm:text-2xl font-extrabold text-white mb-2">
-                  Trophy or Cash Prizes for Top 10
-                </h3>
-                <ul className="space-y-2 text-xs sm:text-sm text-blue-100/90 mt-3">
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-pink-300 shrink-0 mt-0.5" />
-                    <span>Winner&apos;s Trophy or Direct Cash Prize for Top 10 Poets</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-pink-300 shrink-0 mt-0.5" />
-                    <span>National Certificate of Excellence</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-pink-300 shrink-0 mt-0.5" />
-                    <span>Featured on @ink.fetish Instagram (210K+ readers)</span>
-                  </li>
-                </ul>
+          <div className="relative z-10 max-w-3xl mx-auto space-y-20 sm:space-y-24">
+            {/* ── REWARDS AND BENEFITS FOR POETS ── */}
+            <div className="space-y-8">
+              <div className="text-center max-w-xl mx-auto space-y-2">
+                <p className="text-[11px] uppercase tracking-[0.25em] text-pink-200 font-semibold">
+                  CHALLENGE HIGHLIGHTS
+                </p>
+                <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-white">
+                  REWARDS AND BENEFITS FOR POETS
+                </h2>
+                <p className="text-xs sm:text-sm text-blue-100/80 leading-relaxed">
+                  An initiative by <strong className="text-white">ink.fetish</strong> (210,000+ community) to celebrate poets across India.
+                </p>
               </div>
 
-              {/* Appreciation Letter for All */}
-              <div className="rounded-2xl sm:rounded-3xl bg-[#020E3B]/90 border border-white/20 p-5 sm:p-7 shadow-xl">
-                <div className="inline-flex items-center gap-2 bg-blue-400/15 border border-blue-300/30 rounded-full px-3 py-1 text-[10px] uppercase tracking-[0.18em] text-blue-200 font-bold mb-3">
-                  <Award className="w-3.5 h-3.5 text-blue-200" />
-                  FOR ALL PARTICIPANTS
-                </div>
-                <h3 className="text-lg sm:text-2xl font-extrabold text-white mb-2">
-                  Appreciation Letter for All
-                </h3>
-                <ul className="space-y-2 text-xs sm:text-sm text-blue-100/90 mt-3">
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-blue-300 shrink-0 mt-0.5" />
-                    <span>Official Appreciation Letter issued to every participant</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-blue-300 shrink-0 mt-0.5" />
-                    <span>Editorial evaluation by the ink.fetish jury panel</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-blue-300 shrink-0 mt-0.5" />
-                    <span>You retain 100% rights & copyright to your poetry</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-
-            {/* Contest Rules & Guidelines — Distinct Editorial Strip Layout */}
-            <div className="pt-2">
-              <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 pb-5 mb-6 border-b border-white/20">
-                <div>
-                  <span className="inline-block text-[10px] sm:text-[11px] uppercase tracking-[0.25em] text-pink-300 font-bold mb-1.5">
-                    RULES &amp; ELIGIBILITY
-                  </span>
-                  <h3 className="text-2xl sm:text-3xl font-black text-white leading-tight">
-                    Simple Rules.{' '}
-                    <span className="font-poetry-script font-normal text-pink-200 text-3xl sm:text-4xl">
-                      Pure Poetry.
-                    </span>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
+                {/* Top 10 Winners */}
+                <div className="rounded-2xl bg-[#020E3B]/80 border border-white/15 p-6 sm:p-7 space-y-3">
+                  <div className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.16em] text-pink-200 font-bold">
+                    <Trophy className="w-4 h-4 text-pink-300" />
+                    <span>TOP 10 WINNERS</span>
+                  </div>
+                  <h3 className="text-lg sm:text-xl font-extrabold text-white">
+                    Trophy or Cash Prizes for Top 10
                   </h3>
+                  <ul className="space-y-2.5 text-xs sm:text-sm text-blue-100/85 pt-1">
+                    <li className="flex items-start gap-2.5">
+                      <CheckCircle2 className="w-4 h-4 text-pink-300 shrink-0 mt-0.5" />
+                      <span>Winner&apos;s Trophy or Direct Cash Prize</span>
+                    </li>
+                    <li className="flex items-start gap-2.5">
+                      <CheckCircle2 className="w-4 h-4 text-pink-300 shrink-0 mt-0.5" />
+                      <span>National Certificate of Excellence</span>
+                    </li>
+                    <li className="flex items-start gap-2.5">
+                      <CheckCircle2 className="w-4 h-4 text-pink-300 shrink-0 mt-0.5" />
+                      <span>Featured on @ink.fetish Instagram (210K+ readers)</span>
+                    </li>
+                  </ul>
                 </div>
-                <span className="text-xs text-blue-200/80 font-medium">
-                  Open to all poets &amp; beginners across India
-                </span>
+
+                {/* Appreciation Letter for All */}
+                <div className="rounded-2xl bg-[#020E3B]/80 border border-white/15 p-6 sm:p-7 space-y-3">
+                  <div className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.16em] text-blue-200 font-bold">
+                    <Award className="w-4 h-4 text-blue-200" />
+                    <span>FOR ALL PARTICIPANTS</span>
+                  </div>
+                  <h3 className="text-lg sm:text-xl font-extrabold text-white">
+                    Appreciation Letter for All
+                  </h3>
+                  <ul className="space-y-2.5 text-xs sm:text-sm text-blue-100/85 pt-1">
+                    <li className="flex items-start gap-2.5">
+                      <CheckCircle2 className="w-4 h-4 text-blue-300 shrink-0 mt-0.5" />
+                      <span>Official Appreciation Letter for every participant</span>
+                    </li>
+                    <li className="flex items-start gap-2.5">
+                      <CheckCircle2 className="w-4 h-4 text-blue-300 shrink-0 mt-0.5" />
+                      <span>Reviewed by the ink.fetish editorial jury</span>
+                    </li>
+                    <li className="flex items-start gap-2.5">
+                      <CheckCircle2 className="w-4 h-4 text-blue-300 shrink-0 mt-0.5" />
+                      <span>You keep 100% copyright of your poetry</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            {/* ── RULES & ELIGIBILITY ── */}
+            <div className="space-y-6">
+              <div className="text-center sm:text-left">
+                <p className="text-[11px] uppercase tracking-[0.25em] text-pink-200 font-semibold mb-1.5">
+                  RULES &amp; ELIGIBILITY
+                </p>
+                <h3 className="text-2xl sm:text-3xl font-extrabold text-white">
+                  Simple Rules.{' '}
+                  <span className="font-poetry-script font-normal text-pink-200 text-3xl sm:text-4xl">
+                    Pure Poetry.
+                  </span>
+                </h3>
               </div>
 
               <div className="divide-y divide-white/15 border-y border-white/15">
                 {[
                   {
                     num: '01',
-                    tag: 'ANY TOPIC',
-                    title: 'Open Theme / Subject',
-                    desc: 'Write on any subject—love, life, heartbreak, hope, society, nostalgia, or any emotion close to your heart.',
+                    title: 'Open Theme',
+                    desc: 'Write on any subject—love, life, hope, heartbreak, or any emotion.',
                   },
                   {
                     num: '02',
-                    tag: 'MAX 40 LINES',
-                    title: '40 Lines Maximum Limit',
-                    desc: 'Any poetic style (free verse, rhyming, ghazal, haiku, spoken word) is welcome up to 40 lines maximum.',
+                    title: '40 Lines Maximum',
+                    desc: 'Any poetic style is welcome, up to 40 lines maximum.',
                   },
                   {
                     num: '03',
-                    tag: 'MULTI-LANGUAGE',
-                    title: 'All Indian Languages Welcome',
-                    desc: 'Submit your poem in English, Hinglish, Hindi, Punjabi, Urdu, Marathi, Bengali, Tamil, Telugu, or more.',
+                    title: 'All Indian Languages',
+                    desc: 'Submit in English, Hinglish, Hindi, Punjabi, Urdu, or regional languages.',
                   },
                   {
                     num: '04',
-                    tag: 'FULL OWNERSHIP',
-                    title: '100% Original & Your Copyright',
-                    desc: 'Your poem must be original. You retain 100% ownership and copyright of your work at all times.',
+                    title: '100% Your Copyright',
+                    desc: 'Your poem must be original and remains 100% yours.',
                   },
                 ].map((rule) => (
                   <div
                     key={rule.num}
-                    className="py-4 sm:py-5 flex items-start sm:items-center gap-3.5 sm:gap-6 group"
+                    className="py-5 flex items-start gap-4"
                   >
-                    {/* Glowing Number Circle */}
-                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-white/10 border border-white/25 flex items-center justify-center shrink-0 font-black text-sm sm:text-base text-pink-200 shadow-inner">
-                      {rule.num}
-                    </div>
-
-                    {/* Rule Title & Description */}
-                    <div className="flex-1 min-w-0">
-                      <div className="flex flex-wrap items-center gap-2 mb-1">
-                        <h4 className="text-sm sm:text-lg font-extrabold text-white">
-                          {rule.title}
-                        </h4>
-                        <span className="inline-block text-[9px] sm:text-[10px] font-black uppercase tracking-[0.16em] bg-white/15 text-blue-100 px-2.5 py-0.5 rounded-full border border-white/20">
-                          {rule.tag}
-                        </span>
-                      </div>
-                      <p className="text-xs sm:text-sm text-blue-100/80 leading-relaxed">
+                    <span className="text-sm font-extrabold text-pink-200/90 pt-0.5 shrink-0">
+                      {rule.num}.
+                    </span>
+                    <div className="space-y-1">
+                      <h4 className="text-base sm:text-lg font-bold text-white leading-snug">
+                        {rule.title}
+                      </h4>
+                      <p className="text-xs sm:text-sm text-blue-100/75 leading-relaxed">
                         {rule.desc}
                       </p>
                     </div>
@@ -976,20 +909,12 @@ export default function GreatIndianPoetryChallengeClient({
                 ))}
               </div>
 
-              {/* CTA Below Rules & Eligibility */}
-              <div className="mt-7 sm:mt-8 rounded-2xl sm:rounded-3xl bg-white/10 border border-white/25 p-5 sm:p-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
-                <div>
-                  <span className="text-[10px] sm:text-xs font-extrabold uppercase tracking-[0.2em] text-pink-200 block mb-1">
-                    READY TO SHARE YOUR WORDS?
-                  </span>
-                  <h4 className="text-base sm:text-xl font-black text-white">
-                    Click the button to register &amp; submit your poem for free!
-                  </h4>
-                </div>
+              {/* Clean CTA Below Rules */}
+              <div className="pt-2 text-center">
                 <button
                   type="button"
                   onClick={scrollToRegister}
-                  className="w-full sm:w-auto shrink-0 inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-white via-blue-50 to-pink-100 text-[#021042] font-black text-xs sm:text-sm px-7 py-3.5 shadow-[0_0_25px_rgba(255,255,255,0.3)] hover:scale-105 active:scale-[0.99] transition-all"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-white text-[#010B2E] font-extrabold text-xs sm:text-sm px-8 py-3.5 shadow-lg hover:scale-105 active:scale-[0.99] transition-all"
                 >
                   <span>Register for Free (₹0)</span>
                   <ArrowRight className="w-4 h-4" />
@@ -997,144 +922,95 @@ export default function GreatIndianPoetryChallengeClient({
               </div>
             </div>
 
-            {/* How It Works — Distinct 2-Step Connected Flow */}
-            <div className="py-4 sm:py-6">
-              <div className="text-center max-w-xl mx-auto mb-8 sm:mb-10">
-                <span className="inline-block text-[10px] sm:text-[11px] uppercase tracking-[0.25em] text-pink-200 font-semibold bg-white/10 border border-white/15 px-3.5 py-1 rounded-full mb-2.5">
+            {/* ── HOW IT WORKS — 2 SIMPLE STEPS ── */}
+            <div className="space-y-8">
+              <div className="text-center space-y-1.5">
+                <p className="text-[11px] uppercase tracking-[0.25em] text-pink-200 font-semibold">
                   HOW IT WORKS
-                </span>
-                <h3 className="text-2xl sm:text-4xl font-black text-white">
+                </p>
+                <h3 className="text-2xl sm:text-3xl font-extrabold text-white">
                   Just 2 Simple Steps
                 </h3>
               </div>
 
-              <div className="relative max-w-3xl mx-auto flex flex-col md:flex-row items-stretch gap-5 md:gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 {/* Step 01 */}
-                <div className="flex-1 relative rounded-3xl bg-white text-[#010B2E] p-6 sm:p-7 shadow-[0_15px_40px_rgba(0,8,45,0.6)] flex flex-col justify-between">
-                  <div>
-                    <div className="flex items-center justify-between mb-4">
-                      <span className="inline-flex items-center gap-1.5 rounded-full bg-[#052691] text-white text-[11px] font-black uppercase tracking-[0.18em] px-3.5 py-1">
-                        STEP 01
-                      </span>
-                      <span className="text-3xl sm:text-4xl font-black text-slate-200 select-none leading-none">
-                        01
-                      </span>
-                    </div>
-                    <h4 className="text-lg sm:text-xl font-black text-[#010B2E] mb-2">
-                      Submit Your Poem for Free
-                    </h4>
-                    <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium">
-                      Fill in your basic details, choose your language &amp; poetry theme, and submit your poem (up to 40 lines) in the registration form above.
-                    </p>
-                  </div>
-
-                  <div className="mt-5 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] font-bold text-[#052691]">
-                    <span>⚡ Takes under 60 seconds</span>
-                    <span>₹0 Entry Fee</span>
-                  </div>
-                </div>
-
-                {/* Center Connector Badge */}
-                <div className="flex md:flex-col items-center justify-center -my-2 md:my-0 md:-mx-3 z-10">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-pink-400 to-amber-300 text-[#010B2E] font-black flex items-center justify-center shadow-[0_0_25px_rgba(244,114,182,0.6)] border-2 border-white">
-                    <ArrowRight className="w-5 h-5 rotate-90 md:rotate-0" />
-                  </div>
+                <div className="rounded-2xl bg-white text-[#010B2E] p-6 sm:p-7 space-y-2.5 shadow-lg">
+                  <span className="inline-block text-[10px] font-extrabold uppercase tracking-[0.2em] text-[#052691] bg-blue-50 px-3 py-1 rounded-full">
+                    STEP 01
+                  </span>
+                  <h4 className="text-lg font-extrabold text-[#010B2E]">
+                    Submit Your Poem for Free
+                  </h4>
+                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                    Fill in your details and submit your poem (up to 40 lines) in the registration form above.
+                  </p>
                 </div>
 
                 {/* Step 02 */}
-                <div className="flex-1 relative rounded-3xl bg-gradient-to-br from-[#064E3B] via-[#047857] to-[#065F46] border-2 border-emerald-300/80 text-white p-6 sm:p-7 shadow-[0_15px_40px_rgba(6,78,59,0.5)] flex flex-col justify-between">
-                  <div>
-                    <div className="flex items-center justify-between mb-4">
-                      <span className="inline-flex items-center gap-1.5 rounded-full bg-white text-[#064E3B] text-[11px] font-black uppercase tracking-[0.18em] px-3.5 py-1">
-                        STEP 02
-                      </span>
-                      <span className="text-3xl sm:text-4xl font-black text-emerald-300/30 select-none leading-none">
-                        02
-                      </span>
-                    </div>
-                    <h4 className="text-lg sm:text-xl font-black text-white mb-2">
-                      Join the WhatsApp Group on Thank You Page
-                    </h4>
-                    <p className="text-xs sm:text-sm text-emerald-50/95 leading-relaxed font-medium">
-                      Right after submitting, join our official WhatsApp group on the Thank You page—there you will get all updates about your <strong className="text-white underline decoration-emerald-200 underline-offset-2">Appreciation Letter, Results, Rewards, and upcoming events</strong>!
-                    </p>
-                  </div>
-
-                  <div className="mt-5 pt-3 border-t border-white/15 flex items-center justify-between text-[11px] font-bold text-emerald-200">
-                    <span>📲 Instant Group Access</span>
-                    <span>All Official Updates</span>
-                  </div>
+                <div className="rounded-2xl bg-[#046C4E] border border-emerald-300/40 text-white p-6 sm:p-7 space-y-2.5 shadow-lg">
+                  <span className="inline-block text-[10px] font-extrabold uppercase tracking-[0.2em] text-[#064E3B] bg-white px-3 py-1 rounded-full">
+                    STEP 02
+                  </span>
+                  <h4 className="text-lg font-extrabold text-white">
+                    Join the WhatsApp Group
+                  </h4>
+                  <p className="text-xs sm:text-sm text-emerald-50/90 leading-relaxed">
+                    On the Thank You page, join the official WhatsApp group to get all updates about your Appreciation Letter, Results, and Rewards.
+                  </p>
                 </div>
               </div>
             </div>
 
-            {/* FAQ Section with Heading & Expanded Questions */}
-            <div className="pt-2 space-y-6 max-w-2xl mx-auto">
-              <div className="text-center">
-                <span className="inline-block text-[10px] sm:text-[11px] uppercase tracking-[0.25em] text-pink-200 font-semibold bg-white/10 border border-white/15 px-3.5 py-1 rounded-full mb-2.5">
-                  FAQ · FREQUENTLY ASKED QUESTIONS
-                </span>
-                <h3 className="text-2xl sm:text-4xl font-extrabold text-white">
-                  Got Questions? We&apos;ve Got Answers
-                </h3>
-                <p className="text-xs sm:text-sm text-blue-100/80 mt-1.5">
-                  Everything you need to know about The Great Indian Free Poetry Challenge.
+            {/* ── FAQ SECTION ── */}
+            <div className="space-y-8">
+              <div className="text-center space-y-1.5">
+                <p className="text-[11px] uppercase tracking-[0.25em] text-pink-200 font-semibold">
+                  FAQ
                 </p>
+                <h3 className="text-2xl sm:text-3xl font-extrabold text-white">
+                  Frequently Asked Questions
+                </h3>
               </div>
 
-              <div className="space-y-2.5">
+              <div className="divide-y divide-white/15 border-y border-white/15">
                 {[
                   {
                     q: 'Is there any registration or entry fee?',
-                    a: 'No! The Great Indian Free Poetry Challenge is 100% free to enter (₹0). There are no registration fees or hidden charges to submit your poem.',
+                    a: 'No! The Great Indian Free Poetry Challenge is 100% free to enter (₹0). There are no hidden charges.',
                   },
                   {
                     q: 'What is the theme and maximum length?',
-                    a: 'The theme/subject is completely Open—you can write on any topic or emotion of your choice. The poem length must be 40 lines maximum.',
+                    a: 'The theme is completely Open—you can write on any topic. The maximum poem length is 40 lines.',
                   },
                   {
                     q: 'How will I receive my Appreciation Letter & results?',
-                    a: 'All participants will receive their Official Appreciation Letter and Top 10 result updates via the official WhatsApp Group, registered WhatsApp number, and Email.',
-                  },
-                  {
-                    q: 'What do the Top 10 Winners receive?',
-                    a: 'The Top 10 poets selected by our editorial jury will be awarded a prestigious Winner’s Trophy or Direct Cash Prize, along with a National Certificate of Excellence and a feature on @ink.fetish (210,000+ community).',
-                  },
-                  {
-                    q: 'Will every participant receive an Appreciation Letter?',
-                    a: 'Yes! Every single poet who submits an original entry receives an Official Appreciation Letter from Inkfetish Publication honoring their contribution to the challenge.',
+                    a: 'All updates regarding your Official Appreciation Letter, Top 10 results, and rewards are shared in the official WhatsApp Group on the Thank You page, as well as via WhatsApp and Email.',
                   },
                   {
                     q: 'Which languages can I submit my poem in?',
-                    a: 'You can submit your poem in English, Hinglish, Hindi, Punjabi, Urdu, Marathi, Bengali, Gujarati, Tamil, Telugu, Malayalam, Kannada, or any other Indian language.',
+                    a: 'You can submit in English, Hinglish, Hindi, Punjabi, Urdu, Marathi, Bengali, Tamil, Telugu, or any Indian language.',
                   },
                   {
-                    q: 'Who owns the rights/copyright to my poem?',
-                    a: 'You retain 100% copyright and ownership of your poem at all times. You are free to share or publish your poem anywhere else.',
-                  },
-                  {
-                    q: 'Who is eligible to participate in this challenge?',
-                    a: 'The challenge is open to all poets, writers, students, and beginners across India of all age groups.',
+                    q: 'Who owns the copyright to my poem?',
+                    a: 'You retain 100% copyright and ownership of your poem at all times.',
                   },
                 ].map((item, idx) => (
-                  <div
-                    key={idx}
-                    className="rounded-2xl bg-[#020E3B]/90 border border-white/15 overflow-hidden"
-                  >
+                  <div key={idx} className="py-1">
                     <button
                       type="button"
                       onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
-                      className="w-full px-4 sm:px-5 py-3.5 sm:py-4 text-left flex items-center justify-between gap-3 font-bold text-xs sm:text-sm text-white hover:bg-white/[0.03] transition-colors"
+                      className="w-full py-4 text-left flex items-center justify-between gap-4 font-semibold text-sm sm:text-base text-white"
                     >
                       <span>{item.q}</span>
                       <ChevronDown
-                        className={`w-4 h-4 text-pink-300 shrink-0 transition-transform ${
+                        className={`w-4 h-4 text-pink-200 shrink-0 transition-transform ${
                           openFaq === idx ? 'rotate-180' : ''
                         }`}
                       />
                     </button>
                     {openFaq === idx && (
-                      <div className="px-4 sm:px-5 pb-4 text-xs sm:text-sm text-blue-100/85 leading-relaxed border-t border-white/10 pt-2.5">
+                      <div className="pb-4 text-xs sm:text-sm text-blue-100/80 leading-relaxed">
                         {item.a}
                       </div>
                     )}
@@ -1142,17 +1018,14 @@ export default function GreatIndianPoetryChallengeClient({
                 ))}
               </div>
 
-              {/* Final Bottom CTA */}
-              <div className="pt-4 text-center space-y-3">
-                <p className="text-xs sm:text-sm text-blue-100/90 font-medium">
-                  Click the button below to register and submit your poem for free!
-                </p>
+              {/* Clean Final CTA */}
+              <div className="pt-2 text-center">
                 <button
                   type="button"
                   onClick={scrollToRegister}
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-amber-300 via-yellow-200 to-pink-200 text-[#010B2E] font-black text-sm sm:text-base px-8 py-4 shadow-[0_10px_30px_rgba(251,191,36,0.3)] hover:scale-105 active:scale-[0.99] transition-all border-2 border-white"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-amber-300 via-yellow-200 to-pink-200 text-[#010B2E] font-extrabold text-sm sm:text-base px-8 py-4 shadow-lg active:scale-[0.99] transition-all"
                 >
-                  <span>Register &amp; Submit Poem for Free (₹0)</span>
+                  <span>Register &amp; Submit Poem (₹0)</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
               </div>
@@ -1162,8 +1035,8 @@ export default function GreatIndianPoetryChallengeClient({
       )}
 
       {/* ── MINIMAL ROYAL BLUE FOOTER ── */}
-      <footer className="bg-[#010720] border-t border-white/10 py-8 px-4 text-center">
-        <div className="max-w-3xl mx-auto flex flex-col items-center space-y-2">
+      <footer className="bg-[#010720] border-t border-white/10 py-10 px-5 text-center">
+        <div className="max-w-3xl mx-auto flex flex-col items-center space-y-1.5">
           <p className="text-[9px] tracking-[0.28em] uppercase text-blue-200/70">
             INITIATIVE BY
           </p>
@@ -1171,7 +1044,7 @@ export default function GreatIndianPoetryChallengeClient({
             ink.fetish
           </p>
           <p className="text-[11px] text-blue-200/50 pt-1">
-            © {new Date().getFullYear()} Inkfetish Publication · The Great Indian Free Poetry Challenge
+            © {new Date().getFullYear()} Inkfetish Publication
           </p>
         </div>
       </footer>

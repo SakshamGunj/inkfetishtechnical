@@ -26,7 +26,9 @@ export function ConditionalFooter() {
     pathname.startsWith('/indian-writers-league/certificates') ||
     pathname.startsWith('/september-writing-contest') ||
     pathname.startsWith('/september-contest') ||
-    pathname.startsWith('/autumn-poetry-hunt')
+    pathname.startsWith('/autumn-poetry-hunt') ||
+    pathname.startsWith('/great-indian-poetry-challenge') ||
+    pathname.startsWith('/free-poetry-challenge')
   ) {
     return null;
   }

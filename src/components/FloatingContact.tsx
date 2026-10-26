@@ -34,17 +34,10 @@ export function FloatingContact() {
 
     const contactDetails = [
         {
-            icon: <Phone className="w-5 h-5" />,
-            label: "WhatsApp",
-            value: "+91 92166 81908",
-            link: "https://wa.me/919216681908",
-            color: "text-green-500"
-        },
-        {
             icon: <Mail className="w-5 h-5" />,
             label: "Email",
-            value: "inkfetishh@gmail.com",
-            link: "mailto:inkfetishh@gmail.com",
+            value: "help@inkfetish.in",
+            link: "mailto:help@inkfetish.in",
             color: "text-blue-500"
         }
     ];

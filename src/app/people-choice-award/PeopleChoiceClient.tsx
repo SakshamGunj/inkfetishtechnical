@@ -73,6 +73,14 @@ export default function PeopleChoiceClient() {
               Inkfetish Publication
             </span>
           </div>
+          <div className="flex items-center gap-2">
+            <Link
+              href="/people-choice-award/vote"
+              className="bg-gradient-to-r from-[#bf953f] via-[#fcf6ba] to-[#aa771c] text-black font-serif font-bold text-xs px-3.5 py-1.5 rounded-full hover:brightness-110 transition-all shadow-[0_0_15px_rgba(212,175,55,0.3)] flex items-center gap-1.5"
+            >
+              <span>Vote Now 🗳️</span>
+            </Link>
+          </div>
         </div>
       </nav>
 
@@ -562,8 +570,17 @@ export default function PeopleChoiceClient() {
                   Voting will be done through Ink.fetish (Instagram page with 210K+ followers), our writing community, and 40+ WhatsApp groups, with a target reach of over 2 lakh people.
                 </p>
               </div>
-              <div className="mt-4 pt-3 border-t border-white/5 text-[11px] font-semibold text-[#d4af37]/90 flex items-center gap-1">
-                <span>🗓️ 28th–30th October</span>
+              <div className="mt-4 pt-3 border-t border-white/5 space-y-2.5">
+                <div className="text-[11px] font-semibold text-[#d4af37]/90 flex items-center justify-between">
+                  <span>🗓️ 28th–30th October</span>
+                  <span className="text-[10px] bg-[#d4af37]/20 border border-[#d4af37]/40 text-[#fcf6ba] px-2 py-0.5 rounded-full font-bold">VOTING LIVE</span>
+                </div>
+                <Link
+                  href="/people-choice-award/vote"
+                  className="block w-full text-center py-2 px-3 rounded-xl bg-gradient-to-r from-[#bf953f] via-[#fcf6ba] to-[#aa771c] text-black font-serif font-bold text-xs uppercase tracking-wider hover:brightness-110 transition-all shadow-[0_0_15px_rgba(212,175,55,0.3)]"
+                >
+                  Cast Your 5 Votes 🗳️
+                </Link>
               </div>
             </div>
 

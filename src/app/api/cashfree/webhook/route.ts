@@ -3,6 +3,7 @@ import { createClient } from '@supabase/supabase-js';
 import crypto from 'crypto';
 import { getAdminDb } from '@/lib/firebase-admin';
 import { markSeptemberContestPaid } from '@/lib/septemberContestPayment';
+import { markNovemberContestPaid } from '@/lib/novemberContestPayment';
 
 // Force Node.js runtime for crypto support
 export const runtime = 'nodejs';
@@ -114,6 +115,29 @@ export async function POST(request: Request) {
           console.log(`September contest webhook ${orderId}: marked=${marked}`);
         } catch (err) {
           console.error('Failed to mark September contest paid from webhook', err);
+        }
+
+      // 2b3. NOVEMBER POETRY & WRITING CONTEST → mark Firestore registration PAID in background
+      } else if (orderId.startsWith('nov_contest_')) {
+        try {
+          const result = await markNovemberContestPaid({
+            orderId,
+            cfOrderId: String(order.cf_order_id || ''),
+            amount: Number(order.order_amount || 0),
+            tags: {
+              registrationId: tags.registrationId || '',
+              docId: tags.docId || '',
+              tier: tags.tier || '',
+              name: tags.name || payload.data?.customer_details?.customer_name || '',
+              email: tags.email || '',
+              phone: tags.phone || '',
+            },
+            email: tags.email || payload.data?.customer_details?.customer_email || '',
+            phone: tags.phone || payload.data?.customer_details?.customer_phone || '',
+          });
+          console.log(`November contest webhook ${orderId}: marked=${result.marked}, docId=${result.docId}`);
+        } catch (err) {
+          console.error('Failed to mark November contest paid from webhook', err);
         }
 
       // 2c. PEOPLE'S CHOICE AWARD → Update Firebase Firestore

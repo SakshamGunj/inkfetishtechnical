@@ -149,6 +149,12 @@ service cloud.firestore {
       allow delete: if false;
     }
 
+    // People's Choice Award Votes
+    match /people_choice_votes/{document} {
+      allow read, create, update: if true;
+      allow delete: if false;
+    }
+
     // September Writing Competition Collection
     match /september_contest_registrations/{document} {
       allow read, create, update: if true;
@@ -161,6 +167,12 @@ service cloud.firestore {
     match /great_indian_free_poetry_challenge/{document} {
       allow read, create: if true;
       allow update, delete: if false;
+    }
+
+    // November Poetry & Writing Contest 2026 Collection
+    match /november_writing_contest_2026/{document} {
+      allow read, create, update: if true;
+      allow delete: if false;
     }
   }
 }

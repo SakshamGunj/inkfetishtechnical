@@ -21,6 +21,11 @@ import {
   Truck,
   Check,
 } from 'lucide-react';
+import { db } from '@/lib/firebase';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
+
+const IWL_ADDRESS_COLLECTION = 'iwl_certificate_addresses';
+const IWL_SUBMISSIONS_MIRROR = 'iwl_submissions';
 
 const INDIAN_STATES = [
   'Andaman and Nicobar Islands',
@@ -255,6 +260,20 @@ export default function AddressPortalClient() {
       }
 
       const updatedCustomer: CustomerRecord = data.customer;
+
+      // Also sync from client side to Firebase
+      try {
+        const payload = {
+          ...updatedCustomer,
+          status: 'Completed',
+          type: 'iwl_599_certificate_address',
+          updatedAt: updatedCustomer.updatedAt || new Date().toISOString(),
+        };
+        await Promise.allSettled([
+          setDoc(doc(db, IWL_ADDRESS_COLLECTION, updatedCustomer.phone), payload),
+          setDoc(doc(db, IWL_SUBMISSIONS_MIRROR, `iwl599_addr_${updatedCustomer.phone}`), payload),
+        ]);
+      } catch (e) {}
 
       // Save in localStorage so revisiting the portal immediately shows "Your address is already recorded"
       localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updatedCustomer));

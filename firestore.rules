@@ -174,5 +174,11 @@ service cloud.firestore {
       allow read, create, update: if true;
       allow delete: if false;
     }
+
+    // IWL Season 2 Certificate 599 Shipping Addresses Collection
+    match /iwl_certificate_addresses/{document} {
+      allow read, create, update: if true;
+      allow delete: if false;
+    }
   }
 }

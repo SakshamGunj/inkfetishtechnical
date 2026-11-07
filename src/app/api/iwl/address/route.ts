@@ -1,12 +1,24 @@
 import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
+import { doc, getDoc, setDoc, getDocs, collection, query, where, serverTimestamp } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
+export const IWL_ADDRESS_COLLECTION = 'iwl_certificate_addresses';
+export const IWL_SUBMISSIONS_MIRROR = 'iwl_submissions';
 const ORIG_CSV_PATH = path.join(process.cwd(), 'public', 'iwl certificate 599 - Sheet9 (1).csv');
-const DUP_CSV_PATH = path.join(process.cwd(), 'public', 'iwl_certificate_599_addresses.csv');
+
+function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T> {
+  return Promise.race([
+    promise,
+    new Promise<T>((_, reject) =>
+      setTimeout(() => reject(new Error('Operation timed out')), ms)
+    ),
+  ]);
+}
 
 function parseCSVLine(line: string): string[] {
   const result: string[] = [];
@@ -38,31 +50,7 @@ function cleanField(val: string | undefined): string {
   return val.replace(/^"+|"+$/g, '').trim();
 }
 
-function escapeCSVField(val: string | number | undefined | null): string {
-  if (val === undefined || val === null) return '';
-  const str = String(val).replace(/\r?\n/g, ' ').replace(/^"+|"+$/g, '').trim();
-  if (str.length === 0) return '';
-  if (str.includes(',') || str.includes('"')) {
-    return `"${str.replace(/"/g, '""')}"`;
-  }
-  return str;
-}
-
-function ensureDuplicateCSVExists() {
-  if (!fs.existsSync(DUP_CSV_PATH) && fs.existsSync(ORIG_CSV_PATH)) {
-    const content = fs.readFileSync(ORIG_CSV_PATH, 'utf-8');
-    const lines = content.split(/\r?\n/).filter((l) => l.trim().length > 0);
-    const newLines = lines.map((line, idx) => {
-      if (idx === 0) {
-        return `${line},Full Address,City,State,Pincode,Address Status,Updated At`;
-      }
-      return `${line},,,,,Pending,`;
-    });
-    fs.writeFileSync(DUP_CSV_PATH, newLines.join('\n'), 'utf-8');
-  }
-}
-
-export interface AddressRecord {
+export interface CsvCustomerRecord {
   orderId: string;
   referenceId: string;
   name: string;
@@ -70,21 +58,16 @@ export interface AddressRecord {
   cleanPhone: string; // 10 digit
   email: string;
   amount: string;
-  address: string;
-  city: string;
-  state: string;
-  pincode: string;
-  status: string; // 'Pending' | 'Completed'
-  updatedAt: string;
 }
 
-function loadRecords(): AddressRecord[] {
-  ensureDuplicateCSVExists();
-  const targetPath = fs.existsSync(DUP_CSV_PATH) ? DUP_CSV_PATH : ORIG_CSV_PATH;
-  const content = fs.readFileSync(targetPath, 'utf-8');
+function loadCsvCustomers(): CsvCustomerRecord[] {
+  if (!fs.existsSync(ORIG_CSV_PATH)) {
+    return [];
+  }
+  const content = fs.readFileSync(ORIG_CSV_PATH, 'utf-8');
   const lines = content.split(/\r?\n/).filter((l) => l.trim().length > 0);
 
-  const records: AddressRecord[] = [];
+  const records: CsvCustomerRecord[] = [];
   for (let i = 1; i < lines.length; i++) {
     const cols = parseCSVLine(lines[i]);
     if (cols.length < 6) continue;
@@ -99,38 +82,30 @@ function loadRecords(): AddressRecord[] {
       cleanPhone,
       email: cleanField(cols[4]),
       amount: cleanField(cols[5]) || '599',
-      address: cleanField(cols[6]),
-      city: cleanField(cols[7]),
-      state: cleanField(cols[8]),
-      pincode: cleanField(cols[9]),
-      status: cleanField(cols[10]) || 'Pending',
-      updatedAt: cleanField(cols[11]),
     });
   }
   return records;
 }
 
-function saveRecordsToCSV(records: AddressRecord[]) {
-  const header =
-    'Order Id,Reference Id,Customer Name,Customer Phone,Customer Email,Amount,Full Address,City,State,Pincode,Address Status,Updated At';
-  const rows = records.map((r) =>
-    [
-      escapeCSVField(r.orderId),
-      escapeCSVField(r.referenceId),
-      escapeCSVField(r.name),
-      escapeCSVField(r.phone),
-      escapeCSVField(r.email),
-      escapeCSVField(r.amount),
-      escapeCSVField(r.address),
-      escapeCSVField(r.city),
-      escapeCSVField(r.state),
-      escapeCSVField(r.pincode),
-      escapeCSVField(r.status),
-      escapeCSVField(r.updatedAt),
-    ].join(',')
-  );
+async function fetchSavedAddressFromFirebase(cleanPhone: string): Promise<any | null> {
+  const mirrorDocId = `iwl599_addr_${cleanPhone}`;
+  // Check both iwl_certificate_addresses and iwl_submissions mirror concurrently
+  const [resPrimary, resMirror] = await Promise.allSettled([
+    withTimeout(getDoc(doc(db, IWL_ADDRESS_COLLECTION, cleanInputSafe(cleanPhone))), 2500),
+    withTimeout(getDoc(doc(db, IWL_SUBMISSIONS_MIRROR, mirrorDocId)), 2500),
+  ]);
 
-  fs.writeFileSync(DUP_CSV_PATH, [header, ...rows].join('\n'), 'utf-8');
+  if (resPrimary.status === 'fulfilled' && resPrimary.value.exists()) {
+    return resPrimary.value.data();
+  }
+  if (resMirror.status === 'fulfilled' && resMirror.value.exists()) {
+    return resMirror.value.data();
+  }
+  return null;
+}
+
+function cleanInputSafe(val: string): string {
+  return String(val).replace(/\D/g, '').replace(/^91/, '').slice(-10);
 }
 
 export async function GET(request: Request) {
@@ -139,51 +114,69 @@ export async function GET(request: Request) {
     const phoneParam = searchParams.get('phone');
     const action = searchParams.get('action');
 
-    const records = loadRecords();
+    const csvRecords = loadCsvCustomers();
 
-    if (action === 'download_csv') {
-      const header =
-        'Order Id,Reference Id,Customer Name,Customer Phone,Customer Email,Amount,Full Address,City,State,Pincode,Address Status,Updated At';
-      const rows = records.map((r) =>
-        [
-          escapeCSVField(r.orderId),
-          escapeCSVField(r.referenceId),
-          escapeCSVField(r.name),
-          escapeCSVField(r.phone),
-          escapeCSVField(r.email),
-          escapeCSVField(r.amount),
-          escapeCSVField(r.address),
-          escapeCSVField(r.city),
-          escapeCSVField(r.state),
-          escapeCSVField(r.pincode),
-          escapeCSVField(r.status),
-          escapeCSVField(r.updatedAt),
-        ].join(',')
-      );
-      const csvContent = [header, ...rows].join('\n');
-      return new NextResponse(csvContent, {
-        headers: {
-          'Content-Type': 'text/csv; charset=utf-8',
-          'Content-Disposition': 'attachment; filename="iwl_certificate_599_addresses.csv"',
-        },
-      });
-    }
-
+    // Admin helper to view all saved Firebase documents merged with the CSV
     if (action === 'all') {
-      return NextResponse.json({ records });
+      const firebaseRecords: Record<string, any> = {};
+      const [snapPrimary, snapMirror] = await Promise.allSettled([
+        withTimeout(getDocs(collection(db, IWL_ADDRESS_COLLECTION)), 3500),
+        withTimeout(
+          getDocs(
+            query(
+              collection(db, IWL_SUBMISSIONS_MIRROR),
+              where('type', '==', 'iwl_599_certificate_address')
+            )
+          ),
+          3500
+        ),
+      ]);
+
+      if (snapMirror.status === 'fulfilled') {
+        snapMirror.value.forEach((d) => {
+          const data = d.data();
+          if (data.phone) firebaseRecords[data.phone] = data;
+        });
+      }
+      if (snapPrimary.status === 'fulfilled') {
+        snapPrimary.value.forEach((d) => {
+          const data = d.data();
+          firebaseRecords[d.id] = data;
+        });
+      }
+
+      const merged = csvRecords.map((r) => {
+        const saved = firebaseRecords[r.cleanPhone];
+        return {
+          ...r,
+          address: saved?.address || '',
+          city: saved?.city || '',
+          state: saved?.state || '',
+          pincode: saved?.pincode || '',
+          status: saved?.status || 'Pending',
+          updatedAt: saved?.updatedAt || '',
+        };
+      });
+      return NextResponse.json({
+        collection: IWL_ADDRESS_COLLECTION,
+        totalOrders: merged.length,
+        submittedCount: merged.filter((m) => m.status === 'Completed').length,
+        records: merged,
+      });
     }
 
     if (!phoneParam) {
       return NextResponse.json({ error: 'Please provide a 10-digit phone number' }, { status: 400 });
     }
 
-    const cleanInput = phoneParam.replace(/\D/g, '').replace(/^91/, '').slice(-10);
+    const cleanInput = cleanInputSafe(phoneParam);
     if (cleanInput.length !== 10) {
       return NextResponse.json({ error: 'Please enter a valid 10-digit phone number' }, { status: 400 });
     }
 
+    // Verify against the CSV file (adding 91 prefix)
     const targetWith91 = `91${cleanInput}`;
-    const found = records.find(
+    const found = csvRecords.find(
       (r) => r.phone.replace(/\D/g, '') === targetWith91 || r.cleanPhone === cleanInput
     );
 
@@ -197,8 +190,10 @@ export async function GET(request: Request) {
       );
     }
 
+    // Check if already saved in Firebase
+    const savedDoc = await fetchSavedAddressFromFirebase(cleanInput);
     const alreadySubmitted = Boolean(
-      found.status === 'Completed' && found.address && found.address.trim().length > 0
+      savedDoc && savedDoc.address && String(savedDoc.address).trim().length > 0
     );
 
     return NextResponse.json({
@@ -207,16 +202,16 @@ export async function GET(request: Request) {
       customer: {
         orderId: found.orderId,
         referenceId: found.referenceId,
-        name: found.name,
+        name: savedDoc?.name || found.name,
         phone: cleanInput,
         fullPhone: found.phone,
         email: found.email,
         amount: found.amount,
-        address: found.address,
-        city: found.city,
-        state: found.state,
-        pincode: found.pincode,
-        updatedAt: found.updatedAt,
+        address: savedDoc?.address || '',
+        city: savedDoc?.city || '',
+        state: savedDoc?.state || '',
+        pincode: savedDoc?.pincode || '',
+        updatedAt: savedDoc?.updatedAt || '',
       },
     });
   } catch (error: any) {
@@ -237,73 +232,89 @@ export async function POST(request: Request) {
       );
     }
 
-    const cleanInput = String(phone).replace(/\D/g, '').replace(/^91/, '').slice(-10);
+    const cleanInput = cleanInputSafe(phone);
     const targetWith91 = `91${cleanInput}`;
 
-    const records = loadRecords();
-    const idx = records.findIndex(
+    // Verify customer exists in the CSV file
+    const csvRecords = loadCsvCustomers();
+    const found = csvRecords.find(
       (r) => r.phone.replace(/\D/g, '') === targetWith91 || r.cleanPhone === cleanInput
     );
 
-    if (idx === -1) {
+    if (!found) {
       return NextResponse.json(
         { error: 'Phone number not found in verified order records.' },
         { status: 404 }
       );
     }
 
-    const existing = records[idx];
-    if (existing.status === 'Completed' && existing.address && existing.address.trim().length > 0) {
+    // Check if already submitted in Firebase
+    const existingData = await fetchSavedAddressFromFirebase(cleanInput);
+    if (existingData && existingData.address && String(existingData.address).trim().length > 0) {
       return NextResponse.json(
         {
           error: 'Your shipping address has already been recorded and locked. Multiple submissions are not allowed.',
           alreadySubmitted: true,
-          customer: {
-            ...existing,
-            phone: cleanInput,
-            fullPhone: existing.phone,
-          },
+          customer: existingData,
         },
         { status: 409 }
       );
     }
 
     const nowISO = new Date().toISOString();
+    const mirrorDocId = `iwl599_addr_${cleanInput}`;
 
-    records[idx] = {
-      ...existing,
-      name: String(name).trim() || existing.name,
+    const payload = {
+      orderId: found.orderId,
+      referenceId: found.referenceId,
+      name: String(name).trim() || found.name,
+      originalCsvName: found.name,
+      phone: cleanInput,
+      fullPhone: found.phone,
+      email: found.email,
+      amount: Number(found.amount) || 599,
       address: String(address).trim(),
       city: String(city || '').trim(),
       state: String(state).trim(),
       pincode: String(pincode).trim(),
       status: 'Completed',
+      type: 'iwl_599_certificate_address',
       updatedAt: nowISO,
+      submittedAt: serverTimestamp(),
     };
 
-    // Save directly to duplicate CSV file in public/iwl_certificate_599_addresses.csv
-    saveRecordsToCSV(records);
+    // Save to both `iwl_certificate_addresses` and mirror to `iwl_submissions` (`iwl599_addr_<phone>`)
+    const results = await Promise.allSettled([
+      withTimeout(setDoc(doc(db, IWL_ADDRESS_COLLECTION, cleanInput), payload), 3000),
+      withTimeout(setDoc(doc(db, IWL_SUBMISSIONS_MIRROR, mirrorDocId), payload), 3000),
+    ]);
+
+    const anySucceeded = results.some((r) => r.status === 'fulfilled');
+    if (!anySucceeded) {
+      throw new Error('Could not write to Firebase Firestore.');
+    }
 
     return NextResponse.json({
       success: true,
-      message: 'Your shipping address has been successfully recorded!',
+      collection: IWL_ADDRESS_COLLECTION,
+      message: 'Your shipping address has been successfully saved to Firebase!',
       customer: {
-        orderId: records[idx].orderId,
-        referenceId: records[idx].referenceId,
-        name: records[idx].name,
-        phone: cleanInput,
-        fullPhone: records[idx].phone,
-        email: records[idx].email,
-        amount: records[idx].amount,
-        address: records[idx].address,
-        city: records[idx].city,
-        state: records[idx].state,
-        pincode: records[idx].pincode,
-        updatedAt: records[idx].updatedAt,
+        orderId: payload.orderId,
+        referenceId: payload.referenceId,
+        name: payload.name,
+        phone: payload.phone,
+        fullPhone: payload.fullPhone,
+        email: payload.email,
+        amount: String(payload.amount),
+        address: payload.address,
+        city: payload.city,
+        state: payload.state,
+        pincode: payload.pincode,
+        updatedAt: payload.updatedAt,
       },
     });
   } catch (error: any) {
     console.error('Error in POST /api/iwl/address:', error);
-    return NextResponse.json({ error: 'Failed to save address. Please try again.' }, { status: 500 });
+    return NextResponse.json({ error: 'Failed to save address to Firebase. Please try again.' }, { status: 500 });
   }
 }

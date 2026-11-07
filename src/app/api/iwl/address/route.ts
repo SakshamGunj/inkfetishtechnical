@@ -15,26 +15,33 @@ function parseCSVLine(line: string): string[] {
 
   for (let i = 0; i < line.length; i++) {
     const char = line[i];
-    if (char === '"' && line[i + 1] === '"') {
-      current += '"';
-      i++;
-    } else if (char === '"') {
-      inQuotes = !inQuotes;
+    if (char === '"') {
+      if (inQuotes && line[i + 1] === '"') {
+        current += '"';
+        i++;
+      } else {
+        inQuotes = !inQuotes;
+      }
     } else if (char === ',' && !inQuotes) {
-      result.push(current);
+      result.push(current.trim());
       current = '';
     } else {
       current += char;
     }
   }
-  result.push(current);
+  result.push(current.trim());
   return result;
 }
 
+function cleanField(val: string | undefined): string {
+  if (!val) return '';
+  return val.replace(/^"+|"+$/g, '').trim();
+}
+
 function escapeCSVField(val: string | number | undefined | null): string {
-  if (val === undefined || val === null) return '""';
+  if (val === undefined || val === null) return '';
   const str = String(val).replace(/\r?\n/g, ' ').replace(/^"+|"+$/g, '').trim();
-  if (str.length === 0) return '""';
+  if (str.length === 0) return '';
   if (str.includes(',') || str.includes('"')) {
     return `"${str.replace(/"/g, '""')}"`;
   }
@@ -49,13 +56,9 @@ function ensureDuplicateCSVExists() {
       if (idx === 0) {
         return `${line},Full Address,City,State,Pincode,Address Status,Updated At`;
       }
-      return `${line},"","","","","Pending",""`;
+      return `${line},,,,,Pending,`;
     });
-    try {
-      fs.writeFileSync(DUP_CSV_PATH, newLines.join('\n'), 'utf-8');
-    } catch (e) {
-      console.error('Could not write duplicate CSV on init:', e);
-    }
+    fs.writeFileSync(DUP_CSV_PATH, newLines.join('\n'), 'utf-8');
   }
 }
 
@@ -85,23 +88,23 @@ function loadRecords(): AddressRecord[] {
   for (let i = 1; i < lines.length; i++) {
     const cols = parseCSVLine(lines[i]);
     if (cols.length < 6) continue;
-    const rawPhone = (cols[3] || '').replace(/\D/g, '');
+    const rawPhone = cleanField(cols[3]).replace(/\D/g, '');
     const cleanPhone = rawPhone.replace(/^91/, '').slice(-10);
 
     records.push({
-      orderId: cols[0] || '',
-      referenceId: cols[1] || '',
-      name: cols[2] || '',
-      phone: cols[3] || '',
+      orderId: cleanField(cols[0]),
+      referenceId: cleanField(cols[1]),
+      name: cleanField(cols[2]),
+      phone: cleanField(cols[3]),
       cleanPhone,
-      email: cols[4] || '',
-      amount: cols[5] || '599',
-      address: cols[6] || '',
-      city: cols[7] || '',
-      state: cols[8] || '',
-      pincode: cols[9] || '',
-      status: cols[10] || 'Pending',
-      updatedAt: cols[11] || '',
+      email: cleanField(cols[4]),
+      amount: cleanField(cols[5]) || '599',
+      address: cleanField(cols[6]),
+      city: cleanField(cols[7]),
+      state: cleanField(cols[8]),
+      pincode: cleanField(cols[9]),
+      status: cleanField(cols[10]) || 'Pending',
+      updatedAt: cleanField(cols[11]),
     });
   }
   return records;
@@ -112,12 +115,12 @@ function saveRecordsToCSV(records: AddressRecord[]) {
     'Order Id,Reference Id,Customer Name,Customer Phone,Customer Email,Amount,Full Address,City,State,Pincode,Address Status,Updated At';
   const rows = records.map((r) =>
     [
-      r.orderId,
-      r.referenceId,
-      r.name,
-      r.phone,
-      r.email,
-      r.amount,
+      escapeCSVField(r.orderId),
+      escapeCSVField(r.referenceId),
+      escapeCSVField(r.name),
+      escapeCSVField(r.phone),
+      escapeCSVField(r.email),
+      escapeCSVField(r.amount),
       escapeCSVField(r.address),
       escapeCSVField(r.city),
       escapeCSVField(r.state),
@@ -127,11 +130,7 @@ function saveRecordsToCSV(records: AddressRecord[]) {
     ].join(',')
   );
 
-  try {
-    fs.writeFileSync(DUP_CSV_PATH, [header, ...rows].join('\n'), 'utf-8');
-  } catch (err) {
-    console.warn('Filesystem write warning:', err);
-  }
+  fs.writeFileSync(DUP_CSV_PATH, [header, ...rows].join('\n'), 'utf-8');
 }
 
 export async function GET(request: Request) {
@@ -147,12 +146,12 @@ export async function GET(request: Request) {
         'Order Id,Reference Id,Customer Name,Customer Phone,Customer Email,Amount,Full Address,City,State,Pincode,Address Status,Updated At';
       const rows = records.map((r) =>
         [
-          r.orderId,
-          r.referenceId,
-          r.name,
-          r.phone,
-          r.email,
-          r.amount,
+          escapeCSVField(r.orderId),
+          escapeCSVField(r.referenceId),
+          escapeCSVField(r.name),
+          escapeCSVField(r.phone),
+          escapeCSVField(r.email),
+          escapeCSVField(r.amount),
           escapeCSVField(r.address),
           escapeCSVField(r.city),
           escapeCSVField(r.state),

@@ -21,8 +21,6 @@ import {
   Truck,
   Check,
 } from 'lucide-react';
-import { db } from '@/lib/firebase';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
 
 const INDIAN_STATES = [
   'Andaman and Nicobar Islands',

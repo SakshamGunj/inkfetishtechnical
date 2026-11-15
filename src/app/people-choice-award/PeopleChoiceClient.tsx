@@ -75,23 +75,30 @@ export default function PeopleChoiceClient() {
           </div>
           <div className="flex items-center gap-2">
             <Link
-              href="/people-choice-award/vote"
-              className="bg-gradient-to-r from-[#bf953f] via-[#fcf6ba] to-[#aa771c] text-black font-serif font-bold text-xs px-3.5 py-1.5 rounded-full hover:brightness-110 transition-all shadow-[0_0_15px_rgba(212,175,55,0.3)] flex items-center gap-1.5"
+              href="/people-choice-award/winners"
+              className="bg-gradient-to-r from-[#bf953f] via-[#fcf6ba] to-[#aa771c] text-black font-serif font-bold text-xs px-3.5 py-1.5 rounded-full hover:brightness-110 transition-all shadow-[0_0_15px_rgba(212,175,55,0.4)] flex items-center gap-1.5 animate-pulse"
             >
-              <span>Vote Now 🗳️</span>
+              <Trophy className="w-3.5 h-3.5 text-black" />
+              <span>Winners Live! 🏆</span>
+            </Link>
+            <Link
+              href="/people-choice-award/vote"
+              className="border border-[#d4af37]/40 text-[#fcf6ba] hover:bg-[#1a1309] font-serif text-xs px-3 py-1.5 rounded-full transition-all"
+            >
+              <span>Voting Archive</span>
             </Link>
           </div>
         </div>
       </nav>
 
-      {/* --- TOP SCARCITY BAR --- */}
+      {/* --- TOP WINNERS ANNOUNCEMENT BAR --- */}
       <Link 
-        href="/people-choice-award/register"
-        className="block bg-gradient-to-r from-[#1c1408] via-[#2f220d] to-[#1c1408] border-b border-[#d4af37]/25 text-[#f3e5ab] py-2 px-3 text-center text-xs tracking-widest font-semibold hover:bg-[#2b1f0c] transition-colors"
+        href="/people-choice-award/winners"
+        className="block bg-gradient-to-r from-[#241708] via-[#35220c] to-[#241708] border-b border-[#d4af37]/40 text-[#fcf6ba] py-2.5 px-3 text-center text-xs tracking-wider font-serif font-bold hover:brightness-110 transition-all shadow-md"
       >
         <div className="flex items-center justify-center gap-2">
-          <span className="animate-ping inline-flex h-2 w-2 rounded-full bg-red-400 opacity-75" />
-          <span>Strictly Limited to <strong>250 Participants</strong> — Registrations Open! Click Here to Apply →</span>
+          <span className="inline-block animate-bounce">🏆</span>
+          <span>OFFICIAL RESULTS: India's Top 20 People's Choice Award 2026 Winners Announced! Click Here to View →</span>
         </div>
       </Link>
 

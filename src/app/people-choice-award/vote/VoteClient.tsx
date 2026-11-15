@@ -347,10 +347,13 @@ export default function VoteClient() {
           </Link>
 
           <div className="flex items-center gap-3">
-            <div className="inline-flex items-center gap-1.5 bg-[#14110c] border border-[#2e261a] px-3 py-1 rounded-full text-[11px] text-[#c5a059]">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              <span>Voting is Live 🗳️</span>
-            </div>
+            <Link
+              href="/people-choice-award/winners"
+              className="inline-flex items-center gap-1.5 bg-[#14110c] hover:bg-[#1f1911] border border-[#c5a059]/40 px-3 py-1 rounded-full text-[11px] text-[#c5a059] transition-colors"
+            >
+              <Trophy className="w-3 h-3 text-[#c5a059]" />
+              <span>Official Winners 🏆</span>
+            </Link>
             <Link
               href="/people-choice-award"
               className="text-xs text-[#9c9384] hover:text-[#ede8dd] transition-colors flex items-center gap-1 font-sans"

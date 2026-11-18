@@ -4,6 +4,7 @@ import crypto from 'crypto';
 import { getAdminDb } from '@/lib/firebase-admin';
 import { markSeptemberContestPaid } from '@/lib/septemberContestPayment';
 import { markNovemberContestPaid } from '@/lib/novemberContestPayment';
+import { markIwcContestPaid } from '@/lib/iwcContestPayment';
 
 // Force Node.js runtime for crypto support
 export const runtime = 'nodejs';
@@ -138,6 +139,30 @@ export async function POST(request: Request) {
           console.log(`November contest webhook ${orderId}: marked=${result.marked}, docId=${result.docId}`);
         } catch (err) {
           console.error('Failed to mark November contest paid from webhook', err);
+        }
+
+      // 2b4. INDIAN WRITERS CHAMPIONSHIP → mark Firestore registration PAID in background
+      } else if (orderId.startsWith('iwc_contest_')) {
+        try {
+          const result = await markIwcContestPaid({
+            orderId,
+            cfOrderId: String(order.cf_order_id || ''),
+            amount: Number(order.order_amount || 0),
+            tags: {
+              registrationId: tags.registrationId || '',
+              docId: tags.docId || '',
+              tier: tags.tier || '',
+              name: tags.name || payload.data?.customer_details?.customer_name || '',
+              email: tags.email || '',
+              phone: tags.phone || '',
+              age: tags.age || '',
+            },
+            email: tags.email || payload.data?.customer_details?.customer_email || '',
+            phone: tags.phone || payload.data?.customer_details?.customer_phone || '',
+          });
+          console.log(`Indian Writers Championship webhook ${orderId}: marked=${result.marked}, docId=${result.docId}`);
+        } catch (err) {
+          console.error('Failed to mark Indian Writers Championship paid from webhook', err);
         }
 
       // 2c. PEOPLE'S CHOICE AWARD → Update Firebase Firestore

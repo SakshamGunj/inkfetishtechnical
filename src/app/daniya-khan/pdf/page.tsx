@@ -15,6 +15,10 @@ export default function DaniyaKhanPdfPage() {
   const router = useRouter();
   const [faqOpen, setFaqOpen] = useState<number | null>(null);
   const [stickyVisible, setStickyVisible] = useState(false);
+  const [regionModalOpen, setRegionModalOpen] = useState(false);
+  const [selectedRegion, setSelectedRegion] = useState<"choice" | "international">("choice");
+  const [copiedField, setCopiedField] = useState<string | null>(null);
+
   const heroRef = useRef<HTMLDivElement>(null);
   const { scrollY } = useScroll();
   const floatY = useTransform(scrollY, [0, 600], [0, -40]);
@@ -22,22 +26,19 @@ export default function DaniyaKhanPdfPage() {
   useEffect(() => {
     const onScroll = () => setStickyVisible(window.scrollY > 500);
     window.addEventListener("scroll", onScroll);
-
-    // Auto-redirect if user already completed a PDF purchase
-    const savedOrderId = localStorage.getItem("daniya_pdf_last_order_id");
-    if (savedOrderId) {
-      fetch(`/api/daniya-khan/pdf/verify-order?order_id=${savedOrderId}`)
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.order_status === "PAID") {
-            router.push(`/daniya-khan/pdf/success?order_id=${savedOrderId}`);
-          }
-        })
-        .catch(() => {});
-    }
-
     return () => window.removeEventListener("scroll", onScroll);
-  }, [router]);
+  }, []);
+
+  const openPurchasePrompt = () => {
+    setSelectedRegion("choice");
+    setRegionModalOpen(true);
+  };
+
+  const handleCopy = (text: string, label: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedField(label);
+    setTimeout(() => setCopiedField(null), 2000);
+  };
 
   /* ── Reusable animation variants ── */
   const fadeUp = {
@@ -74,7 +75,7 @@ export default function DaniyaKhanPdfPage() {
       stars: 5,
     },
     {
-      text: "Buying from Dubai was seamless! I got the PDF download link immediately. Daniya writes about heartbreak with raw perfection.",
+      text: "Buying from Dubai was seamless! Sent the payment via PayPal and got my PDF right away. Daniya writes about heartbreak with raw perfection.",
       name: "Fatima K.",
       city: "Dubai, UAE",
       stars: 5,
@@ -86,7 +87,7 @@ export default function DaniyaKhanPdfPage() {
       stars: 5,
     },
     {
-      text: "Instant download, crisp typography, and unmatched words. Daniya Khan's voice demands to be read over and over.",
+      text: "Instant access, crisp typography, and unmatched words. Daniya Khan's voice demands to be read over and over.",
       name: "Zara K.",
       city: "Toronto, Canada",
       stars: 5,
@@ -95,12 +96,12 @@ export default function DaniyaKhanPdfPage() {
 
   const faqs = [
     {
-      q: "Can I buy this PDF if I live outside India?",
-      a: "Yes! Readers from India, UAE, US, UK, Canada, Australia, and worldwide can purchase and download the PDF instantly using International Cards or UPI.",
+      q: "How do I purchase from Inside India?",
+      a: "Click 'Purchase Now' and select 'Inside India (🇮🇳)'. You will be redirected to our official Cashfree payment form where you can pay easily via UPI, GPay, PhonePe, Paytm, or Indian Debit/Credit Cards.",
     },
     {
-      q: "How do I receive my PDF file?",
-      a: "Instant download! As soon as payment completes, your high-resolution PDF download button unlocks immediately on screen, and a backup copy is emailed to you.",
+      q: "How do I purchase if I live Outside India (International)?",
+      a: "Click 'Purchase Now' and select 'Outside India (🌍)'. You can send the payment via PayPal to her.blogss@gmail.com and email your payment screenshot to inkfetishh@gmail.com to receive your PDF book copy.",
     },
     {
       q: "Can I read this PDF on Phone, iPad, or Kindle?",
@@ -116,14 +117,14 @@ export default function DaniyaKhanPdfPage() {
     <div className="min-h-screen bg-[#F5F0E8] text-[#1A1A1A] font-serif selection:bg-[#F2A7B0] selection:text-[#1A1A1A] relative overflow-x-hidden">
       
       {/* ── TOP ANNOUNCEMENT BANNER ── */}
-      <div className="bg-[#1A1A1A] text-[#F5F0E8] text-xs font-ui py-2.5 px-4 sticky top-0 z-50 border-b border-white/10">
+      <div className="bg-[#1A1A1A] text-[#F5F0E8] text-xs font-ui py-2.5 px-4 sticky top-0 z-40 border-b border-white/10">
         <div className="flex items-center justify-between max-w-7xl mx-auto w-full">
           <div className="flex items-center gap-2 truncate">
             <span className="bg-[#F2A7B0] text-[#1A1A1A] px-2.5 py-0.5 rounded-full font-bold text-[10px] uppercase tracking-wider shrink-0">
               🌍 WORLDWIDE DIGITAL RELEASE
             </span>
             <span className="hidden sm:inline text-white/80">
-              Available for readers in India (₹99) & International ($1.99)
+              Available for readers Inside India & Outside India (Worldwide)
             </span>
           </div>
           <Link
@@ -161,7 +162,7 @@ export default function DaniyaKhanPdfPage() {
               <span className="font-display italic font-bold text-[#1A1A1A] block text-lg mb-1">
                 “to those who adorn their cemetery of grief with flowers of poetry.”
               </span>
-              A piece of heart for every soul that lost its own Freny. Download the official PDF E-Book instantly on your phone, tablet, or laptop — anywhere in the world.
+              A piece of heart for every soul that lost its own Freny. Read Daniya Khan&apos;s official PDF E-Book on your phone, tablet, or laptop — anywhere in the world.
             </motion.p>
 
             <motion.div variants={fadeUp} className="flex items-center gap-3 pt-1">
@@ -172,17 +173,17 @@ export default function DaniyaKhanPdfPage() {
             {/* Price & Action Button */}
             <motion.div variants={fadeUp} className="pt-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
               <button
-                onClick={() => router.push('/daniya-khan/pdf/checkout')}
-                className="pill-btn-pink text-base px-9 py-4 shadow-[4px_4px_0px_#1A1A1A] hover:translate-x-0.5 hover:translate-y-0.5 transition-all text-center"
+                onClick={openPurchasePrompt}
+                className="pill-btn-pink text-base px-9 py-4 shadow-[4px_4px_0px_#1A1A1A] hover:translate-x-0.5 hover:translate-y-0.5 transition-all text-center cursor-pointer"
               >
-                Download PDF — ₹99 / $1.99 ↗
+                Purchase Digital PDF Now ↗
               </button>
             </motion.div>
 
-            <motion.div variants={fadeUp} className="flex items-center gap-6 pt-3 text-xs text-[#777] font-ui">
-              <span>🇮🇳 UPI & Cards (India)</span>
-              <span>🌍 International Cards (Global)</span>
-              <span>⚡ Instant PDF Download</span>
+            <motion.div variants={fadeUp} className="flex flex-wrap items-center gap-5 pt-3 text-xs text-[#777] font-ui">
+              <span>🇮🇳 Inside India (UPI / Cards)</span>
+              <span>🌍 Outside India (PayPal)</span>
+              <span>📄 High-Res PDF Book</span>
             </motion.div>
           </motion.div>
 
@@ -208,7 +209,7 @@ export default function DaniyaKhanPdfPage() {
 
               {/* Floating stickers */}
               <FloatingTag rotate={-6} className="-top-4 -left-6 bg-[#F2A7B0]">
-                🌸 Instant Download
+                🌸 Digital PDF Edition
               </FloatingTag>
               <FloatingTag rotate={5} className="-bottom-4 -right-4 bg-[#F7E56B]">
                 📖 + The Lost Chapter
@@ -267,11 +268,11 @@ export default function DaniyaKhanPdfPage() {
       <section className="py-16 md:py-24 px-5 bg-[#FDFBF7] border-t-2 border-[#1A1A1A]">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
-            <span className="font-ui text-xs font-bold uppercase tracking-widest text-[#888]">INSTANT DIGITAL ACCESS</span>
+            <span className="font-ui text-xs font-bold uppercase tracking-widest text-[#888]">OFFICIAL DIGITAL PASS</span>
             <h2 className="font-display italic text-4xl md:text-5xl text-[#1A1A1A] mt-2">
               Get the Digital PDF Edition.
             </h2>
-            <p className="font-ui text-sm text-[#666] mt-2">Available for readers in India & International worldwide.</p>
+            <p className="font-ui text-sm text-[#666] mt-2">Available for readers Inside India & Outside India worldwide.</p>
           </div>
 
           <div className="bg-white border-2 border-[#1A1A1A] rounded-2xl p-8 md:p-10 shadow-[8px_8px_0px_#1A1A1A] max-w-2xl mx-auto relative">
@@ -285,18 +286,22 @@ export default function DaniyaKhanPdfPage() {
             </div>
 
             <h3 className="font-display italic text-3xl md:text-4xl text-[#1A1A1A]">
-              Deserted Hearts — PDF Edition
+              Deserted Hearts — Digital PDF
             </h3>
-            <p className="font-ui text-xs text-[#777] mt-1">Full poetry collection + Lost Chapter bonus</p>
+            <p className="font-ui text-xs text-[#777] mt-1">Complete poetry collection + The Lost Chapter bonus</p>
 
-            <div className="my-8 flex flex-wrap items-baseline gap-4 border-y-2 border-dashed border-[#DDD] py-6">
-              <div>
-                <p className="font-ui text-xs text-[#888]">Indian Readers</p>
-                <p className="font-display italic text-5xl font-bold text-[#1A1A1A]">₹99</p>
+            <div className="my-8 grid sm:grid-cols-2 gap-4 border-y-2 border-dashed border-[#DDD] py-6">
+              <div className="bg-[#F5F0E8] border-2 border-[#1A1A1A] rounded-xl p-4">
+                <p className="font-ui text-xs font-bold text-[#1A1A1A] flex items-center gap-1.5">
+                  <span>🇮🇳</span> Inside India Readers
+                </p>
+                <p className="font-ui text-xs text-[#666] mt-1">Pay via UPI, GPay, PhonePe, Paytm, or Cards via Cashfree</p>
               </div>
-              <div className="border-l-2 border-[#DDD] pl-6">
-                <p className="font-ui text-xs text-[#888]">International Readers</p>
-                <p className="font-display italic text-4xl font-bold text-[#1A1A1A]">$1.99 <span className="text-xs font-ui text-[#777]">USD</span></p>
+              <div className="bg-[#F5F0E8] border-2 border-[#1A1A1A] rounded-xl p-4">
+                <p className="font-ui text-xs font-bold text-[#1A1A1A] flex items-center gap-1.5">
+                  <span>🌍</span> Outside India Readers
+                </p>
+                <p className="font-ui text-xs text-[#666] mt-1">Pay via PayPal & receive your PDF copy directly via Email</p>
               </div>
             </div>
 
@@ -311,19 +316,19 @@ export default function DaniyaKhanPdfPage() {
               </li>
               <li className="flex items-center gap-3">
                 <span className="text-[#A8D8C0] font-bold text-lg">✓</span>
-                <span><strong>Instant On-Screen Download</strong> right after payment</span>
+                <span><strong>Compatible Across All Devices</strong> (iOS, Android, iPad, Laptop)</span>
               </li>
               <li className="flex items-center gap-3">
                 <span className="text-[#A8D8C0] font-bold text-lg">✓</span>
-                <span><strong>Backup Copy Emailed</strong> automatically to your inbox</span>
+                <span><strong>Lifetime Digital Copy</strong> delivered to your inbox</span>
               </li>
             </ul>
 
             <button
-              onClick={() => router.push('/daniya-khan/pdf/checkout')}
-              className="w-full pill-btn-pink text-base py-4 shadow-[4px_4px_0px_#1A1A1A] text-center"
+              onClick={openPurchasePrompt}
+              className="w-full pill-btn-pink text-base py-4 shadow-[4px_4px_0px_#1A1A1A] text-center cursor-pointer"
             >
-              Get Digital PDF Edition (₹99 / $1.99) ↗
+              Purchase Digital PDF Now ↗
             </button>
           </div>
 
@@ -394,27 +399,6 @@ export default function DaniyaKhanPdfPage() {
         </div>
       </section>
 
-      {/* ── SECTION 8.5: FEATURE YOUR WRITING ── */}
-      <section className="py-16 px-5 bg-[#1A1A1A] text-[#F5F0E8]">
-        <div className="max-w-4xl mx-auto text-center space-y-4">
-          <span className="bg-[#F2A7B0] text-[#1A1A1A] px-3 py-1 rounded-full text-xs font-ui font-bold uppercase tracking-wider">
-            FOR POETS & WRITERS
-          </span>
-          <h2 className="font-display italic text-3xl md:text-4xl">Want to get published by Inkfetish?</h2>
-          <p className="font-ui text-sm text-[#AAA] max-w-xl mx-auto">
-            Submit your manuscript or poem for feature publishing in our upcoming anthology publications.
-          </p>
-          <div className="pt-2">
-            <Link
-              href="/bharat-writes/submit"
-              className="inline-block bg-[#F7E56B] text-[#1A1A1A] font-ui font-bold rounded-full px-8 py-3.5 text-sm hover:bg-[#A8D8C0] transition-colors"
-            >
-              Submit Your Writing ↗
-            </Link>
-          </div>
-        </div>
-      </section>
-
       {/* ── CUSTOM FOOTER ── */}
       <footer className="bg-[#1A1A1A] text-[#F5F0E8] py-8 px-5 border-t border-white/10 text-center font-ui text-xs text-[#888]">
         <p>Deserted Hearts (Digital PDF Edition) · Daniya Khan — Official Publication by Inkfetish Publication</p>
@@ -428,18 +412,192 @@ export default function DaniyaKhanPdfPage() {
             initial={{ y: 80, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: 80, opacity: 0 }}
-            className="fixed bottom-0 left-0 right-0 z-50 md:hidden px-4 py-3 bg-[#F5F0E8] border-t-2 border-[#1A1A1A] flex items-center justify-between"
+            className="fixed bottom-0 left-0 right-0 z-40 md:hidden px-4 py-3 bg-[#F5F0E8] border-t-2 border-[#1A1A1A] flex items-center justify-between"
           >
             <div>
               <p className="font-display italic text-base font-bold">Deserted Hearts (PDF)</p>
-              <p className="font-ui text-xs text-[#777]">Digital Edition — ₹99 / $1.99</p>
+              <p className="font-ui text-xs text-[#777]">🇮🇳 India & 🌍 International</p>
             </div>
             <button
               className="pill-btn-pink text-sm px-5 py-3"
-              onClick={() => router.push('/daniya-khan/pdf/checkout')}
+              onClick={openPurchasePrompt}
             >
-              Get PDF ↗
+              Purchase PDF ↗
             </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* ── REGION SELECTION MODAL (INSIDE INDIA VS OUTSIDE INDIA) ── */}
+      <AnimatePresence>
+        {regionModalOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4"
+            onClick={() => setRegionModalOpen(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.92, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.92, opacity: 0, y: 20 }}
+              transition={{ type: "spring", duration: 0.4 }}
+              className="bg-[#F5F0E8] border-3 border-[#1A1A1A] rounded-2xl max-w-lg w-full p-6 md:p-8 shadow-[8px_8px_0px_#1A1A1A] relative"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Close Button */}
+              <button
+                onClick={() => setRegionModalOpen(false)}
+                className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white border-2 border-[#1A1A1A] flex items-center justify-center font-ui font-bold text-sm hover:bg-[#F2A7B0] transition-colors"
+              >
+                ✕
+              </button>
+
+              {selectedRegion === "choice" ? (
+                <div className="space-y-6">
+                  <div className="text-center">
+                    <span className="bg-[#F7E56B] border border-[#1A1A1A] text-[#1A1A1A] px-3 py-1 rounded-full text-[11px] font-ui font-bold uppercase tracking-wider">
+                      SELECT YOUR LOCATION
+                    </span>
+                    <h3 className="font-display italic text-3xl text-[#1A1A1A] mt-3">
+                      Where are you ordering from?
+                    </h3>
+                    <p className="font-ui text-xs text-[#666] mt-1">
+                      Choose your region to proceed with the right payment method.
+                    </p>
+                  </div>
+
+                  <div className="space-y-4">
+                    {/* Option 1: Inside India */}
+                    <a
+                      href="https://payments.cashfree.com/forms?code=Desertedheartsdigitalpdf"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block w-full bg-white border-2 border-[#1A1A1A] rounded-2xl p-5 hover:bg-[#A8D8C0]/30 transition-all shadow-[4px_4px_0px_#1A1A1A] group"
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3.5">
+                          <span className="text-3xl">🇮🇳</span>
+                          <div className="text-left">
+                            <p className="font-ui font-bold text-base text-[#1A1A1A] group-hover:underline">
+                              Inside India
+                            </p>
+                            <p className="font-ui text-xs text-[#666] mt-0.5">
+                              Pay via UPI, GPay, PhonePe, Paytm & Indian Cards
+                            </p>
+                          </div>
+                        </div>
+                        <span className="font-ui font-bold text-lg text-[#1A1A1A]">→</span>
+                      </div>
+                    </a>
+
+                    {/* Option 2: Outside India */}
+                    <button
+                      type="button"
+                      onClick={() => setSelectedRegion("international")}
+                      className="block w-full bg-white border-2 border-[#1A1A1A] rounded-2xl p-5 hover:bg-[#F2A7B0]/30 transition-all shadow-[4px_4px_0px_#1A1A1A] group text-left cursor-pointer"
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3.5">
+                          <span className="text-3xl">🌍</span>
+                          <div>
+                            <p className="font-ui font-bold text-base text-[#1A1A1A] group-hover:underline">
+                              Outside India (International)
+                            </p>
+                            <p className="font-ui text-xs text-[#666] mt-0.5">
+                              Pay via PayPal & receive PDF via Email
+                            </p>
+                          </div>
+                        </div>
+                        <span className="font-ui font-bold text-lg text-[#1A1A1A]">→</span>
+                      </div>
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="space-y-5">
+                  <button
+                    onClick={() => setSelectedRegion("choice")}
+                    className="font-ui text-xs font-bold text-[#666] hover:text-[#1A1A1A] flex items-center gap-1"
+                  >
+                    ← Back to region selection
+                  </button>
+
+                  <div className="text-center">
+                    <span className="bg-[#F2A7B0] border border-[#1A1A1A] text-[#1A1A1A] px-3 py-1 rounded-full text-[11px] font-ui font-bold uppercase tracking-wider">
+                      🌍 INTERNATIONAL READERS (OUTSIDE INDIA)
+                    </span>
+                    <h3 className="font-display italic text-3xl text-[#1A1A1A] mt-2">
+                      PayPal Payment Instructions
+                    </h3>
+                    <p className="font-ui text-xs text-[#666] mt-1">
+                      Follow these 2 simple steps to get your Digital PDF copy of <strong>Deserted Hearts</strong>:
+                    </p>
+                  </div>
+
+                  {/* Step 1: PayPal */}
+                  <div className="bg-white border-2 border-[#1A1A1A] rounded-xl p-4 shadow-[3px_3px_0px_#1A1A1A] space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="bg-[#F7E56B] border border-[#1A1A1A] px-2.5 py-0.5 rounded-full text-[10px] font-ui font-bold">
+                        STEP 1: SEND PAYMENT VIA PAYPAL
+                      </span>
+                    </div>
+                    <p className="font-ui text-xs text-[#555]">
+                      Send your payment on PayPal using this email address:
+                    </p>
+                    <div className="flex items-center justify-between bg-[#F5F0E8] border border-[#1A1A1A] rounded-lg px-3 py-2.5">
+                      <span className="font-mono font-bold text-sm text-[#1A1A1A] select-all">
+                        her.blogss@gmail.com
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => handleCopy("her.blogss@gmail.com", "paypal")}
+                        className="bg-[#1A1A1A] text-white text-[11px] font-ui font-bold px-3 py-1 rounded-md hover:bg-[#F2A7B0] hover:text-[#1A1A1A] transition-colors shrink-0"
+                      >
+                        {copiedField === "paypal" ? "✓ Copied!" : "Copy Email"}
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Step 2: Email Screenshot */}
+                  <div className="bg-white border-2 border-[#1A1A1A] rounded-xl p-4 shadow-[3px_3px_0px_#1A1A1A] space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="bg-[#A8D8C0] border border-[#1A1A1A] px-2.5 py-0.5 rounded-full text-[10px] font-ui font-bold">
+                        STEP 2: EMAIL SCREENSHOT TO GET PDF
+                      </span>
+                    </div>
+                    <p className="font-ui text-xs text-[#555]">
+                      Email us with your <strong>screenshot of payment</strong> at:
+                    </p>
+                    <div className="flex items-center justify-between bg-[#F5F0E8] border border-[#1A1A1A] rounded-lg px-3 py-2.5">
+                      <span className="font-mono font-bold text-sm text-[#1A1A1A] select-all">
+                        inkfetishh@gmail.com
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => handleCopy("inkfetishh@gmail.com", "support")}
+                        className="bg-[#1A1A1A] text-white text-[11px] font-ui font-bold px-3 py-1 rounded-md hover:bg-[#A8D8C0] hover:text-[#1A1A1A] transition-colors shrink-0"
+                      >
+                        {copiedField === "support" ? "✓ Copied!" : "Copy Email"}
+                      </button>
+                    </div>
+                    <p className="font-ui text-[11px] text-[#777] pt-1">
+                      💌 Our team will send your Digital PDF book right to your email! Thanks!
+                    </p>
+                  </div>
+
+                  <div className="pt-2 flex flex-col sm:flex-row gap-3">
+                    <a
+                      href="mailto:inkfetishh@gmail.com?subject=Deserted%20Hearts%20PDF%20-%20PayPal%20Payment%20Screenshot&body=Hi%20Inkfetish%20Team%2C%0A%0AI%20have%20completed%20the%20PayPal%20payment%20to%20her.blogss%40gmail.com.%20Please%20find%20attached%20my%20payment%20screenshot.%0A%0AThank%20you!"
+                      className="w-full pill-btn-pink py-3.5 text-sm text-center shadow-[3px_3px_0px_#1A1A1A]"
+                    >
+                      ✉️ Open Email to Send Screenshot ↗
+                    </a>
+                  </div>
+                </div>
+              )}
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>

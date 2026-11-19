@@ -1,6 +1,5 @@
 import { ImageResponse } from 'next/og';
 
-export const runtime = 'edge';
 export const alt = 'Indian Writers Championship — The Biggest Writing Championship on the Internet by ink.fetish';
 export const size = {
   width: 1200,

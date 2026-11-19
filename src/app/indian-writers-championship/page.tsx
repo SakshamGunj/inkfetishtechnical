@@ -2,12 +2,12 @@ import { Metadata } from 'next';
 import IndianWritersChampionshipPortal from '@/components/contests/IndianWritersChampionshipPortal';
 
 export const metadata: Metadata = {
-  title: 'Indian Writers Championship | The National Writing Competition by ink.fetish',
+  title: 'Indian Writers Championship — ₹10,000 Cash Prize Pool | ink.fetish',
   description:
-    'Indian Writers Championship — The National Writing Competition organised by ink.fetish (216,000+ Instagram Followers). ₹10,000 Cash Prize Pool + Winner Memento & Medal · NGO-Verified Recognition · Open to Writers & Poets Across India (Poetry, Short Stories, Novels & Creative Writing). Entry starts at ₹199.',
+    'The Biggest Writing Championship on the Internet — Inviting Beginners & Experienced Writers. ₹10,000 Cash Prize Pool + Winner Memento & Medal · NGO-Verified Certificate · Judged by 5 Judges · Results Live on Zoom. Entry starts at ₹199.',
   keywords: [
     'Indian Writers Championship',
-    'The National Writing Competition',
+    'The Biggest Writing Championship on the Internet',
     'Inkfetish writing competition',
     'ink.fetish contest',
     'national poetry and writing contest India',
@@ -19,37 +19,19 @@ export const metadata: Metadata = {
     canonical: 'https://www.inkfetish.in/indian-writers-championship',
   },
   openGraph: {
-    title: 'Indian Writers Championship | The National Writing Competition by ink.fetish',
+    title: 'Indian Writers Championship — ₹10,000 Cash Prize Pool | ink.fetish',
     description:
-      'Organised by ink.fetish (216,000+ Instagram Followers). ₹10,000 Cash Prize Pool (1st: ₹5,000 · 2nd: ₹3,000 · 3rd: ₹1,000 · 4th: ₹1,000) + Winner Memento & Medal + NGO-Verified Recognition. Only 350 Participants · Results Live on Zoom.',
+      'The Biggest Writing Championship on the Internet — Inviting Beginners & Experienced Writers. ₹10,000 Cash Prize Pool (1st: ₹5,000 · 2nd: ₹3,000 · 3rd: ₹1,000 · 4th: ₹1,000) + Winner Memento & Medal · NGO-Verified Certificate. Entry starts at ₹199.',
     url: 'https://www.inkfetish.in/indian-writers-championship',
     siteName: 'ink.fetish · Inkfetish Publication',
     type: 'website',
     locale: 'en_IN',
-    images: [
-      {
-        url: 'https://www.inkfetish.in/images/inkfetish_logo.webp',
-        width: 800,
-        height: 800,
-        alt: 'Indian Writers Championship — Organised by ink.fetish',
-      },
-      {
-        url: 'https://www.inkfetish.in/images/inkfetish_logo.png',
-        width: 800,
-        height: 800,
-        alt: 'Inkfetish Publication Official Logo',
-      },
-    ],
   },
   twitter: {
-    card: 'summary',
-    title: 'Indian Writers Championship | The National Writing Competition by ink.fetish',
+    card: 'summary_large_image',
+    title: 'Indian Writers Championship — ₹10,000 Cash Prize Pool | ink.fetish',
     description:
-      '₹10,000 Cash Prize Pool + Winner Memento & Medal + NGO-Verified Recognition. Open to Writers & Poets Across India in Poetry, Short Stories, Novels & Creative Writing.',
-    images: [
-      'https://www.inkfetish.in/images/inkfetish_logo.webp',
-      'https://www.inkfetish.in/images/inkfetish_logo.png',
-    ],
+      'The Biggest Writing Championship on the Internet — Inviting Beginners & Experienced Writers. ₹10,000 Cash Prize Pool + Winner Memento & Medal · NGO-Verified Certificate. Entry starts at ₹199.',
     creator: '@inkfetish',
   },
   icons: {

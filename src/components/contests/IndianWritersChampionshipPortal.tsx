@@ -38,12 +38,13 @@ import {
 const IWC_COLLECTION = 'indian_writers_championship_2026';
 
 /* ──────────────────────────────────────────────────────────────────────────
-   POSTER-INSPIRED REGAL MIDNIGHT NAVY & CHAMPAGNE GOLD PALETTE
-   Midnight Navy:   #081826  (Deep Literary Night Canvas)
-   Royal Prussian:  #0D2438  (Elevated Card Surface)
-   Champagne Gold:  #E5C687  (Primary Regal Accent & Metallic Highlights)
-   Rich Gold:       #C89D54  (Gold Gradient & Borders)
-   Parchment Ivory: #FBF6EC  (Crisp Warm Editorial Text)
+   TRUSTWORTHY EDITORIAL PALETTE (INSPIRED BY OXFORD NAVY & ANTIQUE GOLD)
+   Warm Ivory Paper: #F5F8FC  (Clean, readable editorial canvas)
+   Crisp Surface:    #FFFFFF  (High-trust form & card surface)
+   Oxford Navy:      #0F2744  (Primary institutional ink, headers & CTAs)
+   Slate Navy:       #475A70  (Secondary body copy)
+   Antique Gold:     #B8862D  (Understated prestige accent)
+   Champagne Tint:   #E8F0FA  (Subtle highlight & badge surface)
    ────────────────────────────────────────────────────────────────────────── */
 
 export interface IwcSubmissionRecord {
@@ -55,7 +56,6 @@ export interface IwcSubmissionRecord {
   age: string;
   tier?: '1_entry' | '2_entries';
   amount?: number;
-  homeDeliveryIncluded?: boolean;
   category: string;
   language: string;
   theme: string;
@@ -365,7 +365,7 @@ export default function IndianWritersChampionshipPortal() {
           const nextDocId = reg?.docId || verified.docId || urlRegId || savedDraft?.docId || '';
           const nextTier = reg?.tier || savedDraft?.tier || '1_entry';
           const nextAmount =
-            reg?.amount || savedDraft?.amount || (nextTier === '2_entries' ? 399 : 199);
+            reg?.amount || savedDraft?.amount || (nextTier === '2_entries' ? 299 : 199);
 
           setIsPaid(true);
           setErrorMessage('');
@@ -487,7 +487,7 @@ export default function IndianWritersChampionshipPortal() {
     formData.entry2Content,
   ]);
 
-  // STEP 1 HANDLER: Register Author Details & Open Cashfree Payment (₹199 or ₹399)
+  // STEP 1 HANDLER: Register Author Details & Open Cashfree Payment (₹199 or ₹299)
   const handleProceedToPayment = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage('');
@@ -508,7 +508,7 @@ export default function IndianWritersChampionshipPortal() {
       return;
     }
 
-    const amount = selectedTier === '2_entries' ? 399 : 199;
+    const amount = selectedTier === '2_entries' ? 299 : 199;
     const regCode =
       registrationId || docId || `IWC26-${Math.floor(100000 + Math.random() * 900000)}`;
     const targetDocId = docId || regCode;
@@ -540,7 +540,6 @@ export default function IndianWritersChampionshipPortal() {
         age: formData.age.trim(),
         tier: selectedTier,
         amount,
-        homeDeliveryIncluded: selectedTier === '2_entries',
         contest: IWC_COLLECTION,
         contestName: 'Indian Writers Championship — The National Writing Competition',
         updated_at: new Date().toISOString(),
@@ -600,7 +599,7 @@ export default function IndianWritersChampionshipPortal() {
           whatsapp: cleanPhone,
           age: formData.age.trim(),
           tier: paidTier,
-          amount: paidTier === '2_entries' ? 399 : 199,
+          amount: paidTier === '2_entries' ? 299 : 199,
           paymentStatus: 'PAID',
           paidOrderId: orderData.order_id,
         });
@@ -630,17 +629,6 @@ export default function IndianWritersChampionshipPortal() {
       void setDoc(
         doc(db, IWC_COLLECTION, nextDocId),
         {
-          cashfree_order_id: orderData.order_id,
-          cashfree_order_ids: arrayUnion(orderData.order_id),
-          updated_at: new Date().toISOString(),
-        },
-        { merge: true }
-      ).catch(() => {});
-
-      void setDoc(
-        doc(db, 'september_contest_registrations', nextDocId),
-        {
-          contest: IWC_COLLECTION,
           cashfree_order_id: orderData.order_id,
           cashfree_order_ids: arrayUnion(orderData.order_id),
           updated_at: new Date().toISOString(),
@@ -779,7 +767,7 @@ export default function IndianWritersChampionshipPortal() {
     const finalRegCode =
       registrationId || docId || `IWC26-${Math.floor(100000 + Math.random() * 900000)}`;
     const targetDocId = docId || finalRegCode;
-    const amount = selectedTier === '2_entries' ? 399 : 199;
+    const amount = selectedTier === '2_entries' ? 299 : 199;
 
     const submissionPayload: IwcSubmissionRecord = {
       registrationId: finalRegCode,
@@ -790,7 +778,6 @@ export default function IndianWritersChampionshipPortal() {
       age: formData.age.trim(),
       tier: selectedTier,
       amount,
-      homeDeliveryIncluded: selectedTier === '2_entries',
       category: formData.category,
       language: formData.language,
       theme: 'Open Theme',
@@ -832,32 +819,17 @@ export default function IndianWritersChampionshipPortal() {
         { merge: true }
       ).then(() => true);
 
-      const clientMirrorPromise = setDoc(
-        doc(db, 'september_contest_submissions', targetDocId),
-        {
-          ...submissionPayload,
-          contest: IWC_COLLECTION,
-          payment_status: 'PAID',
-          contestName: 'Indian Writers Championship — The National Writing Competition',
-          submittedAt: serverTimestamp(),
-          updated_at: new Date().toISOString(),
-        },
-        { merge: true }
-      ).then(() => true);
-
-      const [apiResult, primaryResult, mirrorResult] = await Promise.allSettled([
+      const [apiResult, primaryResult] = await Promise.allSettled([
         apiPromise,
         clientPrimaryPromise,
-        clientMirrorPromise,
       ]);
 
       const anySucceeded =
         (apiResult.status === 'fulfilled' && apiResult.value === true) ||
-        (primaryResult.status === 'fulfilled' && primaryResult.value === true) ||
-        (mirrorResult.status === 'fulfilled' && mirrorResult.value === true);
+        (primaryResult.status === 'fulfilled' && primaryResult.value === true);
 
       if (!anySucceeded) {
-        await addDoc(collection(db, 'september_contest_submissions'), {
+        await addDoc(collection(db, IWC_COLLECTION), {
           ...submissionPayload,
           contest: IWC_COLLECTION,
           payment_status: 'PAID',
@@ -881,26 +853,69 @@ export default function IndianWritersChampionshipPortal() {
   };
 
   return (
-    <div className="min-h-screen bg-[#081826] text-[#FBF6EC] font-['Plus_Jakarta_Sans',sans-serif] selection:bg-[#E5C687] selection:text-[#081826] overflow-x-hidden relative">
+    <div className="min-h-screen bg-[#F5F8FC] text-[#0F2744] font-['Plus_Jakarta_Sans',sans-serif] selection:bg-[#0F2744] selection:text-[#F5F8FC] overflow-x-hidden">
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
-
-        .font-championship {
-          font-family: 'Cinzel', 'Cormorant Garamond', Georgia, serif;
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,500;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
         .font-editorial {
-          font-family: 'Cormorant Garamond', Georgia, serif;
+          font-family: 'Playfair Display', Georgia, serif;
         }
 
-        .gold-text-gradient {
-          background: linear-gradient(180deg, #FFF5D6 0%, #E5C687 52%, #C89D54 100%);
+        @keyframes championship-text-shine {
+          0% {
+            background-position: 200% 50%;
+          }
+          100% {
+            background-position: -50% 50%;
+          }
+        }
+
+        .championship-shine-text {
+          background: linear-gradient(
+            110deg,
+            #1E3A8A 0%,
+            #4338CA 25%,
+            #7C3AED 40%,
+            #C7D2FE 50%,
+            #6D28D9 60%,
+            #2563EB 78%,
+            #1E3A8A 100%
+          );
+          background-size: 250% 100%;
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
+          animation: championship-text-shine 2.8s ease-in-out infinite;
         }
 
-        .gold-btn-gradient {
-          background: linear-gradient(180deg, #F3DFB2 0%, #DFB973 50%, #C69A4B 100%);
+        @keyframes card-shine-sweep {
+          0% {
+            transform: translateX(-140%) skewX(-18deg);
+          }
+          55%, 100% {
+            transform: translateX(240%) skewX(-18deg);
+          }
+        }
+
+        .championship-glass-card {
+          position: relative;
+          overflow: hidden;
+        }
+
+        .championship-glass-card::after {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 48%;
+          height: 100%;
+          background: linear-gradient(
+            90deg,
+            transparent 0%,
+            rgba(255, 255, 255, 0.16) 50%,
+            transparent 100%
+          );
+          pointer-events: none;
+          animation: card-shine-sweep 3s ease-in-out infinite;
         }
 
         @keyframes inkfetish-marquee-rtl {
@@ -918,128 +933,129 @@ export default function IndianWritersChampionshipPortal() {
           animation: inkfetish-marquee-rtl 48s linear infinite;
           will-change: transform;
         }
+
+        button, a {
+          touch-action: manipulation;
+        }
       `}</style>
 
-      {/* Subtle Ambient Radial Spotlight Inspired by the Poster */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none fixed inset-0 z-0"
-        style={{
-          background:
-            'radial-gradient(circle at 50% 15%, rgba(229, 198, 135, 0.10) 0%, rgba(16, 46, 71, 0.45) 45%, rgba(8, 24, 38, 0.98) 100%)',
-        }}
-      />
-
       {/* ══════════════════════════════════════════════════════════════════════
-          OPTIMIZED STICKY NAVBAR WITH OFFICIAL LOGO & 216,000+ FOLLOWERS
+          OPTIMIZED STICKY NAVBAR WITH OFFICIAL LOGO & VERIFIED CREDENTIALS
          ══════════════════════════════════════════════════════════════════════ */}
-      <header className="sticky top-0 z-40 bg-[#081826]/95 backdrop-blur-md border-b border-[#E5C687]/20">
-        <div className="max-w-2xl mx-auto px-4 sm:px-6 py-2.5 min-h-16 flex items-center justify-between gap-3">
-          <div className="flex items-center gap-3">
+      <header className="sticky top-0 z-40 bg-[#F5F8FC]/95 backdrop-blur-md border-t-4 border-t-[#0F2744] border-b border-[#0F2744]/15">
+        <div className="max-w-2xl mx-auto px-3.5 sm:px-6 py-2.5 min-h-16 flex items-center justify-between gap-2.5 sm:gap-3">
+          <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
             <img
               src="/images/inkfetish_logo.webp"
               alt="Inkfetish Logo"
               fetchPriority="high"
               decoding="async"
-              className="w-10 h-10 rounded-full object-cover border-2 border-[#E5C687] shrink-0"
+              className="w-9 h-9 sm:w-10 sm:h-10 rounded-full object-cover border-2 border-[#0F2744] shrink-0"
             />
-            <div>
-              <div className="flex items-center gap-1.5">
-                <span className="font-editorial font-bold tracking-tight text-lg sm:text-xl text-[#FBF6EC] leading-none">
+            <div className="min-w-0">
+              <div className="flex items-center gap-1.5 flex-wrap">
+                <span className="font-extrabold tracking-tight text-sm sm:text-lg text-[#0F2744] leading-none">
                   ink.fetish
                 </span>
-                <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full bg-[#E5C687]/20 border border-[#E5C687]/40 text-[#E5C687] text-[9px] font-extrabold uppercase tracking-wider">
-                  <ShieldCheck className="w-2.5 h-2.5 text-[#E5C687]" />
+                <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full bg-[#E8F0FA] border border-[#1E4E8C]/25 text-[#0F2744] text-[9px] font-extrabold uppercase tracking-wider">
+                  <ShieldCheck className="w-2.5 h-2.5 text-[#1E4E8C]" />
                   <span>NGO-Verified</span>
                 </span>
               </div>
-              <p className="text-[10px] sm:text-[11px] font-semibold text-[#E5C687] leading-snug mt-0.5">
+              <p className="text-[10px] sm:text-[11px] font-semibold text-[#475A70] leading-snug mt-0.5 truncate">
                 216,000+ Instagram Followers · GST &amp; MSME Registered
               </p>
             </div>
           </div>
 
-          <span className="shrink-0 px-3 py-1 rounded-full bg-[#E5C687]/15 border border-[#E5C687]/40 text-[#E5C687] text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider">
+          <span className="shrink-0 px-2.5 sm:px-3 py-1 rounded-full bg-[#0F2744] text-[#F5F8FC] text-[10px] sm:text-[11px] font-bold">
             Only 350 Seats
           </span>
         </div>
       </header>
 
-      <main className="relative z-10 max-w-2xl mx-auto px-4 sm:px-6 pt-8 pb-20 space-y-12 sm:space-y-16">
+      <main className="max-w-2xl mx-auto px-4 sm:px-6 pt-6 sm:pt-8 pb-16 sm:pb-20 space-y-10 sm:space-y-16">
         {/* ══════════════════════════════════════════════════════════════════════
-            1. POSTER-INSPIRED REGAL HERO HEADER
+            1. INSTITUTIONAL, TRUSTWORTHY HERO HEADER
            ══════════════════════════════════════════════════════════════════════ */}
-        <section className="text-center space-y-5">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#0D2438] border border-[#E5C687]/40 text-[#E5C687] text-[11px] sm:text-xs font-bold tracking-wide">
-            <span>Open to Writers &amp; Poets Across India 🇮🇳 · NGO-Verified Recognition</span>
+        <section className="text-center space-y-4 sm:space-y-5">
+          <div className="inline-flex items-center gap-2 px-3 sm:px-3.5 py-1 rounded-full bg-[#E8F0FA] border border-[#1E4E8C]/30 text-[#0F2744] text-[10.5px] sm:text-xs font-bold">
+            <span>Open Theme · All Languages · Online Submission</span>
           </div>
 
           <div className="space-y-2">
-            <h1 className="font-championship text-4xl sm:text-5xl md:text-6xl font-bold tracking-wide gold-text-gradient leading-[1.05] uppercase">
-              Indian Writers Championship
+            <h1 className="font-editorial text-[40px] sm:text-6xl md:text-[66px] font-bold tracking-tight text-[#0F2744] leading-[1.06]">
+              Indian Writers{' '}
+              <span className="italic championship-shine-text pr-1 pb-1 inline-block border-b-2 border-[#4F46E5]/50">
+                Championship
+              </span>
             </h1>
-            <p className="font-editorial italic text-2xl sm:text-3xl text-[#FBF6EC]/90 tracking-wide">
-              The National Writing Competition
+            <p className="font-editorial italic text-lg sm:text-2xl text-[#1E4E8C] max-w-xl mx-auto leading-snug">
+              The Biggest Writing Championship on the Internet — Inviting Beginners &amp; Experienced Writers
             </p>
           </div>
 
-          <p className="text-xs sm:text-sm text-[#B8CADB] max-w-md mx-auto leading-relaxed">
-            Organised by <strong className="text-[#FBF6EC]">ink.fetish</strong> (216,000+ Instagram
+          <p className="text-xs sm:text-sm text-[#475A70] max-w-md mx-auto leading-relaxed">
+            Organised by <strong className="text-[#0F2744]">ink.fetish</strong> (216,000+ Instagram
             Followers). Submit your Poetry, Short Stories, Novels, or Creative Writing below.
           </p>
 
-          {/* Poster Highlight Strip: 4 Key Competition Details + ₹10,000 Cash Prize Pool */}
-          <div className="rounded-2xl bg-[#0D2438]/90 border border-[#E5C687]/35 p-4 sm:p-5 shadow-xl space-y-4">
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pb-3.5 border-b border-[#E5C687]/20">
-              <div className="text-center sm:text-left">
-                <span className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-[#E5C687] block">
-                  GRAND NATIONAL HONORS
+          {/* Celebratory Blue-Purple Glassmorphic Shiny Prize & Schedule Card */}
+          <div className="championship-glass-card rounded-2xl bg-gradient-to-br from-[#0F2744]/95 via-[#262B78]/95 to-[#4C1D95]/95 backdrop-blur-xl border border-indigo-200/35 p-4 sm:p-6 shadow-[0_20px_50px_rgba(38,43,120,0.28)] space-y-4 text-white">
+            <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3.5 border-b border-white/15">
+              <div className="text-center sm:text-left space-y-1">
+                <span className="text-[10px] font-bold uppercase tracking-[0.22em] text-indigo-200/90 block">
+                  NATIONAL PRIZE POOL
                 </span>
-                <div className="font-championship text-2xl sm:text-3xl font-bold gold-text-gradient leading-tight">
-                  ₹10,000 Cash Prize Pool
+                <div className="font-['Plus_Jakarta_Sans',sans-serif] text-2xl sm:text-4xl font-extrabold tracking-tight tabular-nums text-white leading-none">
+                  ₹10,000{' '}
+                  <span className="text-lg sm:text-2xl font-bold text-indigo-100">
+                    Cash Prize Pool
+                  </span>
                 </div>
-                <p className="text-[11px] font-semibold text-[#FBF6EC]/85 mt-0.5">
-                  1st: ₹5,000 · 2nd: ₹3,000 · 3rd: ₹1,000 · 4th: ₹1,000
-                </p>
               </div>
-              <div className="shrink-0 px-3.5 py-1.5 rounded-full gold-btn-gradient text-[#081826] text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider shadow-sm">
-                + Winner Memento &amp; Medal
+              <div className="shrink-0 self-center sm:self-auto inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-amber-300/15 backdrop-blur-md border border-amber-200/35 text-amber-100 text-[11px] font-bold tracking-wide shadow-sm">
+                <Medal className="w-3.5 h-3.5 text-amber-200 shrink-0" />
+                <span>+ Winner Memento &amp; Medal</span>
               </div>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-left">
-              <div className="rounded-xl bg-[#081826]/80 border border-[#E5C687]/20 p-2.5 flex items-center gap-2">
-                <Laptop className="w-4 h-4 text-[#E5C687] shrink-0" />
+            <div className="relative z-10 grid grid-cols-2 sm:grid-cols-4 gap-2 tabular-nums">
+              {[
+                { rank: '1st Prize', amount: '₹5,000' },
+                { rank: '2nd Prize', amount: '₹3,000' },
+                { rank: '3rd Prize', amount: '₹1,000' },
+                { rank: '4th Prize', amount: '₹1,000' },
+              ].map((item) => (
+                <div
+                  key={item.rank}
+                  className="rounded-xl bg-white/12 backdrop-blur-md border border-white/20 px-3 py-2.5 text-center"
+                >
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-indigo-200 block leading-tight">
+                    {item.rank}
+                  </span>
+                  <strong className="text-base sm:text-lg font-extrabold text-white block leading-tight mt-0.5">
+                    {item.amount}
+                  </strong>
+                </div>
+              ))}
+            </div>
+
+            <div className="relative z-10 grid grid-cols-2 gap-2 text-left">
+              <div className="rounded-xl bg-white/10 backdrop-blur-md border border-white/20 p-2.5 flex items-center gap-2">
+                <Users className="w-4 h-4 text-indigo-200 shrink-0" />
                 <div>
-                  <span className="text-[10px] text-[#B8CADB] block leading-tight">Mode</span>
-                  <span className="text-[11px] font-extrabold text-[#FBF6EC] leading-tight block">
-                    Online Entry
+                  <span className="text-[10px] text-indigo-200 block leading-tight">Jury Panel</span>
+                  <span className="text-[11px] font-extrabold text-white leading-tight block">
+                    Judged by 5 Judges
                   </span>
                 </div>
               </div>
-              <div className="rounded-xl bg-[#081826]/80 border border-[#E5C687]/20 p-2.5 flex items-center gap-2">
-                <Users className="w-4 h-4 text-[#E5C687] shrink-0" />
+              <div className="rounded-xl bg-white/10 backdrop-blur-md border border-white/20 p-2.5 flex items-center gap-2">
+                <Video className="w-4 h-4 text-indigo-200 shrink-0" />
                 <div>
-                  <span className="text-[10px] text-[#B8CADB] block leading-tight">Intake</span>
-                  <span className="text-[11px] font-extrabold text-[#E5C687] leading-tight block">
-                    Only 350 Seats
-                  </span>
-                </div>
-              </div>
-              <div className="rounded-xl bg-[#081826]/80 border border-[#E5C687]/20 p-2.5 flex items-center gap-2">
-                <Hourglass className="w-4 h-4 text-[#E5C687] shrink-0" />
-                <div>
-                  <span className="text-[10px] text-[#B8CADB] block leading-tight">Window</span>
-                  <span className="text-[11px] font-extrabold text-[#FBF6EC] leading-tight block">
-                    Open 10 Days
-                  </span>
-                </div>
-              </div>
-              <div className="rounded-xl bg-[#081826]/80 border border-[#E5C687]/20 p-2.5 flex items-center gap-2">
-                <Video className="w-4 h-4 text-[#E5C687] shrink-0" />
-                <div>
-                  <span className="text-[10px] text-[#B8CADB] block leading-tight">Results</span>
-                  <span className="text-[11px] font-extrabold text-[#E5C687] leading-tight block">
+                  <span className="text-[10px] text-indigo-200 block leading-tight">Results</span>
+                  <span className="text-[11px] font-extrabold text-white leading-tight block">
                     Live on Zoom
                   </span>
                 </div>
@@ -1049,20 +1065,18 @@ export default function IndianWritersChampionshipPortal() {
 
           {/* Spec Pills (Entry Starts at ₹199 + 6-Avatar Trusted by 3,900+ Writers across India) */}
           <div className="pt-1 grid grid-cols-2 gap-2.5 max-w-md mx-auto text-center">
-            <div className="rounded-2xl bg-[#0D2438] border border-[#E5C687]/40 px-3 py-3 flex flex-col items-center justify-center">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-[#E5C687] block">
-                Entry Starts At
+            <div className="rounded-2xl bg-[#E8F0FA]/80 border border-[#B8862D]/35 px-3 py-3 flex flex-col items-center justify-center">
+              <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-[#1E4E8C]">
+                <ShieldCheck className="w-3.5 h-3.5 text-[#1E4E8C]" />
+                <span>Certificate</span>
               </span>
-              <span className="font-championship text-xl sm:text-2xl font-bold text-[#FBF6EC] mt-0.5 block leading-none">
-                ₹199
-              </span>
-              <span className="text-[10px] font-semibold text-[#B8CADB] mt-1 block">
-                Poetry · Stories · Novels
+              <span className="text-xs sm:text-sm font-extrabold text-[#0F2744] mt-1 block leading-snug">
+                Officially NGO-Verified 🇮🇳
               </span>
             </div>
 
             {/* 6-Icon Writer Avatar Stack + 4.9/5 Stars + Trusted by 3,900+ writers across India */}
-            <div className="rounded-2xl bg-[#0D2438] border border-[#E5C687]/40 px-2.5 py-2.5 flex flex-col items-center justify-center">
+            <div className="rounded-2xl bg-[#E8F0FA]/80 border border-[#B8862D]/35 px-2.5 py-2.5 flex flex-col items-center justify-center">
               <div className="flex items-center justify-center -space-x-1.5 mb-1">
                 {PAST_WRITER_IMAGES.slice(0, 6).map((writer, i) => (
                   <img
@@ -1070,20 +1084,31 @@ export default function IndianWritersChampionshipPortal() {
                     src={writer.url}
                     alt={`Writer ${i + 1}`}
                     decoding="async"
-                    className="w-5 h-5 rounded-full border border-[#E5C687] object-cover"
+                    className="w-5 h-5 rounded-full border border-white object-cover"
                   />
                 ))}
               </div>
-              <div className="flex items-center justify-center gap-0.5 text-[#E5C687] mb-0.5">
+              <div className="flex items-center justify-center gap-0.5 text-[#B8862D] mb-0.5">
                 {Array.from({ length: 5 }).map((_, i) => (
-                  <Star key={i} className="w-2.5 h-2.5 fill-current text-[#E5C687]" />
+                  <Star key={i} className="w-2.5 h-2.5 fill-current text-[#B8862D]" />
                 ))}
-                <span className="text-[#FBF6EC] font-extrabold text-[10px] ml-0.5">4.9/5</span>
+                <span className="text-[#0F2744] font-extrabold text-[10px] ml-0.5">4.9/5</span>
               </div>
-              <span className="text-[10px] sm:text-[11px] font-bold text-[#FBF6EC] leading-tight block">
-                Trusted by <strong className="text-[#E5C687]">3,900+</strong> writers across India
+              <span className="text-[10px] sm:text-[11px] font-bold text-[#0F2744] leading-tight block">
+                Trusted by <strong className="font-extrabold">3,900+</strong> writers across India
               </span>
             </div>
+          </div>
+
+          <div className="pt-1 max-w-md mx-auto">
+            <button
+              type="button"
+              onClick={scrollToPortal}
+              className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#0F2744] via-[#262B78] to-[#4C1D95] hover:opacity-95 text-white font-extrabold text-xs sm:text-sm py-3.5 px-6 shadow-[0_12px_28px_rgba(38,43,120,0.25)] transition-opacity cursor-pointer"
+            >
+              <span>Register &amp; Submit Your Entry</span>
+              <ArrowRight className="w-4 h-4 text-indigo-200" />
+            </button>
           </div>
         </section>
 
@@ -1094,7 +1119,7 @@ export default function IndianWritersChampionshipPortal() {
           aria-label="Past Inkfetish Writers & Winners"
           className="w-screen relative left-1/2 -translate-x-1/2 space-y-3"
         >
-          <p className="text-center text-[10px] sm:text-[11px] font-extrabold uppercase tracking-[0.18em] text-[#E5C687] px-4">
+          <p className="text-center text-[10px] sm:text-[11px] font-extrabold uppercase tracking-[0.18em] text-[#475A70] px-4">
             Trusted by 3,900+ Certified Writers &amp; Winners Across India
           </p>
 
@@ -1103,7 +1128,7 @@ export default function IndianWritersChampionshipPortal() {
               {[...PAST_WRITER_IMAGES, ...PAST_WRITER_IMAGES].map((img, idx) => (
                 <div
                   key={`${img.url}-${idx}`}
-                  className="w-36 h-36 sm:w-44 sm:h-44 aspect-square mr-1 overflow-hidden border border-[#E5C687]/30 bg-[#0D2438] shrink-0"
+                  className="w-36 h-44 sm:w-44 sm:h-52 mr-1 overflow-hidden border border-[#0F2744]/15 bg-[#E8F0FA] shrink-0"
                 >
                   <img
                     src={img.url}
@@ -1126,7 +1151,7 @@ export default function IndianWritersChampionshipPortal() {
               ].map((imgUrl, idx) => (
                 <div
                   key={imgUrl}
-                  className="overflow-hidden border border-[#E5C687]/30 bg-[#0D2438]"
+                  className="overflow-hidden border border-[#0F2744]/15 bg-[#E8F0FA]"
                 >
                   <img
                     src={imgUrl}
@@ -1143,23 +1168,23 @@ export default function IndianWritersChampionshipPortal() {
 
         {/* ══════════════════════════════════════════════════════════════════════
             2. TWO-PART OFFICIAL PORTAL CARD:
-               PART A (UNPAID): AUTHOR DETAILS + ENTRY PLAN (₹199 / ₹399) + CASHFREE PAY
+               PART A (UNPAID): AUTHOR DETAILS + ENTRY PLAN (₹199 / ₹299) + CASHFREE PAY
                PART B (PAID):   DIRECT ENTRY SUBMISSION UNLOCKED IN-PLACE
            ══════════════════════════════════════════════════════════════════════ */}
         <section
           id="submission-portal"
-          className="rounded-2xl sm:rounded-3xl border-2 border-[#E5C687]/70 bg-[#0D2438] shadow-2xl overflow-hidden scroll-mt-16"
+          className="rounded-2xl sm:rounded-3xl border-2 border-[#262B78]/85 bg-white shadow-[0_20px_50px_rgba(38,43,120,0.12)] overflow-hidden scroll-mt-16"
         >
-          {/* Official Royal Gold & Navy Top Banner */}
-          <div className="bg-gradient-to-r from-[#06131E] via-[#0F2C45] to-[#06131E] border-b border-[#E5C687]/35 px-4 sm:px-8 py-4 sm:py-5 flex items-center justify-between gap-2">
+          {/* Official Royal Navy-Indigo Top Banner */}
+          <div className="bg-gradient-to-r from-[#0F2744] via-[#262B78] to-[#3B1D82] text-white px-4 sm:px-8 py-4 sm:py-5 flex items-center justify-between gap-2">
             <div>
-              <div className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full gold-btn-gradient text-[#081826] text-[9px] sm:text-[10px] font-extrabold uppercase tracking-wider mb-1">
-                <ShieldCheck className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
+              <div className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-white/15 backdrop-blur-md border border-white/25 text-indigo-100 text-[9px] sm:text-[10px] font-extrabold uppercase tracking-wider mb-1">
+                <ShieldCheck className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-indigo-200" />
                 <span>
                   {isPaid ? 'Payment Verified · Step 2 of 2' : 'Official Championship Portal'}
                 </span>
               </div>
-              <h2 className="font-editorial font-bold text-2xl sm:text-4xl text-[#FBF6EC] leading-tight">
+              <h2 className="font-editorial font-bold text-2xl sm:text-4xl text-white leading-tight">
                 {isPaid
                   ? selectedTier === '2_entries'
                     ? 'Submit Your 2 Championship Entries'
@@ -1168,24 +1193,17 @@ export default function IndianWritersChampionshipPortal() {
               </h2>
             </div>
 
-            {isPaid ? (
-              <div className="shrink-0 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#E5C687]/15 border border-[#E5C687]/40 text-[10px] sm:text-[11px] font-semibold text-[#E5C687]">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#E5C687]" />
+            {isPaid && (
+              <div className="shrink-0 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white/10 border border-white/20 text-[10px] sm:text-[11px] font-semibold text-white">
+                <span className="w-1.5 h-1.5 rounded-full bg-indigo-200" />
                 <span>{selectedTier === '2_entries' ? '2 Forms' : '1 Form'}</span>
-              </div>
-            ) : (
-              <div className="hidden sm:flex flex-col items-end text-right">
-                <span className="text-[10px] uppercase tracking-wider font-extrabold text-[#E5C687]">
-                  Limited Intake
-                </span>
-                <span className="text-xs font-bold text-[#FBF6EC]/85">Only 350 Participants</span>
               </div>
             )}
           </div>
 
           {isCheckingPayment && !isPaid && (
-            <div className="bg-[#E5C687]/15 border-b border-[#E5C687]/30 px-4 py-2 flex items-center justify-center gap-2 text-xs font-bold text-[#E5C687]">
-              <Clock className="w-3.5 h-3.5 animate-spin" />
+            <div className="bg-[#E8F0FA] border-b border-[#262B78]/15 px-4 py-2 flex items-center justify-center gap-2 text-xs font-bold text-[#0F2744]">
+              <Clock className="w-3.5 h-3.5 animate-spin text-[#262B78]" />
               <span>Verifying your payment status...</span>
             </div>
           )}
@@ -1197,23 +1215,23 @@ export default function IndianWritersChampionshipPortal() {
             <form onSubmit={handleProceedToPayment} className="p-4 sm:p-7 space-y-5">
               {/* ── 01: AUTHOR DETAILS ── */}
               <div className="space-y-3">
-                <div className="flex items-center justify-between border-b border-[#E5C687]/20 pb-1.5">
+                <div className="flex items-center justify-between border-b border-[#0F2744]/12 pb-1.5">
                   <div className="flex items-center gap-1.5">
-                    <span className="px-1.5 py-0.5 rounded gold-btn-gradient text-[#081826] text-[10px] font-extrabold">
+                    <span className="px-1.5 py-0.5 rounded bg-gradient-to-r from-[#0F2744] to-[#262B78] text-white text-[10px] font-extrabold">
                       01
                     </span>
-                    <span className="text-[11px] sm:text-xs font-extrabold uppercase tracking-wider text-[#E5C687]">
+                    <span className="text-[11px] sm:text-xs font-extrabold uppercase tracking-wider text-[#0F2744]">
                       Author Registration Details
                     </span>
                   </div>
-                  <span className="text-[10px] font-semibold text-[#B8CADB] hidden sm:inline">
+                  <span className="text-[10px] font-semibold text-[#475A70] hidden sm:inline">
                     Used for NGO-Verified Certificate
                   </span>
                 </div>
 
                 {/* Row 1: Full Name */}
                 <div>
-                  <label className="block text-[11px] sm:text-xs font-bold text-[#FBF6EC] mb-1">
+                  <label className="block text-[11px] sm:text-xs font-bold text-[#0F2744] mb-1">
                     Full Name (as on Certificate) *
                   </label>
                   <input
@@ -1223,18 +1241,18 @@ export default function IndianWritersChampionshipPortal() {
                     placeholder="Enter your full name"
                     value={formData.fullName}
                     onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                    className="w-full rounded-xl bg-[#081826] border-2 border-[#E5C687]/30 text-[#FBF6EC] font-semibold px-3 py-2.5 sm:py-3 text-[16px] sm:text-sm placeholder:text-[#B8CADB]/45 focus:outline-none focus:border-[#E5C687] transition-colors"
+                    className="w-full rounded-xl bg-[#F5F8FC] border-2 border-[#0F2744]/15 text-[#0F2744] font-semibold px-3 py-2.5 sm:py-3 text-[16px] sm:text-sm placeholder:text-[#475A70]/50 focus:outline-none focus:border-[#262B78] transition-colors"
                   />
                 </div>
 
                 {/* Row 2: WhatsApp + Age (Side-by-Side on Mobile & Desktop) */}
                 <div className="grid grid-cols-12 gap-2.5 sm:gap-3">
                   <div className="col-span-8">
-                    <label className="block text-[11px] sm:text-xs font-bold text-[#FBF6EC] mb-1">
+                    <label className="block text-[11px] sm:text-xs font-bold text-[#0F2744] mb-1">
                       WhatsApp Number *
                     </label>
-                    <div className="flex rounded-xl overflow-hidden border-2 border-[#E5C687]/30 bg-[#081826] focus-within:border-[#E5C687] transition-colors">
-                      <span className="inline-flex items-center px-2.5 sm:px-3 bg-[#E5C687]/20 text-[#E5C687] text-xs font-extrabold border-r border-[#E5C687]/25">
+                    <div className="flex rounded-xl overflow-hidden border-2 border-[#0F2744]/15 bg-[#F5F8FC] focus-within:border-[#262B78] transition-colors">
+                      <span className="inline-flex items-center px-2.5 sm:px-3 bg-[#E8F0FA] text-[#0F2744] text-xs font-extrabold border-r border-[#0F2744]/12">
                         +91
                       </span>
                       <input
@@ -1251,13 +1269,13 @@ export default function IndianWritersChampionshipPortal() {
                             whatsapp: e.target.value.replace(/\D/g, '').slice(0, 10),
                           })
                         }
-                        className="w-full bg-[#081826] text-[#FBF6EC] font-semibold px-2.5 sm:px-3 py-2.5 sm:py-3 text-[16px] sm:text-sm placeholder:text-[#B8CADB]/45 focus:outline-none"
+                        className="w-full bg-[#F5F8FC] text-[#0F2744] font-semibold px-2.5 sm:px-3 py-2.5 sm:py-3 text-[16px] sm:text-sm placeholder:text-[#475A70]/50 focus:outline-none tabular-nums"
                       />
                     </div>
                   </div>
 
                   <div className="col-span-4">
-                    <label className="block text-[11px] sm:text-xs font-bold text-[#FBF6EC] mb-1">
+                    <label className="block text-[11px] sm:text-xs font-bold text-[#0F2744] mb-1">
                       Your Age *
                     </label>
                     <input
@@ -1269,14 +1287,14 @@ export default function IndianWritersChampionshipPortal() {
                       placeholder="e.g. 21"
                       value={formData.age}
                       onChange={(e) => setFormData({ ...formData, age: e.target.value })}
-                      className="w-full rounded-xl bg-[#081826] border-2 border-[#E5C687]/30 text-[#FBF6EC] font-semibold px-2.5 sm:px-3 py-2.5 sm:py-3 text-[16px] sm:text-sm placeholder:text-[#B8CADB]/45 focus:outline-none focus:border-[#E5C687] transition-colors"
+                      className="w-full rounded-xl bg-[#F5F8FC] border-2 border-[#0F2744]/15 text-[#0F2744] font-semibold px-2.5 sm:px-3 py-2.5 sm:py-3 text-[16px] sm:text-sm placeholder:text-[#475A70]/50 focus:outline-none focus:border-[#262B78] transition-colors tabular-nums"
                     />
                   </div>
                 </div>
 
                 {/* Row 3: Email Address */}
                 <div>
-                  <label className="block text-[11px] sm:text-xs font-bold text-[#FBF6EC] mb-1">
+                  <label className="block text-[11px] sm:text-xs font-bold text-[#0F2744] mb-1">
                     Email Address *
                   </label>
                   <input
@@ -1286,23 +1304,23 @@ export default function IndianWritersChampionshipPortal() {
                     placeholder="you@example.com"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full rounded-xl bg-[#081826] border-2 border-[#E5C687]/30 text-[#FBF6EC] font-semibold px-3 py-2.5 sm:py-3 text-[16px] sm:text-sm placeholder:text-[#B8CADB]/45 focus:outline-none focus:border-[#E5C687] transition-colors"
+                    className="w-full rounded-xl bg-[#F5F8FC] border-2 border-[#0F2744]/15 text-[#0F2744] font-semibold px-3 py-2.5 sm:py-3 text-[16px] sm:text-sm placeholder:text-[#475A70]/50 focus:outline-none focus:border-[#262B78] transition-colors"
                   />
                 </div>
               </div>
 
               {/* ── 02: SELECT HOW MANY ENTRIES YOU WANT TO SUBMIT ── */}
               <div className="space-y-2.5">
-                <div className="flex items-center justify-between border-b border-[#E5C687]/20 pb-1.5">
+                <div className="flex items-center justify-between border-b border-[#0F2744]/12 pb-1.5">
                   <div className="flex items-center gap-1.5">
-                    <span className="px-1.5 py-0.5 rounded gold-btn-gradient text-[#081826] text-[10px] font-extrabold">
+                    <span className="px-1.5 py-0.5 rounded bg-gradient-to-r from-[#0F2744] to-[#262B78] text-white text-[10px] font-extrabold">
                       02
                     </span>
-                    <span className="text-[11px] sm:text-xs font-extrabold uppercase tracking-wider text-[#E5C687]">
+                    <span className="text-[11px] sm:text-xs font-extrabold uppercase tracking-wider text-[#0F2744]">
                       How Many Entries to Submit?
                     </span>
                   </div>
-                  <span className="text-[10px] font-semibold text-[#B8CADB]">
+                  <span className="text-[10px] font-semibold text-[#475A70]">
                     Select Plan
                   </span>
                 </div>
@@ -1314,16 +1332,20 @@ export default function IndianWritersChampionshipPortal() {
                     onClick={() => setSelectedTier('1_entry')}
                     className={`text-left rounded-xl sm:rounded-2xl p-3.5 sm:p-4 border-2 transition-all cursor-pointer flex flex-col justify-between gap-1.5 ${
                       selectedTier === '1_entry'
-                        ? 'bg-[#E5C687]/15 text-[#FBF6EC] border-[#E5C687] shadow-lg'
-                        : 'bg-[#081826] text-[#FBF6EC] border-[#E5C687]/25 hover:border-[#E5C687]/60'
+                        ? 'bg-gradient-to-br from-[#0F2744] via-[#262B78] to-[#3B1D82] text-white border-[#262B78] shadow-lg'
+                        : 'bg-[#F5F8FC] text-[#0F2744] border-[#0F2744]/18 hover:border-[#262B78]'
                     }`}
                   >
                     <div className="flex items-center justify-between gap-2">
-                      <div className="flex items-baseline gap-2">
-                        <span className="font-championship font-bold text-2xl sm:text-3xl text-[#E5C687] leading-none">
+                      <div className="flex items-baseline gap-2 tabular-nums">
+                        <span className="font-extrabold text-2xl sm:text-3xl leading-none tracking-tight">
                           ₹199
                         </span>
-                        <span className="text-xs font-extrabold text-[#FBF6EC]">
+                        <span
+                          className={`text-xs font-bold ${
+                            selectedTier === '1_entry' ? 'text-indigo-200' : 'text-[#0F2744]'
+                          }`}
+                        >
                           · 1 Entry Submission
                         </span>
                       </div>
@@ -1331,40 +1353,48 @@ export default function IndianWritersChampionshipPortal() {
                       <span
                         className={`w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0 ${
                           selectedTier === '1_entry'
-                            ? 'border-[#E5C687] bg-[#E5C687]'
-                            : 'border-[#E5C687]/40'
+                            ? 'border-indigo-200 bg-indigo-200'
+                            : 'border-[#0F2744]/35'
                         }`}
                       >
                         {selectedTier === '1_entry' && (
-                          <span className="w-1.5 h-1.5 rounded-full bg-[#081826]" />
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#0F2744]" />
                         )}
                       </span>
                     </div>
 
-                    <p className="text-[11px] leading-snug text-[#B8CADB]">
+                    <p
+                      className={`text-[11px] leading-snug ${
+                        selectedTier === '1_entry' ? 'text-indigo-100/90' : 'text-[#475A70]'
+                      }`}
+                    >
                       Submit 1 Entry + Guaranteed NGO-Verified Certificate &amp; Appreciation Letter.
                     </p>
                   </button>
 
-                  {/* Option 2: 2 Entries — ₹399 (+45% Winning Chance + Home Delivery + Double Jury Review) */}
+                  {/* Option 2: 2 Entries — ₹299 (+45% Winning Chance + Double Jury Review) */}
                   <button
                     type="button"
                     onClick={() => setSelectedTier('2_entries')}
                     className={`relative text-left rounded-xl sm:rounded-2xl p-3.5 sm:p-4 border-2 transition-all cursor-pointer flex flex-col justify-between gap-1.5 ${
                       selectedTier === '2_entries'
-                        ? 'bg-[#E5C687]/20 text-[#FBF6EC] border-[#E5C687] shadow-lg'
-                        : 'bg-[#081826] text-[#FBF6EC] border-[#E5C687]/35 hover:border-[#E5C687]/70'
+                        ? 'bg-gradient-to-br from-[#0F2744] via-[#262B78] to-[#4C1D95] text-white border-[#262B78] shadow-lg'
+                        : 'bg-[#E8F0FA]/80 text-[#0F2744] border-[#262B78]/35 hover:border-[#262B78]'
                     }`}
                   >
                     <div className="flex items-center justify-between gap-2">
-                      <div className="flex items-baseline gap-2 flex-wrap">
-                        <span className="font-championship font-bold text-2xl sm:text-3xl text-[#E5C687] leading-none">
-                          ₹399
+                      <div className="flex items-baseline gap-2 flex-wrap tabular-nums">
+                        <span className="font-extrabold text-2xl sm:text-3xl leading-none tracking-tight">
+                          ₹299
                         </span>
-                        <span className="text-xs font-extrabold text-[#FBF6EC]">
+                        <span
+                          className={`text-xs font-bold ${
+                            selectedTier === '2_entries' ? 'text-indigo-100' : 'text-[#0F2744]'
+                          }`}
+                        >
                           · 2 Entries
                         </span>
-                        <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full gold-btn-gradient text-[#081826] text-[9px] font-extrabold uppercase tracking-wider">
+                        <span className="inline-flex items-center gap-0.5 px-2 py-0.5 rounded-full bg-amber-300 text-[#0F2744] text-[9px] font-extrabold uppercase tracking-wider">
                           <Sparkles className="w-2.5 h-2.5" />
                           <span>+45% Winning Chance</span>
                         </span>
@@ -1373,61 +1403,64 @@ export default function IndianWritersChampionshipPortal() {
                       <span
                         className={`w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0 ${
                           selectedTier === '2_entries'
-                            ? 'border-[#E5C687] bg-[#E5C687]'
-                            : 'border-[#E5C687]/40'
+                            ? 'border-indigo-200 bg-indigo-200'
+                            : 'border-[#0F2744]/35'
                         }`}
                       >
                         {selectedTier === '2_entries' && (
-                          <span className="w-1.5 h-1.5 rounded-full bg-[#081826]" />
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#0F2744]" />
                         )}
                       </span>
                     </div>
 
-                    <p className="text-[11px] leading-snug text-[#B8CADB]">
-                      Submit 2 Entries · <strong className="text-[#E5C687]">Home Delivery</strong> of
-                      Certificate + <strong className="text-[#FBF6EC]">45% higher chance of winning</strong>{' '}
-                      + Double Jury Review.
+                    <p
+                      className={`text-[11px] leading-snug ${
+                        selectedTier === '2_entries' ? 'text-indigo-100/90' : 'text-[#475A70]'
+                      }`}
+                    >
+                      Submit 2 Entries · <strong>45% higher chance of winning</strong> + Double Jury
+                      Review.
                     </p>
                   </button>
                 </div>
               </div>
 
               {errorMessage && (
-                <div className="rounded-xl bg-[#E5C687]/10 border border-[#E5C687]/40 px-3.5 py-2 text-xs font-bold text-[#E5C687]">
+                <div className="rounded-xl bg-[#0F2744]/5 border border-[#0F2744]/25 px-3.5 py-2 text-xs font-bold text-[#0F2744]">
                   ⚠️ {errorMessage}
                 </div>
               )}
 
-              {/* Pay & Proceed CTA Button (Styled like Poster's Gold Pill Button) */}
+              {/* Pay & Proceed CTA Button */}
               <div className="space-y-2">
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full rounded-full gold-btn-gradient hover:opacity-95 text-[#081826] font-extrabold text-sm sm:text-base py-3.5 sm:py-4 px-6 shadow-xl transition-opacity flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60 uppercase tracking-wider"
+                  className="w-full rounded-xl bg-gradient-to-r from-[#0F2744] via-[#262B78] to-[#4C1D95] hover:opacity-95 text-white font-extrabold text-sm sm:text-base py-3.5 sm:py-4 px-5 shadow-[0_12px_28px_rgba(38,43,120,0.28)] transition-opacity flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60 tabular-nums"
                 >
                   {isSubmitting ? (
                     <>
-                      <Clock className="w-4 h-4 animate-spin text-[#081826]" />
+                      <Clock className="w-4 h-4 animate-spin text-indigo-200" />
                       <span>Opening Secure Payment...</span>
                     </>
                   ) : (
                     <>
                       <span>
-                        Register Now · Pay ₹{selectedTier === '2_entries' ? '399' : '199'} (
-                        {selectedTier === '2_entries' ? '2 Entries + Home Delivery' : '1 Entry'})
+                        Pay ₹{selectedTier === '2_entries' ? '299' : '199'} &amp; Submit Your{' '}
+                        {selectedTier === '2_entries' ? '2 Entries' : 'Entry'}
                       </span>
-                      <ArrowRight className="w-4 h-4 text-[#081826]" />
+                      <ArrowRight className="w-4 h-4 text-indigo-200" />
                     </>
                   )}
                 </button>
 
-                <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-0.5 text-[10px] sm:text-[11px] font-semibold text-[#B8CADB] text-center">
-                  <span className="inline-flex items-center gap-1 text-[#E5C687]">
-                    <Lock className="w-3 h-3" />
+                <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-0.5 text-[10px] sm:text-[11px] font-semibold text-[#475A70] text-center">
+                  <span className="inline-flex items-center gap-1 text-[#0F2744]">
+                    <Lock className="w-3 h-3 text-[#262B78]" />
                     <span>100% Secure Cashfree Checkout</span>
                   </span>
                   <span>·</span>
-                  <span>Entry Submission Form Opens Here Immediately After Payment</span>
+                  <span>Entry Form Opens Here After Payment</span>
                 </div>
               </div>
             </form>
@@ -1435,49 +1468,49 @@ export default function IndianWritersChampionshipPortal() {
             /* ══════════════════════════════════════════════════════════════════
                PART 2: DIRECT ENTRY SUBMISSION (UNLOCKED IN-PLACE AFTER PAYMENT)
                - If 1_entry (₹199): Renders 1 Entry Submission Form
-               - If 2_entries (₹399): Renders 2 Entry Submission Forms (Entry 1 + Entry 2)
+               - If 2_entries (₹299): Renders 2 Entry Submission Forms (Entry 1 + Entry 2)
                ══════════════════════════════════════════════════════════════════ */
             <form onSubmit={handleFinalEntrySubmit} className="p-4 sm:p-7 space-y-4 sm:space-y-5">
               {/* Verified Author Summary Strip */}
-              <div className="rounded-xl bg-[#081826] border border-[#E5C687]/45 px-3.5 py-2.5 flex items-center justify-between gap-2">
+              <div className="rounded-xl bg-[#E8F0FA] border border-[#B8862D]/40 px-3.5 py-2.5 flex items-center justify-between gap-2">
                 <div className="min-w-0">
-                  <div className="flex items-center gap-1.5 text-xs font-extrabold text-[#E5C687] truncate">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-[#E5C687] shrink-0" />
+                  <div className="flex items-center gap-1.5 text-xs font-extrabold text-[#0F2744] truncate">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-[#B8862D] shrink-0" />
                     <span className="truncate">Verified: {formData.fullName}</span>
                   </div>
-                  <p className="text-[10px] sm:text-[11px] font-semibold text-[#B8CADB]">
-                    ID: <strong className="text-[#FBF6EC]">{registrationId}</strong> ·{' '}
+                  <p className="text-[10px] sm:text-[11px] font-semibold text-[#475A70]">
+                    ID: <strong className="text-[#0F2744]">{registrationId}</strong> ·{' '}
                     {selectedTier === '2_entries'
-                      ? '2 Entries + Home Delivery Plan (₹399)'
+                      ? '2 Entries Plan (₹299)'
                       : '1 Entry Plan (₹199)'}
                   </p>
                 </div>
-                <span className="shrink-0 px-2.5 py-0.5 rounded-full gold-btn-gradient text-[#081826] text-[9px] font-extrabold uppercase tracking-wider">
+                <span className="shrink-0 px-2.5 py-0.5 rounded-full bg-[#0F2744] text-[#F5F8FC] text-[9px] font-extrabold uppercase tracking-wider">
                   Paid ✓
                 </span>
               </div>
 
               {/* ── ENTRY SUBMISSION FORM #1 ── */}
-              <div className="rounded-xl sm:rounded-2xl border-2 border-[#E5C687]/30 bg-[#081826] p-3.5 sm:p-5 space-y-3.5">
-                <div className="flex items-center justify-between border-b border-[#E5C687]/20 pb-2">
+              <div className="rounded-xl sm:rounded-2xl border-2 border-[#0F2744]/15 bg-[#F5F8FC] p-3.5 sm:p-5 space-y-3.5">
+                <div className="flex items-center justify-between border-b border-[#0F2744]/12 pb-2">
                   <div className="flex items-center gap-1.5">
-                    <span className="px-2 py-0.5 rounded gold-btn-gradient text-[#081826] text-[10px] font-extrabold uppercase tracking-wider">
+                    <span className="px-2 py-0.5 rounded bg-[#0F2744] text-[#F5F8FC] text-[10px] font-extrabold uppercase tracking-wider">
                       {selectedTier === '2_entries' ? 'Entry 01' : 'Entry'}
                     </span>
-                    <span className="text-[11px] sm:text-xs font-extrabold uppercase tracking-wider text-[#E5C687]">
+                    <span className="text-[11px] sm:text-xs font-extrabold uppercase tracking-wider text-[#0F2744]">
                       {selectedTier === '2_entries'
                         ? 'First Championship Entry (1 of 2)'
                         : 'Your Championship Entry'}
                     </span>
                   </div>
-                  <span className="text-[10px] font-semibold text-[#B8CADB] hidden sm:inline">
+                  <span className="text-[10px] font-semibold text-[#475A70] hidden sm:inline">
                     Theme: Open Subject
                   </span>
                 </div>
 
                 {/* 1-Tap Category Pills */}
                 <div>
-                  <label className="block text-[11px] sm:text-xs font-bold text-[#FBF6EC] mb-1.5">
+                  <label className="block text-[11px] sm:text-xs font-bold text-[#0F2744] mb-1.5">
                     Select Category *
                   </label>
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 sm:gap-2">
@@ -1490,8 +1523,8 @@ export default function IndianWritersChampionshipPortal() {
                           onClick={() => setFormData({ ...formData, category: cat })}
                           className={`rounded-lg sm:rounded-xl py-2 px-2.5 text-xs font-extrabold transition-all cursor-pointer border ${
                             active
-                              ? 'gold-btn-gradient text-[#081826] border-[#E5C687] shadow-sm'
-                              : 'bg-[#0D2438] text-[#FBF6EC] border-[#E5C687]/25 hover:border-[#E5C687]/60'
+                              ? 'bg-[#0F2744] text-[#F5F8FC] border-[#0F2744] shadow-sm'
+                              : 'bg-white text-[#0F2744] border-[#0F2744]/15 hover:border-[#0F2744]'
                           }`}
                         >
                           {cat}
@@ -1504,16 +1537,16 @@ export default function IndianWritersChampionshipPortal() {
                 {/* Language + Title */}
                 <div className="grid grid-cols-12 gap-2.5 sm:gap-3">
                   <div className="col-span-5 sm:col-span-4">
-                    <label className="block text-[11px] sm:text-xs font-bold text-[#FBF6EC] mb-1">
+                    <label className="block text-[11px] sm:text-xs font-bold text-[#0F2744] mb-1">
                       Language *
                     </label>
                     <select
                       value={formData.language}
                       onChange={(e) => setFormData({ ...formData, language: e.target.value })}
-                      className="w-full rounded-xl bg-[#0D2438] border-2 border-[#E5C687]/30 text-[#FBF6EC] font-semibold px-2.5 py-2.5 sm:py-3 text-[16px] sm:text-sm focus:outline-none focus:border-[#E5C687] transition-colors"
+                      className="w-full rounded-xl bg-white border-2 border-[#0F2744]/15 text-[#0F2744] font-semibold px-2.5 py-2.5 sm:py-3 text-[16px] sm:text-sm focus:outline-none focus:border-[#0F2744] transition-colors"
                     >
                       {LANGUAGES.map((lang) => (
-                        <option key={lang} value={lang} className="bg-[#081826] text-[#FBF6EC]">
+                        <option key={lang} value={lang}>
                           {lang}
                         </option>
                       ))}
@@ -1521,7 +1554,7 @@ export default function IndianWritersChampionshipPortal() {
                   </div>
 
                   <div className="col-span-7 sm:col-span-8">
-                    <label className="block text-[11px] sm:text-xs font-bold text-[#FBF6EC] mb-1">
+                    <label className="block text-[11px] sm:text-xs font-bold text-[#0F2744] mb-1">
                       Title of Your {formData.category} *
                     </label>
                     <input
@@ -1530,7 +1563,7 @@ export default function IndianWritersChampionshipPortal() {
                       placeholder={`Enter ${formData.category.toLowerCase()} title`}
                       value={formData.title}
                       onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                      className="w-full rounded-xl bg-[#0D2438] border-2 border-[#E5C687]/30 text-[#FBF6EC] font-semibold px-3 py-2.5 sm:py-3 text-[16px] sm:text-sm placeholder:text-[#B8CADB]/45 focus:outline-none focus:border-[#E5C687] transition-colors"
+                      className="w-full rounded-xl bg-white border-2 border-[#0F2744]/15 text-[#0F2744] font-semibold px-3 py-2.5 sm:py-3 text-[16px] sm:text-sm placeholder:text-[#475A70]/50 focus:outline-none focus:border-[#0F2744] transition-colors"
                     />
                   </div>
                 </div>
@@ -1538,10 +1571,10 @@ export default function IndianWritersChampionshipPortal() {
                 {/* Writing Content */}
                 <div>
                   <div className="flex items-center justify-between mb-1">
-                    <label className="block text-[11px] sm:text-xs font-bold text-[#FBF6EC]">
+                    <label className="block text-[11px] sm:text-xs font-bold text-[#0F2744]">
                       Write or Paste Your {formData.category} *
                     </label>
-                    <span className="px-2 py-0.5 rounded-full bg-[#E5C687]/15 border border-[#E5C687]/30 text-[#E5C687] text-[10px] font-bold">
+                    <span className="px-2 py-0.5 rounded-full bg-[#E8F0FA] text-[#0F2744] text-[10px] font-bold">
                       {currentLineCount} lines · {currentWordCount} words
                     </span>
                   </div>
@@ -1551,31 +1584,31 @@ export default function IndianWritersChampionshipPortal() {
                     placeholder="Paste or type your complete entry here..."
                     value={formData.content}
                     onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-                    className="w-full rounded-xl bg-[#0D2438] border-2 border-[#E5C687]/30 text-[#FBF6EC] font-medium p-3 text-[16px] sm:text-sm placeholder:text-[#B8CADB]/45 focus:outline-none focus:border-[#E5C687] leading-relaxed min-h-[145px] transition-colors"
+                    className="w-full rounded-xl bg-white border-2 border-[#0F2744]/15 text-[#0F2744] font-medium p-3 text-[16px] sm:text-sm placeholder:text-[#475A70]/50 focus:outline-none focus:border-[#0F2744] leading-relaxed min-h-[145px] transition-colors"
                   />
                 </div>
               </div>
 
               {/* ── ENTRY SUBMISSION FORM #2 (ONLY SHOWN WHEN 2 ENTRIES PLAN WAS PAID) ── */}
               {selectedTier === '2_entries' && (
-                <div className="rounded-xl sm:rounded-2xl border-2 border-[#E5C687]/45 bg-[#081826] p-3.5 sm:p-5 space-y-3.5">
-                  <div className="flex items-center justify-between border-b border-[#E5C687]/20 pb-2">
+                <div className="rounded-xl sm:rounded-2xl border-2 border-[#B8862D]/45 bg-[#E8F0FA]/45 p-3.5 sm:p-5 space-y-3.5">
+                  <div className="flex items-center justify-between border-b border-[#0F2744]/12 pb-2">
                     <div className="flex items-center gap-1.5">
-                      <span className="px-2 py-0.5 rounded gold-btn-gradient text-[#081826] text-[10px] font-extrabold uppercase tracking-wider">
+                      <span className="px-2 py-0.5 rounded bg-[#0F2744] text-[#F5F8FC] text-[10px] font-extrabold uppercase tracking-wider">
                         Entry 02
                       </span>
-                      <span className="text-[11px] sm:text-xs font-extrabold uppercase tracking-wider text-[#E5C687]">
+                      <span className="text-[11px] sm:text-xs font-extrabold uppercase tracking-wider text-[#0F2744]">
                         Second Championship Entry (2 of 2)
                       </span>
                     </div>
-                    <span className="text-[10px] font-semibold text-[#B8CADB] hidden sm:inline">
+                    <span className="text-[10px] font-semibold text-[#B8862D] hidden sm:inline">
                       Double Jury Review Unlocked
                     </span>
                   </div>
 
                   {/* 1-Tap Category Pills for Entry 2 */}
                   <div>
-                    <label className="block text-[11px] sm:text-xs font-bold text-[#FBF6EC] mb-1.5">
+                    <label className="block text-[11px] sm:text-xs font-bold text-[#0F2744] mb-1.5">
                       Select Category for Entry #2 *
                     </label>
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 sm:gap-2">
@@ -1588,8 +1621,8 @@ export default function IndianWritersChampionshipPortal() {
                             onClick={() => setFormData({ ...formData, entry2Category: cat })}
                             className={`rounded-lg sm:rounded-xl py-2 px-2.5 text-xs font-extrabold transition-all cursor-pointer border ${
                               active
-                                ? 'gold-btn-gradient text-[#081826] border-[#E5C687] shadow-sm'
-                                : 'bg-[#0D2438] text-[#FBF6EC] border-[#E5C687]/25 hover:border-[#E5C687]/60'
+                                ? 'bg-[#0F2744] text-[#F5F8FC] border-[#0F2744] shadow-sm'
+                                : 'bg-white text-[#0F2744] border-[#0F2744]/15 hover:border-[#0F2744]'
                             }`}
                           >
                             {cat}
@@ -1602,7 +1635,7 @@ export default function IndianWritersChampionshipPortal() {
                   {/* Language + Title for Entry 2 */}
                   <div className="grid grid-cols-12 gap-2.5 sm:gap-3">
                     <div className="col-span-5 sm:col-span-4">
-                      <label className="block text-[11px] sm:text-xs font-bold text-[#FBF6EC] mb-1">
+                      <label className="block text-[11px] sm:text-xs font-bold text-[#0F2744] mb-1">
                         Language *
                       </label>
                       <select
@@ -1610,10 +1643,10 @@ export default function IndianWritersChampionshipPortal() {
                         onChange={(e) =>
                           setFormData({ ...formData, entry2Language: e.target.value })
                         }
-                        className="w-full rounded-xl bg-[#0D2438] border-2 border-[#E5C687]/30 text-[#FBF6EC] font-semibold px-2.5 py-2.5 sm:py-3 text-[16px] sm:text-sm focus:outline-none focus:border-[#E5C687] transition-colors"
+                        className="w-full rounded-xl bg-white border-2 border-[#0F2744]/15 text-[#0F2744] font-semibold px-2.5 py-2.5 sm:py-3 text-[16px] sm:text-sm focus:outline-none focus:border-[#0F2744] transition-colors"
                       >
                         {LANGUAGES.map((lang) => (
-                          <option key={lang} value={lang} className="bg-[#081826] text-[#FBF6EC]">
+                          <option key={lang} value={lang}>
                             {lang}
                           </option>
                         ))}
@@ -1621,7 +1654,7 @@ export default function IndianWritersChampionshipPortal() {
                     </div>
 
                     <div className="col-span-7 sm:col-span-8">
-                      <label className="block text-[11px] sm:text-xs font-bold text-[#FBF6EC] mb-1">
+                      <label className="block text-[11px] sm:text-xs font-bold text-[#0F2744] mb-1">
                         Title of 2nd {formData.entry2Category} *
                       </label>
                       <input
@@ -1632,7 +1665,7 @@ export default function IndianWritersChampionshipPortal() {
                         onChange={(e) =>
                           setFormData({ ...formData, entry2Title: e.target.value })
                         }
-                        className="w-full rounded-xl bg-[#0D2438] border-2 border-[#E5C687]/30 text-[#FBF6EC] font-semibold px-3 py-2.5 sm:py-3 text-[16px] sm:text-sm placeholder:text-[#B8CADB]/45 focus:outline-none focus:border-[#E5C687] transition-colors"
+                        className="w-full rounded-xl bg-white border-2 border-[#0F2744]/15 text-[#0F2744] font-semibold px-3 py-2.5 sm:py-3 text-[16px] sm:text-sm placeholder:text-[#475A70]/50 focus:outline-none focus:border-[#0F2744] transition-colors"
                       />
                     </div>
                   </div>
@@ -1640,10 +1673,10 @@ export default function IndianWritersChampionshipPortal() {
                   {/* Writing Content for Entry 2 */}
                   <div>
                     <div className="flex items-center justify-between mb-1">
-                      <label className="block text-[11px] sm:text-xs font-bold text-[#FBF6EC]">
+                      <label className="block text-[11px] sm:text-xs font-bold text-[#0F2744]">
                         Write or Paste Your 2nd {formData.entry2Category} *
                       </label>
-                      <span className="px-2 py-0.5 rounded-full bg-[#E5C687]/15 border border-[#E5C687]/30 text-[#E5C687] text-[10px] font-bold">
+                      <span className="px-2 py-0.5 rounded-full bg-[#E8F0FA] text-[#0F2744] text-[10px] font-bold">
                         {entry2LineCount} lines · {entry2WordCount} words
                       </span>
                     </div>
@@ -1655,14 +1688,14 @@ export default function IndianWritersChampionshipPortal() {
                       onChange={(e) =>
                         setFormData({ ...formData, entry2Content: e.target.value })
                       }
-                      className="w-full rounded-xl bg-[#0D2438] border-2 border-[#E5C687]/30 text-[#FBF6EC] font-medium p-3 text-[16px] sm:text-sm placeholder:text-[#B8CADB]/45 focus:outline-none focus:border-[#E5C687] leading-relaxed min-h-[145px] transition-colors"
+                      className="w-full rounded-xl bg-white border-2 border-[#0F2744]/15 text-[#0F2744] font-medium p-3 text-[16px] sm:text-sm placeholder:text-[#475A70]/50 focus:outline-none focus:border-[#0F2744] leading-relaxed min-h-[145px] transition-colors"
                     />
                   </div>
                 </div>
               )}
 
               {errorMessage && (
-                <div className="rounded-xl bg-[#E5C687]/10 border border-[#E5C687]/40 px-3.5 py-2 text-xs font-bold text-[#E5C687]">
+                <div className="rounded-xl bg-[#0F2744]/5 border border-[#0F2744]/25 px-3.5 py-2 text-xs font-bold text-[#0F2744]">
                   ⚠️ {errorMessage}
                 </div>
               )}
@@ -1672,11 +1705,11 @@ export default function IndianWritersChampionshipPortal() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full rounded-full gold-btn-gradient hover:opacity-95 text-[#081826] font-extrabold text-sm sm:text-base py-3.5 sm:py-4 px-6 shadow-xl transition-opacity flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60 uppercase tracking-wider"
+                  className="w-full rounded-xl bg-gradient-to-r from-[#0F2744] via-[#262B78] to-[#4C1D95] hover:opacity-95 text-white font-extrabold text-sm sm:text-base py-3.5 sm:py-4 px-5 shadow-[0_12px_28px_rgba(38,43,120,0.28)] transition-opacity flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60"
                 >
                   {isSubmitting ? (
                     <>
-                      <Clock className="w-4 h-4 animate-spin text-[#081826]" />
+                      <Clock className="w-4 h-4 animate-spin text-indigo-200" />
                       <span>Submitting Your Entry...</span>
                     </>
                   ) : (
@@ -1686,14 +1719,14 @@ export default function IndianWritersChampionshipPortal() {
                           ? 'Submit Both Championship Entries'
                           : 'Submit Your Championship Entry'}
                       </span>
-                      <Send className="w-4 h-4 text-[#081826]" />
+                      <Send className="w-4 h-4 text-indigo-200" />
                     </>
                   )}
                 </button>
 
-                <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-0.5 text-[10px] sm:text-[11px] font-semibold text-[#B8CADB] text-center">
-                  <span className="inline-flex items-center gap-1 text-[#E5C687]">
-                    <ShieldCheck className="w-3 h-3" />
+                <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-0.5 text-[10px] sm:text-[11px] font-semibold text-[#475A70] text-center">
+                  <span className="inline-flex items-center gap-1 text-[#0F2744]">
+                    <ShieldCheck className="w-3 h-3 text-[#B8862D]" />
                     <span>100% Author Copyright</span>
                   </span>
                   <span>·</span>
@@ -1712,20 +1745,23 @@ export default function IndianWritersChampionshipPortal() {
           <div className="space-y-5">
             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2">
               <div>
-                <span className="inline-flex items-center gap-1.5 text-[11px] font-extrabold uppercase tracking-[0.2em] text-[#E5C687]">
-                  <Trophy className="w-3.5 h-3.5 text-[#E5C687]" />
+                <span className="inline-flex items-center gap-1.5 text-[11px] font-extrabold uppercase tracking-[0.2em] text-[#B8862D]">
+                  <Trophy className="w-3.5 h-3.5 text-[#B8862D]" />
                   <span>CHAMPIONSHIP PRIZE POOL</span>
                 </span>
-                <h2 className="font-championship text-3xl sm:text-4xl font-bold gold-text-gradient leading-none mt-1">
-                  ₹10,000 Cash Prize Pool
+                <h2 className="font-editorial text-3xl sm:text-4xl font-bold text-[#0F2744] leading-none mt-1">
+                  Top National Winners
                 </h2>
+                <p className="font-['Plus_Jakarta_Sans',sans-serif] text-base sm:text-lg font-extrabold tracking-tight tabular-nums text-[#262B78] mt-1">
+                  ₹10,000 Cash Prize Pool
+                </p>
               </div>
-              <span className="self-start sm:self-auto px-3 py-1 rounded-full gold-btn-gradient text-[#081826] text-[11px] font-extrabold uppercase tracking-wider">
+              <span className="self-start sm:self-auto px-3 py-1 rounded-full bg-gradient-to-r from-[#0F2744] to-[#262B78] text-white text-[11px] font-bold">
                 + Winner Memento &amp; Medal
               </span>
             </div>
 
-            <div className="border-y-2 border-[#E5C687]/40 divide-y divide-[#E5C687]/15">
+            <div className="border-y-2 border-[#0F2744] divide-y divide-[#0F2744]/15">
               {[
                 {
                   rank: '1st',
@@ -1757,25 +1793,31 @@ export default function IndianWritersChampionshipPortal() {
                   desc: 'Permanent spotlight of winning writers on our official Instagram page & live recognition on Zoom.',
                   tag: '216K+ Reach',
                 },
+                {
+                  rank: '✦',
+                  prize: 'Digital Interview & Podcast Feature',
+                  desc: 'Get an official feature in our digital interview and podcast.',
+                  tag: 'Podcast Feature',
+                },
               ].map((item) => (
                 <div
-                  key={item.rank}
-                  className="py-4 flex items-start sm:items-center justify-between gap-4"
+                  key={item.prize}
+                  className="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4"
                 >
-                  <div className="flex items-start sm:items-center gap-3.5 sm:gap-4">
-                    <span className="font-editorial italic font-bold text-2xl sm:text-3xl text-[#E5C687] leading-none w-10 shrink-0">
+                  <div className="flex items-start sm:items-center gap-3 sm:gap-4">
+                    <span className="font-editorial italic font-bold text-2xl sm:text-3xl text-[#B8862D] leading-none w-9 sm:w-10 shrink-0">
                       {item.rank}
                     </span>
-                    <div>
-                      <h3 className="text-sm sm:text-base font-extrabold text-[#FBF6EC]">
+                    <div className="min-w-0">
+                      <h3 className="text-sm sm:text-base font-extrabold text-[#0F2744]">
                         {item.prize}
                       </h3>
-                      <p className="text-xs text-[#B8CADB] mt-0.5 leading-relaxed">
+                      <p className="text-xs text-[#475A70] mt-0.5 leading-relaxed">
                         {item.desc}
                       </p>
                     </div>
                   </div>
-                  <span className="shrink-0 px-2.5 py-1 rounded-full bg-[#0D2438] border border-[#E5C687]/40 text-[#E5C687] text-[10px] font-extrabold uppercase tracking-wider">
+                  <span className="self-start sm:self-auto ml-12 sm:ml-0 shrink-0 px-2.5 py-1 rounded-full bg-[#E8F0FA] border border-[#B8862D]/35 text-[#0F2744] text-[10px] font-extrabold uppercase tracking-wider">
                     {item.tag}
                   </span>
                 </div>
@@ -1784,42 +1826,42 @@ export default function IndianWritersChampionshipPortal() {
           </div>
 
           {/* ── PART B: EVERY PARTICIPANT (NGO-VERIFIED GUARANTEE TICKET) ── */}
-          <div className="rounded-2xl border-2 border-[#E5C687]/60 bg-[#0D2438] overflow-hidden shadow-xl">
+          <div className="rounded-2xl border-2 border-[#0F2744] bg-white overflow-hidden shadow-sm">
             {/* Top Header Strip */}
-            <div className="bg-gradient-to-r from-[#06131E] via-[#0F2C45] to-[#06131E] border-b border-[#E5C687]/30 px-5 py-3.5 flex flex-wrap items-center justify-between gap-2">
+            <div className="bg-gradient-to-r from-[#0F2744] via-[#262B78] to-[#3B1D82] text-white px-5 py-3.5 flex flex-wrap items-center justify-between gap-2">
               <div className="flex items-center gap-2">
                 <Award className="w-4 h-4 text-[#E5C687]" />
-                <span className="text-sm sm:text-base font-extrabold tracking-tight text-[#FBF6EC]">
+                <span className="text-sm sm:text-base font-extrabold tracking-tight">
                   For Every Participant (NGO-Verified Recognition)
                 </span>
               </div>
-              <span className="px-2.5 py-0.5 rounded-full gold-btn-gradient text-[#081826] text-[10px] font-extrabold uppercase tracking-wider">
+              <span className="px-2.5 py-0.5 rounded-full bg-amber-300 text-[#0F2744] text-[10px] font-extrabold uppercase tracking-wider">
                 100% Guaranteed
               </span>
             </div>
 
             {/* Clean 2x2 Divided Checklist */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 divide-y sm:divide-y-0 sm:divide-x divide-[#E5C687]/20">
+            <div className="bg-[#F5F8FC] grid grid-cols-1 sm:grid-cols-2 divide-y sm:divide-y-0 sm:divide-x divide-[#0F2744]/12">
               <div className="p-5 space-y-3.5">
                 <div className="flex items-start gap-2.5">
-                  <CheckCircle2 className="w-4 h-4 text-[#E5C687] shrink-0 mt-0.5" />
+                  <CheckCircle2 className="w-4 h-4 text-[#262B78] shrink-0 mt-0.5" />
                   <div>
-                    <h4 className="text-xs sm:text-sm font-extrabold text-[#FBF6EC]">
-                      NGO-Verified National Certificate
+                    <h4 className="text-xs sm:text-sm font-extrabold text-[#0F2744]">
+                      National Participation Certificate
                     </h4>
-                    <p className="text-[11px] sm:text-xs text-[#B8CADB] mt-0.5">
-                      Official verifiable certificate of participation issued to every entrant.
+                    <p className="text-[11px] sm:text-xs text-[#475A70] mt-0.5">
+                      Every participant will receive an official certificate, Exclusively Verified by NGO.
                     </p>
                   </div>
                 </div>
-                <div className="flex items-start gap-2.5 pt-3.5 border-t border-[#E5C687]/15">
-                  <CheckCircle2 className="w-4 h-4 text-[#E5C687] shrink-0 mt-0.5" />
+                <div className="flex items-start gap-2.5 pt-3.5 border-t border-[#0F2744]/10">
+                  <CheckCircle2 className="w-4 h-4 text-[#262B78] shrink-0 mt-0.5" />
                   <div>
-                    <h4 className="text-xs sm:text-sm font-extrabold text-[#FBF6EC]">
+                    <h4 className="text-xs sm:text-sm font-extrabold text-[#0F2744]">
                       Official Appreciation Letter
                     </h4>
-                    <p className="text-[11px] sm:text-xs text-[#B8CADB] mt-0.5">
-                      Personalized letter of literary recognition from Inkfetish Publication.
+                    <p className="text-[11px] sm:text-xs text-[#475A70] mt-0.5">
+                      Receive a personalized appreciation letter from Inkfetish Publication.
                     </p>
                   </div>
                 </div>
@@ -1827,24 +1869,24 @@ export default function IndianWritersChampionshipPortal() {
 
               <div className="p-5 space-y-3.5">
                 <div className="flex items-start gap-2.5">
-                  <Truck className="w-4 h-4 text-[#E5C687] shrink-0 mt-0.5" />
+                  <CheckCircle2 className="w-4 h-4 text-[#262B78] shrink-0 mt-0.5" />
                   <div>
-                    <h4 className="text-xs sm:text-sm font-extrabold text-[#FBF6EC]">
-                      Home Delivery + Double Jury (₹399 Plan)
+                    <h4 className="text-xs sm:text-sm font-extrabold text-[#0F2744]">
+                      Editorial Jury Review
                     </h4>
-                    <p className="text-[11px] sm:text-xs text-[#B8CADB] mt-0.5">
-                      2-Entry participants receive doorstep delivery + 45% higher winning chance.
+                    <p className="text-[11px] sm:text-xs text-[#475A70] mt-0.5">
+                      Every submitted entry will be read and evaluated by our 5-member literary jury.
                     </p>
                   </div>
                 </div>
-                <div className="flex items-start gap-2.5 pt-3.5 border-t border-[#E5C687]/15">
-                  <Medal className="w-4 h-4 text-[#E5C687] shrink-0 mt-0.5" />
+                <div className="flex items-start gap-2.5 pt-3.5 border-t border-[#0F2744]/10">
+                  <CheckCircle2 className="w-4 h-4 text-[#262B78] shrink-0 mt-0.5" />
                   <div>
-                    <h4 className="text-xs sm:text-sm font-extrabold text-[#FBF6EC]">
-                      Live Results on Zoom &amp; 100% Copyright
+                    <h4 className="text-xs sm:text-sm font-extrabold text-[#0F2744]">
+                      100% Author Copyright
                     </h4>
-                    <p className="text-[11px] sm:text-xs text-[#B8CADB] mt-0.5">
-                      Results announced live on Zoom. Complete ownership of your work stays yours.
+                    <p className="text-[11px] sm:text-xs text-[#475A70] mt-0.5">
+                      Complete rights and ownership of your writing remain yours.
                     </p>
                   </div>
                 </div>
@@ -1852,11 +1894,31 @@ export default function IndianWritersChampionshipPortal() {
             </div>
 
             {/* Bottom Verification Strip */}
-            <div className="bg-[#081826] border-t border-[#E5C687]/20 px-5 py-2.5 flex items-center justify-center gap-2 text-[11px] font-bold text-[#E5C687]">
-              <ShieldCheck className="w-3.5 h-3.5 shrink-0" />
-              <span>Certificates, Zoom Link &amp; Updates shared via Official WhatsApp &amp; Email</span>
+            <div className="bg-white border-t border-[#0F2744]/12 px-5 py-2.5 flex items-center justify-center gap-2 text-[11px] font-bold text-[#0F2744] text-center">
+              <ShieldCheck className="w-3.5 h-3.5 text-[#262B78] shrink-0" />
+              <span>Certificates &amp; Results shared via Official WhatsApp &amp; Email</span>
             </div>
           </div>
+
+          {/* Distinct Outlined Banner CTA */}
+          <button
+            type="button"
+            onClick={scrollToPortal}
+            className="w-full rounded-2xl bg-[#E8F0FA] hover:bg-[#DCE7F5] border-2 border-[#262B78] p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3.5 transition-colors cursor-pointer text-center sm:text-left shadow-sm"
+          >
+            <div className="min-w-0 space-y-0.5">
+              <span className="text-sm sm:text-base font-extrabold text-[#0F2744] block leading-snug">
+                Ready to Receive Your NGO-Verified Certificate?
+              </span>
+              <span className="text-xs font-semibold text-[#475A70] block">
+                Submit your entry online in 2 minutes · Starts at ₹199
+              </span>
+            </div>
+            <span className="w-full sm:w-auto shrink-0 inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#0F2744] via-[#262B78] to-[#4C1D95] text-white text-xs sm:text-sm font-extrabold px-6 py-3 sm:py-2.5 shadow-md">
+              <span>Enter Now</span>
+              <ArrowRight className="w-4 h-4 text-indigo-200" />
+            </span>
+          </button>
         </section>
 
         {/* ══════════════════════════════════════════════════════════════════════
@@ -1864,10 +1926,10 @@ export default function IndianWritersChampionshipPortal() {
            ══════════════════════════════════════════════════════════════════════ */}
         <section className="space-y-6">
           <div className="text-center space-y-1">
-            <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#E5C687]">
+            <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#B8862D]">
               GUIDELINES &amp; FORMAT
             </p>
-            <h2 className="font-championship text-3xl sm:text-4xl font-bold text-[#FBF6EC]">
+            <h2 className="font-editorial text-3xl sm:text-4xl font-bold text-[#0F2744]">
               Championship Details
             </h2>
           </div>
@@ -1910,7 +1972,7 @@ export default function IndianWritersChampionshipPortal() {
               },
               {
                 label: 'Entry Fee Plans',
-                value: '₹199 (1 Entry) · ₹399 (2 Entries + Home Delivery + Double Jury Review)',
+                value: '₹199 (1 Entry) · ₹299 (2 Entries + Double Jury Review)',
                 badge: 'Starts at ₹199',
               },
             ].map((row, idx) => (
@@ -1918,26 +1980,34 @@ export default function IndianWritersChampionshipPortal() {
                 key={row.label}
                 className={`rounded-xl px-4 sm:px-5 py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-4 ${
                   row.highlight
-                    ? 'bg-gradient-to-r from-[#0F2C45] to-[#153A59] border border-[#E5C687]/60 text-[#FBF6EC]'
+                    ? 'bg-[#0F2744] text-[#F5F8FC]'
                     : idx % 2 === 0
-                    ? 'bg-[#0D2438] border border-[#E5C687]/25 text-[#FBF6EC]'
-                    : 'bg-[#081826] border border-[#E5C687]/15 text-[#FBF6EC]'
+                    ? 'bg-[#E8F0FA]/70 border border-[#B8862D]/30 text-[#0F2744]'
+                    : 'bg-white border border-[#0F2744]/12 text-[#0F2744]'
                 }`}
               >
-                <span className="text-xs font-extrabold uppercase tracking-wider shrink-0 text-[#E5C687]">
+                <span
+                  className={`text-xs font-extrabold uppercase tracking-wider shrink-0 ${
+                    row.highlight ? 'text-[#E5C687]' : 'text-[#475A70]'
+                  }`}
+                >
                   {row.label}
                 </span>
 
                 <div className="flex flex-wrap items-center sm:justify-end gap-2">
-                  <span className="text-xs sm:text-sm font-bold text-[#FBF6EC]">
+                  <span
+                    className={`text-xs sm:text-sm font-bold ${
+                      row.highlight ? 'text-[#F5F8FC]' : 'text-[#0F2744]'
+                    }`}
+                  >
                     {row.value}
                   </span>
                   {row.badge && (
                     <span
                       className={`px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider ${
                         row.highlight
-                          ? 'gold-btn-gradient text-[#081826]'
-                          : 'bg-[#E5C687]/20 border border-[#E5C687]/40 text-[#E5C687]'
+                          ? 'bg-[#E5C687] text-[#0F2744]'
+                          : 'bg-[#0F2744] text-[#F5F8FC]'
                       }`}
                     >
                       {row.badge}
@@ -1954,13 +2024,13 @@ export default function IndianWritersChampionshipPortal() {
            ══════════════════════════════════════════════════════════════════════ */}
         <section className="space-y-6">
           <div className="text-center space-y-1.5">
-            <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#E5C687]">
+            <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#B8862D]">
               GLIMPSES FROM PAST EDITIONS
             </p>
-            <h2 className="font-championship text-3xl sm:text-4xl font-bold text-[#FBF6EC] leading-none">
+            <h2 className="font-editorial text-3xl sm:text-4xl font-bold text-[#0F2744] leading-none">
               Our Previous Writers &amp; Winners
             </h2>
-            <p className="text-xs sm:text-sm text-[#B8CADB] max-w-md mx-auto leading-relaxed pt-1">
+            <p className="text-xs sm:text-sm text-[#475A70] max-w-md mx-auto leading-relaxed pt-1">
               Celebrating poets, storytellers, and certified authors from our previous national
               writing editions across India.
             </p>
@@ -1974,7 +2044,7 @@ export default function IndianWritersChampionshipPortal() {
             ].map((imgUrl, idx) => (
               <div
                 key={imgUrl}
-                className="w-full overflow-hidden border border-[#E5C687]/35 bg-[#0D2438]"
+                className="w-full overflow-hidden border border-[#0F2744]/15 bg-[#E8F0FA]"
               >
                 <img
                   src={imgUrl}
@@ -1986,34 +2056,44 @@ export default function IndianWritersChampionshipPortal() {
               </div>
             ))}
           </div>
+          <div className="text-center pt-1">
+            <button
+              type="button"
+              onClick={scrollToPortal}
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-[#0F2744] hover:bg-[#163459] text-white font-extrabold text-xs sm:text-sm px-8 py-3.5 shadow-md transition-colors cursor-pointer"
+            >
+              <span>Participate in the Championship</span>
+              <ArrowRight className="w-4 h-4 text-[#E5C687]" />
+            </button>
+          </div>
         </section>
 
         {/* ══════════════════════════════════════════════════════════════════════
             5. ABOUT INKFETISH (WITH LOGO & 216,000+ FOLLOWERS) & PAST EVENTS
            ══════════════════════════════════════════════════════════════════════ */}
-        <section className="rounded-3xl bg-[#0D2438] border border-[#E5C687]/40 p-6 sm:p-8 text-center space-y-6">
+        <section className="rounded-3xl bg-[#E8F0FA]/80 border border-[#B8862D]/35 p-6 sm:p-8 text-center space-y-6">
           <div className="flex flex-col items-center space-y-2.5">
             <img
               src="/images/inkfetish_logo.webp"
               alt="Inkfetish Publication"
-              className="w-16 h-16 rounded-full object-cover border-2 border-[#E5C687]"
+              className="w-16 h-16 rounded-full object-cover border-2 border-[#0F2744]"
             />
-            <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#E5C687]">
-              <Instagram className="w-3.5 h-3.5" />
+            <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0F2744]">
+              <Instagram className="w-3.5 h-3.5 text-[#B8862D]" />
               <span>@ink.fetish · 216,000+ Instagram Followers</span>
             </div>
-            <h2 className="font-championship text-2xl sm:text-3xl font-bold text-[#FBF6EC]">
+            <h2 className="font-editorial text-2xl sm:text-3xl font-bold text-[#0F2744]">
               Organised by ink.fetish
             </h2>
-            <p className="text-xs sm:text-sm text-[#B8CADB] max-w-md mx-auto leading-relaxed">
+            <p className="text-xs sm:text-sm text-[#475A70] max-w-md mx-auto leading-relaxed">
               India&apos;s trusted literary platform with 216,000+ Instagram followers, 3,900+
               certified writers, and ₹5.75L+ awarded across national writing and poetry editions.
             </p>
           </div>
 
           {/* Past Events Minimal List */}
-          <div className="pt-2 border-t border-[#E5C687]/20">
-            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#E5C687] mb-3">
+          <div className="pt-2 border-t border-[#0F2744]/12">
+            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#475A70] mb-3">
               OUR PAST EDITIONS
             </p>
             <div className="flex flex-wrap justify-center gap-2">
@@ -2026,7 +2106,7 @@ export default function IndianWritersChampionshipPortal() {
               ].map((ev) => (
                 <span
                   key={ev}
-                  className="px-3 py-1 rounded-full bg-[#081826] border border-[#E5C687]/30 text-xs font-semibold text-[#FBF6EC]"
+                  className="px-3 py-1 rounded-full bg-white border border-[#0F2744]/15 text-xs font-semibold text-[#0F2744]"
                 >
                   {ev}
                 </span>
@@ -2040,23 +2120,23 @@ export default function IndianWritersChampionshipPortal() {
            ══════════════════════════════════════════════════════════════════════ */}
         <section className="space-y-6">
           <div className="text-center space-y-1">
-            <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#E5C687]">
+            <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#B8862D]">
               FAQ
             </p>
-            <h2 className="font-championship text-3xl sm:text-4xl font-bold text-[#FBF6EC]">
+            <h2 className="font-editorial text-3xl sm:text-4xl font-bold text-[#0F2744]">
               Common Questions
             </h2>
           </div>
 
-          <div className="divide-y divide-[#E5C687]/20 border-y border-[#E5C687]/20">
+          <div className="divide-y divide-[#0F2744]/12 border-y border-[#0F2744]/12">
             {[
               {
                 q: 'What categories and themes are accepted in the Indian Writers Championship?',
                 a: 'The theme is completely Open. You can submit in Poetry, Short Stories, Novels (excerpts/chapters or complete works), or Creative Writing.',
               },
               {
-                q: 'What is included in the ₹199 vs ₹399 entry plans?',
-                a: 'The ₹199 plan covers 1 Entry with a guaranteed NGO-Verified Certificate & Appreciation Letter. The ₹399 plan lets you submit 2 Entries, gives you a 45% higher chance of winning with Double Jury Review, and includes Home Delivery of your recognition.',
+                q: 'What is included in the ₹199 vs ₹299 entry plans?',
+                a: 'The ₹199 plan covers 1 Entry with a guaranteed NGO-Verified Certificate & Appreciation Letter. The ₹299 plan lets you submit 2 Entries and gives you a 45% higher chance of winning with Double Jury Review.',
               },
               {
                 q: 'How are the winners and results announced?',
@@ -2071,17 +2151,17 @@ export default function IndianWritersChampionshipPortal() {
                 <button
                   type="button"
                   onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
-                  className="w-full py-4 text-left flex items-center justify-between gap-4 font-bold text-sm sm:text-base text-[#FBF6EC] cursor-pointer"
+                  className="w-full py-4 text-left flex items-center justify-between gap-4 font-bold text-sm sm:text-base text-[#0F2744] cursor-pointer"
                 >
                   <span>{item.q}</span>
                   <ChevronDown
-                    className={`w-4 h-4 text-[#E5C687] shrink-0 transition-transform ${
+                    className={`w-4 h-4 text-[#0F2744] shrink-0 transition-transform ${
                       openFaq === idx ? 'rotate-180' : ''
                     }`}
                   />
                 </button>
                 {openFaq === idx && (
-                  <p className="pb-4 text-xs sm:text-sm text-[#B8CADB] leading-relaxed">
+                  <p className="pb-4 text-xs sm:text-sm text-[#475A70] leading-relaxed">
                     {item.a}
                   </p>
                 )}
@@ -2090,16 +2170,16 @@ export default function IndianWritersChampionshipPortal() {
           </div>
 
           <div className="text-center pt-2 space-y-2">
-            <p className="font-editorial italic text-lg sm:text-xl text-[#E5C687]">
+            <p className="font-editorial italic text-lg sm:text-xl text-[#475A70]">
               &ldquo;Your words deserve a stage.&rdquo;
             </p>
             <button
               type="button"
               onClick={scrollToPortal}
-              className="inline-flex items-center justify-center gap-2 rounded-full gold-btn-gradient text-[#081826] font-extrabold text-xs sm:text-sm px-8 py-4 shadow-xl hover:opacity-95 transition-opacity cursor-pointer uppercase tracking-wider"
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-[#0F2744] hover:bg-[#163459] text-[#F5F8FC] font-extrabold text-xs sm:text-sm px-8 py-4 shadow-md transition-colors cursor-pointer"
             >
               <span>Register Now</span>
-              <ArrowRight className="w-4 h-4 text-[#081826]" />
+              <ArrowRight className="w-4 h-4 text-[#E5C687]" />
             </button>
           </div>
         </section>
@@ -2108,10 +2188,10 @@ export default function IndianWritersChampionshipPortal() {
       {/* ══════════════════════════════════════════════════════════════════════
           CUSTOM INDIAN WRITERS CHAMPIONSHIP & INKFETISH PUBLICATION FOOTER
          ══════════════════════════════════════════════════════════════════════ */}
-      <footer className="relative z-10 bg-[#05101A] text-[#FBF6EC] border-t-2 border-[#E5C687]/35 pt-10 pb-12 px-4 sm:px-6">
+      <footer className="bg-[#0F2744] text-[#F5F8FC] border-t-2 border-[#B8862D]/40 pt-10 pb-12 px-4 sm:px-6">
         <div className="max-w-2xl mx-auto space-y-8">
           {/* Top Brand & Official Credentials */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-[#E5C687]/20">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-[#F5F8FC]/15">
             <div className="flex items-center gap-3.5">
               <img
                 src="/images/inkfetish_logo.webp"
@@ -2120,11 +2200,11 @@ export default function IndianWritersChampionshipPortal() {
               />
               <div>
                 <div className="flex items-center gap-1.5">
-                  <span className="font-editorial text-xl font-bold tracking-tight text-[#FBF6EC]">
+                  <span className="text-lg font-extrabold tracking-tight text-[#F5F8FC]">
                     ink.fetish
                   </span>
-                  <span className="inline-flex items-center gap-0.5 px-2 py-0.5 rounded-full gold-btn-gradient text-[#081826] text-[9px] font-extrabold uppercase tracking-wider">
-                    <ShieldCheck className="w-2.5 h-2.5 text-[#081826]" />
+                  <span className="inline-flex items-center gap-0.5 px-2 py-0.5 rounded-full bg-[#E5C687] text-[#0F2744] text-[9px] font-extrabold uppercase tracking-wider">
+                    <ShieldCheck className="w-2.5 h-2.5 text-[#0F2744]" />
                     <span>NGO-Verified</span>
                   </span>
                 </div>
@@ -2138,7 +2218,7 @@ export default function IndianWritersChampionshipPortal() {
               href="https://www.instagram.com/ink.fetish/"
               target="_blank"
               rel="noopener noreferrer"
-              className="self-start sm:self-auto inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-[#0D2438] hover:bg-[#13324D] border border-[#E5C687]/40 text-xs font-bold text-[#FBF6EC] transition-colors"
+              className="self-start sm:self-auto inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-[#F5F8FC]/10 hover:bg-[#F5F8FC]/15 border border-[#E5C687]/40 text-xs font-bold text-[#F5F8FC] transition-colors"
             >
               <Instagram className="w-3.5 h-3.5 text-[#E5C687]" />
               <span>@ink.fetish · 216,000+ Followers</span>
@@ -2151,7 +2231,7 @@ export default function IndianWritersChampionshipPortal() {
               <p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-[#E5C687]">
                 About Inkfetish Publication
               </p>
-              <p className="text-[#B8CADB]">
+              <p className="text-[#FAF8F4]/85">
                 Inkfetish Publication is one of India&apos;s leading literary platforms and
                 publishing collectives with 216,000+ Instagram followers, having certified over
                 3,900+ writers and awarded ₹5.75L+ in prizes across national editions.
@@ -2162,7 +2242,7 @@ export default function IndianWritersChampionshipPortal() {
               <p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-[#E5C687]">
                 Indian Writers Championship
               </p>
-              <ul className="space-y-1 text-[#B8CADB] font-medium">
+              <ul className="space-y-1 text-[#FAF8F4]/85 font-medium">
                 <li>• Categories: Poetry, Short Stories, Novels &amp; Creative Writing</li>
                 <li>• ₹10,000 Cash Prize Pool + Winner Memento &amp; Medal</li>
                 <li>• Only 350 Participants · Results Live on Zoom</li>
@@ -2172,11 +2252,11 @@ export default function IndianWritersChampionshipPortal() {
           </div>
 
           {/* Bottom Legal & Copyright Bar */}
-          <div className="pt-6 border-t border-[#E5C687]/20 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-[#E5C687]">
+          <div className="pt-6 border-t border-[#FAF8F4]/15 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-[#E5C687]">
             <p>
               © {new Date().getFullYear()} Inkfetish Publication · Indian Writers Championship
             </p>
-            <div className="flex items-center gap-4 text-[#B8CADB] font-semibold">
+            <div className="flex items-center gap-4 text-[#FAF8F4]/80 font-semibold">
               <a href="/privacy-policy" className="hover:text-[#E5C687] transition-colors">
                 Privacy Policy
               </a>

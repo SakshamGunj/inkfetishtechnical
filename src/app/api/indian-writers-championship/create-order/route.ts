@@ -66,7 +66,7 @@ export async function POST(req: Request) {
 
     const orderId = `iwc_contest_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
     const selectedTier = tier === '2_entries' ? '2_entries' : '1_entry';
-    const orderAmount = selectedTier === '2_entries' ? 399 : 199;
+    const orderAmount = selectedTier === '2_entries' ? 299 : 199;
 
     let cleanPhone = String(phone).replace(/[^0-9]/g, '');
     if (cleanPhone.length > 10) cleanPhone = cleanPhone.slice(-10);
@@ -119,7 +119,7 @@ export async function POST(req: Request) {
           notify_url: `${siteUrl}/api/cashfree/webhook`,
         },
         order_note: `Indian Writers Championship (${
-          selectedTier === '2_entries' ? '2 Entries + Home Delivery' : '1 Entry'
+          selectedTier === '2_entries' ? '2 Entries' : '1 Entry'
         }) - ${cleanName}`,
       }),
     });
@@ -144,7 +144,6 @@ export async function POST(req: Request) {
       age: String(age || '').trim(),
       tier: selectedTier,
       amount: orderAmount,
-      homeDeliveryIncluded: selectedTier === '2_entries',
       contestName: 'Indian Writers Championship — The National Writing Competition',
       contest: IWC_COLLECTION,
       cashfree_order_id: orderId,
@@ -156,12 +155,6 @@ export async function POST(req: Request) {
     void setDoc(
       doc(db, IWC_COLLECTION, finalDocId),
       { ...regRecord, createdAt: serverTimestamp() },
-      { merge: true }
-    ).catch(() => {});
-
-    void setDoc(
-      doc(db, 'september_contest_registrations', finalDocId),
-      { ...regRecord, contest: IWC_COLLECTION, createdAt: serverTimestamp() },
       { merge: true }
     ).catch(() => {});
 

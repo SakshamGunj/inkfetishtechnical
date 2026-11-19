@@ -90,23 +90,15 @@ export async function POST(req: Request) {
     // 0. Check if registration is already SUBMITTED or PAID in Firestore (fast Web SDK check with 1.2s timeout)
     const lookupDocId = String(docId || registrationId || '').trim();
     if (lookupDocId) {
-      const [subSnap, iwcSnap, regSnap] = await withTimeout(
-        Promise.all([
-          getDoc(doc(db, 'september_contest_submissions', lookupDocId)).catch(() => null),
-          getDoc(doc(db, IWC_COLLECTION, lookupDocId)).catch(() => null),
-          getDoc(doc(db, 'september_contest_registrations', lookupDocId)).catch(() => null),
-        ]),
+      const iwcSnap = await withTimeout(
+        getDoc(doc(db, IWC_COLLECTION, lookupDocId)).catch(() => null),
         1200,
-        [null, null, null]
+        null
       );
 
-      const submittedDoc =
-        (subSnap?.exists() && subSnap.data()?.contest === IWC_COLLECTION
-          ? subSnap.data()
-          : null) ||
-        (iwcSnap?.exists() && iwcSnap.data()?.status === 'SUBMITTED' ? iwcSnap.data() : null);
+      const iwcData = iwcSnap?.exists() ? iwcSnap.data() : null;
 
-      if (submittedDoc && submittedDoc.status === 'SUBMITTED') {
+      if (iwcData && iwcData.status === 'SUBMITTED') {
         return NextResponse.json({
           status: 'ALREADY_SUBMITTED',
           order_status: 'ALREADY_SUBMITTED',
@@ -114,13 +106,7 @@ export async function POST(req: Request) {
         });
       }
 
-      const paidDoc =
-        (iwcSnap?.exists() && iwcSnap.data()?.payment_status === 'PAID' ? iwcSnap.data() : null) ||
-        (regSnap?.exists() &&
-        regSnap.data()?.contest === IWC_COLLECTION &&
-        regSnap.data()?.payment_status === 'PAID'
-          ? regSnap.data()
-          : null);
+      const paidDoc = iwcData && iwcData.payment_status === 'PAID' ? iwcData : null;
 
       if (paidDoc) {
         return NextResponse.json({
@@ -170,7 +156,7 @@ export async function POST(req: Request) {
         const targetDocId = tags.docId || docId || registrationId || paidCheck.id;
         const finalRegId = tags.registrationId || registrationId || targetDocId;
         const finalTier =
-          tags.tier === '2_entries' || Number(orderData.order_amount) === 399
+          tags.tier === '2_entries' || Number(orderData.order_amount) === 299
             ? '2_entries'
             : '1_entry';
 
@@ -205,7 +191,7 @@ export async function POST(req: Request) {
             whatsapp: tags.phone || orderData.customer_details?.customer_phone || phone || '',
             age: tags.age || '',
             tier: finalTier,
-            amount: Number(orderData.order_amount || (finalTier === '2_entries' ? 399 : 199)),
+            amount: Number(orderData.order_amount || (finalTier === '2_entries' ? 299 : 199)),
             status: 'REGISTERED_PAID',
           },
         });
@@ -231,7 +217,7 @@ export async function POST(req: Request) {
               whatsapp: firstTags.phone || firstData.customer_details?.customer_phone || phone || '',
               age: firstTags.age || '',
               tier:
-                firstTags.tier === '2_entries' || Number(firstData.order_amount) === 399
+                firstTags.tier === '2_entries' || Number(firstData.order_amount) === 299
                   ? '2_entries'
                   : '1_entry',
               amount: Number(firstData.order_amount || 199),

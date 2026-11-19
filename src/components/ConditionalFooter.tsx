@@ -14,6 +14,7 @@ export function ConditionalFooter() {
   // Hide the global footer on focused anthology funnel pages and poetry festival subpages
   if (
     pathname.startsWith('/anthology/syaahi') || 
+    pathname.startsWith('/anthology/suno-bharat') ||
     pathname.startsWith('/anthology/honey-and-hurt') ||
     pathname.startsWith('/anthology/the-margins') ||
     pathname.startsWith('/poetryfestival/s2') ||

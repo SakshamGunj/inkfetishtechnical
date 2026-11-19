@@ -61,8 +61,7 @@ export async function POST(req: Request) {
       whatsapp: String(whatsapp || '').replace(/\D/g, '').slice(-10),
       age: String(age || '').trim(),
       tier: tier === '2_entries' ? '2_entries' : '1_entry',
-      amount: tier === '2_entries' ? 399 : Number(amount || 199),
-      homeDeliveryIncluded: tier === '2_entries',
+      amount: tier === '2_entries' ? 299 : Number(amount || 199),
       category: category || 'Poetry',
       language: language || 'English',
       theme: 'Open Theme',
@@ -87,32 +86,18 @@ export async function POST(req: Request) {
       basePayload.entry2WordCount = Number(entry2WordCount || 0);
     }
 
-    // 1. Save to indian_writers_championship_2026 and mirror to september_contest_submissions (tagged with contest: indian_writers_championship_2026)
-    await Promise.allSettled([
-      withTimeout(
-        setDoc(
-          doc(db, IWC_COLLECTION, finalDocId),
-          {
-            ...basePayload,
-            submittedAt: serverTimestamp(),
-          },
-          { merge: true }
-        ),
-        2500
+    // 1. Save to indian_writers_championship_2026
+    await withTimeout(
+      setDoc(
+        doc(db, IWC_COLLECTION, finalDocId),
+        {
+          ...basePayload,
+          submittedAt: serverTimestamp(),
+        },
+        { merge: true }
       ),
-      withTimeout(
-        setDoc(
-          doc(db, 'september_contest_submissions', finalDocId),
-          {
-            ...basePayload,
-            contest: IWC_COLLECTION,
-            submittedAt: serverTimestamp(),
-          },
-          { merge: true }
-        ),
-        2500
-      ),
-    ]);
+      2500
+    ).catch(() => {});
 
     // 2. Non-blocking Admin SDK mirror
     void (async () => {

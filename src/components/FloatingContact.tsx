@@ -31,6 +31,7 @@ export function FloatingContact() {
     // Keep it on landing page (/poetry-festival-s2)
     if (pathname?.startsWith('/poetry-festival-s2/')) return null;
     if (pathname?.startsWith('/anthology/honey-and-hurt')) return null;
+    if (pathname?.startsWith('/anthology/suno-bharat')) return null;
 
     const contactDetails = [
         {

@@ -52,6 +52,7 @@ export async function POST(request: Request) {
     console.log(`Webhook received for ${orderId}: ${paymentStatus}`);
 
     if (paymentStatus === 'SUCCESS') {
+      const db = getAdminDb();
 
       // 2a. HOME DELIVERY ORDERS → Update Supabase
       if (orderId.startsWith('pfdlv_')) {
@@ -297,6 +298,49 @@ export async function POST(request: Request) {
           }
         } else {
           console.error('Firebase Admin DB is not initialized.');
+        }
+
+      // 2f. SUNO BHARAT ANTHOLOGY ORDERS → Insert to Firebase
+      } else if (orderId.startsWith('sunobharat_')) {
+        if (db) {
+          try {
+            await db.collection('suno_bharat_orders').doc(orderId).set({
+              order_id: orderId,
+              cf_order_id: order.cf_order_id || '',
+              email: tags.email || '',
+              name: tags.name || '',
+              whatsapp: tags.whatsapp || '',
+              address: tags.address || '',
+              city: tags.city || '',
+              state: tags.state || '',
+              pincode: tags.pincode || '',
+              amount: order.order_amount,
+              bought_certificate: tags.cert === 'yes',
+              bought_portfolio: tags.port === 'yes',
+              status: 'PAID',
+              updated_at: new Date().toISOString(),
+            }, { merge: true });
+          } catch (firebaseErr: any) {
+            console.error('Webhook Firebase DB Error (sunobharat):', firebaseErr.message);
+            return NextResponse.json({ error: 'Database update failed' }, { status: 500 });
+          }
+        }
+
+      // 2g. SUNO BHARAT UPSELL ORDERS → Update Parent Order in Firebase
+      } else if (orderId.startsWith('sbupg_')) {
+        const parentOrderId = tags.parent_order_id;
+        const upgradeType = tags.upgrade_type;
+        if (db && parentOrderId && upgradeType) {
+          try {
+            const updateData: Record<string, any> = {
+              updated_at: new Date().toISOString(),
+            };
+            if (upgradeType === 'cert') updateData.bought_certificate = true;
+            if (upgradeType === 'port') updateData.bought_portfolio = true;
+            await db.collection('suno_bharat_orders').doc(parentOrderId).set(updateData, { merge: true });
+          } catch (firebaseErr: any) {
+            console.error('Webhook Firebase DB Error (sbupg):', firebaseErr.message);
+          }
         }
 
       // 2d. ORIGINAL POETRY FESTIVAL ORDERS → Update Supabase
